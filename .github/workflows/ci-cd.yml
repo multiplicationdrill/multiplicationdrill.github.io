@@ -1,114 +1,236 @@
+# ==============================================================================
+# CI/CD Pipeline with Playwright Best Practices
+# ==============================================================================
+# This workflow implements ALL Playwright CI best practices:
+#
+# 1. BROWSER CACHING
+#    - Caches Playwright browsers to speed up subsequent runs
+#    - Uses hash of playwright version as cache key
+#
+# 2. OPTIMIZED BROWSER INSTALLATION
+#    - Only installs browsers needed for testing
+#    - Uses --with-deps for system dependencies
+#
+# 3. ARTIFACT UPLOAD
+#    - Always uploads HTML report for debugging
+#    - Uploads trace files when tests fail
+#
+# 4. GITHUB REPORTER
+#    - Test results appear as PR annotations
+#    - Easy to see what failed without leaving GitHub
+#
+# @see https://playwright.dev/docs/ci
+# @see https://playwright.dev/docs/best-practices#run-tests-on-ci
+# ==============================================================================
+
 name: CI/CD Pipeline
+
 on:
   push:
   pull_request:
   workflow_dispatch:
 
 jobs:
+  # ============================================================================
+  # UNIT TESTS
+  # ============================================================================
   test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [20.x, 22.x, 24.x]
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'yarn'
-    
-    - name: Install dependencies
-      run: yarn install --frozen-lockfile
-    
-    - name: Run linter
-      run: yarn lint
-    
-    - name: Run type check
-      run: yarn type-check
-    
-    - name: Run unit tests with coverage
-      run: yarn test:coverage:ci
-    
-    - name: Upload coverage reports
-      uses: codecov/codecov-action@v4
-      if: matrix.node-version == '22.x'
-      with:
-        files: ./coverage/lcov.info
-        flags: unittests
-        name: codecov-umbrella
-        fail_ci_if_error: false
+      - uses: actions/checkout@v4
 
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Run linter
+        run: yarn lint
+
+      - name: Run type check
+        run: yarn type-check
+
+      - name: Run unit tests with coverage
+        run: yarn test:coverage:ci
+
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v4
+        if: matrix.node-version == '22.x'
+        with:
+          files: ./coverage/lcov.info
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: false
+
+  # ============================================================================
+  # E2E TESTS WITH PLAYWRIGHT
+  # ============================================================================
+  # This job implements ALL Playwright CI best practices
+  # ============================================================================
   e2e-tests:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '22.x'
-        cache: 'yarn'
-    
-    - name: Install dependencies
-      run: yarn install --frozen-lockfile
-    
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
-    
-    - name: Build project for E2E tests
-      run: yarn build
-    
-    - name: Run E2E tests
-      run: yarn test:e2e
-    
-    - name: Upload test report
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: playwright-report
-        path: playwright-report/
-        retention-days: 30
+      - uses: actions/checkout@v4
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      # ========================================================================
+      # PLAYWRIGHT BROWSER CACHING
+      # ========================================================================
+      # WHY: Playwright browsers are ~500MB each
+      # Caching them saves significant download time on each run
+      # 
+      # Cache key includes:
+      # - OS (ubuntu-latest)
+      # - Playwright version from package.json
+      #
+      # This ensures cache is invalidated when Playwright version changes
+      # ========================================================================
+      - name: Get Playwright version
+        id: playwright-version
+        run: echo "version=$(yarn info @playwright/test version --json | jq -r '.data')" >> $GITHUB_OUTPUT
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.playwright-version.outputs.version }}
+
+      # ========================================================================
+      # OPTIMIZED BROWSER INSTALLATION
+      # ========================================================================
+      # BEST PRACTICE: Only install browsers you actually use
+      #
+      # Options:
+      # - 'npx playwright install --with-deps' - installs ALL browsers
+      # - 'npx playwright install chromium --with-deps' - installs only Chromium
+      #
+      # We install all browsers because our config tests on chromium, firefox,
+      # and webkit. If you only need Chromium, change this to save time.
+      #
+      # --with-deps installs system dependencies (fonts, libraries, etc.)
+      # This is REQUIRED on fresh CI machines
+      # ========================================================================
+      - name: Install Playwright Browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps
+
+      # Install only system deps if browsers were cached
+      - name: Install Playwright system dependencies
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps
+
+      # ========================================================================
+      # BUILD PROJECT
+      # ========================================================================
+      # E2E tests run against the built application
+      # This ensures we're testing what will actually be deployed
+      # ========================================================================
+      - name: Build project for E2E tests
+        run: yarn build
+
+      # ========================================================================
+      # RUN E2E TESTS
+      # ========================================================================
+      # The playwright.config.ts handles:
+      # - Starting the dev server
+      # - Running tests in parallel
+      # - Collecting traces on failure
+      # - Generating HTML report
+      # ========================================================================
+      - name: Run E2E tests
+        run: yarn test:e2e
+
+      # ========================================================================
+      # ARTIFACT UPLOAD - ALWAYS
+      # ========================================================================
+      # Upload the HTML report even if tests pass
+      # This allows reviewing test results in detail
+      #
+      # if: always() ensures upload happens even when tests fail
+      # ========================================================================
+      - name: Upload Playwright Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+
+      # ========================================================================
+      # ARTIFACT UPLOAD - TEST RESULTS (on failure)
+      # ========================================================================
+      # Test results directory contains:
+      # - Screenshots
+      # - Videos (if recorded)
+      # - Traces
+      #
+      # Only uploaded on failure to save storage
+      # ========================================================================
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: test-results
+          path: test-results/
+          retention-days: 7
+
+  # ============================================================================
+  # BUILD AND DEPLOY
+  # ============================================================================
   build:
     needs: [test, e2e-tests]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '22.x'
-        cache: 'yarn'
-    
-    - name: Install dependencies
-      run: yarn install --frozen-lockfile
-    
-    - name: Build project
-      run: yarn build
-    
-    - name: Upload artifact
-      uses: actions/upload-pages-artifact@v3
-      with:
-        path: ./dist
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build project
+        run: yarn build
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
-    
+
     permissions:
       pages: write
       id-token: write
-    
+
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    
+
     steps:
-    - name: Deploy to GitHub Pages
-      id: deployment
-      uses: actions/deploy-pages@v4
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -2098,3 +2098,217 @@ echo "   and open index.html to see detailed trace"
 echo ""
 echo "=========================================="
 ```
+
+kushal@syn-2600-6c56-9840-001d-0000-0000-0000-1157:~/src/dotnet/MyDesktopApplication$ cd ~/src/
+bash/   c/      dotnet/ html/   js/     ts/     
+kushal@syn-2600-6c56-9840-001d-0000-0000-0000-1157:~/src/dotnet/MyDesktopApplication$ cd ~/src/ts/; time git clone git@github.com:multiplicationdrill/multiplicationdrill.github.io.git multiplicationdrill
+Cloning into 'multiplicationdrill'...
+remote: Enumerating objects: 290, done.
+remote: Counting objects: 100% (290/290), done.
+remote: Compressing objects: 100% (162/162), done.
+remote: Total 290 (delta 177), reused 222 (delta 109), pack-reused 0 (from 0)
+Receiving objects: 100% (290/290), 318.83 KiB | 1.53 MiB/s, done.
+Resolving deltas: 100% (177/177), done.
+
+real	0m1.314s
+user	0m0.028s
+sys	0m0.028s
+kushal@syn-2600-6c56-9840-001d-0000-0000-0000-1157:~/src/ts$ cd ~/src/ts/multiplicationdrill/; time bash export.sh
+🚀 Starting export of git-tracked files...
+📄 Adding: .eslintrc.cjs
+📄 Adding: .github/workflows/ci-cd.yml
+📄 Adding: .github/workflows/coverage-comment.yml
+📄 Adding: .gitignore
+📄 Adding: MIGRATION.md
+📄 Adding: README.md
+📄 Adding: claude-opus.md
+⏩ Skipping binary: docs/llm/.gitkeep
+📄 Adding: e2e/quiz.spec.ts
+📄 Adding: eslint.config.js
+📄 Adding: index.html
+📄 Adding: kimi-k2.md
+📄 Adding: manual-testing-notes.md
+📄 Adding: package.json
+📄 Adding: playwright.config.ts
+📄 Adding: powershell.txt
+📄 Adding: public/vite.svg
+📄 Adding: scripts/coverage-report.js
+📄 Adding: setup.sh
+📄 Adding: src/__tests__/signals.test.ts
+📄 Adding: src/__tests__/state.test.ts
+📄 Adding: src/__tests__/utils.test.ts
+📄 Adding: src/app.ts
+📄 Adding: src/main.ts
+📄 Adding: src/signals.ts
+📄 Adding: src/state.ts
+📄 Adding: src/style.css
+📄 Adding: src/types.ts
+📄 Adding: src/typescript.svg
+📄 Adding: src/utils.ts
+📄 Adding: src/vite-env.d.ts
+📄 Adding: tsconfig.json
+📄 Adding: vite.config.ts
+📄 Adding: vitest.config.ts
+📄 Adding: yarn.lock
+
+✅ Export complete! 34 files written to docs/llm/dump.txt
+
+real	0m0.184s
+user	0m0.076s
+sys	0m0.099s
+kushal@syn-2600-6c56-9840-001d-0000-0000-0000-1157:~/src/ts/multiplicationdrill$ time bash fix-playwright.sh 
+==== Multiplication Drill Playwright Hardening Script (Option B) ====
+[1/8] Installing system dependencies (Fedora)...
+[sudo] password for kushal: 
+Sorry, try again.
+[sudo] password for kushal: 
+sudo: 1 incorrect password attempt
+
+real	0m42.976s
+user	0m0.055s
+sys	0m0.052s
+kushal@syn-2600-6c56-9840-001d-0000-0000-0000-1157:~/src/ts/multiplicationdrill$ time bash fix-playwright.sh 
+==== Multiplication Drill Playwright Hardening Script (Option B) ====
+[2/8] Installing project dependencies...
+npm warn deprecated whatwg-encoding@3.1.1: Use @exodus/bytes instead for a more spec-conformant and faster implementation
+
+added 271 packages, and audited 272 packages in 13s
+
+73 packages are looking for funding
+  run `npm fund` for details
+
+5 vulnerabilities (2 moderate, 3 high)
+
+To address all issues, run:
+  npm audit fix
+
+Run `npm audit` for details.
+[3/8] Installing Playwright browsers...
+BEWARE: your OS is not officially supported by Playwright; installing dependencies for ubuntu20.04-x64 as a fallback.
+Installing dependencies...
+Switching to root user to install dependencies...
+[sudo] password for kushal: 
+
+real	0m39.272s
+user	0m9.292s
+sys	0m1.776s
+
+kushal@syn-2600-6c56-9840-001d-0000-0000-0000-1157:~/src/ts/multiplicationdrill$ sudo: a password is required
+^C
+kushal@syn-2600-6c56-9840-001d-0000-0000-0000-1157:~/src/ts/multiplicationdrill$ 
+kushal@syn-2600-6c56-9840-001d-0000-0000-0000-1157:~/src/ts/multiplicationdrill$ time bash fix-playwright.sh 
+==== Multiplication Drill Playwright Hardening Script (Option B) ====
+[4/8] Adding deterministic test hook to app (non-prod safe)...
+grep: ./script.js: No such file or directory
+[5/8] Making multiplier generation respect test mode...
+sed: -e expression #1, char 154: invalid reference \2 on `s' command's RHS
+
+real	0m0.016s
+user	0m0.005s
+sys	0m0.003s
+kushal@syn-2600-6c56-9840-001d-0000-0000-0000-1157:~/src/ts/multiplicationdrill$ time bash apply-playwright-best-practices.sh
+==========================================
+PLAYWRIGHT BEST PRACTICES MIGRATION
+==========================================
+
+📁 Creating Page Object Model directory structure...
+📝 Creating e2e/pages/quiz-page.ts (Page Object Model)...
+✅ Created e2e/pages/quiz-page.ts
+📝 Creating e2e/quiz.spec.ts (Rewritten with best practices)...
+✅ Created e2e/quiz.spec.ts
+📝 Updating playwright.config.ts with best practices...
+✅ Updated playwright.config.ts
+📝 Updating eslint.config.js with Playwright-specific rules...
+✅ Updated eslint.config.js
+📝 Creating tsconfig.e2e.json for E2E tests...
+✅ Created tsconfig.e2e.json
+📝 Updating .github/workflows/ci-cd.yml with optimizations...
+✅ Updated .github/workflows/ci-cd.yml
+📝 Updating .gitignore with Playwright entries...
+ℹ️  .gitignore already has Playwright entries
+📝 Creating e2e/pages/index.ts...
+✅ Created e2e/pages/index.ts
+
+==========================================
+✅ MIGRATION COMPLETE!
+==========================================
+
+Changes made:
+
+📁 CREATED FILES:
+   - e2e/pages/quiz-page.ts       (Page Object Model)
+   - e2e/pages/index.ts           (POM exports)
+   - tsconfig.e2e.json            (E2E TypeScript config)
+
+📝 MODIFIED FILES:
+   - e2e/quiz.spec.ts             (Rewritten with best practices)
+   - playwright.config.ts         (Enhanced configuration)
+   - eslint.config.js             (Added no-floating-promises)
+   - .github/workflows/ci-cd.yml  (Optimized for Playwright)
+   - .gitignore                   (Added Playwright entries)
+
+==========================================
+PLAYWRIGHT BEST PRACTICES APPLIED:
+==========================================
+
+1. ✅ PAGE OBJECT MODEL
+   - All page interactions encapsulated in QuizPage class
+   - Locators and actions separated from test logic
+   - Easy to maintain when UI changes
+
+2. ✅ USER-FACING LOCATORS
+   - Using getByRole(), getByLabel(), getByText()
+   - NO CSS selectors like #id or .class
+   - Tests won't break when styling changes
+
+3. ✅ WEB-FIRST ASSERTIONS
+   - All assertions use await expect().toBeVisible() etc.
+   - Auto-waiting built in
+   - No manual waits (removed waitForTimeout)
+
+4. ✅ TEST ISOLATION
+   - beforeEach hook creates fresh page state
+   - No test depends on another
+   - Can run tests in any order
+
+5. ✅ NO-FLOATING-PROMISES LINT RULE
+   - ESLint catches missing await statements
+   - Prevents huge class of flaky tests
+   - Run 'yarn lint' to check
+
+6. ✅ CI OPTIMIZATIONS
+   - Browser caching for faster runs
+   - Artifacts uploaded for debugging
+   - Traces captured on failure
+
+7. ✅ CROSS-BROWSER TESTING
+   - Tests run on Chromium, Firefox, WebKit
+   - Catches browser-specific bugs
+
+8. ✅ PROPER TRACE CONFIGURATION
+   - 'on-first-retry' captures traces when needed
+   - Saves storage and improves performance
+
+==========================================
+NEXT STEPS:
+==========================================
+
+1. Commit these changes:
+   git add .
+   git commit -m 'Apply Playwright best practices'
+
+2. Push to trigger CI:
+   git push origin master
+
+3. View test results in GitHub Actions
+
+4. If tests fail, download the playwright-report artifact
+   and open index.html to see detailed trace
+
+==========================================
+
+real	0m0.022s
+user	0m0.006s
+sys	0m0.007s
+kushal@syn-2600-6c56-9840-001d-0000-0000-0000-1157:~/src/ts/multiplicationdrill$ 
+kushal@syn-2600-6c56-9840-001d-0000-0000-0000-1157:~/src/ts/multiplicationdrill$ 
