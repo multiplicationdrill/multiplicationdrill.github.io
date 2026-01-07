@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT: multiplicationdrill
-DATE: Wed Jan  7 04:36:49 PM CST 2026
+DATE: Wed Jan  7 04:39:36 PM CST 2026
 ===============================================================================
 
 -------------------------------------------------------------------------------
@@ -10528,7 +10528,7 @@ export default defineConfig({
    * - Easier to debug failures
    * - GitHub Actions runners have limited parallelism
    */
-  workers: isCI ? 1 : undefined,
+  workers: isCI ? 1 : 6,
 
   // ===========================================================================
   // REPORTER CONFIGURATION
