@@ -18,7 +18,9 @@
     "coverage:check": "vitest run --coverage && node scripts/coverage-report.js",
     "coverage:html": "vitest run --coverage && echo 'Opening coverage report...' && start coverage/index.html",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "e2e:container:build": "podman build -f Dockerfile.e2e -t multiplicationdrill-e2e .",
+    "e2e:container": "podman run --rm -v $(pwd)/playwright-report:/app/playwright-report -v $(pwd)/test-results:/app/test-results multiplicationdrill-e2e yarn test:e2e"
   },
   "devDependencies": {
     "@playwright/test": "^1.55.0",
