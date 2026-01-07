@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT: multiplicationdrill
-DATE: Wed Jan  7 12:08:23 PM CST 2026
+DATE: Wed Jan  7 12:12:32 PM CST 2026
 ===============================================================================
 
 -------------------------------------------------------------------------------
@@ -352,6 +352,18 @@ coverage
 .env
 .env.local
 .env.*.local
+
+-------------------------------------------------------------------------------
+FILE: Dockerfile.e2e
+-------------------------------------------------------------------------------
+FROM mcr.microsoft.com/playwright:v1.55.0-noble
+
+WORKDIR /app
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
+COPY . .
+RUN yarn build
+
 
 -------------------------------------------------------------------------------
 FILE: MIGRATION.md
@@ -4189,7 +4201,9 @@ FILE: package.json
     "coverage:check": "vitest run --coverage && node scripts/coverage-report.js",
     "coverage:html": "vitest run --coverage && echo 'Opening coverage report...' && start coverage/index.html",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "e2e:container:build": "podman build -f Dockerfile.e2e -t multiplicationdrill-e2e .",
+    "e2e:container": "podman run --rm -v $(pwd)/playwright-report:/app/playwright-report -v $(pwd)/test-results:/app/test-results multiplicationdrill-e2e yarn test:e2e"
   },
   "devDependencies": {
     "@playwright/test": "^1.55.0",
@@ -8287,6 +8301,6 @@ yocto-queue@^0.1.0:
 
 ===============================================================================
 EXPORT COMPLETED
-Total Files Exported: 35
+Total Files Exported: 36
 Output File: docs/llm/dump.txt
 ===============================================================================
