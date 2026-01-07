@@ -4,23 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview",
     "test": "vitest",
-    "test:ui": "vitest --ui",
-    "test:coverage": "vitest run --coverage",
-    "test:coverage:ci": "vitest run --coverage",
+    "test:run": "vitest run",
     "test:e2e": "playwright test",
-    "test:e2e:ui": "playwright test --ui",
-    "test:e2e:report": "playwright show-report",
-    "test:all": "yarn test:coverage && yarn test:e2e",
-    "coverage:check": "vitest run --coverage && node scripts/coverage-report.js",
-    "coverage:html": "vitest run --coverage && echo 'Opening coverage report...' && start coverage/index.html",
-    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "type-check": "tsc --noEmit",
     "e2e:container:build": "podman build -f Dockerfile.e2e -t multiplicationdrill-e2e .",
-    "e2e:container": "podman run --rm -v $(pwd)/playwright-report:/app/playwright-report -v $(pwd)/test-results:/app/test-results multiplicationdrill-e2e yarn test:e2e"
+    "e2e:container": "podman run --rm -v $(pwd)/playwright-report:/app/playwright-report:Z -v $(pwd)/test-results:/app/test-results:Z multiplicationdrill-e2e yarn test:e2e",
+    "test:all": "yarn lint && yarn type-check && yarn test:run && yarn e2e:container:build && yarn e2e:container"
   },
   "devDependencies": {
     "@playwright/test": "^1.55.0",
