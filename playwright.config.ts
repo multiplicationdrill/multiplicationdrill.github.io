@@ -91,7 +91,7 @@ export default defineConfig({
    * - Easier to debug failures
    * - GitHub Actions runners have limited parallelism
    */
-  workers: isCI ? 1 : undefined,
+  workers: isCI ? 1 : 6,
 
   // ===========================================================================
   // REPORTER CONFIGURATION
