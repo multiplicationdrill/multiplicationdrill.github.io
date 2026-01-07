@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT: multiplicationdrill
-DATE: Wed Jan  7 04:39:36 PM CST 2026
+DATE: Wed Jan  7 04:48:35 PM CST 2026
 ===============================================================================
 
 -------------------------------------------------------------------------------
@@ -10413,7 +10413,7 @@ FILE: package.json
     "test:coverage:ci": "vitest run --coverage",
     "e2e:container:build": "podman build -f Dockerfile.e2e -t multiplicationdrill-e2e .",
     "e2e:container": "podman run --rm -e CI=true -v $(pwd)/playwright-report:/app/playwright-report:Z -v $(pwd)/test-results:/app/test-results:Z multiplicationdrill-e2e yarn test:e2e",
-    "e2e:containernoci": "podman run --rm -e CI=false -v $(pwd)/playwright-report:/app/playwright-report:Z -v $(pwd)/test-results:/app/test-results:Z multiplicationdrill-e2e yarn test:e2e",
+    "e2e:containernoci": "podman run --rm -it --cpus=8 --memory=8g -v $(pwd)/playwright-report:/app/playwright-report:Z -v $(pwd)/test-results:/app/test-results:Z multiplicationdrill-e2e yarn test:e2e",
     "test:all": "yarn lint && yarn type-check && yarn test:run && yarn e2e:container:build && yarn e2e:containernoci"
   },
   "devDependencies": {
@@ -10528,7 +10528,7 @@ export default defineConfig({
    * - Easier to debug failures
    * - GitHub Actions runners have limited parallelism
    */
-  workers: isCI ? 1 : 6,
+  workers: isCI ? 1 : undefined,
 
   // ===========================================================================
   // REPORTER CONFIGURATION

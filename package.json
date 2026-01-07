@@ -14,7 +14,7 @@
     "test:coverage:ci": "vitest run --coverage",
     "e2e:container:build": "podman build -f Dockerfile.e2e -t multiplicationdrill-e2e .",
     "e2e:container": "podman run --rm -e CI=true -v $(pwd)/playwright-report:/app/playwright-report:Z -v $(pwd)/test-results:/app/test-results:Z multiplicationdrill-e2e yarn test:e2e",
-    "e2e:containernoci": "podman run --rm -it --cpus=8 --memory=8g -e CI=false -v $(pwd)/playwright-report:/app/playwright-report:Z -v $(pwd)/test-results:/app/test-results:Z multiplicationdrill-e2e yarn test:e2e",
+    "e2e:containernoci": "podman run --rm -it --cpus=8 --memory=8g -v $(pwd)/playwright-report:/app/playwright-report:Z -v $(pwd)/test-results:/app/test-results:Z multiplicationdrill-e2e yarn test:e2e",
     "test:all": "yarn lint && yarn type-check && yarn test:run && yarn e2e:container:build && yarn e2e:containernoci"
   },
   "devDependencies": {
