@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT EXPORT: multiplicationdrill
-DATE: Wed Jan  7 12:23:06 PM CST 2026
+DATE: Wed Jan  7 12:24:05 PM CST 2026
 ===============================================================================
 
 -------------------------------------------------------------------------------
@@ -4189,6 +4189,8 @@ FILE: package.json
   "scripts": {
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "type-check": "tsc --noEmit",
+    "dev": "vite",
+    "build": "tsc && vite build",
     "test": "vitest",
     "test:run": "vitest run",
     "test:e2e": "playwright test",

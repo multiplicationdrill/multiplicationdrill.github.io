@@ -110,7 +110,7 @@ export default defineConfig({
         ['github'],
       ]
     : [
-        ['html', { open: 'on-failure' }],
+        ['html', { open: 'never' }],
       ],
 
   // ===========================================================================
