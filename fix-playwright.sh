@@ -7,9 +7,9 @@ echo "==== Multiplication Drill Playwright Hardening Script (Option B) ===="
 # 1️⃣ Ensure dependencies exist
 # ----------------------------
 
-echo "[1/8] Installing system dependencies (Fedora)..."
+# echo "[1/8] Installing system dependencies (Fedora)..."
 
-sudo dnf -y install nodejs npm git
+# sudo dnf -y install nodejs npm git
 
 echo "[2/8] Installing project dependencies..."
 
