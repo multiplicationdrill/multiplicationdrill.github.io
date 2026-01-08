@@ -1,0 +1,1 @@
+cd ~/src/ts/multiplicationdrill/; time yarn lint; time bash export.sh; time yarn build; time yarn test:all;
