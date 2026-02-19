@@ -1,142 +1,11 @@
-kushal@fedora:~/src/dotnet/MyDesktopApplication$ cd ~/src/ts/multiplicationdrill/; time yarn lint; time bash export.sh; time yarn build; time yarn test:all;
-yarn run v1.22.22
-$ eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0
-Done in 1.35s.
-
-real	0m1.601s
-user	0m2.120s
-sys	0m0.372s
-🚀 Starting export of git-tracked files...
-📄 Adding: .eslintrc.cjs
-📄 Adding: .github/workflows/ci-cd.yml
-📄 Adding: .github/workflows/coverage-comment.yml
-📄 Adding: .gitignore
-📄 Adding: Dockerfile.e2e
-📄 Adding: MIGRATION.md
-📄 Adding: README.md
-📄 Adding: docs/llm/claude.md
-📄 Adding: docs/llm/commands.txt
-📄 Adding: docs/llm/output.txt
-📄 Adding: docs/llm/scratch
-📄 Adding: e2e/pages/index.ts
-📄 Adding: e2e/pages/quiz-page.ts
-📄 Adding: e2e/quiz.spec.ts
-📄 Adding: eslint.config.js
-📄 Adding: index.html
-📄 Adding: manual-testing-notes.md
-📄 Adding: package.json
-📄 Adding: playwright.config.ts
-📄 Adding: public/vite.svg
-📄 Adding: scripts/coverage-report.js
-📄 Adding: setup.sh
-📄 Adding: src/__tests__/signals.test.ts
-📄 Adding: src/__tests__/state.test.ts
-📄 Adding: src/__tests__/utils.test.ts
-📄 Adding: src/app.ts
-📄 Adding: src/main.ts
-📄 Adding: src/signals.ts
-📄 Adding: src/state.ts
-📄 Adding: src/style.css
-📄 Adding: src/types.ts
-📄 Adding: src/typescript.svg
-📄 Adding: src/utils.ts
-📄 Adding: src/vite-env.d.ts
-📄 Adding: tsconfig.e2e.json
-📄 Adding: tsconfig.json
-📄 Adding: vite.config.ts
-📄 Adding: vitest.config.ts
-📄 Adding: yarn.lock
-
-✅ Export complete! 39 files written to docs/llm/dump.txt
-
-real	0m0.161s
-user	0m0.081s
-sys	0m0.119s
-yarn run v1.22.22
-$ tsc && vite build
-vite v7.3.1 building client environment for production...
-✓ 8 modules transformed.
-dist/index.html                3.58 kB │ gzip: 0.96 kB
-dist/assets/main-_mIVCfJ7.css  5.57 kB │ gzip: 1.66 kB
-dist/assets/main-DldRkQj5.js   8.36 kB │ gzip: 2.70 kB │ map: 28.06 kB
-✓ built in 85ms
-Done in 0.89s.
-
-real	0m0.992s
-user	0m1.350s
-sys	0m0.229s
-yarn run v1.22.22
-$ yarn lint && yarn type-check && yarn test:run && yarn e2e:container:build && yarn e2e:containernoci
-$ eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0
-$ tsc --noEmit
-$ vitest run
-
- RUN  v4.0.16 /home/kushal/src/ts/multiplicationdrill
-
- ✓ src/__tests__/signals.test.ts (9 tests) 3ms
- ✓ src/__tests__/state.test.ts (9 tests) 3ms
- ✓ src/__tests__/utils.test.ts (14 tests) 9ms
-
- Test Files  3 passed (3)
-      Tests  32 passed (32)
-   Start at  21:49:10
-   Duration  497ms (transform 84ms, setup 0ms, import 132ms, tests 15ms, environment 1.08s)
-
-$ podman build -f Dockerfile.e2e -t multiplicationdrill-e2e .
-STEP 1/6: FROM mcr.microsoft.com/playwright:v1.57.0-noble
-STEP 2/6: WORKDIR /app
---> Using cache 8cd70f31bbbc57d74fbf5865bb9bdbbbb10dea38565eafb6f8db4cf69921d0f9
---> 8cd70f31bbbc
-STEP 3/6: COPY package.json yarn.lock ./
---> Using cache 49b4ede7a86ba8b21937aee6bd08f3a9c64419b25944a5668b8c035dcf96cad3
---> 49b4ede7a86b
-STEP 4/6: RUN yarn install --frozen-lockfile
---> Using cache 546efa7a3c407ead14945e29f51f9c5c3cd6e01f8ab11a6ac7c803f008e3c57e
---> 546efa7a3c40
-STEP 5/6: COPY . .
---> c2f0f5e4a1bb
-STEP 6/6: RUN yarn build
-yarn run v1.22.22
-$ tsc && vite build
-vite v7.3.1 building client environment for production...
-transforming...
-✓ 8 modules transformed.
-rendering chunks...
-computing gzip size...
-dist/index.html                3.58 kB │ gzip: 0.96 kB
-dist/assets/main-_mIVCfJ7.css  5.57 kB │ gzip: 1.66 kB
-dist/assets/main-DldRkQj5.js   8.36 kB │ gzip: 2.70 kB │ map: 28.06 kB
-✓ built in 84ms
-Done in 0.91s.
-COMMIT multiplicationdrill-e2e
---> 0e8862470569
-Successfully tagged localhost/multiplicationdrill-e2e:latest
-0e8862470569ce5a0d6b1a3e7b008e8188c370cca9bf76d405bd6f599a390968
-$ podman run --rm -it --cpus=8 --memory=8g -v $(pwd)/playwright-report:/app/playwright-report:Z -v $(pwd)/test-results:/app/test-results:Z multiplicationdrill-e2e yarn test:e2e
-yarn run v1.22.22
-$ playwright test
-
-Running 60 tests using 8 workers
-  60 passed (32.9s)
-
-To open last HTML report run:
-
-  yarn playwright show-report
-
-Done in 39.14s.
-Done in 47.31s.
-
-real	0m47.416s
-user	0m9.585s
-sys	0m4.772s
 kushal@fedora:~/src/ts/multiplicationdrill$ cd ~/src/ts/multiplicationdrill/; time yarn lint; time bash export.sh; time yarn build; time yarn test:all;
 yarn run v1.22.22
 $ eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0
-Done in 1.21s.
+Done in 1.02s.
 
-real	0m1.321s
-user	0m1.908s
-sys	0m0.338s
+real	0m1.138s
+user	0m1.857s
+sys	0m0.280s
 🚀 Starting export...
 ⏩ Skipping: .eslintrc.cjs
 📄 Adding: .github/workflows/ci-cd.yml
@@ -184,9 +53,9 @@ sys	0m0.338s
 
 ✅ Done! 23 files → docs/llm/dump.txt
 
-real	0m0.086s
-user	0m0.046s
-sys	0m0.062s
+real	0m0.096s
+user	0m0.050s
+sys	0m0.061s
 yarn run v1.22.22
 $ tsc && vite build
 vite v7.3.1 building client environment for production...
@@ -194,295 +63,12 @@ vite v7.3.1 building client environment for production...
 dist/index.html                3.58 kB │ gzip: 0.96 kB
 dist/assets/main-_mIVCfJ7.css  5.57 kB │ gzip: 1.66 kB
 dist/assets/main-DldRkQj5.js   8.36 kB │ gzip: 2.70 kB │ map: 28.06 kB
-✓ built in 86ms
-Done in 0.89s.
+✓ built in 81ms
+Done in 0.79s.
 
-real	0m0.986s
-user	0m1.274s
-sys	0m0.240s
-yarn run v1.22.22
-$ yarn lint && yarn type-check && yarn test:run && yarn e2e:container:build && yarn e2e:containernoci
-$ eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0
-$ tsc --noEmit
-$ vitest run
-
- RUN  v4.0.16 /home/kushal/src/ts/multiplicationdrill
-
- ✓ src/__tests__/signals.test.ts (9 tests) 3ms
- ✓ src/__tests__/state.test.ts (9 tests) 3ms
- ✓ src/__tests__/utils.test.ts (14 tests) 9ms
-
- Test Files  3 passed (3)
-      Tests  32 passed (32)
-   Start at  21:56:57
-   Duration  511ms (transform 93ms, setup 0ms, import 140ms, tests 15ms, environment 1.11s)
-
-$ podman build -f Dockerfile.e2e -t multiplicationdrill-e2e .
-STEP 1/6: FROM mcr.microsoft.com/playwright:v1.57.0-noble
-STEP 2/6: WORKDIR /app
---> Using cache 8cd70f31bbbc57d74fbf5865bb9bdbbbb10dea38565eafb6f8db4cf69921d0f9
---> 8cd70f31bbbc
-STEP 3/6: COPY package.json yarn.lock ./
---> Using cache 49b4ede7a86ba8b21937aee6bd08f3a9c64419b25944a5668b8c035dcf96cad3
---> 49b4ede7a86b
-STEP 4/6: RUN yarn install --frozen-lockfile
---> Using cache 546efa7a3c407ead14945e29f51f9c5c3cd6e01f8ab11a6ac7c803f008e3c57e
---> 546efa7a3c40
-STEP 5/6: COPY . .
---> fddbcfe13941
-STEP 6/6: RUN yarn build
-yarn run v1.22.22
-$ tsc && vite build
-vite v7.3.1 building client environment for production...
-transforming...
-✓ 8 modules transformed.
-rendering chunks...
-computing gzip size...
-dist/index.html                3.58 kB │ gzip: 0.96 kB
-dist/assets/main-_mIVCfJ7.css  5.57 kB │ gzip: 1.66 kB
-dist/assets/main-DldRkQj5.js   8.36 kB │ gzip: 2.70 kB │ map: 28.06 kB
-✓ built in 83ms
-Done in 0.91s.
-COMMIT multiplicationdrill-e2e
---> f8d122f661aa
-Successfully tagged localhost/multiplicationdrill-e2e:latest
-f8d122f661aa155e2fb798e5e5756284f99622467ddf2126af9ee71e7ca285f2
-$ podman run --rm -it --cpus=8 --memory=8g -v $(pwd)/playwright-report:/app/playwright-report:Z -v $(pwd)/test-results:/app/test-results:Z multiplicationdrill-e2e yarn test:e2e
-yarn run v1.22.22
-$ playwright test
-
-Running 60 tests using 8 workers
-  60 passed (30.9s)
-
-To open last HTML report run:
-
-  yarn playwright show-report
-
-Done in 37.09s.
-Done in 44.59s.
-
-real	0m44.691s
-user	0m9.668s
-sys	0m4.424s
-kushal@fedora:~/src/ts/multiplicationdrill$ time yarn outdated
-yarn outdated v1.22.22
-info Color legend : 
- "<red>"    : Major Update backward-incompatible updates 
- "<yellow>" : Minor Update backward-compatible features 
- "<green>"  : Patch Update backward-compatible bug fixes
-Package                          Current Wanted Latest Package Type    URL                                                                       
-@playwright/test                 1.57.0  1.58.2 1.58.2 devDependencies https://playwright.dev                                                    
-@types/node                      25.0.3  25.3.0 25.3.0 devDependencies https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/node 
-@typescript-eslint/eslint-plugin 8.52.0  8.56.0 8.56.0 devDependencies https://typescript-eslint.io/packages/eslint-plugin                       
-@typescript-eslint/parser        8.52.0  8.56.0 8.56.0 devDependencies https://typescript-eslint.io/packages/parser                              
-@vitest/coverage-v8              4.0.16  4.0.18 4.0.18 devDependencies https://github.com/vitest-dev/vitest/tree/main/packages/coverage-v8#readme
-@vitest/ui                       4.0.16  4.0.18 4.0.18 devDependencies https://github.com/vitest-dev/vitest/tree/main/packages/ui#readme         
-eslint                           9.39.2  9.39.2 10.0.0 devDependencies https://eslint.org                                                        
-jsdom                            27.4.0  27.4.0 28.1.0 devDependencies https://github.com/jsdom/jsdom#readme                                     
-vitest                           4.0.16  4.0.18 4.0.18 devDependencies https://vitest.dev                                                        
-Done in 1.27s.
-
-real	0m1.421s
-user	0m0.955s
-sys	0m0.345s
-kushal@fedora:~/src/ts/multiplicationdrill$ cd ~/src/ts/multiplicationdrill/; time yarn lint; time bash export.sh; time yarn build; time yarn test:all;
-yarn run v1.22.22
-$ eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0
-Done in 1.03s.
-
-real	0m1.144s
-user	0m1.856s
-sys	0m0.298s
-🚀 Starting export...
-⏩ Skipping: .eslintrc.cjs
-📄 Adding: .github/workflows/ci-cd.yml
-📄 Adding: .github/workflows/coverage-comment.yml
-⏩ Skipping: .gitignore
-📄 Adding: Dockerfile.e2e
-⏩ Skipping: MIGRATION.md
-⏩ Skipping: README.md
-⏩ Skipping: docs/llm/dump.txt
-⏩ Skipping: docs/llm/output.txt
-⏩ Skipping: docs/llm/vendor/claude.md
-⏩ Skipping: docs/llm/vendor/commands.txt
-⏩ Skipping: docs/llm/vendor/instructions.md
-⏩ Skipping: docs/llm/vendor/memory.md
-⏩ Skipping: docs/llm/vendor/scratch
-📄 Adding: e2e/pages/index.ts
-📄 Adding: e2e/pages/quiz-page.ts
-📄 Adding: e2e/quiz.spec.ts
-⏩ Skipping: eslint.config.js
-⏩ Skipping: export.sh
-📄 Adding: index.html
-⏩ Skipping: manual-testing-notes.md
-📄 Adding: package.json
-📄 Adding: playwright.config.ts
-⏩ Skipping: public/vite.svg
-⏩ Skipping: scripts/coverage-report.js
-⏩ Skipping: setup.sh
-📄 Adding: src/__tests__/signals.test.ts
-📄 Adding: src/__tests__/state.test.ts
-📄 Adding: src/__tests__/utils.test.ts
-📄 Adding: src/app.ts
-📄 Adding: src/main.ts
-📄 Adding: src/signals.ts
-📄 Adding: src/state.ts
-📄 Adding: src/style.css
-📄 Adding: src/types.ts
-⏩ Skipping: src/typescript.svg
-📄 Adding: src/utils.ts
-⏩ Skipping: src/vite-env.d.ts
-📄 Adding: tsconfig.e2e.json
-📄 Adding: tsconfig.json
-📄 Adding: vite.config.ts
-📄 Adding: vitest.config.ts
-⏩ Skipping: yarn.lock
-
-✅ Done! 23 files → docs/llm/dump.txt
-
-real	0m0.084s
-user	0m0.046s
-sys	0m0.062s
-yarn run v1.22.22
-$ tsc && vite build
-vite v7.3.1 building client environment for production...
-✓ 8 modules transformed.
-dist/index.html                3.58 kB │ gzip: 0.96 kB
-dist/assets/main-_mIVCfJ7.css  5.57 kB │ gzip: 1.66 kB
-dist/assets/main-DldRkQj5.js   8.36 kB │ gzip: 2.70 kB │ map: 28.06 kB
-✓ built in 80ms
-Done in 0.77s.
-
-real	0m0.873s
-user	0m1.299s
-sys	0m0.190s
-yarn run v1.22.22
-$ yarn lint && yarn type-check && yarn test:run && yarn e2e:container:build && yarn e2e:containernoci
-$ eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0
-$ tsc --noEmit
-$ vitest run
-
- RUN  v4.0.16 /home/kushal/src/ts/multiplicationdrill
-
- ✓ src/__tests__/signals.test.ts (9 tests) 3ms
- ✓ src/__tests__/state.test.ts (9 tests) 3ms
- ✓ src/__tests__/utils.test.ts (14 tests) 9ms
-
- Test Files  3 passed (3)
-      Tests  32 passed (32)
-   Start at  22:02:46
-   Duration  445ms (transform 83ms, setup 0ms, import 119ms, tests 15ms, environment 937ms)
-
-$ podman build -f Dockerfile.e2e -t multiplicationdrill-e2e .
-STEP 1/6: FROM mcr.microsoft.com/playwright:v1.58.2-noble
-Trying to pull mcr.microsoft.com/playwright:v1.58.2-noble...
-Getting image source signatures
-Copying blob ca6ba77a7dd1 done   | 
-Copying blob 2f544baf4e5f done   | 
-Copying blob e93fce65fb9f done   | 
-Copying blob a9f762cbf2c0 done   | 
-Copying config 35524db2ea done   | 
-Writing manifest to image destination
-STEP 2/6: WORKDIR /app
---> 6473021782e4
-STEP 3/6: COPY package.json yarn.lock ./
---> d4de989d2cad
-STEP 4/6: RUN yarn install --frozen-lockfile
-yarn install v1.22.22
-[1/4] Resolving packages...
-error Your lockfile needs to be updated, but yarn was run with `--frozen-lockfile`.
-info Visit https://yarnpkg.com/en/docs/cli/install for documentation about this command.
-Error: building at STEP "RUN yarn install --frozen-lockfile": while running runtime: exit status 1
-error Command failed with exit code 1.
-info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
-error Command failed with exit code 1.
-info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
-
-real	1m22.308s
-user	0m30.205s
-sys	0m7.776s
-kushal@fedora:~/src/ts/multiplicationdrill$ cd ~/src/ts/multiplicationdrill/; time yarn lint; time bash export.sh; time yarn; time yarn build; time yarn test:all;
-yarn run v1.22.22
-$ eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0
-Done in 1.01s.
-
-real	0m1.124s
-user	0m1.876s
-sys	0m0.291s
-🚀 Starting export...
-⏩ Skipping: .eslintrc.cjs
-📄 Adding: .github/workflows/ci-cd.yml
-📄 Adding: .github/workflows/coverage-comment.yml
-⏩ Skipping: .gitignore
-📄 Adding: Dockerfile.e2e
-⏩ Skipping: MIGRATION.md
-⏩ Skipping: README.md
-⏩ Skipping: docs/llm/dump.txt
-⏩ Skipping: docs/llm/output.txt
-⏩ Skipping: docs/llm/vendor/claude.md
-⏩ Skipping: docs/llm/vendor/commands.txt
-⏩ Skipping: docs/llm/vendor/instructions.md
-⏩ Skipping: docs/llm/vendor/memory.md
-⏩ Skipping: docs/llm/vendor/scratch
-📄 Adding: e2e/pages/index.ts
-📄 Adding: e2e/pages/quiz-page.ts
-📄 Adding: e2e/quiz.spec.ts
-⏩ Skipping: eslint.config.js
-⏩ Skipping: export.sh
-📄 Adding: index.html
-⏩ Skipping: manual-testing-notes.md
-📄 Adding: package.json
-📄 Adding: playwright.config.ts
-⏩ Skipping: public/vite.svg
-⏩ Skipping: scripts/coverage-report.js
-⏩ Skipping: setup.sh
-📄 Adding: src/__tests__/signals.test.ts
-📄 Adding: src/__tests__/state.test.ts
-📄 Adding: src/__tests__/utils.test.ts
-📄 Adding: src/app.ts
-📄 Adding: src/main.ts
-📄 Adding: src/signals.ts
-📄 Adding: src/state.ts
-📄 Adding: src/style.css
-📄 Adding: src/types.ts
-⏩ Skipping: src/typescript.svg
-📄 Adding: src/utils.ts
-⏩ Skipping: src/vite-env.d.ts
-📄 Adding: tsconfig.e2e.json
-📄 Adding: tsconfig.json
-📄 Adding: vite.config.ts
-📄 Adding: vitest.config.ts
-⏩ Skipping: yarn.lock
-
-✅ Done! 23 files → docs/llm/dump.txt
-
-real	0m0.085s
-user	0m0.043s
-sys	0m0.066s
-yarn install v1.22.22
-[1/4] Resolving packages...
-[2/4] Fetching packages...
-[3/4] Linking dependencies...
-[4/4] Building fresh packages...
-success Saved lockfile.
-Done in 4.50s.
-
-real	0m4.635s
-user	0m1.916s
-sys	0m0.968s
-yarn run v1.22.22
-$ tsc && vite build
-vite v7.3.1 building client environment for production...
-✓ 8 modules transformed.
-dist/index.html                3.58 kB │ gzip: 0.96 kB
-dist/assets/main-_mIVCfJ7.css  5.57 kB │ gzip: 1.66 kB
-dist/assets/main-DldRkQj5.js   8.36 kB │ gzip: 2.70 kB │ map: 28.06 kB
-✓ built in 82ms
-Done in 0.80s.
-
-real	0m0.905s
-user	0m1.283s
-sys	0m0.222s
+real	0m0.889s
+user	0m1.255s
+sys	0m0.218s
 yarn run v1.22.22
 $ yarn lint && yarn type-check && yarn test:run && yarn e2e:container:build && yarn e2e:containernoci
 $ eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0
@@ -491,14 +77,14 @@ $ vitest run
 
  RUN  v4.0.18 /home/kushal/src/ts/multiplicationdrill
 
- ✓ src/__tests__/signals.test.ts (9 tests) 3ms
  ✓ src/__tests__/state.test.ts (9 tests) 3ms
- ✓ src/__tests__/utils.test.ts (14 tests) 12ms
+ ✓ src/__tests__/signals.test.ts (9 tests) 3ms
+ ✓ src/__tests__/utils.test.ts (14 tests) 10ms
 
  Test Files  3 passed (3)
       Tests  32 passed (32)
-   Start at  22:04:46
-   Duration  459ms (transform 93ms, setup 0ms, import 131ms, tests 18ms, environment 910ms)
+   Start at  22:06:49
+   Duration  444ms (transform 86ms, setup 0ms, import 128ms, tests 16ms, environment 918ms)
 
 $ podman build -f Dockerfile.e2e -t multiplicationdrill-e2e .
 STEP 1/6: FROM mcr.microsoft.com/playwright:v1.58.2-noble
@@ -506,17 +92,13 @@ STEP 2/6: WORKDIR /app
 --> Using cache 6473021782e45f3c37e342debbd116ee25001b81c592f9b3d307d10cf6d7537e
 --> 6473021782e4
 STEP 3/6: COPY package.json yarn.lock ./
+--> Using cache 9a82108b7f533a1da3cc33327b450e176fce5ad1986939877504df311fb66058
 --> 9a82108b7f53
 STEP 4/6: RUN yarn install --frozen-lockfile
-yarn install v1.22.22
-[1/4] Resolving packages...
-[2/4] Fetching packages...
-[3/4] Linking dependencies...
-[4/4] Building fresh packages...
-Done in 6.32s.
+--> Using cache e3fa4ba62019c59bc783492372ee44d6d3ba83bf419d9ec876d6645f1338da3a
 --> e3fa4ba62019
 STEP 5/6: COPY . .
---> ecaccd401c43
+--> 22359b89ef03
 STEP 6/6: RUN yarn build
 yarn run v1.22.22
 $ tsc && vite build
@@ -528,27 +110,27 @@ computing gzip size...
 dist/index.html                3.58 kB │ gzip: 0.96 kB
 dist/assets/main-_mIVCfJ7.css  5.57 kB │ gzip: 1.66 kB
 dist/assets/main-DldRkQj5.js   8.36 kB │ gzip: 2.70 kB │ map: 28.06 kB
-✓ built in 87ms
-Done in 0.84s.
+✓ built in 95ms
+Done in 0.85s.
 COMMIT multiplicationdrill-e2e
---> 4e0cc89ba474
+--> 0fdfb8ce7640
 Successfully tagged localhost/multiplicationdrill-e2e:latest
-4e0cc89ba474f2a0c024fc50974bb59df043a2ade492e02a8b191cba49609ec8
+0fdfb8ce7640bab1f31f0ad096c48598cbc7fee8eff8f3e5e77560cf29ab7551
 $ podman run --rm -it --cpus=8 --memory=8g -v $(pwd)/playwright-report:/app/playwright-report:Z -v $(pwd)/test-results:/app/test-results:Z multiplicationdrill-e2e yarn test:e2e
 yarn run v1.22.22
 $ playwright test
 
 Running 60 tests using 8 workers
-  60 passed (40.8s)
+  60 passed (39.6s)
 
 To open last HTML report run:
 
   yarn playwright show-report
 
-Done in 47.08s.
-Done in 66.21s.
+Done in 45.88s.
+Done in 53.16s.
 
-real	1m6.306s
-user	0m18.541s
-sys	0m11.210s
+real	0m53.265s
+user	0m9.563s
+sys	0m4.153s
 kushal@fedora:~/src/ts/multiplicationdrill$ 
