@@ -18,16 +18,16 @@
     "test:all": "yarn lint && yarn type-check && yarn test:run && yarn e2e:container:build && yarn e2e:containernoci"
   },
   "devDependencies": {
-    "@playwright/test": "^1.57.0",
-    "@types/node": "^25.0.3",
-    "@typescript-eslint/eslint-plugin": "^8.52.0",
-    "@typescript-eslint/parser": "^8.52.0",
-    "@vitest/coverage-v8": "^4.0.16",
-    "@vitest/ui": "^4.0.16",
+    "@playwright/test": "^1.58.2",
+    "@types/node": "^25.3.0",
+    "@typescript-eslint/eslint-plugin": "^8.56.0",
+    "@typescript-eslint/parser": "^8.56.0",
+    "@vitest/coverage-v8": "^4.0.18",
+    "@vitest/ui": "^4.0.18",
     "eslint": "^9.39.2",
     "jsdom": "^27.4.0",
     "typescript": "^5.9.3",
     "vite": "^7.3.1",
-    "vitest": "^4.0.16"
+    "vitest": "^4.0.18"
   }
 }

@@ -538,3 +538,107 @@ This should leave you with roughly **~18 core files**: the source code (`src/*.t
 **`claude.md` — project instructions** cover the five essentials: always read the dump first, return complete files, no hallucination, take time for quality, and follow existing codebase patterns. Drop this into your Claude Project's custom instructions or as a knowledge file.
 
 
+Please give me an updated package.json file with the latest updates 
+```
+kushal@fedora:~/src/ts/multiplicationdrill$ time yarn outdated
+yarn outdated v1.22.22
+info Color legend : 
+ "<red>"    : Major Update backward-incompatible updates 
+ "<yellow>" : Minor Update backward-compatible features 
+ "<green>"  : Patch Update backward-compatible bug fixes
+Package                          Current Wanted Latest Package Type    URL                                                                       
+@playwright/test                 1.57.0  1.58.2 1.58.2 devDependencies https://playwright.dev                                                    
+@types/node                      25.0.3  25.3.0 25.3.0 devDependencies https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/node 
+@typescript-eslint/eslint-plugin 8.52.0  8.56.0 8.56.0 devDependencies https://typescript-eslint.io/packages/eslint-plugin                       
+@typescript-eslint/parser        8.52.0  8.56.0 8.56.0 devDependencies https://typescript-eslint.io/packages/parser                              
+@vitest/coverage-v8              4.0.16  4.0.18 4.0.18 devDependencies https://github.com/vitest-dev/vitest/tree/main/packages/coverage-v8#readme
+@vitest/ui                       4.0.16  4.0.18 4.0.18 devDependencies https://github.com/vitest-dev/vitest/tree/main/packages/ui#readme         
+eslint                           9.39.2  9.39.2 10.0.0 devDependencies https://eslint.org                                                        
+jsdom                            27.4.0  27.4.0 28.1.0 devDependencies https://github.com/jsdom/jsdom#readme                                     
+vitest                           4.0.16  4.0.18 4.0.18 devDependencies https://vitest.dev                                                        
+Done in 1.27s.
+
+real	0m1.421s
+user	0m0.955s
+sys	0m0.345s
+kushal@fedora:~/src/ts/multiplicationdrill$ 
+```
+
+current package.json
+```json
+{
+  "name": "multiplicationdrill",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "type-check": "tsc --noEmit",
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:e2e": "playwright test",
+    "test:coverage:ci": "vitest run --coverage",
+    "e2e:container:build": "podman build -f Dockerfile.e2e -t multiplicationdrill-e2e .",
+    "e2e:container": "podman run --rm -e CI=true -v $(pwd)/playwright-report:/app/playwright-report:Z -v $(pwd)/test-results:/app/test-results:Z multiplicationdrill-e2e yarn test:e2e",
+    "e2e:containernoci": "podman run --rm -it --cpus=8 --memory=8g -v $(pwd)/playwright-report:/app/playwright-report:Z -v $(pwd)/test-results:/app/test-results:Z multiplicationdrill-e2e yarn test:e2e",
+    "test:all": "yarn lint && yarn type-check && yarn test:run && yarn e2e:container:build && yarn e2e:containernoci"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.57.0",
+    "@types/node": "^25.0.3",
+    "@typescript-eslint/eslint-plugin": "^8.52.0",
+    "@typescript-eslint/parser": "^8.52.0",
+    "@vitest/coverage-v8": "^4.0.16",
+    "@vitest/ui": "^4.0.16",
+    "eslint": "^9.39.2",
+    "jsdom": "^27.4.0",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1",
+    "vitest": "^4.0.16"
+  }
+}
+```
+
+Here's the updated `package.json` with all minor/patch bumps applied. I'm keeping `eslint` at `^9` and `jsdom` at `^27` since those are major version jumps that could introduce breaking changes — I'd recommend tackling those separately.Since Playwright bumped to 1.58.2, you'll also need to update `Dockerfile.e2e` to match:After replacing both files, run `yarn install` (to update `yarn.lock`), then `yarn test:all` to verify everything passes.
+
+**Held back (major bumps):**
+- **eslint 9 → 10**: Likely has breaking config changes. Worth a separate PR.
+- **jsdom 27 → 28**: May have breaking API changes affecting Vitest's jsdom environment.
+
+When you're ready to tackle either of those, let me know and I can help with the migration.
+
+{
+  "name": "multiplicationdrill",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "type-check": "tsc --noEmit",
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:e2e": "playwright test",
+    "test:coverage:ci": "vitest run --coverage",
+    "e2e:container:build": "podman build -f Dockerfile.e2e -t multiplicationdrill-e2e .",
+    "e2e:container": "podman run --rm -e CI=true -v $(pwd)/playwright-report:/app/playwright-report:Z -v $(pwd)/test-results:/app/test-results:Z multiplicationdrill-e2e yarn test:e2e",
+    "e2e:containernoci": "podman run --rm -it --cpus=8 --memory=8g -v $(pwd)/playwright-report:/app/playwright-report:Z -v $(pwd)/test-results:/app/test-results:Z multiplicationdrill-e2e yarn test:e2e",
+    "test:all": "yarn lint && yarn type-check && yarn test:run && yarn e2e:container:build && yarn e2e:containernoci"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "@types/node": "^25.3.0",
+    "@typescript-eslint/eslint-plugin": "^8.56.0",
+    "@typescript-eslint/parser": "^8.56.0",
+    "@vitest/coverage-v8": "^4.0.18",
+    "@vitest/ui": "^4.0.18",
+    "eslint": "^9.39.2",
+    "jsdom": "^27.4.0",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1",
+    "vitest": "^4.0.18"
+  }
+}
