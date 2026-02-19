@@ -642,3 +642,109 @@ When you're ready to tackle either of those, let me know and I can help with the
     "vitest": "^4.0.18"
   }
 }
+
+
+
+
+
+
+Good, that's a straightforward config. Let me now check one thing about `typescript-eslint` and `globals` versions:Good — `globals` is at 17.3.0, and `typescript-eslint` supports `^10.0.0`. Here are all three files:
+
+**1. New `eslint.config.js`** (replaces `.eslintrc.cjs`):**2. Updated `package.json`**:Here's a summary of all changes and the migration steps:
+
+**What changed:**
+
+| Change | Why |
+|---|---|
+| `eslint` 9 → 10 | Major upgrade — removes eslintrc, `--ext` flag |
+| `jsdom` 27 → 28 | Major upgrade — resource loading overhaul (transparent via Vitest) |
+| `.eslintrc.cjs` → `eslint.config.js` | ESLint 10 removes legacy config format entirely |
+| `--ext ts,tsx` removed from lint script | Flag no longer exists; file matching done in config's `files` patterns |
+| `--report-unused-disable-directives` → config | Moved into `linterOptions` in flat config |
+| `@typescript-eslint/eslint-plugin` + `parser` → `typescript-eslint` | Unified package, cleaner flat config integration |
+| Added `@eslint/js`, `globals` | Required for flat config (`eslint:recommended` + browser globals) |
+
+**Steps to run:**
+
+```bash
+# 1. Delete old config
+rm .eslintrc.cjs
+
+# 2. Place the two new files (eslint.config.js, package.json)
+
+# 3. Reinstall dependencies
+yarn install
+
+# 4. Verify lint works
+yarn lint
+
+# 5. Full test suite
+yarn test:all
+```
+
+The CI workflow needs no changes — Node 20.x via `actions/setup-node` already resolves to ≥20.19.0, and the lint script change is captured in `package.json`.
+
+```js
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
+import globals from 'globals';
+
+export default tseslint.config(
+  { ignores: ['dist/**'] },
+  eslint.configs.recommended,
+  tseslint.configs.recommended,
+  {
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.es2020,
+      },
+    },
+    linterOptions: {
+      reportUnusedDisableDirectives: 'error',
+    },
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-non-null-assertion': 'off',
+    },
+  },
+);
+```
+
+```json
+{
+  "name": "multiplicationdrill",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "lint": "eslint src --max-warnings 0",
+    "type-check": "tsc --noEmit",
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:e2e": "playwright test",
+    "test:coverage:ci": "vitest run --coverage",
+    "e2e:container:build": "podman build -f Dockerfile.e2e -t multiplicationdrill-e2e .",
+    "e2e:container": "podman run --rm -e CI=true -v $(pwd)/playwright-report:/app/playwright-report:Z -v $(pwd)/test-results:/app/test-results:Z multiplicationdrill-e2e yarn test:e2e",
+    "e2e:containernoci": "podman run --rm -it --cpus=8 --memory=8g -v $(pwd)/playwright-report:/app/playwright-report:Z -v $(pwd)/test-results:/app/test-results:Z multiplicationdrill-e2e yarn test:e2e",
+    "test:all": "yarn lint && yarn type-check && yarn test:run && yarn e2e:container:build && yarn e2e:containernoci"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.0",
+    "@playwright/test": "^1.58.2",
+    "@types/node": "^25.3.0",
+    "@vitest/coverage-v8": "^4.0.18",
+    "@vitest/ui": "^4.0.18",
+    "eslint": "^10.0.0",
+    "globals": "^17.0.0",
+    "jsdom": "^28.1.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.56.0",
+    "vite": "^7.3.1",
+    "vitest": "^4.0.18"
+  }
+}
+```
+
