@@ -1,37 +1,68 @@
 #!/bin/bash
 # =============================================================================
-# Cloudflare Worker Project Export for LLM Analysis
+# Project Export for LLM Analysis
 # =============================================================================
-# Uses git to export all tracked source files while excluding node_modules.
+# Exports only source code and config files relevant for LLM context.
+# Excludes lock files, docs, binaries, SVGs, and other noise.
 # =============================================================================
 
 OUTPUT_DIR="docs/llm"
 OUTPUT_FILE="$OUTPUT_DIR/dump.txt"
 mkdir -p "$OUTPUT_DIR"
 
-# Clear/Create output file with a header
+# Files/patterns to SKIP — add more as needed
+SKIP_PATTERNS=(
+    "export.sh"
+    "$OUTPUT_FILE"
+    "yarn.lock"
+    "package-lock.json"
+    "pnpm-lock.yaml"
+    "*.svg"
+    "*.png"
+    "*.ico"
+    "*.md"
+    "docs/*"
+    "scripts/*"
+    ".gitignore"
+    ".eslintrc.cjs"
+    "eslint.config.js"
+    "src/vite-env.d.ts"
+    "manual-testing-notes.md"
+    "setup.sh"
+)
+
+should_skip() {
+    local file="$1"
+    for pattern in "${SKIP_PATTERNS[@]}"; do
+        # Support both exact match and glob patterns
+        # shellcheck disable=SC2254
+        case "$file" in
+            $pattern) return 0 ;;
+        esac
+    done
+    return 1
+}
+
+# Header
 {
     echo "==============================================================================="
-    echo "PROJECT EXPORT: $(basename "$(pwd)")"
+    echo "PROJECT: $(basename "$(pwd)")"
     echo "DATE: $(date)"
     echo "==============================================================================="
     echo ""
 } > "$OUTPUT_FILE"
 
-echo "🚀 Starting export of git-tracked files..."
+echo "🚀 Starting export..."
 
-# Counter for summary
 COUNTER=0
 
-# Use git ls-files to get everything tracked by git
-# This avoids node_modules, .git folder, and build artifacts automatically.
 while read -r file; do
-    # Skip the export script itself and the output file
-    if [[ "$file" == "export.sh" || "$file" == "$OUTPUT_FILE" ]]; then
+    if should_skip "$file"; then
+        echo "⏩ Skipping: $file"
         continue
     fi
 
-    # Check if file is text-based (to avoid binary images/icons)
+    # Only include text files
     if file "$file" | grep -qE 'text|JSON|XML'; then
         echo "📄 Adding: $file"
         {
@@ -48,14 +79,12 @@ while read -r file; do
     fi
 done < <(git ls-files)
 
-# Add a footer summary
+# Footer
 {
     echo "==============================================================================="
-    echo "EXPORT COMPLETED"
-    echo "Total Files Exported: $COUNTER"
-    echo "Output File: $OUTPUT_FILE"
+    echo "EXPORT COMPLETE — $COUNTER files"
     echo "==============================================================================="
 } >> "$OUTPUT_FILE"
 
 echo ""
-echo "✅ Export complete! $COUNTER files written to $OUTPUT_FILE"
+echo "✅ Done! $COUNTER files → $OUTPUT_FILE"

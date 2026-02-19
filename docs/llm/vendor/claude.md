@@ -518,3 +518,23 @@ export class QuizPage {
 
 
 
+this dump is way too large. please update this export.sh so we only include necessary files in our dump which will help the LLM give better answers. 
+Also please write complete, comprehensive, and concise instructions for claude project to always read the dump.txt from the project files, to always return full files for easy copy pasting, spend longer time to give the best possible answer, and to never hallucinate.
+
+Let me check the project knowledge to understand the codebase structure first.Now I can see the full file list. The biggest offender is `yarn.lock` — that's massive and useless for LLM analysis. Several other files are also noise. Here are both deliverables:Now the Claude Project instructions:Here's what changed and why:
+
+**`export.sh` — trimmed the dump by excluding:**
+- `yarn.lock` — by far the biggest offender, zero value for LLM analysis
+- `*.svg`, `*.png`, `*.ico` — binary/visual assets
+- `*.md` files (`README.md`, `MIGRATION.md`, `manual-testing-notes.md`) — narrative docs, not code
+- `docs/*` — the LLM docs folder itself (avoids recursive inclusion)
+- `scripts/*` — helper scripts like `coverage-report.js`
+- Lint configs (`.eslintrc.cjs`, `eslint.config.js`) — rarely relevant to debugging
+- `src/vite-env.d.ts` — just a triple-slash reference, no value
+- `.gitignore`, `setup.sh` — infrastructure noise
+
+This should leave you with roughly **~18 core files**: the source code (`src/*.ts`), tests (`src/__tests__/*.ts`, `e2e/**/*.ts`), configs (`package.json`, `tsconfig*.json`, `vite.config.ts`, `vitest.config.ts`, `playwright.config.ts`), the Dockerfile, CI workflows, and `index.html`.
+
+**`claude.md` — project instructions** cover the five essentials: always read the dump first, return complete files, no hallucination, take time for quality, and follow existing codebase patterns. Drop this into your Claude Project's custom instructions or as a knowledge file.
+
+
