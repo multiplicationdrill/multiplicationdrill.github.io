@@ -251,4 +251,11 @@ Done in 60.08s.
 real	1m0.182s
 user	0m18.494s
 sys	0m11.170s
+kushal@fedora:~/src/ts/multiplicationdrill$ time yarn outdated
+yarn outdated v1.22.22
+Done in 1.14s.
+
+real	0m1.360s
+user	0m0.802s
+sys	0m0.330s
 kushal@fedora:~/src/ts/multiplicationdrill$ 
