@@ -1,13 +1,12 @@
-kushal@fedora:~/src/ts/multiplicationdrill$ cd ~/src/ts/multiplicationdrill/; time yarn lint; time bash export.sh; time yarn build; time yarn test:all;
+kushal@fedora:~/src/dotnet/MyAdventure$ cd ~/src/ts/multiplicationdrill/; time yarn lint; time bash export.sh; time yarn; time yarn build; time yarn test:all;
 yarn run v1.22.22
-$ eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0
-Done in 1.02s.
+$ eslint src --max-warnings 0
+Done in 1.40s.
 
-real	0m1.138s
-user	0m1.857s
-sys	0m0.280s
+real	0m1.601s
+user	0m2.105s
+sys	0m0.374s
 🚀 Starting export...
-⏩ Skipping: .eslintrc.cjs
 📄 Adding: .github/workflows/ci-cd.yml
 📄 Adding: .github/workflows/coverage-comment.yml
 ⏩ Skipping: .gitignore
@@ -53,136 +52,30 @@ sys	0m0.280s
 
 ✅ Done! 23 files → docs/llm/dump.txt
 
-real	0m0.096s
-user	0m0.050s
-sys	0m0.061s
-yarn run v1.22.22
-$ tsc && vite build
-vite v7.3.1 building client environment for production...
-✓ 8 modules transformed.
-dist/index.html                3.58 kB │ gzip: 0.96 kB
-dist/assets/main-_mIVCfJ7.css  5.57 kB │ gzip: 1.66 kB
-dist/assets/main-DldRkQj5.js   8.36 kB │ gzip: 2.70 kB │ map: 28.06 kB
-✓ built in 81ms
-Done in 0.79s.
-
-real	0m0.889s
-user	0m1.255s
-sys	0m0.218s
-yarn run v1.22.22
-$ yarn lint && yarn type-check && yarn test:run && yarn e2e:container:build && yarn e2e:containernoci
-$ eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0
-$ tsc --noEmit
-$ vitest run
-
- RUN  v4.0.18 /home/kushal/src/ts/multiplicationdrill
-
- ✓ src/__tests__/state.test.ts (9 tests) 3ms
- ✓ src/__tests__/signals.test.ts (9 tests) 3ms
- ✓ src/__tests__/utils.test.ts (14 tests) 10ms
-
- Test Files  3 passed (3)
-      Tests  32 passed (32)
-   Start at  22:06:49
-   Duration  444ms (transform 86ms, setup 0ms, import 128ms, tests 16ms, environment 918ms)
-
-$ podman build -f Dockerfile.e2e -t multiplicationdrill-e2e .
-STEP 1/6: FROM mcr.microsoft.com/playwright:v1.58.2-noble
-STEP 2/6: WORKDIR /app
---> Using cache 6473021782e45f3c37e342debbd116ee25001b81c592f9b3d307d10cf6d7537e
---> 6473021782e4
-STEP 3/6: COPY package.json yarn.lock ./
---> Using cache 9a82108b7f533a1da3cc33327b450e176fce5ad1986939877504df311fb66058
---> 9a82108b7f53
-STEP 4/6: RUN yarn install --frozen-lockfile
---> Using cache e3fa4ba62019c59bc783492372ee44d6d3ba83bf419d9ec876d6645f1338da3a
---> e3fa4ba62019
-STEP 5/6: COPY . .
---> 22359b89ef03
-STEP 6/6: RUN yarn build
-yarn run v1.22.22
-$ tsc && vite build
-vite v7.3.1 building client environment for production...
-transforming...
-✓ 8 modules transformed.
-rendering chunks...
-computing gzip size...
-dist/index.html                3.58 kB │ gzip: 0.96 kB
-dist/assets/main-_mIVCfJ7.css  5.57 kB │ gzip: 1.66 kB
-dist/assets/main-DldRkQj5.js   8.36 kB │ gzip: 2.70 kB │ map: 28.06 kB
-✓ built in 95ms
-Done in 0.85s.
-COMMIT multiplicationdrill-e2e
---> 0fdfb8ce7640
-Successfully tagged localhost/multiplicationdrill-e2e:latest
-0fdfb8ce7640bab1f31f0ad096c48598cbc7fee8eff8f3e5e77560cf29ab7551
-$ podman run --rm -it --cpus=8 --memory=8g -v $(pwd)/playwright-report:/app/playwright-report:Z -v $(pwd)/test-results:/app/test-results:Z multiplicationdrill-e2e yarn test:e2e
-yarn run v1.22.22
-$ playwright test
-
-Running 60 tests using 8 workers
-  60 passed (39.6s)
-
-To open last HTML report run:
-
-  yarn playwright show-report
-
-Done in 45.88s.
-Done in 53.16s.
-
-real	0m53.265s
-user	0m9.563s
-sys	0m4.153s
-kushal@fedora:~/src/ts/multiplicationdrill$ time yarn outdated
-yarn outdated v1.22.22
-info Color legend : 
- "<red>"    : Major Update backward-incompatible updates 
- "<yellow>" : Minor Update backward-compatible features 
- "<green>"  : Patch Update backward-compatible bug fixes
-Package Current Wanted Latest Package Type    URL                                  
-eslint  9.39.2  9.39.2 10.0.0 devDependencies https://eslint.org                   
-jsdom   27.4.0  27.4.0 28.1.0 devDependencies https://github.com/jsdom/jsdom#readme
-Done in 1.05s.
-
-real	0m1.185s
-user	0m0.935s
-sys	0m0.294s
-kushal@fedora:~/src/ts/multiplicationdrill$ cat .eslintrc.cjs
-module.exports = {
-  root: true,
-  env: { browser: true, es2020: true },
-  extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
-  ],
-  ignorePatterns: ['dist', '.eslintrc.cjs'],
-  parser: '@typescript-eslint/parser',
-  rules: {
-    '@typescript-eslint/no-explicit-any': 'warn',
-    '@typescript-eslint/no-non-null-assertion': 'off',
-  },
-};kushal@fedora:~/src/ts/multiplicationdrill$ rm .eslintrc.cjs
-kushal@fedora:~/src/ts/multiplicationdrill$ time yarn install
+real	0m0.111s
+user	0m0.046s
+sys	0m0.074s
 yarn install v1.22.22
 [1/4] Resolving packages...
-[2/4] Fetching packages...
-[3/4] Linking dependencies...
-[4/4] Building fresh packages...
-success Saved lockfile.
-Done in 1.88s.
+success Already up-to-date.
+Done in 0.12s.
 
-real	0m2.006s
-user	0m1.368s
-sys	0m0.730s
-kushal@fedora:~/src/ts/multiplicationdrill$ time yarn lint
+real	0m0.405s
+user	0m0.211s
+sys	0m0.058s
 yarn run v1.22.22
-$ eslint src --max-warnings 0
-Done in 1.09s.
+$ tsc && vite build
+vite v7.3.1 building client environment for production...
+✓ 8 modules transformed.
+dist/index.html                3.58 kB │ gzip: 0.96 kB
+dist/assets/main-_mIVCfJ7.css  5.57 kB │ gzip: 1.66 kB
+dist/assets/main-DldRkQj5.js   8.36 kB │ gzip: 2.70 kB │ map: 28.06 kB
+✓ built in 90ms
+Done in 0.92s.
 
-real	0m1.196s
-user	0m1.854s
-sys	0m0.308s
-kushal@fedora:~/src/ts/multiplicationdrill$ time yarn test:all
+real	0m1.018s
+user	0m1.358s
+sys	0m0.233s
 yarn run v1.22.22
 $ yarn lint && yarn type-check && yarn test:run && yarn e2e:container:build && yarn e2e:containernoci
 $ eslint src --max-warnings 0
@@ -192,13 +85,13 @@ $ vitest run
  RUN  v4.0.18 /home/kushal/src/ts/multiplicationdrill
 
  ✓ src/__tests__/state.test.ts (9 tests) 3ms
- ✓ src/__tests__/signals.test.ts (9 tests) 3ms
- ✓ src/__tests__/utils.test.ts (14 tests) 9ms
+ ✓ src/__tests__/signals.test.ts (9 tests) 4ms
+ ✓ src/__tests__/utils.test.ts (14 tests) 13ms
 
  Test Files  3 passed (3)
       Tests  32 passed (32)
-   Start at  04:32:43
-   Duration  542ms (transform 188ms, setup 0ms, import 231ms, tests 15ms, environment 1.13s)
+   Start at  10:05:48
+   Duration  555ms (transform 108ms, setup 0ms, import 145ms, tests 21ms, environment 1.22s)
 
 $ podman build -f Dockerfile.e2e -t multiplicationdrill-e2e .
 STEP 1/6: FROM mcr.microsoft.com/playwright:v1.58.2-noble
@@ -206,17 +99,13 @@ STEP 2/6: WORKDIR /app
 --> Using cache 6473021782e45f3c37e342debbd116ee25001b81c592f9b3d307d10cf6d7537e
 --> 6473021782e4
 STEP 3/6: COPY package.json yarn.lock ./
+--> Using cache c67f3f64e82177ae6e9f356c581ee9ac6e760d57696baab195845d12cedb1047
 --> c67f3f64e821
 STEP 4/6: RUN yarn install --frozen-lockfile
-yarn install v1.22.22
-[1/4] Resolving packages...
-[2/4] Fetching packages...
-[3/4] Linking dependencies...
-[4/4] Building fresh packages...
-Done in 6.00s.
+--> Using cache 7776d44d911171c7a71ee956e456b2dbb7cbd33f5a2884990d389a4034b07bdf
 --> 7776d44d9111
 STEP 5/6: COPY . .
---> 6f85d78f00f0
+--> e9f07071d231
 STEP 6/6: RUN yarn build
 yarn run v1.22.22
 $ tsc && vite build
@@ -228,34 +117,27 @@ computing gzip size...
 dist/index.html                3.58 kB │ gzip: 0.96 kB
 dist/assets/main-_mIVCfJ7.css  5.57 kB │ gzip: 1.66 kB
 dist/assets/main-DldRkQj5.js   8.36 kB │ gzip: 2.70 kB │ map: 28.06 kB
-✓ built in 83ms
+✓ built in 84ms
 Done in 0.92s.
 COMMIT multiplicationdrill-e2e
---> 77a2b82bd350
+--> 6413c33205ee
 Successfully tagged localhost/multiplicationdrill-e2e:latest
-77a2b82bd35098168a7220eaa274ebe76545c62b07925c5d514f3385a7b6f4c4
+6413c33205ee7775b1a9e301b23b42918363232305a878ed1946f60a6e0b3ea9
 $ podman run --rm -it --cpus=8 --memory=8g -v $(pwd)/playwright-report:/app/playwright-report:Z -v $(pwd)/test-results:/app/test-results:Z multiplicationdrill-e2e yarn test:e2e
 yarn run v1.22.22
 $ playwright test
 
 Running 60 tests using 8 workers
-  60 passed (34.2s)
+  60 passed (33.8s)
 
 To open last HTML report run:
 
   yarn playwright show-report
 
-Done in 40.50s.
-Done in 60.08s.
+Done in 40.08s.
+Done in 47.71s.
 
-real	1m0.182s
-user	0m18.494s
-sys	0m11.170s
-kushal@fedora:~/src/ts/multiplicationdrill$ time yarn outdated
-yarn outdated v1.22.22
-Done in 1.14s.
-
-real	0m1.360s
-user	0m0.802s
-sys	0m0.330s
-kushal@fedora:~/src/ts/multiplicationdrill$ 
+real	0m47.810s
+user	0m9.685s
+sys	0m4.388s
+kushal@fedora:~/src/ts/multiplicationdrill$ cd ~/src/ts/multiplicationdrill/; time yarn lint; time bash export.sh; time yarn; time yarn build; time yarn test:all; time git add .; time git commit --message "add all files"; time git remote show origin; time git push origin --all;
