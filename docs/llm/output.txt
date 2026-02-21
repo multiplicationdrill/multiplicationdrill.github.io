@@ -141,3 +141,186 @@ real	0m47.810s
 user	0m9.685s
 sys	0m4.388s
 kushal@fedora:~/src/ts/multiplicationdrill$ cd ~/src/ts/multiplicationdrill/; time yarn lint; time bash export.sh; time yarn; time yarn build; time yarn test:all; time git add .; time git commit --message "add all files"; time git remote show origin; time git push origin --all;
+yarn run v1.22.22
+$ eslint src --max-warnings 0
+Done in 1.10s.
+
+real	0m1.218s
+user	0m2.014s
+sys	0m0.305s
+🚀 Starting export...
+📄 Adding: .github/workflows/ci-cd.yml
+📄 Adding: .github/workflows/coverage-comment.yml
+⏩ Skipping: .gitignore
+📄 Adding: Dockerfile.e2e
+⏩ Skipping: MIGRATION.md
+⏩ Skipping: README.md
+⏩ Skipping: docs/llm/dump.txt
+⏩ Skipping: docs/llm/output.txt
+⏩ Skipping: docs/llm/vendor/claude.md
+⏩ Skipping: docs/llm/vendor/commands.txt
+⏩ Skipping: docs/llm/vendor/instructions.md
+⏩ Skipping: docs/llm/vendor/memory.md
+⏩ Skipping: docs/llm/vendor/scratch
+📄 Adding: e2e/pages/index.ts
+📄 Adding: e2e/pages/quiz-page.ts
+📄 Adding: e2e/quiz.spec.ts
+⏩ Skipping: eslint.config.js
+⏩ Skipping: export.sh
+📄 Adding: index.html
+⏩ Skipping: manual-testing-notes.md
+📄 Adding: package.json
+📄 Adding: playwright.config.ts
+⏩ Skipping: public/vite.svg
+⏩ Skipping: scripts/coverage-report.js
+⏩ Skipping: setup.sh
+📄 Adding: src/__tests__/signals.test.ts
+📄 Adding: src/__tests__/state.test.ts
+📄 Adding: src/__tests__/utils.test.ts
+📄 Adding: src/app.ts
+📄 Adding: src/main.ts
+📄 Adding: src/signals.ts
+📄 Adding: src/state.ts
+📄 Adding: src/style.css
+📄 Adding: src/types.ts
+⏩ Skipping: src/typescript.svg
+📄 Adding: src/utils.ts
+⏩ Skipping: src/vite-env.d.ts
+📄 Adding: tsconfig.e2e.json
+📄 Adding: tsconfig.json
+📄 Adding: vite.config.ts
+📄 Adding: vitest.config.ts
+⏩ Skipping: yarn.lock
+
+✅ Done! 23 files → docs/llm/dump.txt
+
+real	0m0.088s
+user	0m0.040s
+sys	0m0.074s
+yarn install v1.22.22
+[1/4] Resolving packages...
+success Already up-to-date.
+Done in 0.09s.
+
+real	0m0.192s
+user	0m0.180s
+sys	0m0.052s
+yarn run v1.22.22
+$ tsc && vite build
+vite v7.3.1 building client environment for production...
+✓ 8 modules transformed.
+dist/index.html                3.58 kB │ gzip: 0.96 kB
+dist/assets/main-_mIVCfJ7.css  5.57 kB │ gzip: 1.66 kB
+dist/assets/main-DldRkQj5.js   8.36 kB │ gzip: 2.70 kB │ map: 28.06 kB
+✓ built in 94ms
+Done in 0.79s.
+
+real	0m0.899s
+user	0m1.313s
+sys	0m0.214s
+yarn run v1.22.22
+$ yarn lint && yarn type-check && yarn test:run && yarn e2e:container:build && yarn e2e:containernoci
+$ eslint src --max-warnings 0
+$ tsc --noEmit
+$ vitest run
+
+ RUN  v4.0.18 /home/kushal/src/ts/multiplicationdrill
+
+ ✓ src/__tests__/signals.test.ts (9 tests) 4ms
+ ✓ src/__tests__/state.test.ts (9 tests) 4ms
+ ✓ src/__tests__/utils.test.ts (14 tests) 12ms
+
+ Test Files  3 passed (3)
+      Tests  32 passed (32)
+   Start at  10:09:55
+   Duration  463ms (transform 93ms, setup 0ms, import 132ms, tests 19ms, environment 972ms)
+
+$ podman build -f Dockerfile.e2e -t multiplicationdrill-e2e .
+STEP 1/6: FROM mcr.microsoft.com/playwright:v1.58.2-noble
+STEP 2/6: WORKDIR /app
+--> Using cache 6473021782e45f3c37e342debbd116ee25001b81c592f9b3d307d10cf6d7537e
+--> 6473021782e4
+STEP 3/6: COPY package.json yarn.lock ./
+--> Using cache c67f3f64e82177ae6e9f356c581ee9ac6e760d57696baab195845d12cedb1047
+--> c67f3f64e821
+STEP 4/6: RUN yarn install --frozen-lockfile
+--> Using cache 7776d44d911171c7a71ee956e456b2dbb7cbd33f5a2884990d389a4034b07bdf
+--> 7776d44d9111
+STEP 5/6: COPY . .
+--> cab56f30883e
+STEP 6/6: RUN yarn build
+yarn run v1.22.22
+$ tsc && vite build
+vite v7.3.1 building client environment for production...
+transforming...
+✓ 8 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                3.58 kB │ gzip: 0.96 kB
+dist/assets/main-_mIVCfJ7.css  5.57 kB │ gzip: 1.66 kB
+dist/assets/main-DldRkQj5.js   8.36 kB │ gzip: 2.70 kB │ map: 28.06 kB
+✓ built in 91ms
+Done in 0.89s.
+COMMIT multiplicationdrill-e2e
+--> 911c8c3acf05
+Successfully tagged localhost/multiplicationdrill-e2e:latest
+911c8c3acf0523d044cd22964974cf01cd3fa77045918c35200e8ad1ec6d9571
+$ podman run --rm -it --cpus=8 --memory=8g -v $(pwd)/playwright-report:/app/playwright-report:Z -v $(pwd)/test-results:/app/test-results:Z multiplicationdrill-e2e yarn test:e2e
+yarn run v1.22.22
+$ playwright test
+
+Running 60 tests using 8 workers
+  60 passed (33.8s)
+
+To open last HTML report run:
+
+  yarn playwright show-report
+
+Done in 40.10s.
+Done in 47.20s.
+
+real	0m47.301s
+user	0m9.472s
+sys	0m4.144s
+
+real	0m0.004s
+user	0m0.002s
+sys	0m0.002s
+[master 41babbd] add all files
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+
+real	0m0.006s
+user	0m0.000s
+sys	0m0.006s
+* remote origin
+  Fetch URL: git@github.com:multiplicationdrill/multiplicationdrill.github.io.git
+  Push  URL: git@github.com:multiplicationdrill/multiplicationdrill.github.io.git
+  HEAD branch: master
+  Remote branch:
+    master tracked
+  Local branch configured for 'git pull':
+    master merges with remote master
+  Local ref configured for 'git push':
+    master pushes to master (fast-forwardable)
+
+real	0m0.544s
+user	0m0.010s
+sys	0m0.006s
+Enumerating objects: 20, done.
+Counting objects: 100% (20/20), done.
+Delta compression using up to 16 threads
+Compressing objects: 100% (11/11), done.
+Writing objects: 100% (13/13), 1.67 KiB | 853.00 KiB/s, done.
+Total 13 (delta 7), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (7/7), completed with 4 local objects.
+remote: 
+remote: GitHub found 7 vulnerabilities on multiplicationdrill/multiplicationdrill.github.io's default branch (3 moderate, 4 low). To find out more, visit:
+remote:      https://github.com/multiplicationdrill/multiplicationdrill.github.io/security/dependabot
+remote: 
+To github.com:multiplicationdrill/multiplicationdrill.github.io.git
+   ff19c57..41babbd  master -> master
+
+real	0m0.803s
+user	0m0.012s
+sys	0m0.012s
+kushal@fedora:~/src/ts/multiplicationdrill$ 
