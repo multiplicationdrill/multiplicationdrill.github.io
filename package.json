@@ -23,7 +23,7 @@
     "@types/node": "^25.3.0",
     "@vitest/coverage-v8": "^4.0.18",
     "@vitest/ui": "^4.0.18",
-    "eslint": "^10.0.0",
+    "eslint": "10.0.1",
     "globals": "^17.0.0",
     "jsdom": "^28.1.0",
     "typescript": "^5.9.3",
