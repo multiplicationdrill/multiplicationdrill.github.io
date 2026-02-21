@@ -1,2 +1,2 @@
 cd ~/src/ts/multiplicationdrill/; time yarn lint; time bash export.sh; time yarn build; time yarn test:all;
-cd ~/src/ts/multiplicationdrill/; time yarn lint; time bash export.sh; time yarn; time yarn build; time yarn test:all; time git add .; time git commit --message "add all files"; time git remote show origin; time git push origin --all;
+cd ~/src/ts/multiplicationdrill/; time yarn outdated; time yarn lint; time bash export.sh; time yarn; time yarn build; time yarn test:all; time git add .; time git commit --message "add all files"; time git remote show origin; time git push origin --all;
