@@ -323,4 +323,4 @@ To github.com:multiplicationdrill/multiplicationdrill.github.io.git
 real	0m0.803s
 user	0m0.012s
 sys	0m0.012s
-kushal@fedora:~/src/ts/multiplicationdrill$ 
+kushal@fedora:~/src/ts/multiplicationdrill$ cd ~/src/ts/multiplicationdrill/; time yarn outdated; time yarn lint; time bash export.sh; time yarn; time yarn build; time yarn test:all; time git add .; time git commit --message "add all files"; time git remote show origin; time git push origin --all;
