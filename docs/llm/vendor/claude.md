@@ -748,3 +748,225 @@ export default tseslint.config(
 }
 ```
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Please give me the new package json with all packages updated to latest 
+current: 
+```json
+{
+  "name": "multiplicationdrill",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "lint": "eslint src --max-warnings 0",
+    "type-check": "tsc --noEmit",
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:e2e": "playwright test",
+    "test:coverage:ci": "vitest run --coverage",
+    "e2e:container:build": "podman build -f Dockerfile.e2e -t multiplicationdrill-e2e .",
+    "e2e:container": "podman run --rm -e CI=true -v $(pwd)/playwright-report:/app/playwright-report:Z -v $(pwd)/test-results:/app/test-results:Z multiplicationdrill-e2e yarn test:e2e",
+    "e2e:containernoci": "podman run --rm -it --cpus=8 --memory=8g -v $(pwd)/playwright-report:/app/playwright-report:Z -v $(pwd)/test-results:/app/test-results:Z multiplicationdrill-e2e yarn test:e2e",
+    "test:all": "yarn lint && yarn type-check && yarn test:run && yarn e2e:container:build && yarn e2e:containernoci"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.0",
+    "@playwright/test": "^1.58.2",
+    "@types/node": "^25.3.0",
+    "@vitest/coverage-v8": "^4.0.18",
+    "@vitest/ui": "^4.0.18",
+    "eslint": "10.0.1",
+    "globals": "^17.0.0",
+    "jsdom": "^28.1.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.56.0",
+    "vite": "^7.3.1",
+    "vitest": "^4.0.18"
+  }
+}
+```
+context 
+kushal@fedora:~/src/dotnet/MyImapDownloader$ cd ~/src/ts/multiplicationdrill/; time yarn outdated; time yarn lint; time bash export.sh; time yarn; time yarn build; time yarn test:all; time git add .; time git commit --message "add all files"; time git remote show origin; time git push origin --all;
+yarn outdated v1.22.22
+info Color legend : 
+ "<red>"    : Major Update backward-incompatible updates 
+ "<yellow>" : Minor Update backward-compatible features 
+ "<green>"  : Patch Update backward-compatible bug fixes
+Package             Current Wanted Latest Package Type    URL                                                                      
+@types/node         25.3.0  25.5.0 25.5.0 devDependencies https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/node
+@vitest/coverage-v8 4.0.18  4.1.0  4.1.0  devDependencies https://vitest.dev/guide/coverage                                        
+@vitest/ui          4.0.18  4.1.0  4.1.0  devDependencies https://vitest.dev/guide/ui                                              
+eslint              10.0.1  10.0.1 10.0.3 devDependencies https://eslint.org                                                       
+globals             17.3.0  17.4.0 17.4.0 devDependencies https://github.com/sindresorhus/globals#readme                           
+typescript-eslint   8.56.0  8.57.0 8.57.0 devDependencies https://typescript-eslint.io/packages/typescript-eslint                  
+vite                7.3.1   7.3.1  8.0.0  devDependencies https://vite.dev                                                         
+vitest              4.0.18  4.1.0  4.1.0  devDependencies https://vitest.dev                                                       
+Done in 1.28s.
+
+real	0m1.545s
+user	0m0.817s
+sys	0m0.306s
+yarn run v1.22.22
+$ eslint src --max-warnings 0
+Done in 1.31s.
+
+00
+73
+
+Let me check the latest versions from your `yarn outdated` output. Here's the updated package.json:Vite 8.0 just went stable yesterday (March 12, 2026) — it's the Rolldown-powered release. It replaces esbuild + Rollup with a single Rust-based bundler, delivering 10-30x faster production builds. For most projects, migration works without configuration changes thanks to auto-conversion.
+
+That said, since it literally just shipped, I'd recommend a cautious approach. Your project is simple (no custom Rollup plugins, no manualChunks, no CJS imports), so it should be safe. But if you want to be conservative, you can stay on `^7.3.1` and bump later.
+
+Let me also check if vitest 4.1 works with vite 8:Interesting — Vitest 4.1 adds support for Vite 8, but looking at npm, the latest published version of vitest is still 4.0.18. So vitest 4.1.0 may not be on npm yet despite the blog post. Your `yarn outdated` shows 4.1.0 as "Wanted" and "Latest" though, so it seems it has landed by now.
+
+Let me check the actual npm status more precisely:Good — vitest 4.1.0 was published just 5 hours ago, and it adds support for the new Vite 8 version. So the full ecosystem is aligned now.
+
+Here's my recommendation: Vite 8.0 literally dropped yesterday. Your project is simple enough that it should work, but I'd suggest bumping to Vite 8 as a separate step so you can isolate any issues. For now, let me give you two options.
+
+**Option A — Conservative (bump everything except Vite major):****Option B — Aggressive (bump Vite to 8.0 too):**Here's what changed across both options:
+
+- `@types/node`: 25.3.0 → 25.5.0
+- `@vitest/coverage-v8`: 4.0.18 → 4.1.0
+- `@vitest/ui`: 4.0.18 → 4.1.0
+- `eslint`: 10.0.1 → 10.0.3
+- `globals`: 17.0.0 → 17.4.0
+- `typescript-eslint`: 8.56.0 → 8.57.0
+- `vitest`: 4.0.18 → 4.1.0
+
+Option B additionally bumps `vite` from 7.3.1 → 8.0.0. Your project has no custom Rollup plugins, no `manualChunks`, and no CJS imports, so the Vite 8 migration should be smooth. The `build.rollupOptions` in your `vite.config.ts` would technically be deprecated (renamed to `build.rolldownOptions`), but the compatibility layer auto-converts it.
+
+If you go with Option B and want to be clean about it, you could also rename `rollupOptions` to `rolldownOptions` in `vite.config.ts` — but it's not required since the compat layer handles it.
+
+I'd lean toward Option B since this is a personal project and it's a great way to validate the Vite 8 migration. If anything breaks, you can always pin back to `^7.3.1`.
+
+A 
+
+```json
+{
+  "name": "multiplicationdrill",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "lint": "eslint src --max-warnings 0",
+    "type-check": "tsc --noEmit",
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:e2e": "playwright test",
+    "test:coverage:ci": "vitest run --coverage",
+    "e2e:container:build": "podman build -f Dockerfile.e2e -t multiplicationdrill-e2e .",
+    "e2e:container": "podman run --rm -e CI=true -v $(pwd)/playwright-report:/app/playwright-report:Z -v $(pwd)/test-results:/app/test-results:Z multiplicationdrill-e2e yarn test:e2e",
+    "e2e:containernoci": "podman run --rm -it --cpus=8 --memory=8g -v $(pwd)/playwright-report:/app/playwright-report:Z -v $(pwd)/test-results:/app/test-results:Z multiplicationdrill-e2e yarn test:e2e",
+    "test:all": "yarn lint && yarn type-check && yarn test:run && yarn e2e:container:build && yarn e2e:containernoci"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.0",
+    "@playwright/test": "^1.58.2",
+    "@types/node": "^25.5.0",
+    "@vitest/coverage-v8": "^4.1.0",
+    "@vitest/ui": "^4.1.0",
+    "eslint": "^10.0.3",
+    "globals": "^17.4.0",
+    "jsdom": "^28.1.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.57.0",
+    "vite": "^7.3.1",
+    "vitest": "^4.1.0"
+  }
+}
+```
+
+B
+
+```json
+{
+  "name": "multiplicationdrill",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "lint": "eslint src --max-warnings 0",
+    "type-check": "tsc --noEmit",
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:e2e": "playwright test",
+    "test:coverage:ci": "vitest run --coverage",
+    "e2e:container:build": "podman build -f Dockerfile.e2e -t multiplicationdrill-e2e .",
+    "e2e:container": "podman run --rm -e CI=true -v $(pwd)/playwright-report:/app/playwright-report:Z -v $(pwd)/test-results:/app/test-results:Z multiplicationdrill-e2e yarn test:e2e",
+    "e2e:containernoci": "podman run --rm -it --cpus=8 --memory=8g -v $(pwd)/playwright-report:/app/playwright-report:Z -v $(pwd)/test-results:/app/test-results:Z multiplicationdrill-e2e yarn test:e2e",
+    "test:all": "yarn lint && yarn type-check && yarn test:run && yarn e2e:container:build && yarn e2e:containernoci"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.0",
+    "@playwright/test": "^1.58.2",
+    "@types/node": "^25.5.0",
+    "@vitest/coverage-v8": "^4.1.0",
+    "@vitest/ui": "^4.1.0",
+    "eslint": "^10.0.3",
+    "globals": "^17.4.0",
+    "jsdom": "^28.1.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.57.0",
+    "vite": "^8.0.0",
+    "vitest": "^4.1.0"
+  }
+}
+```
+
+07
+74
