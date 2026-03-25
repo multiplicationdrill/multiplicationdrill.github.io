@@ -1,6 +1,6 @@
 ===============================================================================
 PROJECT: multiplicationdrill
-DATE: Wed Mar 25 05:48:15 AM EDT 2026
+DATE: Wed Mar 25 06:01:00 AM EDT 2026
 ===============================================================================
 
 -------------------------------------------------------------------------------
@@ -888,15 +888,15 @@ FILE: package.json
     "@eslint/js": "^10.0.0",
     "@playwright/test": "^1.58.2",
     "@types/node": "^25.5.0",
-    "@vitest/coverage-v8": "^4.1.0",
-    "@vitest/ui": "^4.1.0",
-    "eslint": "^10.0.3",
+    "@vitest/coverage-v8": "^4.1.1",
+    "@vitest/ui": "^4.1.1",
+    "eslint": "^10.1.0",
     "globals": "^17.4.0",
-    "jsdom": "^28.1.0",
-    "typescript": "^5.9.3",
-    "typescript-eslint": "^8.57.0",
-    "vite": "^8.0.0",
-    "vitest": "^4.1.0"
+    "jsdom": "^29.0.1",
+    "typescript": "^6.0.2",
+    "typescript-eslint": "^8.57.2",
+    "vite": "^8.0.2",
+    "vitest": "^4.1.1"
   }
 }
 
@@ -1457,33 +1457,33 @@ describe('State', () => {
 FILE: src/__tests__/utils.test.ts
 -------------------------------------------------------------------------------
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
-import { 
-  getDifficultyRange, 
-  getDifficultyName, 
-  randomInRange, 
+import {
+  getDifficultyRange,
+  getDifficultyName,
+  randomInRange,
   generateProblem,
   generateSeed,
   loadSettings,
   saveSettings,
   loadTheme,
   saveTheme,
-  debounce
+  debounce,
 } from '../utils';
 
 // Mock localStorage
 const localStorageMock = (() => {
   let store: Record<string, string> = {};
-  
+
   return {
     getItem: (key: string) => store[key] || null,
     setItem: (key: string, value: string) => { store[key] = value; },
     removeItem: (key: string) => { delete store[key]; },
-    clear: () => { store = {}; }
+    clear: () => { store = {}; },
   };
 })();
 
 Object.defineProperty(window, 'localStorage', {
-  value: localStorageMock
+  value: localStorageMock,
 });
 
 describe('getDifficultyRange', () => {
@@ -1569,7 +1569,7 @@ describe('Settings persistence', () => {
       questionTime: 10,
       answerTime: 5,
       difficulty: 2 as const,
-      autoUpdate: true
+      autoUpdate: true,
     };
 
     saveSettings(settings);
@@ -1584,10 +1584,10 @@ describe('Settings persistence', () => {
   it('should handle corrupted localStorage data', () => {
     localStorageMock.setItem('mathQuizSettings', 'invalid json');
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-    
+
     expect(loadSettings()).toBeNull();
     expect(consoleSpy).toHaveBeenCalled();
-    
+
     consoleSpy.mockRestore();
   });
 });
@@ -1600,7 +1600,7 @@ describe('Theme persistence', () => {
   it('should save and load theme', () => {
     saveTheme('light');
     expect(loadTheme()).toBe('light');
-    
+
     saveTheme('dark');
     expect(loadTheme()).toBe('dark');
   });
@@ -1656,16 +1656,17 @@ describe('debounce', () => {
     vi.advanceTimersByTime(50);
     debounced(); // This should cancel the first timeout
     vi.advanceTimersByTime(50);
-    
+
     // Function still shouldn't be called
     expect(fn).not.toHaveBeenCalled();
 
     vi.advanceTimersByTime(50);
-    
+
     // Now it should be called once
     expect(fn).toHaveBeenCalledTimes(1);
   });
 });
+
 
 -------------------------------------------------------------------------------
 FILE: src/app.ts
@@ -1673,35 +1674,35 @@ FILE: src/app.ts
 import { effect } from './signals';
 import { state, displayText, progressPercent, timerDisplayText } from './state';
 import { DifficultyLevel, Settings } from './types';
-import { 
-  generateProblem, 
-  getDifficultyName, 
-  loadSettings, 
+import {
+  generateProblem,
+  getDifficultyName,
+  loadSettings,
   saveSettings,
   loadTheme,
   saveTheme,
   generateSeed,
-  debounce
+  debounce,
 } from './utils';
 
 // DOM Elements
 interface DOMElements {
-  display: HTMLElement;
-  progressBar: HTMLElement;
-  timerDisplay: HTMLElement;
-  questionTimeValue: HTMLElement;
-  answerTimeValue: HTMLElement;
-  difficultyValue: HTMLElement;
-  quizButton: HTMLButtonElement;
-  modeStatus: HTMLElement;
-  quizStatus: HTMLElement;
-  updateTime: HTMLElement;
-  questionTimeSlider: HTMLInputElement;
-  answerTimeSlider: HTMLInputElement;
-  difficultySlider: HTMLInputElement;
-  incrementBtn: HTMLButtonElement;
-  resetBtn: HTMLButtonElement;
-  autoUpdateCheckbox: HTMLInputElement;
+  readonly display: HTMLElement;
+  readonly progressBar: HTMLElement;
+  readonly timerDisplay: HTMLElement;
+  readonly questionTimeValue: HTMLElement;
+  readonly answerTimeValue: HTMLElement;
+  readonly difficultyValue: HTMLElement;
+  readonly quizButton: HTMLButtonElement;
+  readonly modeStatus: HTMLElement;
+  readonly quizStatus: HTMLElement;
+  readonly updateTime: HTMLElement;
+  readonly questionTimeSlider: HTMLInputElement;
+  readonly answerTimeSlider: HTMLInputElement;
+  readonly difficultySlider: HTMLInputElement;
+  readonly incrementBtn: HTMLButtonElement;
+  readonly resetBtn: HTMLButtonElement;
+  readonly autoUpdateCheckbox: HTMLInputElement;
 }
 
 let elements: DOMElements;
@@ -1726,7 +1727,7 @@ function getElements(): DOMElements {
     difficultySlider: document.getElementById('difficulty')! as HTMLInputElement,
     incrementBtn: document.getElementById('incrementBtn')! as HTMLButtonElement,
     resetBtn: document.getElementById('resetBtn')! as HTMLButtonElement,
-    autoUpdateCheckbox: document.getElementById('autoUpdate')! as HTMLInputElement
+    autoUpdateCheckbox: document.getElementById('autoUpdate')! as HTMLInputElement,
   };
 }
 
@@ -1835,14 +1836,14 @@ function initializeSettings(): void {
     const answerTime = saved.answerTime ?? 3;
     const difficulty = saved.difficulty ?? 3;
     const autoUpdate = saved.autoUpdate ?? false;
-    
+
     state.questionTime.set(questionTime);
     state.answerTime.set(answerTime);
     state.difficulty.set(difficulty);
     state.autoUpdateEnabled.set(autoUpdate);
     // Set seed based on loaded difficulty
     state.seed.set(generateSeed(difficulty));
-    
+
     // Sync the DOM elements with loaded values
     elements.questionTimeSlider.value = questionTime.toString();
     elements.answerTimeSlider.value = answerTime.toString();
@@ -1855,7 +1856,7 @@ function initializeSettings(): void {
     elements.difficultySlider.value = state.difficulty.get().toString();
     elements.autoUpdateCheckbox.checked = state.autoUpdateEnabled.get();
   }
-  
+
   // Load theme preference
   if (loadTheme() === 'light') {
     document.body.classList.add('light-mode');
@@ -1866,13 +1867,13 @@ function setupEffects(): void {
   // DOM updates
   effect(() => { elements.display.textContent = displayText.get(); });
   effect(() => { elements.timerDisplay.textContent = timerDisplayText.get(); });
-  
+
   effect(() => {
     const percent = progressPercent.get();
     elements.progressBar.style.width = `${percent}%`;
-    
+
     const phase = state.currentPhase.get();
-    const color = phase === 'question' 
+    const color = phase === 'question'
       ? 'linear-gradient(90deg, var(--success), #34d399)'
       : 'linear-gradient(90deg, var(--warning), #fbbf24)';
     elements.progressBar.style.background = color;
@@ -1883,7 +1884,7 @@ function setupEffects(): void {
     elements.quizButton.textContent = isActive ? 'Stop Quiz' : 'Start Quiz';
     elements.modeStatus.textContent = isActive ? 'Quiz' : 'Manual';
     elements.quizStatus.textContent = isActive ? 'Running' : 'Stopped';
-    
+
     const disabled = isActive;
     elements.questionTimeSlider.disabled = disabled;
     elements.answerTimeSlider.disabled = disabled;
@@ -1896,7 +1897,7 @@ function setupEffects(): void {
   effect(() => {
     const autoUpdate = state.autoUpdateEnabled.get();
     const quizActive = state.isQuizActive.get();
-    
+
     if (autoUpdate && !quizActive) {
       startAutoUpdate();
     } else {
@@ -1908,23 +1909,23 @@ function setupEffects(): void {
   const debouncedSave = debounce(saveSettingsToStorage, 300);
 
   // Settings persistence with debounce
-  effect(() => { 
+  effect(() => {
     const time = state.questionTime.get();
     elements.questionTimeValue.textContent = `${time}s`;
     elements.questionTimeSlider.setAttribute('aria-valuenow', time.toString());
     elements.questionTimeSlider.setAttribute('aria-valuetext', `${time} seconds`);
     debouncedSave();
   });
-  
-  effect(() => { 
+
+  effect(() => {
     const time = state.answerTime.get();
     elements.answerTimeValue.textContent = `${time}s`;
     elements.answerTimeSlider.setAttribute('aria-valuenow', time.toString());
     elements.answerTimeSlider.setAttribute('aria-valuetext', `${time} seconds`);
     debouncedSave();
   });
-  
-  effect(() => { 
+
+  effect(() => {
     const difficulty = state.difficulty.get();
     const name = getDifficultyName(difficulty);
     elements.difficultyValue.textContent = name;
@@ -1936,19 +1937,19 @@ function setupEffects(): void {
     }
     debouncedSave();
   });
-  
-  effect(() => { 
+
+  effect(() => {
     debouncedSave(); // For autoUpdate changes
   });
 }
 
 function saveSettingsToStorage(): void {
-  const settings: Settings = {
+  const settings = {
     questionTime: state.questionTime.get(),
     answerTime: state.answerTime.get(),
     difficulty: state.difficulty.get(),
-    autoUpdate: state.autoUpdateEnabled.get()
-  };
+    autoUpdate: state.autoUpdateEnabled.get(),
+  } satisfies Settings;
   saveSettings(settings);
 }
 
@@ -1957,17 +1958,17 @@ function setupEventListeners(): void {
     const value = parseInt((e.target as HTMLInputElement).value);
     state.questionTime.set(Math.max(1, value));
   });
-  
+
   elements.answerTimeSlider.addEventListener('input', (e) => {
     const value = parseInt((e.target as HTMLInputElement).value);
     state.answerTime.set(Math.max(1, value));
   });
-  
+
   elements.difficultySlider.addEventListener('input', (e) => {
     const value = parseInt((e.target as HTMLInputElement).value) as DifficultyLevel;
     state.difficulty.set(value);
   });
-  
+
   // Handle visibility change for auto-update
   document.addEventListener('visibilitychange', () => {
     if (!state.isQuizActive.get() && state.autoUpdateEnabled.get()) {
@@ -1990,6 +1991,7 @@ export function initialize(): void {
 
 // Export for testing
 export { state, elements };
+
 
 -------------------------------------------------------------------------------
 FILE: src/main.ts
@@ -2027,7 +2029,7 @@ let currentEffect: EffectFn | null = null;
 
 export class Signal<T> {
   private _value: T;
-  private observers = new Set<EffectFn>();
+  private readonly observers = new Set<EffectFn>();
 
   constructor(initialValue: T) {
     this._value = initialValue;
@@ -2044,7 +2046,9 @@ export class Signal<T> {
     if (this._value === newValue) return;
     this._value = newValue;
     // Create a copy to prevent issues if observers modify the set during iteration
-    [...this.observers].forEach(observer => observer());
+    for (const observer of [...this.observers]) {
+      observer();
+    }
   }
 
   // For testing purposes
@@ -2054,20 +2058,22 @@ export class Signal<T> {
 }
 
 export class ComputedSignal<T> {
-  private computeFn: () => T;
-  private observers = new Set<EffectFn>();
+  private readonly computeFn: () => T;
+  private readonly observers = new Set<EffectFn>();
   private _value: T | undefined = undefined;
   private isStale = true;
-  private markStaleEffect: EffectFn;
+  private readonly markStaleEffect: EffectFn;
 
   constructor(computeFn: () => T) {
     this.computeFn = computeFn;
-    
+
     // This effect runs when a dependency changes, marking this computed signal as stale
     this.markStaleEffect = () => {
       if (!this.isStale) {
         this.isStale = true;
-        [...this.observers].forEach(observer => observer());
+        for (const observer of [...this.observers]) {
+          observer();
+        }
       }
     };
   }
@@ -2112,6 +2118,7 @@ export function effect(effectFn: EffectFn): void {
   execute();
 }
 
+
 -------------------------------------------------------------------------------
 FILE: src/state.ts
 -------------------------------------------------------------------------------
@@ -2130,8 +2137,8 @@ export const state = {
   currentPhase: new Signal<QuizPhase>('idle'),
   timeRemaining: new Signal(0),
   autoUpdateEnabled: new Signal(false),
-  currentProblem: new Signal<Problem>({ a: 0, b: 0 })
-};
+  currentProblem: new Signal<Problem>({ a: 0, b: 0 }),
+} as const;
 
 // Computed Values (Derived State)
 export const displayText = new ComputedSignal(() => {
@@ -2139,38 +2146,39 @@ export const displayText = new ComputedSignal(() => {
     const phase = state.currentPhase.get();
     const p = state.currentProblem.get();
     if (phase === 'question') {
-      return `${p.a} × ${p.b}`;
+      return `${p.a} \u00D7 ${p.b}`;
     } else if (phase === 'answer') {
-      return `${p.a} × ${p.b} = ${p.a * p.b}`;
+      return `${p.a} \u00D7 ${p.b} = ${p.a * p.b}`;
     }
   }
   // Manual mode display
   const count = state.counter.get();
   const seed = state.seed.get();
-  return `${count} × ${seed} = ${count * seed}`;
+  return `${count} \u00D7 ${seed} = ${count * seed}`;
 });
 
 export const progressPercent = new ComputedSignal(() => {
   if (!state.isQuizActive.get()) return 0;
-  
+
   const phase = state.currentPhase.get();
-  const totalTime = phase === 'question' 
-    ? state.questionTime.get() 
+  const totalTime = phase === 'question'
+    ? state.questionTime.get()
     : state.answerTime.get();
   const remaining = state.timeRemaining.get();
-  
+
   if (totalTime === 0) return 0;
   return ((totalTime - remaining) / totalTime) * 100;
 });
 
 export const timerDisplayText = new ComputedSignal(() => {
   if (!state.isQuizActive.get()) return 'Ready';
-  
+
   const phase = state.currentPhase.get();
   const remaining = state.timeRemaining.get();
   const phaseText = phase.charAt(0).toUpperCase() + phase.slice(1);
   return `${phaseText}: ${remaining.toFixed(1)}s`;
 });
+
 
 -------------------------------------------------------------------------------
 FILE: src/style.css
@@ -2541,8 +2549,8 @@ button:disabled:hover::before {
 FILE: src/types.ts
 -------------------------------------------------------------------------------
 export interface Problem {
-  a: number;
-  b: number;
+  readonly a: number;
+  readonly b: number;
 }
 
 export type QuizPhase = 'idle' | 'question' | 'answer';
@@ -2550,53 +2558,59 @@ export type QuizPhase = 'idle' | 'question' | 'answer';
 export type DifficultyLevel = 1 | 2 | 3 | 4;
 
 export interface DifficultyRange {
-  min: number;
-  max: number;
+  readonly min: number;
+  readonly max: number;
 }
 
 export interface Settings {
-  questionTime: number;
-  answerTime: number;
-  difficulty: DifficultyLevel;
-  autoUpdate: boolean;
+  readonly questionTime: number;
+  readonly answerTime: number;
+  readonly difficulty: DifficultyLevel;
+  readonly autoUpdate: boolean;
 }
 
 export interface AppState {
-  counter: number;
-  seed: number;
-  questionTime: number;
-  answerTime: number;
-  difficulty: DifficultyLevel;
-  isQuizActive: boolean;
-  currentPhase: QuizPhase;
-  timeRemaining: number;
-  autoUpdateEnabled: boolean;
-  currentProblem: Problem;
+  readonly counter: number;
+  readonly seed: number;
+  readonly questionTime: number;
+  readonly answerTime: number;
+  readonly difficulty: DifficultyLevel;
+  readonly isQuizActive: boolean;
+  readonly currentPhase: QuizPhase;
+  readonly timeRemaining: number;
+  readonly autoUpdateEnabled: boolean;
+  readonly currentProblem: Problem;
 }
+
 
 -------------------------------------------------------------------------------
 FILE: src/utils.ts
 -------------------------------------------------------------------------------
 import { DifficultyLevel, DifficultyRange, Problem, Settings } from './types';
 
+// ES2025: Use Map for O(1) lookup instead of switch statements
+const DIFFICULTY_RANGES = new Map<DifficultyLevel, DifficultyRange>([
+  [1, { min: 2, max: 5 }],   // Easy
+  [2, { min: 4, max: 8 }],   // Medium
+  [3, { min: 6, max: 12 }],  // Hard
+  [4, { min: 10, max: 20 }], // Expert
+]);
+
+const DIFFICULTY_NAMES = new Map<DifficultyLevel, string>([
+  [1, 'Easy'],
+  [2, 'Medium'],
+  [3, 'Hard'],
+  [4, 'Expert'],
+]);
+
+const DEFAULT_RANGE: DifficultyRange = { min: 6, max: 12 };
+
 export function getDifficultyRange(level: DifficultyLevel): DifficultyRange {
-  switch(level) {
-    case 1: return { min: 2, max: 5 };   // Easy: 2-5
-    case 2: return { min: 4, max: 8 };   // Medium: 4-8  
-    case 3: return { min: 6, max: 12 };  // Hard: 6-12
-    case 4: return { min: 10, max: 20 }; // Expert: 10-20
-    default: return { min: 6, max: 12 };
-  }
+  return DIFFICULTY_RANGES.get(level) ?? DEFAULT_RANGE;
 }
 
 export function getDifficultyName(level: DifficultyLevel): string {
-  switch(level) {
-    case 1: return 'Easy';
-    case 2: return 'Medium';
-    case 3: return 'Hard';
-    case 4: return 'Expert';
-    default: return 'Hard';
-  }
+  return DIFFICULTY_NAMES.get(level) ?? 'Hard';
 }
 
 export function randomInRange(min: number, max: number): number {
@@ -2604,29 +2618,32 @@ export function randomInRange(min: number, max: number): number {
 }
 
 export function generateProblem(difficulty: DifficultyLevel): Problem {
-  const range = getDifficultyRange(difficulty);
-  
+  const { min, max } = getDifficultyRange(difficulty);
+
   return {
-    a: randomInRange(range.min, range.max),
-    b: randomInRange(range.min, range.max)
+    a: randomInRange(min, max),
+    b: randomInRange(min, max),
   };
 }
 
 export function generateSeed(difficulty: DifficultyLevel): number {
-  const range = getDifficultyRange(difficulty);
-  return randomInRange(range.min, range.max);
+  const { min, max } = getDifficultyRange(difficulty);
+  return randomInRange(min, max);
 }
+
+const SETTINGS_KEY = 'mathQuizSettings';
+const THEME_KEY = 'theme';
 
 export function loadSettings(): Settings | null {
   try {
-    const saved = localStorage.getItem('mathQuizSettings');
+    const saved = localStorage.getItem(SETTINGS_KEY);
     if (saved) {
-      return JSON.parse(saved);
+      return JSON.parse(saved) as Settings;
     }
   } catch (e) {
     console.error('Failed to load settings - resetting to defaults', e);
     try {
-      localStorage.removeItem('mathQuizSettings');
+      localStorage.removeItem(SETTINGS_KEY);
     } catch {
       // Ignore if we can't remove
     }
@@ -2636,7 +2653,7 @@ export function loadSettings(): Settings | null {
 
 export function saveSettings(settings: Settings): void {
   try {
-    localStorage.setItem('mathQuizSettings', JSON.stringify(settings));
+    localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
   } catch (e) {
     // Silently fail if localStorage is disabled (e.g., private mode)
     console.warn('Failed to save settings:', e);
@@ -2645,7 +2662,7 @@ export function saveSettings(settings: Settings): void {
 
 export function loadTheme(): 'light' | 'dark' {
   try {
-    return localStorage.getItem('theme') === 'light' ? 'light' : 'dark';
+    return localStorage.getItem(THEME_KEY) === 'light' ? 'light' : 'dark';
   } catch {
     return 'dark';
   }
@@ -2653,7 +2670,7 @@ export function loadTheme(): 'light' | 'dark' {
 
 export function saveTheme(theme: 'light' | 'dark'): void {
   try {
-    localStorage.setItem('theme', theme);
+    localStorage.setItem(THEME_KEY, theme);
   } catch {
     // Silently fail if localStorage is disabled
   }
@@ -2662,25 +2679,26 @@ export function saveTheme(theme: 'light' | 'dark'): void {
 // Debounce utility
 export function debounce<T extends (...args: unknown[]) => void>(
   func: T,
-  wait: number
+  wait: number,
 ): (...args: Parameters<T>) => void {
   let timeout: ReturnType<typeof setTimeout> | null = null;
-  
+
   return (...args: Parameters<T>) => {
     if (timeout) clearTimeout(timeout);
     timeout = setTimeout(() => func(...args), wait);
   };
 }
 
+
 -------------------------------------------------------------------------------
 FILE: tsconfig.e2e.json
 -------------------------------------------------------------------------------
 {
   "compilerOptions": {
-    "target": "ES2020",
+    "target": "ES2025",
     "useDefineForClassFields": true,
     "module": "ESNext",
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "lib": ["ES2025", "DOM"],
     "skipLibCheck": true,
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
@@ -2693,6 +2711,8 @@ FILE: tsconfig.e2e.json
     "noFallthroughCasesInSwitch": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
+
+    /* TypeScript 6: explicit types required */
     "types": ["node"]
   },
   "include": ["e2e/**/*.ts"]
@@ -2704,11 +2724,10 @@ FILE: tsconfig.json
 -------------------------------------------------------------------------------
 {
   "compilerOptions": {
-    "target": "ES2020",
+    "target": "ES2025",
     "useDefineForClassFields": true,
     "module": "ESNext",
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "skipLibCheck": true,
+    "lib": ["ES2025", "DOM"],
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -2717,7 +2736,10 @@ FILE: tsconfig.json
     "isolatedModules": true,
     "noEmit": true,
 
-    /* Linting */
+    /* TypeScript 6 requires explicit types (defaults to [] now) */
+    "types": [],
+
+    /* Linting — strict is now default in TS6, but we keep it explicit for clarity */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -2727,6 +2749,7 @@ FILE: tsconfig.json
   },
   "include": ["src"]
 }
+
 
 -------------------------------------------------------------------------------
 FILE: vite.config.ts
@@ -2738,13 +2761,15 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: true,
-    rollupOptions: {
+    // Vite 8: rollupOptions is deprecated, use rolldownOptions
+    rolldownOptions: {
       input: {
         main: './index.html',
       },
     },
   },
 });
+
 
 -------------------------------------------------------------------------------
 FILE: vitest.config.ts
@@ -2780,12 +2805,13 @@ export default defineConfig({
         'e2e/**',
       ],
       include: [
-        'src/**/*.ts'
+        'src/**/*.ts',
       ],
       all: true, // Include all matching source files in coverage
-    }
-  }
+    },
+  },
 });
+
 
 ===============================================================================
 EXPORT COMPLETE — 23 files
