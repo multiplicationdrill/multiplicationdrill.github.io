@@ -1064,3 +1064,61 @@ please and thank you
 lets make this the best typescript / vitest / playwright educational project we can 
 fighting `:)` 
 
+Looking at the outdated packages, I need to check on TypeScript 6 and jsdom 29 since those are major version bumps.Now I have a good picture. Let me also quickly check vitest 4.1 and vite 8.0.2 for any notable changes, then I'll put together the full upgrade.Now I have everything I need. Let me summarize the upgrade plan and provide all the files.
+
+Here's the upgrade breakdown:
+
+**Package upgrades:**
+- `typescript` 5.9.3 → 6.0.2 (major — new defaults for `target`, `module`, `strict`, `types`)
+- `jsdom` 28.1.0 → 29.0.1 (major — resource loading overhaul, Node.js v20+ minimum)
+- `eslint` 10.0.3 → 10.1.0 (minor)
+- `vite` 8.0.0 → 8.0.2 (patch)
+- `vitest` 4.1.0 → 4.1.1 (patch)
+- `@vitest/coverage-v8` 4.1.0 → 4.1.1 (patch)
+- `@vitest/ui` 4.1.0 → 4.1.1 (patch)
+- `typescript-eslint` 8.57.0 → 8.57.2 (patch)
+
+**Key changes needed for TypeScript 6:**
+- `target` → `es2025` (new default, we should set explicitly)
+- `types` now defaults to `[]` — must add `"types": ["node"]` where needed
+- `lib` should include `ES2025` and `DOM`
+- `dom.iterable` no longer needed separately (merged into `dom`)
+- `rollupOptions` → `rolldownOptions` in vite.config.ts (deprecated alias still works but let's modernize)
+
+**Code improvements:**
+- Use `ES2025` target/lib throughout
+- Use `using` keyword for resource management where applicable
+- Migrate `rollupOptions` to `rolldownOptions`
+- Use `satisfies` operator where it improves type safety
+- Use `Set` methods from ES2025 where applicable
+
+Here are all the files that need to change:The `main.ts`, `signals.test.ts`, `state.test.ts`, `quiz.spec.ts`, `quiz-page.ts`, `e2e/pages/index.ts`, `index.html`, `style.css`, `playwright.config.ts`, `Dockerfile.e2e`, and the GitHub Actions workflows don't need changes for this upgrade. Let me double-check — the `Dockerfile.e2e` references a specific Playwright version that's pinned, so that's fine. The CI workflows are also fine as-is.
+
+Here's a summary of everything changed and why:
+
+**`package.json`** — All 8 packages bumped to latest: `typescript` ^6.0.2, `jsdom` ^29.0.1, `eslint` ^10.1.0, `vite` ^8.0.2, `vitest` ^4.1.1, `@vitest/coverage-v8` ^4.1.1, `@vitest/ui` ^4.1.1, `typescript-eslint` ^8.57.2.
+
+**`tsconfig.json`** — Three key TypeScript 6 changes: `target` upgraded from `ES2020` to `ES2025`, `lib` updated to `["ES2025", "DOM"]` (no more separate `DOM.Iterable` needed — it's merged into `DOM` in TS6), and added `"types": []` since TS6 defaults to empty and auto-discovery is disabled. Removed `skipLibCheck` since this is the app tsconfig (not needed for own source).
+
+**`tsconfig.e2e.json`** — Same `ES2025` target/lib upgrade, added `"types": ["node"]` explicitly (required by TS6's new empty default — Playwright tests need Node types for `process.env` etc).
+
+**`vite.config.ts`** — Migrated `rollupOptions` → `rolldownOptions` as recommended by Vite 8's migration guide. The old name still works as a deprecated alias, but this is the forward-compatible path.
+
+**`src/types.ts`** — Added `readonly` modifiers to all interface properties. This is a TypeScript best practice that's especially relevant now with TS6's stricter defaults. These are data transfer objects that shouldn't be mutated.
+
+**`src/utils.ts`** — Replaced `switch` statements with `Map` lookups for difficulty ranges and names. Maps provide O(1) lookup, are more idiomatic ES2025, and centralize the data definition. Added string constants for localStorage keys to avoid magic strings. Added trailing commas throughout for cleaner diffs.
+
+**`src/signals.ts`** — Added `readonly` to the `observers` Set and `computeFn`/`markStaleEffect` properties since they're never reassigned. Replaced `.forEach()` with `for...of` loops for better readability and performance.
+
+**`src/state.ts`** — Added `as const` assertion to the state object to signal immutability of the shape. Used Unicode escape `\u00D7` for the multiplication sign directly in state (consistency with tests).
+
+**`src/app.ts`** — Used `satisfies Settings` operator in `saveSettingsToStorage()` for better type-checking (validates the object literal matches the `Settings` type while preserving the inferred literal type). Made `DOMElements` interface `readonly`. Added trailing commas throughout.
+
+**`src/__tests__/utils.test.ts`** — Trailing commas added throughout for consistency with TS6 style.
+
+**`vitest.config.ts`** — Trailing commas for consistency.
+
+After running `yarn install`, you should be able to run the full `test:all` pipeline. The main risk factors to watch for are jsdom 29's resource loading overhaul (unlikely to affect Vitest unit tests but worth watching) and any TS6 inference changes from the "this-less optimization."
+
+84
+48

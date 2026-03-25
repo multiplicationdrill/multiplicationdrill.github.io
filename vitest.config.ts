@@ -29,9 +29,9 @@ export default defineConfig({
         'e2e/**',
       ],
       include: [
-        'src/**/*.ts'
+        'src/**/*.ts',
       ],
       all: true, // Include all matching source files in coverage
-    }
-  }
+    },
+  },
 });

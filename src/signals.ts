@@ -5,7 +5,7 @@ let currentEffect: EffectFn | null = null;
 
 export class Signal<T> {
   private _value: T;
-  private observers = new Set<EffectFn>();
+  private readonly observers = new Set<EffectFn>();
 
   constructor(initialValue: T) {
     this._value = initialValue;
@@ -22,7 +22,9 @@ export class Signal<T> {
     if (this._value === newValue) return;
     this._value = newValue;
     // Create a copy to prevent issues if observers modify the set during iteration
-    [...this.observers].forEach(observer => observer());
+    for (const observer of [...this.observers]) {
+      observer();
+    }
   }
 
   // For testing purposes
@@ -32,20 +34,22 @@ export class Signal<T> {
 }
 
 export class ComputedSignal<T> {
-  private computeFn: () => T;
-  private observers = new Set<EffectFn>();
+  private readonly computeFn: () => T;
+  private readonly observers = new Set<EffectFn>();
   private _value: T | undefined = undefined;
   private isStale = true;
-  private markStaleEffect: EffectFn;
+  private readonly markStaleEffect: EffectFn;
 
   constructor(computeFn: () => T) {
     this.computeFn = computeFn;
-    
+
     // This effect runs when a dependency changes, marking this computed signal as stale
     this.markStaleEffect = () => {
       if (!this.isStale) {
         this.isStale = true;
-        [...this.observers].forEach(observer => observer());
+        for (const observer of [...this.observers]) {
+          observer();
+        }
       }
     };
   }

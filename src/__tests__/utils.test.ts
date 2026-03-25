@@ -1,31 +1,31 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
-import { 
-  getDifficultyRange, 
-  getDifficultyName, 
-  randomInRange, 
+import {
+  getDifficultyRange,
+  getDifficultyName,
+  randomInRange,
   generateProblem,
   generateSeed,
   loadSettings,
   saveSettings,
   loadTheme,
   saveTheme,
-  debounce
+  debounce,
 } from '../utils';
 
 // Mock localStorage
 const localStorageMock = (() => {
   let store: Record<string, string> = {};
-  
+
   return {
     getItem: (key: string) => store[key] || null,
     setItem: (key: string, value: string) => { store[key] = value; },
     removeItem: (key: string) => { delete store[key]; },
-    clear: () => { store = {}; }
+    clear: () => { store = {}; },
   };
 })();
 
 Object.defineProperty(window, 'localStorage', {
-  value: localStorageMock
+  value: localStorageMock,
 });
 
 describe('getDifficultyRange', () => {
@@ -111,7 +111,7 @@ describe('Settings persistence', () => {
       questionTime: 10,
       answerTime: 5,
       difficulty: 2 as const,
-      autoUpdate: true
+      autoUpdate: true,
     };
 
     saveSettings(settings);
@@ -126,10 +126,10 @@ describe('Settings persistence', () => {
   it('should handle corrupted localStorage data', () => {
     localStorageMock.setItem('mathQuizSettings', 'invalid json');
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-    
+
     expect(loadSettings()).toBeNull();
     expect(consoleSpy).toHaveBeenCalled();
-    
+
     consoleSpy.mockRestore();
   });
 });
@@ -142,7 +142,7 @@ describe('Theme persistence', () => {
   it('should save and load theme', () => {
     saveTheme('light');
     expect(loadTheme()).toBe('light');
-    
+
     saveTheme('dark');
     expect(loadTheme()).toBe('dark');
   });
@@ -198,12 +198,12 @@ describe('debounce', () => {
     vi.advanceTimersByTime(50);
     debounced(); // This should cancel the first timeout
     vi.advanceTimersByTime(50);
-    
+
     // Function still shouldn't be called
     expect(fn).not.toHaveBeenCalled();
 
     vi.advanceTimersByTime(50);
-    
+
     // Now it should be called once
     expect(fn).toHaveBeenCalledTimes(1);
   });

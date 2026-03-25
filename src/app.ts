@@ -1,35 +1,35 @@
 import { effect } from './signals';
 import { state, displayText, progressPercent, timerDisplayText } from './state';
 import { DifficultyLevel, Settings } from './types';
-import { 
-  generateProblem, 
-  getDifficultyName, 
-  loadSettings, 
+import {
+  generateProblem,
+  getDifficultyName,
+  loadSettings,
   saveSettings,
   loadTheme,
   saveTheme,
   generateSeed,
-  debounce
+  debounce,
 } from './utils';
 
 // DOM Elements
 interface DOMElements {
-  display: HTMLElement;
-  progressBar: HTMLElement;
-  timerDisplay: HTMLElement;
-  questionTimeValue: HTMLElement;
-  answerTimeValue: HTMLElement;
-  difficultyValue: HTMLElement;
-  quizButton: HTMLButtonElement;
-  modeStatus: HTMLElement;
-  quizStatus: HTMLElement;
-  updateTime: HTMLElement;
-  questionTimeSlider: HTMLInputElement;
-  answerTimeSlider: HTMLInputElement;
-  difficultySlider: HTMLInputElement;
-  incrementBtn: HTMLButtonElement;
-  resetBtn: HTMLButtonElement;
-  autoUpdateCheckbox: HTMLInputElement;
+  readonly display: HTMLElement;
+  readonly progressBar: HTMLElement;
+  readonly timerDisplay: HTMLElement;
+  readonly questionTimeValue: HTMLElement;
+  readonly answerTimeValue: HTMLElement;
+  readonly difficultyValue: HTMLElement;
+  readonly quizButton: HTMLButtonElement;
+  readonly modeStatus: HTMLElement;
+  readonly quizStatus: HTMLElement;
+  readonly updateTime: HTMLElement;
+  readonly questionTimeSlider: HTMLInputElement;
+  readonly answerTimeSlider: HTMLInputElement;
+  readonly difficultySlider: HTMLInputElement;
+  readonly incrementBtn: HTMLButtonElement;
+  readonly resetBtn: HTMLButtonElement;
+  readonly autoUpdateCheckbox: HTMLInputElement;
 }
 
 let elements: DOMElements;
@@ -54,7 +54,7 @@ function getElements(): DOMElements {
     difficultySlider: document.getElementById('difficulty')! as HTMLInputElement,
     incrementBtn: document.getElementById('incrementBtn')! as HTMLButtonElement,
     resetBtn: document.getElementById('resetBtn')! as HTMLButtonElement,
-    autoUpdateCheckbox: document.getElementById('autoUpdate')! as HTMLInputElement
+    autoUpdateCheckbox: document.getElementById('autoUpdate')! as HTMLInputElement,
   };
 }
 
@@ -163,14 +163,14 @@ function initializeSettings(): void {
     const answerTime = saved.answerTime ?? 3;
     const difficulty = saved.difficulty ?? 3;
     const autoUpdate = saved.autoUpdate ?? false;
-    
+
     state.questionTime.set(questionTime);
     state.answerTime.set(answerTime);
     state.difficulty.set(difficulty);
     state.autoUpdateEnabled.set(autoUpdate);
     // Set seed based on loaded difficulty
     state.seed.set(generateSeed(difficulty));
-    
+
     // Sync the DOM elements with loaded values
     elements.questionTimeSlider.value = questionTime.toString();
     elements.answerTimeSlider.value = answerTime.toString();
@@ -183,7 +183,7 @@ function initializeSettings(): void {
     elements.difficultySlider.value = state.difficulty.get().toString();
     elements.autoUpdateCheckbox.checked = state.autoUpdateEnabled.get();
   }
-  
+
   // Load theme preference
   if (loadTheme() === 'light') {
     document.body.classList.add('light-mode');
@@ -194,13 +194,13 @@ function setupEffects(): void {
   // DOM updates
   effect(() => { elements.display.textContent = displayText.get(); });
   effect(() => { elements.timerDisplay.textContent = timerDisplayText.get(); });
-  
+
   effect(() => {
     const percent = progressPercent.get();
     elements.progressBar.style.width = `${percent}%`;
-    
+
     const phase = state.currentPhase.get();
-    const color = phase === 'question' 
+    const color = phase === 'question'
       ? 'linear-gradient(90deg, var(--success), #34d399)'
       : 'linear-gradient(90deg, var(--warning), #fbbf24)';
     elements.progressBar.style.background = color;
@@ -211,7 +211,7 @@ function setupEffects(): void {
     elements.quizButton.textContent = isActive ? 'Stop Quiz' : 'Start Quiz';
     elements.modeStatus.textContent = isActive ? 'Quiz' : 'Manual';
     elements.quizStatus.textContent = isActive ? 'Running' : 'Stopped';
-    
+
     const disabled = isActive;
     elements.questionTimeSlider.disabled = disabled;
     elements.answerTimeSlider.disabled = disabled;
@@ -224,7 +224,7 @@ function setupEffects(): void {
   effect(() => {
     const autoUpdate = state.autoUpdateEnabled.get();
     const quizActive = state.isQuizActive.get();
-    
+
     if (autoUpdate && !quizActive) {
       startAutoUpdate();
     } else {
@@ -236,23 +236,23 @@ function setupEffects(): void {
   const debouncedSave = debounce(saveSettingsToStorage, 300);
 
   // Settings persistence with debounce
-  effect(() => { 
+  effect(() => {
     const time = state.questionTime.get();
     elements.questionTimeValue.textContent = `${time}s`;
     elements.questionTimeSlider.setAttribute('aria-valuenow', time.toString());
     elements.questionTimeSlider.setAttribute('aria-valuetext', `${time} seconds`);
     debouncedSave();
   });
-  
-  effect(() => { 
+
+  effect(() => {
     const time = state.answerTime.get();
     elements.answerTimeValue.textContent = `${time}s`;
     elements.answerTimeSlider.setAttribute('aria-valuenow', time.toString());
     elements.answerTimeSlider.setAttribute('aria-valuetext', `${time} seconds`);
     debouncedSave();
   });
-  
-  effect(() => { 
+
+  effect(() => {
     const difficulty = state.difficulty.get();
     const name = getDifficultyName(difficulty);
     elements.difficultyValue.textContent = name;
@@ -264,19 +264,19 @@ function setupEffects(): void {
     }
     debouncedSave();
   });
-  
-  effect(() => { 
+
+  effect(() => {
     debouncedSave(); // For autoUpdate changes
   });
 }
 
 function saveSettingsToStorage(): void {
-  const settings: Settings = {
+  const settings = {
     questionTime: state.questionTime.get(),
     answerTime: state.answerTime.get(),
     difficulty: state.difficulty.get(),
-    autoUpdate: state.autoUpdateEnabled.get()
-  };
+    autoUpdate: state.autoUpdateEnabled.get(),
+  } satisfies Settings;
   saveSettings(settings);
 }
 
@@ -285,17 +285,17 @@ function setupEventListeners(): void {
     const value = parseInt((e.target as HTMLInputElement).value);
     state.questionTime.set(Math.max(1, value));
   });
-  
+
   elements.answerTimeSlider.addEventListener('input', (e) => {
     const value = parseInt((e.target as HTMLInputElement).value);
     state.answerTime.set(Math.max(1, value));
   });
-  
+
   elements.difficultySlider.addEventListener('input', (e) => {
     const value = parseInt((e.target as HTMLInputElement).value) as DifficultyLevel;
     state.difficulty.set(value);
   });
-  
+
   // Handle visibility change for auto-update
   document.addEventListener('visibilitychange', () => {
     if (!state.isQuizActive.get() && state.autoUpdateEnabled.get()) {

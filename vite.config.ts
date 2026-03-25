@@ -5,7 +5,8 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: true,
-    rollupOptions: {
+    // Vite 8: rollupOptions is deprecated, use rolldownOptions
+    rolldownOptions: {
       input: {
         main: './index.html',
       },

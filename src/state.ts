@@ -13,8 +13,8 @@ export const state = {
   currentPhase: new Signal<QuizPhase>('idle'),
   timeRemaining: new Signal(0),
   autoUpdateEnabled: new Signal(false),
-  currentProblem: new Signal<Problem>({ a: 0, b: 0 })
-};
+  currentProblem: new Signal<Problem>({ a: 0, b: 0 }),
+} as const;
 
 // Computed Values (Derived State)
 export const displayText = new ComputedSignal(() => {
@@ -22,33 +22,33 @@ export const displayText = new ComputedSignal(() => {
     const phase = state.currentPhase.get();
     const p = state.currentProblem.get();
     if (phase === 'question') {
-      return `${p.a} × ${p.b}`;
+      return `${p.a} \u00D7 ${p.b}`;
     } else if (phase === 'answer') {
-      return `${p.a} × ${p.b} = ${p.a * p.b}`;
+      return `${p.a} \u00D7 ${p.b} = ${p.a * p.b}`;
     }
   }
   // Manual mode display
   const count = state.counter.get();
   const seed = state.seed.get();
-  return `${count} × ${seed} = ${count * seed}`;
+  return `${count} \u00D7 ${seed} = ${count * seed}`;
 });
 
 export const progressPercent = new ComputedSignal(() => {
   if (!state.isQuizActive.get()) return 0;
-  
+
   const phase = state.currentPhase.get();
-  const totalTime = phase === 'question' 
-    ? state.questionTime.get() 
+  const totalTime = phase === 'question'
+    ? state.questionTime.get()
     : state.answerTime.get();
   const remaining = state.timeRemaining.get();
-  
+
   if (totalTime === 0) return 0;
   return ((totalTime - remaining) / totalTime) * 100;
 });
 
 export const timerDisplayText = new ComputedSignal(() => {
   if (!state.isQuizActive.get()) return 'Ready';
-  
+
   const phase = state.currentPhase.get();
   const remaining = state.timeRemaining.get();
   const phaseText = phase.charAt(0).toUpperCase() + phase.slice(1);

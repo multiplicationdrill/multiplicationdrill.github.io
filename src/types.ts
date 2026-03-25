@@ -1,6 +1,6 @@
 export interface Problem {
-  a: number;
-  b: number;
+  readonly a: number;
+  readonly b: number;
 }
 
 export type QuizPhase = 'idle' | 'question' | 'answer';
@@ -8,26 +8,26 @@ export type QuizPhase = 'idle' | 'question' | 'answer';
 export type DifficultyLevel = 1 | 2 | 3 | 4;
 
 export interface DifficultyRange {
-  min: number;
-  max: number;
+  readonly min: number;
+  readonly max: number;
 }
 
 export interface Settings {
-  questionTime: number;
-  answerTime: number;
-  difficulty: DifficultyLevel;
-  autoUpdate: boolean;
+  readonly questionTime: number;
+  readonly answerTime: number;
+  readonly difficulty: DifficultyLevel;
+  readonly autoUpdate: boolean;
 }
 
 export interface AppState {
-  counter: number;
-  seed: number;
-  questionTime: number;
-  answerTime: number;
-  difficulty: DifficultyLevel;
-  isQuizActive: boolean;
-  currentPhase: QuizPhase;
-  timeRemaining: number;
-  autoUpdateEnabled: boolean;
-  currentProblem: Problem;
+  readonly counter: number;
+  readonly seed: number;
+  readonly questionTime: number;
+  readonly answerTime: number;
+  readonly difficulty: DifficultyLevel;
+  readonly isQuizActive: boolean;
+  readonly currentPhase: QuizPhase;
+  readonly timeRemaining: number;
+  readonly autoUpdateEnabled: boolean;
+  readonly currentProblem: Problem;
 }
