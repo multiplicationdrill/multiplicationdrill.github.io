@@ -465,3 +465,246 @@ real	0m0.780s
 user	0m0.012s
 sys	0m0.013s
 kushal@fedora:~/src/ts/multiplicationdrill$ cd ~/src/ts/multiplicationdrill/; time yarn outdated; time yarn install; time yarn lint; time bash export.sh; time yarn; time yarn build; time yarn test:all; time git add .; time git commit --message "add all files"; time git remote show origin; time git push origin --all;
+yarn outdated v1.22.22
+Done in 2.32s.
+
+real	0m2.446s
+user	0m0.722s
+sys	0m0.265s
+yarn install v1.22.22
+[1/4] Resolving packages...
+success Already up-to-date.
+Done in 0.08s.
+
+real	0m0.183s
+user	0m0.161s
+sys	0m0.058s
+yarn run v1.22.22
+$ eslint src --max-warnings 0
+=============
+
+
+WARNING: You are currently running a version of TypeScript which is not officially supported by @typescript-eslint/typescript-estree.
+
+
+* @typescript-eslint/typescript-estree version: 8.57.2
+* Supported TypeScript versions: >=4.8.4 <6.0.0
+* Your TypeScript version: 6.0.2
+
+
+Please only submit bug reports when using the officially supported version.
+
+
+=============
+
+/home/kushal/src/ts/multiplicationdrill/src/__tests__/signals.test.ts
+  0:0  error  Parsing error: Invalid value for lib provided: es2025
+
+/home/kushal/src/ts/multiplicationdrill/src/__tests__/state.test.ts
+  0:0  error  Parsing error: Invalid value for lib provided: es2025
+
+/home/kushal/src/ts/multiplicationdrill/src/__tests__/utils.test.ts
+  0:0  error  Parsing error: Invalid value for lib provided: es2025
+
+/home/kushal/src/ts/multiplicationdrill/src/app.ts
+  0:0  error  Parsing error: Invalid value for lib provided: es2025
+
+/home/kushal/src/ts/multiplicationdrill/src/main.ts
+  0:0  error  Parsing error: Invalid value for lib provided: es2025
+
+/home/kushal/src/ts/multiplicationdrill/src/signals.ts
+  0:0  error  Parsing error: Invalid value for lib provided: es2025
+
+/home/kushal/src/ts/multiplicationdrill/src/state.ts
+  0:0  error  Parsing error: Invalid value for lib provided: es2025
+
+/home/kushal/src/ts/multiplicationdrill/src/types.ts
+  0:0  error  Parsing error: Invalid value for lib provided: es2025
+
+/home/kushal/src/ts/multiplicationdrill/src/utils.ts
+  0:0  error  Parsing error: Invalid value for lib provided: es2025
+
+/home/kushal/src/ts/multiplicationdrill/src/vite-env.d.ts
+  0:0  error  Parsing error: Invalid value for lib provided: es2025
+
+✖ 10 problems (10 errors, 0 warnings)
+
+error Command failed with exit code 1.
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+
+real	0m0.868s
+user	0m1.362s
+sys	0m0.235s
+🚀 Starting export...
+📄 Adding: .github/workflows/ci-cd.yml
+📄 Adding: .github/workflows/coverage-comment.yml
+⏩ Skipping: .gitignore
+📄 Adding: Dockerfile.e2e
+⏩ Skipping: MIGRATION.md
+⏩ Skipping: README.md
+⏩ Skipping: docs/llm/dump.txt
+⏩ Skipping: docs/llm/output.txt
+⏩ Skipping: docs/llm/vendor/claude.md
+⏩ Skipping: docs/llm/vendor/commands.txt
+⏩ Skipping: docs/llm/vendor/instructions.md
+⏩ Skipping: docs/llm/vendor/memory.md
+⏩ Skipping: docs/llm/vendor/scratch
+📄 Adding: e2e/pages/index.ts
+📄 Adding: e2e/pages/quiz-page.ts
+📄 Adding: e2e/quiz.spec.ts
+⏩ Skipping: eslint.config.js
+⏩ Skipping: export.sh
+📄 Adding: index.html
+⏩ Skipping: manual-testing-notes.md
+📄 Adding: package.json
+📄 Adding: playwright.config.ts
+⏩ Skipping: public/vite.svg
+⏩ Skipping: scripts/coverage-report.js
+⏩ Skipping: setup.sh
+📄 Adding: src/__tests__/signals.test.ts
+📄 Adding: src/__tests__/state.test.ts
+📄 Adding: src/__tests__/utils.test.ts
+📄 Adding: src/app.ts
+📄 Adding: src/main.ts
+📄 Adding: src/signals.ts
+📄 Adding: src/state.ts
+📄 Adding: src/style.css
+📄 Adding: src/types.ts
+⏩ Skipping: src/typescript.svg
+📄 Adding: src/utils.ts
+⏩ Skipping: src/vite-env.d.ts
+📄 Adding: tsconfig.e2e.json
+📄 Adding: tsconfig.json
+📄 Adding: vite.config.ts
+📄 Adding: vitest.config.ts
+⏩ Skipping: yarn.lock
+
+✅ Done! 23 files → docs/llm/dump.txt
+
+real	0m0.090s
+user	0m0.052s
+sys	0m0.061s
+yarn install v1.22.22
+[1/4] Resolving packages...
+success Already up-to-date.
+Done in 0.08s.
+
+real	0m0.181s
+user	0m0.178s
+sys	0m0.044s
+yarn run v1.22.22
+$ tsc && vite build
+vite v8.0.2 building client environment for production...
+✓ 9 modules transformed.
+computing gzip size...
+dist/index.html                3.58 kB │ gzip: 0.95 kB
+dist/assets/main-Cyhjhj37.css  5.39 kB │ gzip: 1.61 kB
+dist/assets/main-DA2teIkJ.js   8.20 kB │ gzip: 2.67 kB │ map: 26.62 kB
+
+✓ built in 33ms
+Done in 1.04s.
+
+real	0m1.137s
+user	0m1.919s
+sys	0m0.230s
+yarn run v1.22.22
+$ yarn lint && yarn type-check && yarn test:run && yarn e2e:container:build && yarn e2e:containernoci
+$ eslint src --max-warnings 0
+=============
+
+
+WARNING: You are currently running a version of TypeScript which is not officially supported by @typescript-eslint/typescript-estree.
+
+
+* @typescript-eslint/typescript-estree version: 8.57.2
+* Supported TypeScript versions: >=4.8.4 <6.0.0
+* Your TypeScript version: 6.0.2
+
+
+Please only submit bug reports when using the officially supported version.
+
+
+=============
+
+/home/kushal/src/ts/multiplicationdrill/src/__tests__/signals.test.ts
+  0:0  error  Parsing error: Invalid value for lib provided: es2025
+
+/home/kushal/src/ts/multiplicationdrill/src/__tests__/state.test.ts
+  0:0  error  Parsing error: Invalid value for lib provided: es2025
+
+/home/kushal/src/ts/multiplicationdrill/src/__tests__/utils.test.ts
+  0:0  error  Parsing error: Invalid value for lib provided: es2025
+
+/home/kushal/src/ts/multiplicationdrill/src/app.ts
+  0:0  error  Parsing error: Invalid value for lib provided: es2025
+
+/home/kushal/src/ts/multiplicationdrill/src/main.ts
+  0:0  error  Parsing error: Invalid value for lib provided: es2025
+
+/home/kushal/src/ts/multiplicationdrill/src/signals.ts
+  0:0  error  Parsing error: Invalid value for lib provided: es2025
+
+/home/kushal/src/ts/multiplicationdrill/src/state.ts
+  0:0  error  Parsing error: Invalid value for lib provided: es2025
+
+/home/kushal/src/ts/multiplicationdrill/src/types.ts
+  0:0  error  Parsing error: Invalid value for lib provided: es2025
+
+/home/kushal/src/ts/multiplicationdrill/src/utils.ts
+  0:0  error  Parsing error: Invalid value for lib provided: es2025
+
+/home/kushal/src/ts/multiplicationdrill/src/vite-env.d.ts
+  0:0  error  Parsing error: Invalid value for lib provided: es2025
+
+✖ 10 problems (10 errors, 0 warnings)
+
+error Command failed with exit code 1.
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+error Command failed with exit code 1.
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+
+real	0m0.998s
+user	0m1.465s
+sys	0m0.273s
+
+real	0m0.004s
+user	0m0.004s
+sys	0m0.000s
+[master 912beca] add all files
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+real	0m0.005s
+user	0m0.001s
+sys	0m0.004s
+* remote origin
+  Fetch URL: git@github.com:multiplicationdrill/multiplicationdrill.github.io.git
+  Push  URL: git@github.com:multiplicationdrill/multiplicationdrill.github.io.git
+  HEAD branch: master
+  Remote branch:
+    master tracked
+  Local branch configured for 'git pull':
+    master merges with remote master
+  Local ref configured for 'git push':
+    master pushes to master (fast-forwardable)
+
+real	0m1.044s
+user	0m0.007s
+sys	0m0.007s
+Enumerating objects: 20, done.
+Counting objects: 100% (20/20), done.
+Delta compression using up to 16 threads
+Compressing objects: 100% (11/11), done.
+Writing objects: 100% (13/13), 5.19 KiB | 2.59 MiB/s, done.
+Total 13 (delta 6), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (6/6), completed with 4 local objects.
+remote: 
+remote: GitHub found 11 vulnerabilities on multiplicationdrill/multiplicationdrill.github.io's default branch (4 high, 3 moderate, 4 low). To find out more, visit:
+remote:      https://github.com/multiplicationdrill/multiplicationdrill.github.io/security/dependabot
+remote: 
+To github.com:multiplicationdrill/multiplicationdrill.github.io.git
+   1d4cbdb..912beca  master -> master
+
+real	0m1.121s
+user	0m0.014s
+sys	0m0.010s
+kushal@fedora:~/src/ts/multiplicationdrill$ 
