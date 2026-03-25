@@ -970,3 +970,97 @@ B
 
 07
 74
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+71
+47
+
+Please upgrade all packages to the latest available versions 
+and give me the full package.json 
+```json current package.json 
+{
+  "name": "multiplicationdrill",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "lint": "eslint src --max-warnings 0",
+    "type-check": "tsc --noEmit",
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:e2e": "playwright test",
+    "test:coverage:ci": "vitest run --coverage",
+    "e2e:container:build": "podman build -f Dockerfile.e2e -t multiplicationdrill-e2e .",
+    "e2e:container": "podman run --rm -e CI=true -v $(pwd)/playwright-report:/app/playwright-report:Z -v $(pwd)/test-results:/app/test-results:Z multiplicationdrill-e2e yarn test:e2e",
+    "e2e:containernoci": "podman run --rm -it --cpus=8 --memory=8g -v $(pwd)/playwright-report:/app/playwright-report:Z -v $(pwd)/test-results:/app/test-results:Z multiplicationdrill-e2e yarn test:e2e",
+    "test:all": "yarn lint && yarn type-check && yarn test:run && yarn e2e:container:build && yarn e2e:containernoci"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.0",
+    "@playwright/test": "^1.58.2",
+    "@types/node": "^25.5.0",
+    "@vitest/coverage-v8": "^4.1.0",
+    "@vitest/ui": "^4.1.0",
+    "eslint": "^10.0.3",
+    "globals": "^17.4.0",
+    "jsdom": "^28.1.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.57.0",
+    "vite": "^8.0.0",
+    "vitest": "^4.1.0"
+  }
+}
+```
+```bash
+$ cd ~/src/ts/multiplicationdrill/; time yarn outdated; time yarn lint; time bash export.sh; time yarn; time yarn build; time yarn test:all; time git add .; time git commit --message "add all files"; time git remote show origin; time git push origin --all;
+yarn outdated v1.22.22
+info Color legend : 
+ "<red>"    : Major Update backward-incompatible updates 
+ "<yellow>" : Minor Update backward-compatible features 
+ "<green>"  : Patch Update backward-compatible bug fixes
+Package             Current Wanted Latest Package Type    URL                                                    
+@vitest/coverage-v8 4.1.0   4.1.1  4.1.1  devDependencies https://vitest.dev/guide/coverage                      
+@vitest/ui          4.1.0   4.1.1  4.1.1  devDependencies https://vitest.dev/guide/ui                            
+eslint              10.0.3  10.1.0 10.1.0 devDependencies https://eslint.org                                     
+jsdom               28.1.0  28.1.0 29.0.1 devDependencies https://github.com/jsdom/jsdom#readme                  
+typescript          5.9.3   5.9.3  6.0.2  devDependencies https://www.typescriptlang.org/                        
+typescript-eslint   8.57.0  8.57.2 8.57.2 devDependencies https://typescript-eslint.io/packages/typescript-eslint
+vite                8.0.0   8.0.2  8.0.2  devDependencies https://vite.dev                                       
+vitest              4.1.0   4.1.1  4.1.1  devDependencies https://vitest.dev 
+[clipped]
+```
+also please go through the entire code dump and change anything that makes sense where we can use the latest typescript 6 features 
+or the latest features of the packages we updated 
+please give me full files for all files that need to change 
+please and thank you 
+lets make this the best typescript / vitest / playwright educational project we can 
+fighting `:)` 
+
