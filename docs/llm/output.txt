@@ -1,679 +1,222 @@
-kushal@fedora:~/src/dotnet/network-monitor/src/NetworkMonitor.Console$ cd ~/src/ts/multiplicationdrill/; time yarn outdated; time yarn lint; time bash export.sh; time yarn; time yarn build; time yarn test:all; time git add .; time git commit --message "add all files"; time git remote show origin; time git push origin --all;
+kushal@fedora:~/src/dotnet/network-monitor/src/NetworkMonitor.Console$ cd ~/src/ts/multiplicationdrill/; time yarn outdated; time yarn install; time yarn lint; time bash export.sh; time yarn; time yarn build; time yarn test:all; time git add .; time git commit --message "add all files"; time git remote show origin; time git push origin --all;
 yarn outdated v1.22.22
 info Color legend : 
  "<red>"    : Major Update backward-incompatible updates 
  "<yellow>" : Minor Update backward-compatible features 
  "<green>"  : Patch Update backward-compatible bug fixes
-Package             Current Wanted Latest Package Type    URL                                                    
-@vitest/coverage-v8 4.1.0   4.1.1  4.1.1  devDependencies https://vitest.dev/guide/coverage                      
-@vitest/ui          4.1.0   4.1.1  4.1.1  devDependencies https://vitest.dev/guide/ui                            
-eslint              10.0.3  10.1.0 10.1.0 devDependencies https://eslint.org                                     
-jsdom               28.1.0  28.1.0 29.0.1 devDependencies https://github.com/jsdom/jsdom#readme                  
-typescript          5.9.3   5.9.3  6.0.2  devDependencies https://www.typescriptlang.org/                        
-typescript-eslint   8.57.0  8.57.2 8.57.2 devDependencies https://typescript-eslint.io/packages/typescript-eslint
-vite                8.0.0   8.0.2  8.0.2  devDependencies https://vite.dev                                       
-vitest              4.1.0   4.1.1  4.1.1  devDependencies https://vitest.dev                                     
-Done in 1.14s.
+Package             Current Wanted Latest Package Type    URL                              
+@vitest/coverage-v8 4.1.1   4.1.2  4.1.2  devDependencies https://vitest.dev/guide/coverage
+@vitest/ui          4.1.1   4.1.2  4.1.2  devDependencies https://vitest.dev/guide/ui      
+vite                8.0.2   8.0.3  8.0.3  devDependencies https://vite.dev                 
+vitest              4.1.1   4.1.2  4.1.2  devDependencies https://vitest.dev               
+Done in 1.55s.
 
-real	0m1.373s
-user	0m0.793s
-sys	0m0.304s
-yarn run v1.22.22
-$ eslint src --max-warnings 0
-Done in 1.49s.
-
-real	0m1.595s
-user	0m2.180s
-sys	0m0.345s
-🚀 Starting export...
-📄 Adding: .github/workflows/ci-cd.yml
-📄 Adding: .github/workflows/coverage-comment.yml
-⏩ Skipping: .gitignore
-📄 Adding: Dockerfile.e2e
-⏩ Skipping: MIGRATION.md
-⏩ Skipping: README.md
-⏩ Skipping: docs/llm/dump.txt
-⏩ Skipping: docs/llm/output.txt
-⏩ Skipping: docs/llm/vendor/claude.md
-⏩ Skipping: docs/llm/vendor/commands.txt
-⏩ Skipping: docs/llm/vendor/instructions.md
-⏩ Skipping: docs/llm/vendor/memory.md
-⏩ Skipping: docs/llm/vendor/scratch
-📄 Adding: e2e/pages/index.ts
-📄 Adding: e2e/pages/quiz-page.ts
-📄 Adding: e2e/quiz.spec.ts
-⏩ Skipping: eslint.config.js
-⏩ Skipping: export.sh
-📄 Adding: index.html
-⏩ Skipping: manual-testing-notes.md
-📄 Adding: package.json
-📄 Adding: playwright.config.ts
-⏩ Skipping: public/vite.svg
-⏩ Skipping: scripts/coverage-report.js
-⏩ Skipping: setup.sh
-📄 Adding: src/__tests__/signals.test.ts
-📄 Adding: src/__tests__/state.test.ts
-📄 Adding: src/__tests__/utils.test.ts
-📄 Adding: src/app.ts
-📄 Adding: src/main.ts
-📄 Adding: src/signals.ts
-📄 Adding: src/state.ts
-📄 Adding: src/style.css
-📄 Adding: src/types.ts
-⏩ Skipping: src/typescript.svg
-📄 Adding: src/utils.ts
-⏩ Skipping: src/vite-env.d.ts
-📄 Adding: tsconfig.e2e.json
-📄 Adding: tsconfig.json
-📄 Adding: vite.config.ts
-📄 Adding: vitest.config.ts
-⏩ Skipping: yarn.lock
-
-✅ Done! 23 files → docs/llm/dump.txt
-
-real	0m0.097s
-user	0m0.048s
-sys	0m0.066s
+real	0m1.767s
+user	0m0.716s
+sys	0m0.333s
 yarn install v1.22.22
 [1/4] Resolving packages...
 success Already up-to-date.
 Done in 0.12s.
 
-real	0m0.432s
-user	0m0.221s
+real	0m0.478s
+user	0m0.228s
 sys	0m0.061s
 yarn run v1.22.22
+$ eslint src --max-warnings 0
+=============
+
+
+WARNING: You are currently running a version of TypeScript which is not officially supported by @typescript-eslint/typescript-estree.
+
+
+* @typescript-eslint/typescript-estree version: 8.57.2
+* Supported TypeScript versions: >=4.8.4 <6.0.0
+* Your TypeScript version: 6.0.2
+
+
+Please only submit bug reports when using the officially supported version.
+
+
+=============
+
+/home/kushal/src/ts/multiplicationdrill/src/__tests__/signals.test.ts
+  0:0  error  Parsing error: Invalid value for lib provided: es2025
+
+/home/kushal/src/ts/multiplicationdrill/src/__tests__/state.test.ts
+  0:0  error  Parsing error: Invalid value for lib provided: es2025
+
+/home/kushal/src/ts/multiplicationdrill/src/__tests__/utils.test.ts
+  0:0  error  Parsing error: Invalid value for lib provided: es2025
+
+/home/kushal/src/ts/multiplicationdrill/src/app.ts
+  0:0  error  Parsing error: Invalid value for lib provided: es2025
+
+/home/kushal/src/ts/multiplicationdrill/src/main.ts
+  0:0  error  Parsing error: Invalid value for lib provided: es2025
+
+/home/kushal/src/ts/multiplicationdrill/src/signals.ts
+  0:0  error  Parsing error: Invalid value for lib provided: es2025
+
+/home/kushal/src/ts/multiplicationdrill/src/state.ts
+  0:0  error  Parsing error: Invalid value for lib provided: es2025
+
+/home/kushal/src/ts/multiplicationdrill/src/types.ts
+  0:0  error  Parsing error: Invalid value for lib provided: es2025
+
+/home/kushal/src/ts/multiplicationdrill/src/utils.ts
+  0:0  error  Parsing error: Invalid value for lib provided: es2025
+
+/home/kushal/src/ts/multiplicationdrill/src/vite-env.d.ts
+  0:0  error  Parsing error: Invalid value for lib provided: es2025
+
+✖ 10 problems (10 errors, 0 warnings)
+
+error Command failed with exit code 1.
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+
+real	0m1.024s
+user	0m1.470s
+sys	0m0.268s
+🚀 Starting export...
+📄 Adding: .github/workflows/ci-cd.yml
+📄 Adding: .github/workflows/coverage-comment.yml
+⏩ Skipping: .gitignore
+📄 Adding: Dockerfile.e2e
+⏩ Skipping: MIGRATION.md
+⏩ Skipping: README.md
+⏩ Skipping: docs/llm/dump.txt
+⏩ Skipping: docs/llm/output.txt
+⏩ Skipping: docs/llm/vendor/claude.md
+⏩ Skipping: docs/llm/vendor/commands.txt
+⏩ Skipping: docs/llm/vendor/instructions.md
+⏩ Skipping: docs/llm/vendor/memory.md
+⏩ Skipping: docs/llm/vendor/scratch
+📄 Adding: e2e/pages/index.ts
+📄 Adding: e2e/pages/quiz-page.ts
+📄 Adding: e2e/quiz.spec.ts
+⏩ Skipping: eslint.config.js
+⏩ Skipping: export.sh
+📄 Adding: index.html
+⏩ Skipping: manual-testing-notes.md
+📄 Adding: package.json
+📄 Adding: playwright.config.ts
+⏩ Skipping: public/vite.svg
+⏩ Skipping: scripts/coverage-report.js
+⏩ Skipping: setup.sh
+📄 Adding: src/__tests__/signals.test.ts
+📄 Adding: src/__tests__/state.test.ts
+📄 Adding: src/__tests__/utils.test.ts
+📄 Adding: src/app.ts
+📄 Adding: src/main.ts
+📄 Adding: src/signals.ts
+📄 Adding: src/state.ts
+📄 Adding: src/style.css
+📄 Adding: src/types.ts
+⏩ Skipping: src/typescript.svg
+📄 Adding: src/utils.ts
+⏩ Skipping: src/vite-env.d.ts
+📄 Adding: tsconfig.e2e.json
+📄 Adding: tsconfig.json
+📄 Adding: vite.config.ts
+📄 Adding: vitest.config.ts
+⏩ Skipping: yarn.lock
+
+✅ Done! 23 files → docs/llm/dump.txt
+
+real	0m0.096s
+user	0m0.050s
+sys	0m0.068s
+yarn install v1.22.22
+[1/4] Resolving packages...
+success Already up-to-date.
+Done in 0.09s.
+
+real	0m0.193s
+user	0m0.186s
+sys	0m0.045s
+yarn run v1.22.22
 $ tsc && vite build
-vite v8.0.0 building client environment for production...
+vite v8.0.2 building client environment for production...
 ✓ 9 modules transformed.
 computing gzip size...
 dist/index.html                3.58 kB │ gzip: 0.95 kB
 dist/assets/main-Cyhjhj37.css  5.39 kB │ gzip: 1.61 kB
-dist/assets/main-CRiBW7M9.js   8.26 kB │ gzip: 2.65 kB │ map: 26.11 kB
+dist/assets/main-DA2teIkJ.js   8.20 kB │ gzip: 2.67 kB │ map: 26.62 kB
 
-✓ built in 44ms
-Done in 0.87s.
+✓ built in 59ms
+Done in 1.19s.
 
-real	0m0.975s
-user	0m1.364s
-sys	0m0.259s
+real	0m1.301s
+user	0m2.059s
+sys	0m0.283s
 yarn run v1.22.22
 $ yarn lint && yarn type-check && yarn test:run && yarn e2e:container:build && yarn e2e:containernoci
 $ eslint src --max-warnings 0
-$ tsc --noEmit
-$ vitest run
+=============
 
- RUN  v4.1.0 /home/kushal/src/ts/multiplicationdrill
 
- ✓ src/__tests__/state.test.ts (9 tests) 3ms
- ✓ src/__tests__/signals.test.ts (9 tests) 4ms
- ✓ src/__tests__/utils.test.ts (14 tests) 10ms
+WARNING: You are currently running a version of TypeScript which is not officially supported by @typescript-eslint/typescript-estree.
 
- Test Files  3 passed (3)
-      Tests  32 passed (32)
-   Start at  05:48:18
-   Duration  553ms (transform 82ms, setup 0ms, import 119ms, tests 18ms, environment 1.24s)
 
-$ podman build -f Dockerfile.e2e -t multiplicationdrill-e2e .
-STEP 1/6: FROM mcr.microsoft.com/playwright:v1.58.2-noble
-STEP 2/6: WORKDIR /app
---> Using cache 6473021782e45f3c37e342debbd116ee25001b81c592f9b3d307d10cf6d7537e
---> 6473021782e4
-STEP 3/6: COPY package.json yarn.lock ./
---> Using cache a7d52491ee9f7839b076298638c87dabb90880a80efac8f119294fba00082cac
---> a7d52491ee9f
-STEP 4/6: RUN yarn install --frozen-lockfile
---> Using cache 6a14b6c4c6eea4e6056755662c2d223de84d5ddb1680c7255d956e784a84d48f
---> 6a14b6c4c6ee
-STEP 5/6: COPY . .
---> 6ba41963cfdd
-STEP 6/6: RUN yarn build
-yarn run v1.22.22
-$ tsc && vite build
-vite v8.0.0 building client environment for production...
-transforming...✓ 9 modules transformed.
-rendering chunks...
-computing gzip size...
-dist/index.html                3.58 kB │ gzip: 0.95 kB
-dist/assets/main-Cyhjhj37.css  5.39 kB │ gzip: 1.61 kB
-dist/assets/main-CRiBW7M9.js   8.26 kB │ gzip: 2.65 kB │ map: 26.11 kB
+* @typescript-eslint/typescript-estree version: 8.57.2
+* Supported TypeScript versions: >=4.8.4 <6.0.0
+* Your TypeScript version: 6.0.2
 
-✓ built in 36ms
-Done in 0.85s.
-COMMIT multiplicationdrill-e2e
---> 8cc2b680c83a
-Successfully tagged localhost/multiplicationdrill-e2e:latest
-8cc2b680c83a3bb25c7b0bbf102e900649e562dc6a7544615d175c56f2092804
-$ podman run --rm -it --cpus=8 --memory=8g -v $(pwd)/playwright-report:/app/playwright-report:Z -v $(pwd)/test-results:/app/test-results:Z multiplicationdrill-e2e yarn test:e2e
-yarn run v1.22.22
-$ playwright test
 
-Running 60 tests using 8 workers
-  60 passed (35.6s)
+Please only submit bug reports when using the officially supported version.
 
-To open last HTML report run:
 
-  yarn playwright show-report
+=============
 
-Done in 41.85s.
-Done in 50.35s.
+/home/kushal/src/ts/multiplicationdrill/src/__tests__/signals.test.ts
+  0:0  error  Parsing error: Invalid value for lib provided: es2025
 
-real	0m50.453s
-user	0m10.255s
-sys	0m5.069s
+/home/kushal/src/ts/multiplicationdrill/src/__tests__/state.test.ts
+  0:0  error  Parsing error: Invalid value for lib provided: es2025
 
-real	0m0.004s
-user	0m0.004s
-sys	0m0.000s
-[master 507fd01] add all files
+/home/kushal/src/ts/multiplicationdrill/src/__tests__/utils.test.ts
+  0:0  error  Parsing error: Invalid value for lib provided: es2025
+
+/home/kushal/src/ts/multiplicationdrill/src/app.ts
+  0:0  error  Parsing error: Invalid value for lib provided: es2025
+
+/home/kushal/src/ts/multiplicationdrill/src/main.ts
+  0:0  error  Parsing error: Invalid value for lib provided: es2025
+
+/home/kushal/src/ts/multiplicationdrill/src/signals.ts
+  0:0  error  Parsing error: Invalid value for lib provided: es2025
+
+/home/kushal/src/ts/multiplicationdrill/src/state.ts
+  0:0  error  Parsing error: Invalid value for lib provided: es2025
+
+/home/kushal/src/ts/multiplicationdrill/src/types.ts
+  0:0  error  Parsing error: Invalid value for lib provided: es2025
+
+/home/kushal/src/ts/multiplicationdrill/src/utils.ts
+  0:0  error  Parsing error: Invalid value for lib provided: es2025
+
+/home/kushal/src/ts/multiplicationdrill/src/vite-env.d.ts
+  0:0  error  Parsing error: Invalid value for lib provided: es2025
+
+✖ 10 problems (10 errors, 0 warnings)
+
+error Command failed with exit code 1.
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+error Command failed with exit code 1.
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+
+real	0m1.076s
+user	0m1.565s
+sys	0m0.303s
+
+real	0m0.007s
+user	0m0.001s
+sys	0m0.003s
+[master 99d22a8] add all files
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-real	0m0.006s
-user	0m0.000s
-sys	0m0.006s
-* remote origin
-  Fetch URL: git@github.com:multiplicationdrill/multiplicationdrill.github.io.git
-  Push  URL: git@github.com:multiplicationdrill/multiplicationdrill.github.io.git
-  HEAD branch: master
-  Remote branch:
-    master tracked
-  Local branch configured for 'git pull':
-    master merges with remote master
-  Local ref configured for 'git push':
-    master pushes to master (fast-forwardable)
-
-real	0m0.514s
-user	0m0.006s
-sys	0m0.008s
-Enumerating objects: 15, done.
-Counting objects: 100% (15/15), done.
-Delta compression using up to 16 threads
-Compressing objects: 100% (8/8), done.
-Writing objects: 100% (10/10), 1.85 KiB | 1.85 MiB/s, done.
-Total 10 (delta 4), reused 0 (delta 0), pack-reused 0 (from 0)
-remote: Resolving deltas: 100% (4/4), completed with 3 local objects.
-remote: 
-remote: GitHub found 11 vulnerabilities on multiplicationdrill/multiplicationdrill.github.io's default branch (4 high, 3 moderate, 4 low). To find out more, visit:
-remote:      https://github.com/multiplicationdrill/multiplicationdrill.github.io/security/dependabot
-remote: 
-To github.com:multiplicationdrill/multiplicationdrill.github.io.git
-   354a7d7..507fd01  master -> master
-
-real	0m0.923s
-user	0m0.011s
-sys	0m0.009s
-kushal@fedora:~/src/ts/multiplicationdrill$ cd ~/src/ts/multiplicationdrill/; time yarn outdated; time yarn lint; time bash export.sh; time yarn; time yarn build; time yarn test:all; time git add .; time git commit --message "add all files"; time git remote show origin; time git push origin --all;
-yarn outdated v1.22.22
-error Outdated lockfile. Please run `yarn install` and try again.
-info Visit https://yarnpkg.com/en/docs/cli/outdated for documentation about this command.
-
-real	0m0.590s
-user	0m0.299s
-sys	0m0.122s
-yarn run v1.22.22
-$ eslint src --max-warnings 0
-
-/home/kushal/src/ts/multiplicationdrill/src/__tests__/signals.test.ts
-  0:0  error  Parsing error: Unable to parse the specified 'tsconfig' file. Ensure it's correct and has valid syntax.
-
-tsconfig.json(3,15): error TS6046: Argument for '--target' option must be: 'es5', 'es6', 'es2015', 'es2016', 'es2017', 'es2018', 'es2019', 'es2020', 'es2021', 'es2022', 'es2023', 'es2024', 'esnext'.
-tsconfig.json(6,13): error TS6046: Argument for '--lib' option must be: 'es5', 'es6', 'es2015', 'es7', 'es2016', 'es2017', 'es2018', 'es2019', 'es2020', 'es2021', 'es2022', 'es2023', 'es2024', 'esnext', 'dom', 'dom.iterable', 'dom.asynciterable', 'webworker', 'webworker.importscripts', 'webworker.iterable', 'webworker.asynciterable', 'scripthost', 'es2015.core', 'es2015.collection', 'es2015.generator', 'es2015.iterable', 'es2015.promise', 'es2015.proxy', 'es2015.reflect', 'es2015.symbol', 'es2015.symbol.wellknown', 'es2016.array.include', 'es2016.intl', 'es2017.arraybuffer', 'es2017.date', 'es2017.object', 'es2017.sharedmemory', 'es2017.string', 'es2017.intl', 'es2017.typedarrays', 'es2018.asyncgenerator', 'es2018.asynciterable', 'es2018.intl', 'es2018.promise', 'es2018.regexp', 'es2019.array', 'es2019.object', 'es2019.string', 'es2019.symbol', 'es2019.intl', 'es2020.bigint', 'es2020.date', 'es2020.promise', 'es2020.sharedmemory', 'es2020.string', 'es2020.symbol.wellknown', 'es2020.intl', 'es2020.number', 'es2021.promise', 'es2021.string', 'es2021.weakref', 'es2021.intl', 'es2022.array', 'es2022.error', 'es2022.intl', 'es2022.object', 'es2022.string', 'es2022.regexp', 'es2023.array', 'es2023.collection', 'es2023.intl', 'es2024.arraybuffer', 'es2024.collection', 'es2024.object', 'es2024.promise', 'es2024.regexp', 'es2024.sharedmemory', 'es2024.string', 'esnext.array', 'esnext.collection', 'esnext.symbol', 'esnext.asynciterable', 'esnext.intl', 'esnext.disposable', 'esnext.bigint', 'esnext.string', 'esnext.promise', 'esnext.weakref', 'esnext.decorators', 'esnext.object', 'esnext.regexp', 'esnext.iterator', 'esnext.float16', 'esnext.error', 'esnext.sharedmemory', 'decorators', 'decorators.legacy'
-
-/home/kushal/src/ts/multiplicationdrill/src/__tests__/state.test.ts
-  0:0  error  Parsing error: Unable to parse the specified 'tsconfig' file. Ensure it's correct and has valid syntax.
-
-tsconfig.json(3,15): error TS6046: Argument for '--target' option must be: 'es5', 'es6', 'es2015', 'es2016', 'es2017', 'es2018', 'es2019', 'es2020', 'es2021', 'es2022', 'es2023', 'es2024', 'esnext'.
-tsconfig.json(6,13): error TS6046: Argument for '--lib' option must be: 'es5', 'es6', 'es2015', 'es7', 'es2016', 'es2017', 'es2018', 'es2019', 'es2020', 'es2021', 'es2022', 'es2023', 'es2024', 'esnext', 'dom', 'dom.iterable', 'dom.asynciterable', 'webworker', 'webworker.importscripts', 'webworker.iterable', 'webworker.asynciterable', 'scripthost', 'es2015.core', 'es2015.collection', 'es2015.generator', 'es2015.iterable', 'es2015.promise', 'es2015.proxy', 'es2015.reflect', 'es2015.symbol', 'es2015.symbol.wellknown', 'es2016.array.include', 'es2016.intl', 'es2017.arraybuffer', 'es2017.date', 'es2017.object', 'es2017.sharedmemory', 'es2017.string', 'es2017.intl', 'es2017.typedarrays', 'es2018.asyncgenerator', 'es2018.asynciterable', 'es2018.intl', 'es2018.promise', 'es2018.regexp', 'es2019.array', 'es2019.object', 'es2019.string', 'es2019.symbol', 'es2019.intl', 'es2020.bigint', 'es2020.date', 'es2020.promise', 'es2020.sharedmemory', 'es2020.string', 'es2020.symbol.wellknown', 'es2020.intl', 'es2020.number', 'es2021.promise', 'es2021.string', 'es2021.weakref', 'es2021.intl', 'es2022.array', 'es2022.error', 'es2022.intl', 'es2022.object', 'es2022.string', 'es2022.regexp', 'es2023.array', 'es2023.collection', 'es2023.intl', 'es2024.arraybuffer', 'es2024.collection', 'es2024.object', 'es2024.promise', 'es2024.regexp', 'es2024.sharedmemory', 'es2024.string', 'esnext.array', 'esnext.collection', 'esnext.symbol', 'esnext.asynciterable', 'esnext.intl', 'esnext.disposable', 'esnext.bigint', 'esnext.string', 'esnext.promise', 'esnext.weakref', 'esnext.decorators', 'esnext.object', 'esnext.regexp', 'esnext.iterator', 'esnext.float16', 'esnext.error', 'esnext.sharedmemory', 'decorators', 'decorators.legacy'
-
-/home/kushal/src/ts/multiplicationdrill/src/__tests__/utils.test.ts
-  0:0  error  Parsing error: Unable to parse the specified 'tsconfig' file. Ensure it's correct and has valid syntax.
-
-tsconfig.json(3,15): error TS6046: Argument for '--target' option must be: 'es5', 'es6', 'es2015', 'es2016', 'es2017', 'es2018', 'es2019', 'es2020', 'es2021', 'es2022', 'es2023', 'es2024', 'esnext'.
-tsconfig.json(6,13): error TS6046: Argument for '--lib' option must be: 'es5', 'es6', 'es2015', 'es7', 'es2016', 'es2017', 'es2018', 'es2019', 'es2020', 'es2021', 'es2022', 'es2023', 'es2024', 'esnext', 'dom', 'dom.iterable', 'dom.asynciterable', 'webworker', 'webworker.importscripts', 'webworker.iterable', 'webworker.asynciterable', 'scripthost', 'es2015.core', 'es2015.collection', 'es2015.generator', 'es2015.iterable', 'es2015.promise', 'es2015.proxy', 'es2015.reflect', 'es2015.symbol', 'es2015.symbol.wellknown', 'es2016.array.include', 'es2016.intl', 'es2017.arraybuffer', 'es2017.date', 'es2017.object', 'es2017.sharedmemory', 'es2017.string', 'es2017.intl', 'es2017.typedarrays', 'es2018.asyncgenerator', 'es2018.asynciterable', 'es2018.intl', 'es2018.promise', 'es2018.regexp', 'es2019.array', 'es2019.object', 'es2019.string', 'es2019.symbol', 'es2019.intl', 'es2020.bigint', 'es2020.date', 'es2020.promise', 'es2020.sharedmemory', 'es2020.string', 'es2020.symbol.wellknown', 'es2020.intl', 'es2020.number', 'es2021.promise', 'es2021.string', 'es2021.weakref', 'es2021.intl', 'es2022.array', 'es2022.error', 'es2022.intl', 'es2022.object', 'es2022.string', 'es2022.regexp', 'es2023.array', 'es2023.collection', 'es2023.intl', 'es2024.arraybuffer', 'es2024.collection', 'es2024.object', 'es2024.promise', 'es2024.regexp', 'es2024.sharedmemory', 'es2024.string', 'esnext.array', 'esnext.collection', 'esnext.symbol', 'esnext.asynciterable', 'esnext.intl', 'esnext.disposable', 'esnext.bigint', 'esnext.string', 'esnext.promise', 'esnext.weakref', 'esnext.decorators', 'esnext.object', 'esnext.regexp', 'esnext.iterator', 'esnext.float16', 'esnext.error', 'esnext.sharedmemory', 'decorators', 'decorators.legacy'
-
-/home/kushal/src/ts/multiplicationdrill/src/app.ts
-  0:0  error  Parsing error: Unable to parse the specified 'tsconfig' file. Ensure it's correct and has valid syntax.
-
-tsconfig.json(3,15): error TS6046: Argument for '--target' option must be: 'es5', 'es6', 'es2015', 'es2016', 'es2017', 'es2018', 'es2019', 'es2020', 'es2021', 'es2022', 'es2023', 'es2024', 'esnext'.
-tsconfig.json(6,13): error TS6046: Argument for '--lib' option must be: 'es5', 'es6', 'es2015', 'es7', 'es2016', 'es2017', 'es2018', 'es2019', 'es2020', 'es2021', 'es2022', 'es2023', 'es2024', 'esnext', 'dom', 'dom.iterable', 'dom.asynciterable', 'webworker', 'webworker.importscripts', 'webworker.iterable', 'webworker.asynciterable', 'scripthost', 'es2015.core', 'es2015.collection', 'es2015.generator', 'es2015.iterable', 'es2015.promise', 'es2015.proxy', 'es2015.reflect', 'es2015.symbol', 'es2015.symbol.wellknown', 'es2016.array.include', 'es2016.intl', 'es2017.arraybuffer', 'es2017.date', 'es2017.object', 'es2017.sharedmemory', 'es2017.string', 'es2017.intl', 'es2017.typedarrays', 'es2018.asyncgenerator', 'es2018.asynciterable', 'es2018.intl', 'es2018.promise', 'es2018.regexp', 'es2019.array', 'es2019.object', 'es2019.string', 'es2019.symbol', 'es2019.intl', 'es2020.bigint', 'es2020.date', 'es2020.promise', 'es2020.sharedmemory', 'es2020.string', 'es2020.symbol.wellknown', 'es2020.intl', 'es2020.number', 'es2021.promise', 'es2021.string', 'es2021.weakref', 'es2021.intl', 'es2022.array', 'es2022.error', 'es2022.intl', 'es2022.object', 'es2022.string', 'es2022.regexp', 'es2023.array', 'es2023.collection', 'es2023.intl', 'es2024.arraybuffer', 'es2024.collection', 'es2024.object', 'es2024.promise', 'es2024.regexp', 'es2024.sharedmemory', 'es2024.string', 'esnext.array', 'esnext.collection', 'esnext.symbol', 'esnext.asynciterable', 'esnext.intl', 'esnext.disposable', 'esnext.bigint', 'esnext.string', 'esnext.promise', 'esnext.weakref', 'esnext.decorators', 'esnext.object', 'esnext.regexp', 'esnext.iterator', 'esnext.float16', 'esnext.error', 'esnext.sharedmemory', 'decorators', 'decorators.legacy'
-
-/home/kushal/src/ts/multiplicationdrill/src/main.ts
-  0:0  error  Parsing error: Unable to parse the specified 'tsconfig' file. Ensure it's correct and has valid syntax.
-
-tsconfig.json(3,15): error TS6046: Argument for '--target' option must be: 'es5', 'es6', 'es2015', 'es2016', 'es2017', 'es2018', 'es2019', 'es2020', 'es2021', 'es2022', 'es2023', 'es2024', 'esnext'.
-tsconfig.json(6,13): error TS6046: Argument for '--lib' option must be: 'es5', 'es6', 'es2015', 'es7', 'es2016', 'es2017', 'es2018', 'es2019', 'es2020', 'es2021', 'es2022', 'es2023', 'es2024', 'esnext', 'dom', 'dom.iterable', 'dom.asynciterable', 'webworker', 'webworker.importscripts', 'webworker.iterable', 'webworker.asynciterable', 'scripthost', 'es2015.core', 'es2015.collection', 'es2015.generator', 'es2015.iterable', 'es2015.promise', 'es2015.proxy', 'es2015.reflect', 'es2015.symbol', 'es2015.symbol.wellknown', 'es2016.array.include', 'es2016.intl', 'es2017.arraybuffer', 'es2017.date', 'es2017.object', 'es2017.sharedmemory', 'es2017.string', 'es2017.intl', 'es2017.typedarrays', 'es2018.asyncgenerator', 'es2018.asynciterable', 'es2018.intl', 'es2018.promise', 'es2018.regexp', 'es2019.array', 'es2019.object', 'es2019.string', 'es2019.symbol', 'es2019.intl', 'es2020.bigint', 'es2020.date', 'es2020.promise', 'es2020.sharedmemory', 'es2020.string', 'es2020.symbol.wellknown', 'es2020.intl', 'es2020.number', 'es2021.promise', 'es2021.string', 'es2021.weakref', 'es2021.intl', 'es2022.array', 'es2022.error', 'es2022.intl', 'es2022.object', 'es2022.string', 'es2022.regexp', 'es2023.array', 'es2023.collection', 'es2023.intl', 'es2024.arraybuffer', 'es2024.collection', 'es2024.object', 'es2024.promise', 'es2024.regexp', 'es2024.sharedmemory', 'es2024.string', 'esnext.array', 'esnext.collection', 'esnext.symbol', 'esnext.asynciterable', 'esnext.intl', 'esnext.disposable', 'esnext.bigint', 'esnext.string', 'esnext.promise', 'esnext.weakref', 'esnext.decorators', 'esnext.object', 'esnext.regexp', 'esnext.iterator', 'esnext.float16', 'esnext.error', 'esnext.sharedmemory', 'decorators', 'decorators.legacy'
-
-/home/kushal/src/ts/multiplicationdrill/src/signals.ts
-  0:0  error  Parsing error: Unable to parse the specified 'tsconfig' file. Ensure it's correct and has valid syntax.
-
-tsconfig.json(3,15): error TS6046: Argument for '--target' option must be: 'es5', 'es6', 'es2015', 'es2016', 'es2017', 'es2018', 'es2019', 'es2020', 'es2021', 'es2022', 'es2023', 'es2024', 'esnext'.
-tsconfig.json(6,13): error TS6046: Argument for '--lib' option must be: 'es5', 'es6', 'es2015', 'es7', 'es2016', 'es2017', 'es2018', 'es2019', 'es2020', 'es2021', 'es2022', 'es2023', 'es2024', 'esnext', 'dom', 'dom.iterable', 'dom.asynciterable', 'webworker', 'webworker.importscripts', 'webworker.iterable', 'webworker.asynciterable', 'scripthost', 'es2015.core', 'es2015.collection', 'es2015.generator', 'es2015.iterable', 'es2015.promise', 'es2015.proxy', 'es2015.reflect', 'es2015.symbol', 'es2015.symbol.wellknown', 'es2016.array.include', 'es2016.intl', 'es2017.arraybuffer', 'es2017.date', 'es2017.object', 'es2017.sharedmemory', 'es2017.string', 'es2017.intl', 'es2017.typedarrays', 'es2018.asyncgenerator', 'es2018.asynciterable', 'es2018.intl', 'es2018.promise', 'es2018.regexp', 'es2019.array', 'es2019.object', 'es2019.string', 'es2019.symbol', 'es2019.intl', 'es2020.bigint', 'es2020.date', 'es2020.promise', 'es2020.sharedmemory', 'es2020.string', 'es2020.symbol.wellknown', 'es2020.intl', 'es2020.number', 'es2021.promise', 'es2021.string', 'es2021.weakref', 'es2021.intl', 'es2022.array', 'es2022.error', 'es2022.intl', 'es2022.object', 'es2022.string', 'es2022.regexp', 'es2023.array', 'es2023.collection', 'es2023.intl', 'es2024.arraybuffer', 'es2024.collection', 'es2024.object', 'es2024.promise', 'es2024.regexp', 'es2024.sharedmemory', 'es2024.string', 'esnext.array', 'esnext.collection', 'esnext.symbol', 'esnext.asynciterable', 'esnext.intl', 'esnext.disposable', 'esnext.bigint', 'esnext.string', 'esnext.promise', 'esnext.weakref', 'esnext.decorators', 'esnext.object', 'esnext.regexp', 'esnext.iterator', 'esnext.float16', 'esnext.error', 'esnext.sharedmemory', 'decorators', 'decorators.legacy'
-
-/home/kushal/src/ts/multiplicationdrill/src/state.ts
-  0:0  error  Parsing error: Unable to parse the specified 'tsconfig' file. Ensure it's correct and has valid syntax.
-
-tsconfig.json(3,15): error TS6046: Argument for '--target' option must be: 'es5', 'es6', 'es2015', 'es2016', 'es2017', 'es2018', 'es2019', 'es2020', 'es2021', 'es2022', 'es2023', 'es2024', 'esnext'.
-tsconfig.json(6,13): error TS6046: Argument for '--lib' option must be: 'es5', 'es6', 'es2015', 'es7', 'es2016', 'es2017', 'es2018', 'es2019', 'es2020', 'es2021', 'es2022', 'es2023', 'es2024', 'esnext', 'dom', 'dom.iterable', 'dom.asynciterable', 'webworker', 'webworker.importscripts', 'webworker.iterable', 'webworker.asynciterable', 'scripthost', 'es2015.core', 'es2015.collection', 'es2015.generator', 'es2015.iterable', 'es2015.promise', 'es2015.proxy', 'es2015.reflect', 'es2015.symbol', 'es2015.symbol.wellknown', 'es2016.array.include', 'es2016.intl', 'es2017.arraybuffer', 'es2017.date', 'es2017.object', 'es2017.sharedmemory', 'es2017.string', 'es2017.intl', 'es2017.typedarrays', 'es2018.asyncgenerator', 'es2018.asynciterable', 'es2018.intl', 'es2018.promise', 'es2018.regexp', 'es2019.array', 'es2019.object', 'es2019.string', 'es2019.symbol', 'es2019.intl', 'es2020.bigint', 'es2020.date', 'es2020.promise', 'es2020.sharedmemory', 'es2020.string', 'es2020.symbol.wellknown', 'es2020.intl', 'es2020.number', 'es2021.promise', 'es2021.string', 'es2021.weakref', 'es2021.intl', 'es2022.array', 'es2022.error', 'es2022.intl', 'es2022.object', 'es2022.string', 'es2022.regexp', 'es2023.array', 'es2023.collection', 'es2023.intl', 'es2024.arraybuffer', 'es2024.collection', 'es2024.object', 'es2024.promise', 'es2024.regexp', 'es2024.sharedmemory', 'es2024.string', 'esnext.array', 'esnext.collection', 'esnext.symbol', 'esnext.asynciterable', 'esnext.intl', 'esnext.disposable', 'esnext.bigint', 'esnext.string', 'esnext.promise', 'esnext.weakref', 'esnext.decorators', 'esnext.object', 'esnext.regexp', 'esnext.iterator', 'esnext.float16', 'esnext.error', 'esnext.sharedmemory', 'decorators', 'decorators.legacy'
-
-/home/kushal/src/ts/multiplicationdrill/src/types.ts
-  0:0  error  Parsing error: Unable to parse the specified 'tsconfig' file. Ensure it's correct and has valid syntax.
-
-tsconfig.json(3,15): error TS6046: Argument for '--target' option must be: 'es5', 'es6', 'es2015', 'es2016', 'es2017', 'es2018', 'es2019', 'es2020', 'es2021', 'es2022', 'es2023', 'es2024', 'esnext'.
-tsconfig.json(6,13): error TS6046: Argument for '--lib' option must be: 'es5', 'es6', 'es2015', 'es7', 'es2016', 'es2017', 'es2018', 'es2019', 'es2020', 'es2021', 'es2022', 'es2023', 'es2024', 'esnext', 'dom', 'dom.iterable', 'dom.asynciterable', 'webworker', 'webworker.importscripts', 'webworker.iterable', 'webworker.asynciterable', 'scripthost', 'es2015.core', 'es2015.collection', 'es2015.generator', 'es2015.iterable', 'es2015.promise', 'es2015.proxy', 'es2015.reflect', 'es2015.symbol', 'es2015.symbol.wellknown', 'es2016.array.include', 'es2016.intl', 'es2017.arraybuffer', 'es2017.date', 'es2017.object', 'es2017.sharedmemory', 'es2017.string', 'es2017.intl', 'es2017.typedarrays', 'es2018.asyncgenerator', 'es2018.asynciterable', 'es2018.intl', 'es2018.promise', 'es2018.regexp', 'es2019.array', 'es2019.object', 'es2019.string', 'es2019.symbol', 'es2019.intl', 'es2020.bigint', 'es2020.date', 'es2020.promise', 'es2020.sharedmemory', 'es2020.string', 'es2020.symbol.wellknown', 'es2020.intl', 'es2020.number', 'es2021.promise', 'es2021.string', 'es2021.weakref', 'es2021.intl', 'es2022.array', 'es2022.error', 'es2022.intl', 'es2022.object', 'es2022.string', 'es2022.regexp', 'es2023.array', 'es2023.collection', 'es2023.intl', 'es2024.arraybuffer', 'es2024.collection', 'es2024.object', 'es2024.promise', 'es2024.regexp', 'es2024.sharedmemory', 'es2024.string', 'esnext.array', 'esnext.collection', 'esnext.symbol', 'esnext.asynciterable', 'esnext.intl', 'esnext.disposable', 'esnext.bigint', 'esnext.string', 'esnext.promise', 'esnext.weakref', 'esnext.decorators', 'esnext.object', 'esnext.regexp', 'esnext.iterator', 'esnext.float16', 'esnext.error', 'esnext.sharedmemory', 'decorators', 'decorators.legacy'
-
-/home/kushal/src/ts/multiplicationdrill/src/utils.ts
-  0:0  error  Parsing error: Unable to parse the specified 'tsconfig' file. Ensure it's correct and has valid syntax.
-
-tsconfig.json(3,15): error TS6046: Argument for '--target' option must be: 'es5', 'es6', 'es2015', 'es2016', 'es2017', 'es2018', 'es2019', 'es2020', 'es2021', 'es2022', 'es2023', 'es2024', 'esnext'.
-tsconfig.json(6,13): error TS6046: Argument for '--lib' option must be: 'es5', 'es6', 'es2015', 'es7', 'es2016', 'es2017', 'es2018', 'es2019', 'es2020', 'es2021', 'es2022', 'es2023', 'es2024', 'esnext', 'dom', 'dom.iterable', 'dom.asynciterable', 'webworker', 'webworker.importscripts', 'webworker.iterable', 'webworker.asynciterable', 'scripthost', 'es2015.core', 'es2015.collection', 'es2015.generator', 'es2015.iterable', 'es2015.promise', 'es2015.proxy', 'es2015.reflect', 'es2015.symbol', 'es2015.symbol.wellknown', 'es2016.array.include', 'es2016.intl', 'es2017.arraybuffer', 'es2017.date', 'es2017.object', 'es2017.sharedmemory', 'es2017.string', 'es2017.intl', 'es2017.typedarrays', 'es2018.asyncgenerator', 'es2018.asynciterable', 'es2018.intl', 'es2018.promise', 'es2018.regexp', 'es2019.array', 'es2019.object', 'es2019.string', 'es2019.symbol', 'es2019.intl', 'es2020.bigint', 'es2020.date', 'es2020.promise', 'es2020.sharedmemory', 'es2020.string', 'es2020.symbol.wellknown', 'es2020.intl', 'es2020.number', 'es2021.promise', 'es2021.string', 'es2021.weakref', 'es2021.intl', 'es2022.array', 'es2022.error', 'es2022.intl', 'es2022.object', 'es2022.string', 'es2022.regexp', 'es2023.array', 'es2023.collection', 'es2023.intl', 'es2024.arraybuffer', 'es2024.collection', 'es2024.object', 'es2024.promise', 'es2024.regexp', 'es2024.sharedmemory', 'es2024.string', 'esnext.array', 'esnext.collection', 'esnext.symbol', 'esnext.asynciterable', 'esnext.intl', 'esnext.disposable', 'esnext.bigint', 'esnext.string', 'esnext.promise', 'esnext.weakref', 'esnext.decorators', 'esnext.object', 'esnext.regexp', 'esnext.iterator', 'esnext.float16', 'esnext.error', 'esnext.sharedmemory', 'decorators', 'decorators.legacy'
-
-/home/kushal/src/ts/multiplicationdrill/src/vite-env.d.ts
-  0:0  error  Parsing error: Unable to parse the specified 'tsconfig' file. Ensure it's correct and has valid syntax.
-
-tsconfig.json(3,15): error TS6046: Argument for '--target' option must be: 'es5', 'es6', 'es2015', 'es2016', 'es2017', 'es2018', 'es2019', 'es2020', 'es2021', 'es2022', 'es2023', 'es2024', 'esnext'.
-tsconfig.json(6,13): error TS6046: Argument for '--lib' option must be: 'es5', 'es6', 'es2015', 'es7', 'es2016', 'es2017', 'es2018', 'es2019', 'es2020', 'es2021', 'es2022', 'es2023', 'es2024', 'esnext', 'dom', 'dom.iterable', 'dom.asynciterable', 'webworker', 'webworker.importscripts', 'webworker.iterable', 'webworker.asynciterable', 'scripthost', 'es2015.core', 'es2015.collection', 'es2015.generator', 'es2015.iterable', 'es2015.promise', 'es2015.proxy', 'es2015.reflect', 'es2015.symbol', 'es2015.symbol.wellknown', 'es2016.array.include', 'es2016.intl', 'es2017.arraybuffer', 'es2017.date', 'es2017.object', 'es2017.sharedmemory', 'es2017.string', 'es2017.intl', 'es2017.typedarrays', 'es2018.asyncgenerator', 'es2018.asynciterable', 'es2018.intl', 'es2018.promise', 'es2018.regexp', 'es2019.array', 'es2019.object', 'es2019.string', 'es2019.symbol', 'es2019.intl', 'es2020.bigint', 'es2020.date', 'es2020.promise', 'es2020.sharedmemory', 'es2020.string', 'es2020.symbol.wellknown', 'es2020.intl', 'es2020.number', 'es2021.promise', 'es2021.string', 'es2021.weakref', 'es2021.intl', 'es2022.array', 'es2022.error', 'es2022.intl', 'es2022.object', 'es2022.string', 'es2022.regexp', 'es2023.array', 'es2023.collection', 'es2023.intl', 'es2024.arraybuffer', 'es2024.collection', 'es2024.object', 'es2024.promise', 'es2024.regexp', 'es2024.sharedmemory', 'es2024.string', 'esnext.array', 'esnext.collection', 'esnext.symbol', 'esnext.asynciterable', 'esnext.intl', 'esnext.disposable', 'esnext.bigint', 'esnext.string', 'esnext.promise', 'esnext.weakref', 'esnext.decorators', 'esnext.object', 'esnext.regexp', 'esnext.iterator', 'esnext.float16', 'esnext.error', 'esnext.sharedmemory', 'decorators', 'decorators.legacy'
-
-✖ 10 problems (10 errors, 0 warnings)
-
-error Command failed with exit code 1.
-info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
-
-real	0m0.692s
-user	0m0.684s
-sys	0m0.234s
-🚀 Starting export...
-📄 Adding: .github/workflows/ci-cd.yml
-📄 Adding: .github/workflows/coverage-comment.yml
-⏩ Skipping: .gitignore
-📄 Adding: Dockerfile.e2e
-⏩ Skipping: MIGRATION.md
-⏩ Skipping: README.md
-⏩ Skipping: docs/llm/dump.txt
-⏩ Skipping: docs/llm/output.txt
-⏩ Skipping: docs/llm/vendor/claude.md
-⏩ Skipping: docs/llm/vendor/commands.txt
-⏩ Skipping: docs/llm/vendor/instructions.md
-⏩ Skipping: docs/llm/vendor/memory.md
-⏩ Skipping: docs/llm/vendor/scratch
-📄 Adding: e2e/pages/index.ts
-📄 Adding: e2e/pages/quiz-page.ts
-📄 Adding: e2e/quiz.spec.ts
-⏩ Skipping: eslint.config.js
-⏩ Skipping: export.sh
-📄 Adding: index.html
-⏩ Skipping: manual-testing-notes.md
-📄 Adding: package.json
-📄 Adding: playwright.config.ts
-⏩ Skipping: public/vite.svg
-⏩ Skipping: scripts/coverage-report.js
-⏩ Skipping: setup.sh
-📄 Adding: src/__tests__/signals.test.ts
-📄 Adding: src/__tests__/state.test.ts
-📄 Adding: src/__tests__/utils.test.ts
-📄 Adding: src/app.ts
-📄 Adding: src/main.ts
-📄 Adding: src/signals.ts
-📄 Adding: src/state.ts
-📄 Adding: src/style.css
-📄 Adding: src/types.ts
-⏩ Skipping: src/typescript.svg
-📄 Adding: src/utils.ts
-⏩ Skipping: src/vite-env.d.ts
-📄 Adding: tsconfig.e2e.json
-📄 Adding: tsconfig.json
-📄 Adding: vite.config.ts
-📄 Adding: vitest.config.ts
-⏩ Skipping: yarn.lock
-
-✅ Done! 23 files → docs/llm/dump.txt
-
-real	0m0.091s
-user	0m0.042s
-sys	0m0.074s
-yarn install v1.22.22
-[1/4] Resolving packages...
-[2/4] Fetching packages...
-[3/4] Linking dependencies...
-warning " > typescript-eslint@8.57.2" has incorrect peer dependency "typescript@>=4.8.4 <6.0.0".
-warning "typescript-eslint > @typescript-eslint/utils@8.57.2" has incorrect peer dependency "typescript@>=4.8.4 <6.0.0".
-warning "typescript-eslint > @typescript-eslint/parser@8.57.2" has incorrect peer dependency "typescript@>=4.8.4 <6.0.0".
-warning "typescript-eslint > @typescript-eslint/typescript-estree@8.57.2" has incorrect peer dependency "typescript@>=4.8.4 <6.0.0".
-warning "typescript-eslint > @typescript-eslint/eslint-plugin@8.57.2" has incorrect peer dependency "typescript@>=4.8.4 <6.0.0".
-warning "typescript-eslint > @typescript-eslint/typescript-estree > @typescript-eslint/project-service@8.57.2" has incorrect peer dependency "typescript@>=4.8.4 <6.0.0".
-warning "typescript-eslint > @typescript-eslint/typescript-estree > @typescript-eslint/tsconfig-utils@8.57.2" has incorrect peer dependency "typescript@>=4.8.4 <6.0.0".
-warning "typescript-eslint > @typescript-eslint/eslint-plugin > @typescript-eslint/type-utils@8.57.2" has incorrect peer dependency "typescript@>=4.8.4 <6.0.0".
-[4/4] Building fresh packages...
-success Saved lockfile.
-Done in 7.81s.
-
-real	0m7.943s
-user	0m5.523s
-sys	0m2.133s
-yarn run v1.22.22
-$ tsc && vite build
-vite v8.0.2 building client environment for production...
-✓ 9 modules transformed.
-computing gzip size...
-dist/index.html                3.58 kB │ gzip: 0.95 kB
-dist/assets/main-Cyhjhj37.css  5.39 kB │ gzip: 1.61 kB
-dist/assets/main-DA2teIkJ.js   8.20 kB │ gzip: 2.67 kB │ map: 26.62 kB
-
-✓ built in 38ms
-Done in 1.27s.
-
-real	0m1.376s
-user	0m2.182s
-sys	0m0.266s
-yarn run v1.22.22
-$ yarn lint && yarn type-check && yarn test:run && yarn e2e:container:build && yarn e2e:containernoci
-$ eslint src --max-warnings 0
-=============
-
-
-WARNING: You are currently running a version of TypeScript which is not officially supported by @typescript-eslint/typescript-estree.
-
-
-* @typescript-eslint/typescript-estree version: 8.57.2
-* Supported TypeScript versions: >=4.8.4 <6.0.0
-* Your TypeScript version: 6.0.2
-
-
-Please only submit bug reports when using the officially supported version.
-
-
-=============
-
-/home/kushal/src/ts/multiplicationdrill/src/__tests__/signals.test.ts
-  0:0  error  Parsing error: Invalid value for lib provided: es2025
-
-/home/kushal/src/ts/multiplicationdrill/src/__tests__/state.test.ts
-  0:0  error  Parsing error: Invalid value for lib provided: es2025
-
-/home/kushal/src/ts/multiplicationdrill/src/__tests__/utils.test.ts
-  0:0  error  Parsing error: Invalid value for lib provided: es2025
-
-/home/kushal/src/ts/multiplicationdrill/src/app.ts
-  0:0  error  Parsing error: Invalid value for lib provided: es2025
-
-/home/kushal/src/ts/multiplicationdrill/src/main.ts
-  0:0  error  Parsing error: Invalid value for lib provided: es2025
-
-/home/kushal/src/ts/multiplicationdrill/src/signals.ts
-  0:0  error  Parsing error: Invalid value for lib provided: es2025
-
-/home/kushal/src/ts/multiplicationdrill/src/state.ts
-  0:0  error  Parsing error: Invalid value for lib provided: es2025
-
-/home/kushal/src/ts/multiplicationdrill/src/types.ts
-  0:0  error  Parsing error: Invalid value for lib provided: es2025
-
-/home/kushal/src/ts/multiplicationdrill/src/utils.ts
-  0:0  error  Parsing error: Invalid value for lib provided: es2025
-
-/home/kushal/src/ts/multiplicationdrill/src/vite-env.d.ts
-  0:0  error  Parsing error: Invalid value for lib provided: es2025
-
-✖ 10 problems (10 errors, 0 warnings)
-
-error Command failed with exit code 1.
-info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
-error Command failed with exit code 1.
-info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
-
-real	0m1.264s
-user	0m1.704s
-sys	0m0.320s
-
-real	0m0.004s
-user	0m0.003s
-sys	0m0.001s
-[master 1d4cbdb] add all files
- 2 files changed, 494 insertions(+), 494 deletions(-)
-
-real	0m0.005s
-user	0m0.005s
-sys	0m0.001s
-* remote origin
-  Fetch URL: git@github.com:multiplicationdrill/multiplicationdrill.github.io.git
-  Push  URL: git@github.com:multiplicationdrill/multiplicationdrill.github.io.git
-  HEAD branch: master
-  Remote branch:
-    master tracked
-  Local branch configured for 'git pull':
-    master merges with remote master
-  Local ref configured for 'git push':
-    master pushes to master (fast-forwardable)
-
-real	0m0.478s
-user	0m0.009s
-sys	0m0.004s
-Enumerating objects: 53, done.
-Counting objects: 100% (53/53), done.
-Delta compression using up to 16 threads
-Compressing objects: 100% (29/29), done.
-Writing objects: 100% (32/32), 15.59 KiB | 7.80 MiB/s, done.
-Total 32 (delta 23), reused 0 (delta 0), pack-reused 0 (from 0)
-remote: Resolving deltas: 100% (23/23), completed with 15 local objects.
-remote: 
-remote: GitHub found 11 vulnerabilities on multiplicationdrill/multiplicationdrill.github.io's default branch (4 high, 3 moderate, 4 low). To find out more, visit:
-remote:      https://github.com/multiplicationdrill/multiplicationdrill.github.io/security/dependabot
-remote: 
-To github.com:multiplicationdrill/multiplicationdrill.github.io.git
-   507fd01..1d4cbdb  master -> master
-
-real	0m0.780s
-user	0m0.012s
-sys	0m0.013s
-kushal@fedora:~/src/ts/multiplicationdrill$ cd ~/src/ts/multiplicationdrill/; time yarn outdated; time yarn install; time yarn lint; time bash export.sh; time yarn; time yarn build; time yarn test:all; time git add .; time git commit --message "add all files"; time git remote show origin; time git push origin --all;
-yarn outdated v1.22.22
-Done in 2.32s.
-
-real	0m2.446s
-user	0m0.722s
-sys	0m0.265s
-yarn install v1.22.22
-[1/4] Resolving packages...
-success Already up-to-date.
-Done in 0.08s.
-
-real	0m0.183s
-user	0m0.161s
-sys	0m0.058s
-yarn run v1.22.22
-$ eslint src --max-warnings 0
-=============
-
-
-WARNING: You are currently running a version of TypeScript which is not officially supported by @typescript-eslint/typescript-estree.
-
-
-* @typescript-eslint/typescript-estree version: 8.57.2
-* Supported TypeScript versions: >=4.8.4 <6.0.0
-* Your TypeScript version: 6.0.2
-
-
-Please only submit bug reports when using the officially supported version.
-
-
-=============
-
-/home/kushal/src/ts/multiplicationdrill/src/__tests__/signals.test.ts
-  0:0  error  Parsing error: Invalid value for lib provided: es2025
-
-/home/kushal/src/ts/multiplicationdrill/src/__tests__/state.test.ts
-  0:0  error  Parsing error: Invalid value for lib provided: es2025
-
-/home/kushal/src/ts/multiplicationdrill/src/__tests__/utils.test.ts
-  0:0  error  Parsing error: Invalid value for lib provided: es2025
-
-/home/kushal/src/ts/multiplicationdrill/src/app.ts
-  0:0  error  Parsing error: Invalid value for lib provided: es2025
-
-/home/kushal/src/ts/multiplicationdrill/src/main.ts
-  0:0  error  Parsing error: Invalid value for lib provided: es2025
-
-/home/kushal/src/ts/multiplicationdrill/src/signals.ts
-  0:0  error  Parsing error: Invalid value for lib provided: es2025
-
-/home/kushal/src/ts/multiplicationdrill/src/state.ts
-  0:0  error  Parsing error: Invalid value for lib provided: es2025
-
-/home/kushal/src/ts/multiplicationdrill/src/types.ts
-  0:0  error  Parsing error: Invalid value for lib provided: es2025
-
-/home/kushal/src/ts/multiplicationdrill/src/utils.ts
-  0:0  error  Parsing error: Invalid value for lib provided: es2025
-
-/home/kushal/src/ts/multiplicationdrill/src/vite-env.d.ts
-  0:0  error  Parsing error: Invalid value for lib provided: es2025
-
-✖ 10 problems (10 errors, 0 warnings)
-
-error Command failed with exit code 1.
-info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
-
-real	0m0.868s
-user	0m1.362s
-sys	0m0.235s
-🚀 Starting export...
-📄 Adding: .github/workflows/ci-cd.yml
-📄 Adding: .github/workflows/coverage-comment.yml
-⏩ Skipping: .gitignore
-📄 Adding: Dockerfile.e2e
-⏩ Skipping: MIGRATION.md
-⏩ Skipping: README.md
-⏩ Skipping: docs/llm/dump.txt
-⏩ Skipping: docs/llm/output.txt
-⏩ Skipping: docs/llm/vendor/claude.md
-⏩ Skipping: docs/llm/vendor/commands.txt
-⏩ Skipping: docs/llm/vendor/instructions.md
-⏩ Skipping: docs/llm/vendor/memory.md
-⏩ Skipping: docs/llm/vendor/scratch
-📄 Adding: e2e/pages/index.ts
-📄 Adding: e2e/pages/quiz-page.ts
-📄 Adding: e2e/quiz.spec.ts
-⏩ Skipping: eslint.config.js
-⏩ Skipping: export.sh
-📄 Adding: index.html
-⏩ Skipping: manual-testing-notes.md
-📄 Adding: package.json
-📄 Adding: playwright.config.ts
-⏩ Skipping: public/vite.svg
-⏩ Skipping: scripts/coverage-report.js
-⏩ Skipping: setup.sh
-📄 Adding: src/__tests__/signals.test.ts
-📄 Adding: src/__tests__/state.test.ts
-📄 Adding: src/__tests__/utils.test.ts
-📄 Adding: src/app.ts
-📄 Adding: src/main.ts
-📄 Adding: src/signals.ts
-📄 Adding: src/state.ts
-📄 Adding: src/style.css
-📄 Adding: src/types.ts
-⏩ Skipping: src/typescript.svg
-📄 Adding: src/utils.ts
-⏩ Skipping: src/vite-env.d.ts
-📄 Adding: tsconfig.e2e.json
-📄 Adding: tsconfig.json
-📄 Adding: vite.config.ts
-📄 Adding: vitest.config.ts
-⏩ Skipping: yarn.lock
-
-✅ Done! 23 files → docs/llm/dump.txt
-
-real	0m0.090s
-user	0m0.052s
-sys	0m0.061s
-yarn install v1.22.22
-[1/4] Resolving packages...
-success Already up-to-date.
-Done in 0.08s.
-
-real	0m0.181s
-user	0m0.178s
-sys	0m0.044s
-yarn run v1.22.22
-$ tsc && vite build
-vite v8.0.2 building client environment for production...
-✓ 9 modules transformed.
-computing gzip size...
-dist/index.html                3.58 kB │ gzip: 0.95 kB
-dist/assets/main-Cyhjhj37.css  5.39 kB │ gzip: 1.61 kB
-dist/assets/main-DA2teIkJ.js   8.20 kB │ gzip: 2.67 kB │ map: 26.62 kB
-
-✓ built in 33ms
-Done in 1.04s.
-
-real	0m1.137s
-user	0m1.919s
-sys	0m0.230s
-yarn run v1.22.22
-$ yarn lint && yarn type-check && yarn test:run && yarn e2e:container:build && yarn e2e:containernoci
-$ eslint src --max-warnings 0
-=============
-
-
-WARNING: You are currently running a version of TypeScript which is not officially supported by @typescript-eslint/typescript-estree.
-
-
-* @typescript-eslint/typescript-estree version: 8.57.2
-* Supported TypeScript versions: >=4.8.4 <6.0.0
-* Your TypeScript version: 6.0.2
-
-
-Please only submit bug reports when using the officially supported version.
-
-
-=============
-
-/home/kushal/src/ts/multiplicationdrill/src/__tests__/signals.test.ts
-  0:0  error  Parsing error: Invalid value for lib provided: es2025
-
-/home/kushal/src/ts/multiplicationdrill/src/__tests__/state.test.ts
-  0:0  error  Parsing error: Invalid value for lib provided: es2025
-
-/home/kushal/src/ts/multiplicationdrill/src/__tests__/utils.test.ts
-  0:0  error  Parsing error: Invalid value for lib provided: es2025
-
-/home/kushal/src/ts/multiplicationdrill/src/app.ts
-  0:0  error  Parsing error: Invalid value for lib provided: es2025
-
-/home/kushal/src/ts/multiplicationdrill/src/main.ts
-  0:0  error  Parsing error: Invalid value for lib provided: es2025
-
-/home/kushal/src/ts/multiplicationdrill/src/signals.ts
-  0:0  error  Parsing error: Invalid value for lib provided: es2025
-
-/home/kushal/src/ts/multiplicationdrill/src/state.ts
-  0:0  error  Parsing error: Invalid value for lib provided: es2025
-
-/home/kushal/src/ts/multiplicationdrill/src/types.ts
-  0:0  error  Parsing error: Invalid value for lib provided: es2025
-
-/home/kushal/src/ts/multiplicationdrill/src/utils.ts
-  0:0  error  Parsing error: Invalid value for lib provided: es2025
-
-/home/kushal/src/ts/multiplicationdrill/src/vite-env.d.ts
-  0:0  error  Parsing error: Invalid value for lib provided: es2025
-
-✖ 10 problems (10 errors, 0 warnings)
-
-error Command failed with exit code 1.
-info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
-error Command failed with exit code 1.
-info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
-
-real	0m0.998s
-user	0m1.465s
-sys	0m0.273s
-
-real	0m0.004s
-user	0m0.004s
-sys	0m0.000s
-[master 912beca] add all files
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
-real	0m0.005s
+real	0m0.008s
 user	0m0.001s
 sys	0m0.004s
 * remote origin
@@ -687,24 +230,24 @@ sys	0m0.004s
   Local ref configured for 'git push':
     master pushes to master (fast-forwardable)
 
-real	0m1.044s
-user	0m0.007s
-sys	0m0.007s
-Enumerating objects: 20, done.
-Counting objects: 100% (20/20), done.
+real	0m0.525s
+user	0m0.009s
+sys	0m0.005s
+Enumerating objects: 9, done.
+Counting objects: 100% (9/9), done.
 Delta compression using up to 16 threads
-Compressing objects: 100% (11/11), done.
-Writing objects: 100% (13/13), 5.19 KiB | 2.59 MiB/s, done.
-Total 13 (delta 6), reused 0 (delta 0), pack-reused 0 (from 0)
-remote: Resolving deltas: 100% (6/6), completed with 4 local objects.
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (5/5), 466 bytes | 466.00 KiB/s, done.
+Total 5 (delta 2), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (2/2), completed with 2 local objects.
 remote: 
-remote: GitHub found 11 vulnerabilities on multiplicationdrill/multiplicationdrill.github.io's default branch (4 high, 3 moderate, 4 low). To find out more, visit:
+remote: GitHub found 12 vulnerabilities on multiplicationdrill/multiplicationdrill.github.io's default branch (4 high, 4 moderate, 4 low). To find out more, visit:
 remote:      https://github.com/multiplicationdrill/multiplicationdrill.github.io/security/dependabot
 remote: 
 To github.com:multiplicationdrill/multiplicationdrill.github.io.git
-   1d4cbdb..912beca  master -> master
+   feef41c..99d22a8  master -> master
 
-real	0m1.121s
-user	0m0.014s
-sys	0m0.010s
+real	0m0.839s
+user	0m0.010s
+sys	0m0.012s
 kushal@fedora:~/src/ts/multiplicationdrill$ 
