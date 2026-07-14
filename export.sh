@@ -55,7 +55,22 @@ EXCLUDE_DIR="docs/llm"
 # (lockfile + PnP resolution map + PnP loader shim). They stay tracked in git
 # for Yarn's Zero-Installs workflow, but they are pure noise for an LLM
 # context dump, so they're excluded here rather than from git itself.
-EXCLUDE_FILES=("yarn.lock" ".pnp.cjs" ".pnp.loader.mjs")
+EXCLUDE_FILES=(
+    "yarn.lock"
+    "package-lock.json"
+    "pnpm-lock.yaml"
+    "*.svg"
+    "*.png"
+    "*.ico"
+    "*.md"
+    "docs/*"
+    "scripts/*"
+    ".gitignore"
+    ".eslintrc.cjs"
+    "eslint.config.js"
+    "src/vite-env.d.ts"
+)
+
 EXCLUDE_FILES_DISPLAY="$(printf '%s, ' "${EXCLUDE_FILES[@]}")"
 EXCLUDE_FILES_DISPLAY="${EXCLUDE_FILES_DISPLAY%, }"
 
