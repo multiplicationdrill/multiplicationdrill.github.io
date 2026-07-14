@@ -1,11 +1,1483 @@
-===============================================================================
-PROJECT: multiplicationdrill
-DATE: Tue Jul 14 07:26:25 PM EDT 2026
-===============================================================================
+################################################################################
+#                                                                              #
+#   REPOSITORY CONTEXT DUMP                                                    #
+#   Generated for LLM consumption — do not edit manually                       #
+#                                                                              #
+################################################################################
 
--------------------------------------------------------------------------------
-FILE: .github/workflows/ci-cd.yml
--------------------------------------------------------------------------------
+DUMP METADATA
+═════════════════════════════════════════════════════════════════════════════════
+  Generated at   : 2026-07-14T19:30:27-04:00
+  Generator      : export.sh
+  Host           : fedora
+  User           : kushal
+  OS             : Linux 7.1.3-100.fc43.x86_64 x86_64
+
+REPOSITORY METADATA
+═════════════════════════════════════════════════════════════════════════════════
+  Repository root: /home/kushal/src/ts/multiplicationdrill
+  Branch         : master
+  Commit (full)  : 2e82b3b372ea24e35a8af1e8c5a10cabd31098d8
+  Commit (short) : 2e82b3b
+  Commit date    : 2026-07-14 19:30:16 -0400
+  Commit message : update exclude list
+  Remote origin  : git@github.com:multiplicationdrill/multiplicationdrill.github.io.git
+  Files included : 31
+  Excluded path  : docs/llm/
+  Excluded files : yarn.lock, package-lock.json, pnpm-lock.yaml, *.svg, *.png, *.ico, *.md, docs/*, scripts/*, .gitignore, .eslintrc.cjs, eslint.config.js, src/vite-env.d.ts
+
+GIT WORKING TREE STATUS (first 20 lines)
+═════════════════════════════════════════════════════════════════════════════════
+  (clean — no uncommitted changes)
+
+################################################################################
+# FILE: export.sh  [THIS SCRIPT — included for full context]
+################################################################################
+
+--- METADATA ---
+  File name:             export.sh
+  Relative path:         export.sh
+  Size:                  17.1 KiB (17554 bytes)
+  Last modified:         2026-07-14 19:29:59.936545352 -0400
+  Permissions:           -rwxr-xr-x
+  SHA-256:               eb0253320a7aac96a7ba66c2d53ae4697a869051ffccb1f164a6e5b6900169b1
+  MIME type:             text/x-shellscript
+
+--- CONTENT ---
+#!/usr/bin/env bash
+# =============================================================================
+# export.sh — Repository context dump for LLM consumption
+#
+# Location: <repo root>/export.sh
+#
+# Usage:  bash export.sh
+#         time bash export.sh
+#
+# Behaviour:
+#   • Resolves its own location; works regardless of CWD.
+#   • Silently exits if no Git repository is found at that location.
+#   • Dumps all Git-tracked files (excluding docs/llm/**, yarn.lock, .pnp.cjs,
+#     and .pnp.loader.mjs) to docs/llm/dump.txt.
+#   • Prepends its own source to the dump (self-documentation).
+#   • Emits rich per-file metadata (name, path, size, permissions, mtime, SHA-256).
+#   • Includes a file-tree view of all included files.
+#   • Prints the complete dump to stdout before writing the file.
+# =============================================================================
+
+set -euo pipefail
+IFS=$'\n\t'
+
+# ---------------------------------------------------------------------------
+# 0. Resolve script's own directory — immune to CWD
+# ---------------------------------------------------------------------------
+SCRIPT_PATH="$(readlink -f "${BASH_SOURCE[0]}")"
+SCRIPT_DIR="$(dirname "$SCRIPT_PATH")"
+SCRIPT_NAME="$(basename "$SCRIPT_PATH")"
+
+# ---------------------------------------------------------------------------
+# 1. Validate: must be inside a working Git repository
+# ---------------------------------------------------------------------------
+if ! git -C "$SCRIPT_DIR" rev-parse --is-inside-work-tree &>/dev/null 2>&1; then
+    exit 0
+fi
+
+# Ensure git is usable (index readable, not a bare repo, etc.)
+if ! git -C "$SCRIPT_DIR" status --porcelain &>/dev/null 2>&1; then
+    exit 0
+fi
+
+REPO_ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel 2>/dev/null)" || exit 0
+
+# ---------------------------------------------------------------------------
+# 2. Constants & derived paths
+# ---------------------------------------------------------------------------
+EXCLUDE_DIR="docs/llm"
+
+# Individual files to exclude from the dump, in addition to EXCLUDE_DIR.
+# A bare name (no slash) is excluded wherever it appears; a name containing a
+# slash is treated as an exact repo-relative path.
+#
+# yarn.lock, .pnp.cjs, and .pnp.loader.mjs are all Yarn-generated artifacts
+# (lockfile + PnP resolution map + PnP loader shim). They stay tracked in git
+# for Yarn's Zero-Installs workflow, but they are pure noise for an LLM
+# context dump, so they're excluded here rather than from git itself.
+EXCLUDE_FILES=(
+    "yarn.lock"
+    "package-lock.json"
+    "pnpm-lock.yaml"
+    "*.svg"
+    "*.png"
+    "*.ico"
+    "*.md"
+    "docs/*"
+    "scripts/*"
+    ".gitignore"
+    ".eslintrc.cjs"
+    "eslint.config.js"
+    "src/vite-env.d.ts"
+)
+
+EXCLUDE_FILES_DISPLAY="$(printf '%s, ' "${EXCLUDE_FILES[@]}")"
+EXCLUDE_FILES_DISPLAY="${EXCLUDE_FILES_DISPLAY%, }"
+
+OUTPUT_DIR="${REPO_ROOT}/${EXCLUDE_DIR}"
+OUTPUT_FILE="${OUTPUT_DIR}/dump.txt"
+
+TIMESTAMP="$(date --iso-8601=seconds)"
+GIT_BRANCH="$(git -C "$REPO_ROOT" rev-parse --abbrev-ref HEAD 2>/dev/null || echo 'unknown')"
+GIT_COMMIT="$(git -C "$REPO_ROOT" rev-parse HEAD 2>/dev/null || echo 'unknown')"
+GIT_COMMIT_SHORT="$(git -C "$REPO_ROOT" rev-parse --short HEAD 2>/dev/null || echo 'unknown')"
+GIT_COMMIT_MSG="$(git -C "$REPO_ROOT" log -1 --pretty=format:'%s' 2>/dev/null || echo 'unknown')"
+GIT_COMMIT_DATE="$(git -C "$REPO_ROOT" log -1 --pretty=format:'%ci' 2>/dev/null || echo 'unknown')"
+GIT_REMOTE="$(git -C "$REPO_ROOT" remote get-url origin 2>/dev/null || echo 'none')"
+GIT_STATUS_SUMMARY="$(git -C "$REPO_ROOT" status --short 2>/dev/null | head -20 || echo '')"
+
+HOSTNAME_VAL="$(hostname -f 2>/dev/null || hostname 2>/dev/null || echo 'unknown')"
+USER_VAL="$(id -un 2>/dev/null || echo 'unknown')"
+OS_VAL="$(uname -srm 2>/dev/null || echo 'unknown')"
+
+# ---------------------------------------------------------------------------
+# 3. Collect tracked files, excluding the output directory and EXCLUDE_FILES
+#    git ls-files guarantees only committed/staged files; no build artefacts.
+# ---------------------------------------------------------------------------
+mapfile -t _RAW_FILES < <(
+    git -C "$REPO_ROOT" ls-files \
+        --cached \
+        --others \
+        --exclude-standard \
+        -z \
+        2>/dev/null \
+    | tr '\0' '\n' \
+    | sort -u
+)
+
+ALL_FILES=()
+for _f in "${_RAW_FILES[@]}"; do
+    [[ -z "$_f" ]] && continue
+    # Skip the entire excluded directory tree.
+    [[ "$_f" == "${EXCLUDE_DIR}/"* ]] && continue
+    # Skip any individually-excluded file.
+    _skip=0
+    for _ex in "${EXCLUDE_FILES[@]}"; do
+        if [[ "$_ex" == */* ]]; then
+            [[ "$_f" == "$_ex" ]] && { _skip=1; break; }
+        else
+            [[ "$_f" == "$_ex" || "$_f" == */"$_ex" ]] && { _skip=1; break; }
+        fi
+    done
+    (( _skip )) && continue
+    ALL_FILES+=("$_f")
+done
+
+FILE_COUNT="${#ALL_FILES[@]}"
+
+# ---------------------------------------------------------------------------
+# 4. Helper: human-readable file size
+# ---------------------------------------------------------------------------
+human_size() {
+    local bytes="$1"
+    if   (( bytes < 1024 ));               then printf '%d B'      "$bytes"
+    elif (( bytes < 1048576 ));            then printf '%.1f KiB'  "$(echo "scale=1; $bytes/1024"       | bc)"
+    elif (( bytes < 1073741824 ));         then printf '%.1f MiB'  "$(echo "scale=1; $bytes/1048576"    | bc)"
+    else                                        printf '%.1f GiB'  "$(echo "scale=1; $bytes/1073741824" | bc)"
+    fi
+}
+
+# ---------------------------------------------------------------------------
+# 5. Helper: SHA-256 of a file (portable across Linux distros)
+# ---------------------------------------------------------------------------
+file_sha256() {
+    local path="$1"
+    if command -v sha256sum &>/dev/null; then
+        sha256sum "$path" | awk '{print $1}'
+    elif command -v shasum &>/dev/null; then
+        shasum -a 256 "$path" | awk '{print $1}'
+    else
+        echo 'unavailable'
+    fi
+}
+
+# ---------------------------------------------------------------------------
+# 6. Helper: MIME type (best-effort, no error on missing tool)
+# ---------------------------------------------------------------------------
+file_mime() {
+    local path="$1"
+    if command -v file &>/dev/null; then
+        file --brief --mime-type "$path" 2>/dev/null || echo 'unknown'
+    else
+        echo 'unknown'
+    fi
+}
+
+# ---------------------------------------------------------------------------
+# 7. Build the tree view using 'tree' if available, else pure bash fallback
+# ---------------------------------------------------------------------------
+build_tree() {
+    if command -v tree &>/dev/null; then
+        # --fromfile reads the path list from stdin and renders a tree
+        printf '%s\n' "${ALL_FILES[@]}" \
+        | tree --fromfile -a --noreport 2>/dev/null \
+        || _bash_tree
+    else
+        _bash_tree
+    fi
+}
+
+_bash_tree() {
+    # Pure-bash tree: reconstruct directory hierarchy from the flat file list
+    local -A SEEN_DIRS=()
+    local prev_depth=0
+    local line
+
+    for f in "${ALL_FILES[@]}"; do
+        local dir parts depth i prefix
+        dir="$(dirname "$f")"
+        IFS='/' read -ra parts <<< "$f"
+        depth=$(( ${#parts[@]} - 1 ))
+
+        # Print intermediate directories we haven't seen yet
+        local partial=""
+        for (( i=0; i<depth; i++ )); do
+            if [[ -z "$partial" ]]; then
+                partial="${parts[$i]}"
+            else
+                partial="${partial}/${parts[$i]}"
+            fi
+            if [[ -z "${SEEN_DIRS[$partial]+_}" ]]; then
+                SEEN_DIRS["$partial"]=1
+                prefix="$(printf '│   %.0s' $(seq 1 $i))├── "
+                printf '%s%s/\n' "$prefix" "${parts[$i]}"
+            fi
+        done
+
+        # Print the file itself
+        prefix="$(printf '│   %.0s' $(seq 1 $depth))└── "
+        printf '%s%s\n' "$prefix" "${parts[$depth]}"
+    done
+}
+
+# ---------------------------------------------------------------------------
+# 8. Assemble the dump into a variable (stdout + file simultaneously)
+# ---------------------------------------------------------------------------
+mkdir -p "$OUTPUT_DIR"
+
+# We use a temp file to build, then atomic-rename at the end.
+TMP_FILE="$(mktemp "${OUTPUT_DIR}/.dump.XXXXXX")"
+trap 'rm -f "$TMP_FILE"' EXIT
+
+# Tee everything to both stdout and the temp file
+exec > >(tee "$TMP_FILE") 2>&1
+
+# ── Preamble banner ──────────────────────────────────────────────────────────
+cat <<BANNER
+################################################################################
+#                                                                              #
+#   REPOSITORY CONTEXT DUMP                                                    #
+#   Generated for LLM consumption — do not edit manually                       #
+#                                                                              #
+################################################################################
+
+DUMP METADATA
+═════════════════════════════════════════════════════════════════════════════════
+  Generated at   : ${TIMESTAMP}
+  Generator      : ${SCRIPT_NAME}
+  Host           : ${HOSTNAME_VAL}
+  User           : ${USER_VAL}
+  OS             : ${OS_VAL}
+
+REPOSITORY METADATA
+═════════════════════════════════════════════════════════════════════════════════
+  Repository root: ${REPO_ROOT}
+  Branch         : ${GIT_BRANCH}
+  Commit (full)  : ${GIT_COMMIT}
+  Commit (short) : ${GIT_COMMIT_SHORT}
+  Commit date    : ${GIT_COMMIT_DATE}
+  Commit message : ${GIT_COMMIT_MSG}
+  Remote origin  : ${GIT_REMOTE}
+  Files included : ${FILE_COUNT}
+  Excluded path  : ${EXCLUDE_DIR}/
+  Excluded files : ${EXCLUDE_FILES_DISPLAY}
+
+GIT WORKING TREE STATUS (first 20 lines)
+═════════════════════════════════════════════════════════════════════════════════
+BANNER
+
+if [[ -n "$GIT_STATUS_SUMMARY" ]]; then
+    printf '%s\n' "$GIT_STATUS_SUMMARY"
+else
+    echo "  (clean — no uncommitted changes)"
+fi
+
+# ── Self-documentation: dump this script first ───────────────────────────────
+cat <<SELF_HEADER
+
+################################################################################
+# FILE: ${SCRIPT_NAME}  [THIS SCRIPT — included for full context]
+################################################################################
+SELF_HEADER
+
+printf '\n--- METADATA ---\n'
+_self_size="$(wc -c < "$SCRIPT_PATH")"
+_self_mtime="$(stat --format='%y' "$SCRIPT_PATH" 2>/dev/null \
+               || stat -f '%Sm' -t '%Y-%m-%d %H:%M:%S %z' "$SCRIPT_PATH" 2>/dev/null \
+               || echo 'unavailable')"
+_self_perms="$(stat --format='%A' "$SCRIPT_PATH" 2>/dev/null \
+               || stat -f '%Sp' "$SCRIPT_PATH" 2>/dev/null \
+               || echo 'unavailable')"
+_self_sha="$(file_sha256 "$SCRIPT_PATH")"
+
+printf '  %-22s %s\n'  "File name:"       "$SCRIPT_NAME"
+printf '  %-22s %s\n'  "Relative path:"   "$(realpath --relative-to="$REPO_ROOT" "$SCRIPT_PATH" 2>/dev/null || echo "$SCRIPT_PATH")"
+printf '  %-22s %s\n'  "Size:"            "$(human_size "$_self_size") (${_self_size} bytes)"
+printf '  %-22s %s\n'  "Last modified:"   "$_self_mtime"
+printf '  %-22s %s\n'  "Permissions:"     "$_self_perms"
+printf '  %-22s %s\n'  "SHA-256:"         "$_self_sha"
+printf '  %-22s %s\n'  "MIME type:"       "$(file_mime "$SCRIPT_PATH")"
+printf '\n--- CONTENT ---\n'
+cat "$SCRIPT_PATH"
+
+# ── File tree ─────────────────────────────────────────────────────────────────
+cat <<TREE_HEADER
+
+################################################################################
+# FILE TREE  (all ${FILE_COUNT} included files)
+################################################################################
+.
+TREE_HEADER
+
+build_tree
+echo ""
+
+# ── Per-file content dump ─────────────────────────────────────────────────────
+TOTAL_BYTES=0
+
+for rel_path in "${ALL_FILES[@]}"; do
+    abs_path="${REPO_ROOT}/${rel_path}"
+
+    # Skip if the file no longer exists on disk (deleted but still indexed)
+    [[ -f "$abs_path" ]] || continue
+
+    # ── Metadata collection ────────────────────────────────────────────────
+    file_size="$(wc -c < "$abs_path" 2>/dev/null || echo 0)"
+    TOTAL_BYTES=$(( TOTAL_BYTES + file_size ))
+
+    file_mtime="$(stat --format='%y' "$abs_path" 2>/dev/null \
+                  || stat -f '%Sm' -t '%Y-%m-%d %H:%M:%S %z' "$abs_path" 2>/dev/null \
+                  || echo 'unavailable')"
+
+    file_perms="$(stat --format='%A' "$abs_path" 2>/dev/null \
+                  || stat -f '%Sp' "$abs_path" 2>/dev/null \
+                  || echo 'unavailable')"
+
+    file_owner="$(stat --format='%U:%G' "$abs_path" 2>/dev/null \
+                  || stat -f '%Su:%Sg' "$abs_path" 2>/dev/null \
+                  || echo 'unavailable')"
+
+    file_inode="$(stat --format='%i' "$abs_path" 2>/dev/null \
+                  || stat -f '%i' "$abs_path" 2>/dev/null \
+                  || echo 'unavailable')"
+
+    file_links="$(stat --format='%h' "$abs_path" 2>/dev/null \
+                  || stat -f '%l' "$abs_path" 2>/dev/null \
+                  || echo 'unavailable')"
+
+    file_sha="$(file_sha256 "$abs_path")"
+    file_type="$(file_mime "$abs_path")"
+
+    git_log_line="$(git -C "$REPO_ROOT" log -1 --pretty=format:'%h %ai %s' -- "$rel_path" 2>/dev/null || echo 'unavailable')"
+
+    # ── Section header ─────────────────────────────────────────────────────
+    printf '\n'
+    printf '################################################################################\n'
+    printf '# FILE: %s\n' "$rel_path"
+    printf '################################################################################\n'
+    printf '\n--- METADATA ---\n'
+    printf '  %-22s %s\n'  "File name:"       "$(basename "$rel_path")"
+    printf '  %-22s %s\n'  "Relative path:"   "$rel_path"
+    printf '  %-22s %s\n'  "Absolute path:"   "$abs_path"
+    printf '  %-22s %s\n'  "Size:"            "$(human_size "$file_size") (${file_size} bytes)"
+    printf '  %-22s %s\n'  "Last modified:"   "$file_mtime"
+    printf '  %-22s %s\n'  "Permissions:"     "$file_perms"
+    printf '  %-22s %s\n'  "Owner:"           "$file_owner"
+    printf '  %-22s %s\n'  "Inode:"           "$file_inode"
+    printf '  %-22s %s\n'  "Hard links:"      "$file_links"
+    printf '  %-22s %s\n'  "MIME type:"       "$file_type"
+    printf '  %-22s %s\n'  "SHA-256:"         "$file_sha"
+    printf '  %-22s %s\n'  "Last git commit:" "$git_log_line"
+    printf '\n--- CONTENT ---\n'
+
+    # ── Content emission ───────────────────────────────────────────────────
+    # Binary files: emit a notice instead of raw bytes
+    if [[ "$file_type" == application/octet-stream ]] \
+    || [[ "$file_type" == image/* ]] \
+    || [[ "$file_type" == audio/* ]] \
+    || [[ "$file_type" == video/* ]] \
+    || ! file --brief "$abs_path" 2>/dev/null | grep -qi 'text\|script\|xml\|json\|yaml\|svg\|source\|empty'; then
+        printf '[Binary file — content omitted. Size: %s, SHA-256: %s]\n' \
+            "$(human_size "$file_size")" "$file_sha"
+    else
+        cat "$abs_path"
+        # Ensure there is always a trailing newline so the next header aligns
+        [[ "$(tail -c1 "$abs_path" | wc -c)" -gt 0 ]] \
+            && [[ "$(tail -c1 "$abs_path")" != $'\n' ]] \
+            && printf '\n'
+    fi
+done
+
+# ── Summary footer ────────────────────────────────────────────────────────────
+cat <<FOOTER
+
+################################################################################
+# DUMP SUMMARY
+################################################################################
+  Files dumped   : ${FILE_COUNT}
+  Total size     : $(human_size "$TOTAL_BYTES") (${TOTAL_BYTES} bytes)
+  Output file    : ${OUTPUT_FILE}
+  Completed at   : $(date --iso-8601=seconds)
+################################################################################
+# END OF DUMP
+################################################################################
+FOOTER
+
+# ---------------------------------------------------------------------------
+# 9. Atomic rename — avoids partial writes being read by concurrent processes
+# ---------------------------------------------------------------------------
+mv -f "$TMP_FILE" "$OUTPUT_FILE"
+
+################################################################################
+# FILE TREE  (all 31 included files)
+################################################################################
+.
+.
+├── Dockerfile.e2e
+├── e2e
+│   ├── pages
+│   │   ├── index.ts
+│   │   └── quiz-page.ts
+│   └── quiz.spec.ts
+├── export.sh
+├── .github
+│   └── workflows
+│       ├── ci-cd.yml
+│       └── coverage-comment.yml
+├── index.html
+├── manual-testing-notes.md
+├── MIGRATION.md
+├── package.json
+├── playwright.config.ts
+├── public
+│   └── vite.svg
+├── README.md
+├── scripts
+│   └── coverage-report.js
+├── setup.sh
+├── src
+│   ├── app.ts
+│   ├── main.ts
+│   ├── signals.ts
+│   ├── state.ts
+│   ├── style.css
+│   ├── __tests__
+│   │   ├── signals.test.ts
+│   │   ├── state.test.ts
+│   │   └── utils.test.ts
+│   ├── typescript.svg
+│   ├── types.ts
+│   └── utils.ts
+├── tsconfig.e2e.json
+├── tsconfig.json
+├── vite.config.ts
+└── vitest.config.ts
+
+
+################################################################################
+# FILE: Dockerfile.e2e
+################################################################################
+
+--- METADATA ---
+  File name:             Dockerfile.e2e
+  Relative path:         Dockerfile.e2e
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/Dockerfile.e2e
+  Size:                  152 B (152 bytes)
+  Last modified:         2026-02-18 22:02:19.241481312 -0500
+  Permissions:           -rw-r--r--
+  Owner:                 kushal:kushal
+  Inode:                 3412595
+  Hard links:            1
+  MIME type:             text/plain
+  SHA-256:               499dbac3526a17629fa4f42f9c203104f0b7a9c65b34e382f2bfa1943a57e6e3
+  Last git commit:       b97e5e8 2026-02-18 22:02:37 -0500 update packages
+
+--- CONTENT ---
+FROM mcr.microsoft.com/playwright:v1.58.2-noble
+
+WORKDIR /app
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
+COPY . .
+RUN yarn build
+
+
+################################################################################
+# FILE: e2e/pages/index.ts
+################################################################################
+
+--- METADATA ---
+  File name:             index.ts
+  Relative path:         e2e/pages/index.ts
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/e2e/pages/index.ts
+  Size:                  213 B (213 bytes)
+  Last modified:         2026-01-07 12:58:46.083591704 -0500
+  Permissions:           -rw-r--r--
+  Owner:                 kushal:kushal
+  Inode:                 3394926
+  Hard links:            1
+  MIME type:             application/javascript
+  SHA-256:               8baf9b3d44bf716d38e0d1b582e5c40acdee227192860cc96301265d85d2a195
+  Last git commit:       a3c0d73 2026-01-07 11:59:20 -0600 run claude script
+
+--- CONTENT ---
+/**
+ * Page Object Model Exports
+ * 
+ * This file exports all page objects for easy importing in tests.
+ * 
+ * Usage in tests:
+ *   import { QuizPage } from './pages';
+ */
+
+export { QuizPage } from './quiz-page';
+
+
+################################################################################
+# FILE: e2e/pages/quiz-page.ts
+################################################################################
+
+--- METADATA ---
+  File name:             quiz-page.ts
+  Relative path:         e2e/pages/quiz-page.ts
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/e2e/pages/quiz-page.ts
+  Size:                  7.7 KiB (7930 bytes)
+  Last modified:         2026-01-07 14:16:02.880949287 -0500
+  Permissions:           -rw-r--r--
+  Owner:                 kushal:kushal
+  Inode:                 3394924
+  Hard links:            1
+  MIME type:             application/javascript
+  SHA-256:               fca8221fb2785c086f5b8e4d13e83d666db3e92f2251a45d83bdd50ff97f167a
+  Last git commit:       9fd73a8 2026-01-07 13:16:12 -0600 add claude changes
+
+--- CONTENT ---
+/**
+ * QuizPage - Page Object Model for the Multiplication Drill application
+ * 
+ * FIXES APPLIED:
+ * 1. Changed slider locators to use ID selectors (getByLabel doesn't work reliably
+ *    when there's both a <label> and aria-label with different text)
+ * 2. Changed slider interaction from fill() to proper range input handling
+ * 3. Fixed theme toggle button locator (emoji matching is unreliable)
+ */
+
+import { type Page, type Locator, expect } from '@playwright/test';
+
+type DifficultyLevel = 1 | 2 | 3 | 4;
+
+interface DifficultyConfig {
+  name: string;
+  min: number;
+  max: number;
+}
+
+const DIFFICULTY_MAP: Record<DifficultyLevel, DifficultyConfig> = {
+  1: { name: 'Easy', min: 2, max: 5 },
+  2: { name: 'Medium', min: 4, max: 8 },
+  3: { name: 'Hard', min: 6, max: 12 },
+  4: { name: 'Expert', min: 10, max: 20 },
+};
+
+export class QuizPage {
+  readonly page: Page;
+
+  // Display elements
+  readonly display: Locator;
+  readonly progressBar: Locator;
+  readonly timerDisplay: Locator;
+
+  // Quiz control buttons
+  readonly startQuizButton: Locator;
+  readonly stopQuizButton: Locator;
+
+  // Manual mode buttons
+  readonly incrementButton: Locator;
+  readonly resetButton: Locator;
+
+  // Settings sliders - USE ID LOCATORS instead of getByLabel
+  // getByLabel fails when <label> text differs from aria-label
+  readonly questionTimeSlider: Locator;
+  readonly answerTimeSlider: Locator;
+  readonly difficultySlider: Locator;
+
+  // Settings value displays
+  readonly questionTimeValue: Locator;
+  readonly answerTimeValue: Locator;
+  readonly difficultyValue: Locator;
+
+  // Auto-update checkbox
+  readonly autoUpdateCheckbox: Locator;
+
+  // Theme toggle
+  readonly themeToggle: Locator;
+
+  // Status indicators
+  readonly modeStatus: Locator;
+  readonly quizStatus: Locator;
+
+  constructor(page: Page) {
+    this.page = page;
+
+    // Display elements - ID locators are acceptable fallback
+    this.display = page.locator('#display');
+    this.progressBar = page.locator('#progressBar');
+    this.timerDisplay = page.locator('#timerDisplay');
+
+    // Quiz control buttons - getByRole with name is most resilient
+    this.startQuizButton = page.getByRole('button', { name: 'Start Quiz' });
+    this.stopQuizButton = page.getByRole('button', { name: 'Stop Quiz' });
+
+    // Manual mode buttons
+    this.incrementButton = page.getByRole('button', { name: 'Increment' });
+    this.resetButton = page.getByRole('button', { name: 'Reset' });
+
+    // FIX: Use ID locators for sliders instead of getByLabel
+    // The HTML has <label for="questionTime">Question Time:</label> AND
+    // <input aria-label="Question time in seconds"> which can cause conflicts
+    this.questionTimeSlider = page.locator('#questionTime');
+    this.answerTimeSlider = page.locator('#answerTime');
+    this.difficultySlider = page.locator('#difficulty');
+
+    // Settings value displays
+    this.questionTimeValue = page.locator('#questionTimeValue');
+    this.answerTimeValue = page.locator('#answerTimeValue');
+    this.difficultyValue = page.locator('#difficultyValue');
+
+    // FIX: Use locator with type=checkbox and label association
+    this.autoUpdateCheckbox = page.locator('#autoUpdate');
+
+    // FIX: Theme toggle - use class selector since there's no ID in HTML
+    // and emoji matching with getByRole is unreliable
+    this.themeToggle = page.locator('.theme-toggle');
+
+    // Status indicators
+    this.modeStatus = page.locator('#modeStatus');
+    this.quizStatus = page.locator('#quizStatus');
+  }
+
+  // Navigation
+  async goto(): Promise<void> {
+    await this.page.goto('/');
+    await expect(this.display).toBeVisible();
+  }
+
+  // Quiz control methods
+  async startQuiz(): Promise<void> {
+    await this.startQuizButton.click();
+    await expect(this.stopQuizButton).toBeVisible();
+  }
+
+  async stopQuiz(): Promise<void> {
+    await this.stopQuizButton.click();
+    await expect(this.startQuizButton).toBeVisible();
+  }
+
+  async isQuizRunning(): Promise<boolean> {
+    return this.stopQuizButton.isVisible();
+  }
+
+  // Manual mode methods
+  async increment(): Promise<void> {
+    await this.incrementButton.click();
+  }
+
+  async reset(): Promise<void> {
+    await this.resetButton.click();
+  }
+
+  async setAutoUpdate(enable: boolean): Promise<void> {
+    if (enable) {
+      await this.autoUpdateCheckbox.check();
+    } else {
+      await this.autoUpdateCheckbox.uncheck();
+    }
+  }
+
+  // FIX: Proper slider interaction - fill() doesn't work on range inputs!
+  // Use evaluate() to set the value directly and dispatch input event
+  async setQuestionTime(seconds: number): Promise<void> {
+    await this.questionTimeSlider.evaluate((el: HTMLInputElement, val: number) => {
+      el.value = val.toString();
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+    }, seconds);
+    await expect(this.questionTimeValue).toHaveText(`${seconds}s`);
+  }
+
+  async setAnswerTime(seconds: number): Promise<void> {
+    await this.answerTimeSlider.evaluate((el: HTMLInputElement, val: number) => {
+      el.value = val.toString();
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+    }, seconds);
+    await expect(this.answerTimeValue).toHaveText(`${seconds}s`);
+  }
+
+  async setDifficulty(level: DifficultyLevel): Promise<void> {
+    await this.difficultySlider.evaluate((el: HTMLInputElement, val: number) => {
+      el.value = val.toString();
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+    }, level);
+    const expectedName = DIFFICULTY_MAP[level].name;
+    await expect(this.difficultyValue).toHaveText(expectedName);
+  }
+
+  // Toggle theme
+  async toggleTheme(): Promise<void> {
+    await this.themeToggle.click();
+  }
+
+  // Helper methods
+  getDifficultyRange(level: DifficultyLevel): { min: number; max: number } {
+    return DIFFICULTY_MAP[level];
+  }
+
+  async getMultiplier(): Promise<number | null> {
+    const text = await this.display.textContent();
+    if (!text) return null;
+    // Match pattern like "5 × 10 = 50" and extract the second number (multiplier)
+    const match = text.match(/\d+\s*×\s*(\d+)/);
+    return match ? parseInt(match[1], 10) : null;
+  }
+
+  // Assertion helpers
+  async expectDisplayToShow(counter: number, multiplier: number): Promise<void> {
+    const expected = `${counter} × ${multiplier} = ${counter * multiplier}`;
+    await expect(this.display).toHaveText(expected);
+  }
+
+  async expectQuizQuestion(): Promise<void> {
+    await expect(this.display).toHaveText(/^\d+\s*×\s*\d+$/);
+  }
+
+  async expectQuizAnswer(): Promise<void> {
+    await expect(this.display).toHaveText(/^\d+\s*×\s*\d+\s*=\s*\d+$/);
+  }
+
+  async expectControlsDisabled(disabled: boolean): Promise<void> {
+    if (disabled) {
+      await expect(this.incrementButton).toBeDisabled();
+      await expect(this.resetButton).toBeDisabled();
+      await expect(this.questionTimeSlider).toBeDisabled();
+      await expect(this.answerTimeSlider).toBeDisabled();
+      await expect(this.difficultySlider).toBeDisabled();
+      await expect(this.autoUpdateCheckbox).toBeDisabled();
+    } else {
+      await expect(this.incrementButton).toBeEnabled();
+      await expect(this.resetButton).toBeEnabled();
+      await expect(this.questionTimeSlider).toBeEnabled();
+      await expect(this.answerTimeSlider).toBeEnabled();
+      await expect(this.difficultySlider).toBeEnabled();
+      await expect(this.autoUpdateCheckbox).toBeEnabled();
+    }
+  }
+
+  async expectStatus(mode: 'Manual' | 'Quiz', quizState: 'Stopped' | 'Running'): Promise<void> {
+    await expect(this.modeStatus).toHaveText(mode);
+    await expect(this.quizStatus).toHaveText(quizState);
+  }
+
+  async expectMultiplierInRange(level: DifficultyLevel): Promise<void> {
+    const multiplier = await this.getMultiplier();
+    const range = this.getDifficultyRange(level);
+    
+    expect(multiplier).not.toBeNull();
+    expect(multiplier).toBeGreaterThanOrEqual(range.min);
+    expect(multiplier).toBeLessThanOrEqual(range.max);
+  }
+}
+
+
+################################################################################
+# FILE: e2e/quiz.spec.ts
+################################################################################
+
+--- METADATA ---
+  File name:             quiz.spec.ts
+  Relative path:         e2e/quiz.spec.ts
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/e2e/quiz.spec.ts
+  Size:                  7.5 KiB (7764 bytes)
+  Last modified:         2026-01-07 14:51:29.246548556 -0500
+  Permissions:           -rw-r--r--
+  Owner:                 kushal:kushal
+  Inode:                 3784068
+  Hard links:            1
+  MIME type:             application/javascript
+  SHA-256:               806fafd3eae199ba64ae3ae010b5f3b1e0d7b40b1cb30012ba9e2417dcaaa21a
+  Last git commit:       763d3d7 2026-01-07 13:51:29 -0600 Revert "add response from chatgpt"
+
+--- CONTENT ---
+/**
+ * Multiplication Drill E2E Tests
+ * 
+ * FIXES APPLIED:
+ * 1. Use Unicode escape for multiplication sign to avoid encoding issues
+ * 2. Fixed regex patterns to match actual app output
+ * 3. Increased timeouts for quiz transitions
+ */
+
+import { test, expect } from '@playwright/test';
+import { QuizPage } from './pages/quiz-page';
+
+// Unicode multiplication sign (×) - using escape to avoid encoding issues
+const TIMES = '\u00D7';
+
+let quizPage: QuizPage;
+
+test.describe('Multiplication Drill Application', () => {
+  test.beforeEach(async ({ page }) => {
+    quizPage = new QuizPage(page);
+    await quizPage.goto();
+  });
+
+  // ===========================================================================
+  // INITIAL STATE TESTS
+  // ===========================================================================
+
+  test.describe('Initial State', () => {
+    test('should load the page with correct title', async ({ page }) => {
+      await expect(page).toHaveTitle('Reactive Math Quiz');
+    });
+
+    test('should display initial manual mode equation', async () => {
+      // Should show pattern like "0 × 7 = 0" (counter × multiplier = result)
+      const pattern = new RegExp(`^\\d+\\s*${TIMES}\\s*\\d+\\s*=\\s*\\d+$`);
+      await expect(quizPage.display).toHaveText(pattern);
+    });
+
+    test('should have all controls enabled in manual mode', async () => {
+      await quizPage.expectControlsDisabled(false);
+    });
+
+    test('should show correct initial status', async () => {
+      await quizPage.expectStatus('Manual', 'Stopped');
+    });
+  });
+
+  // ===========================================================================
+  // MANUAL MODE TESTS
+  // ===========================================================================
+
+  test.describe('Manual Mode', () => {
+    test('should increment counter when clicking increment button', async () => {
+      const multiplier = await quizPage.getMultiplier();
+      expect(multiplier).not.toBeNull();
+
+      await quizPage.increment();
+      await quizPage.expectDisplayToShow(1, multiplier!);
+
+      await quizPage.increment();
+      await quizPage.expectDisplayToShow(2, multiplier!);
+    });
+
+    test('should reset counter and generate new multiplier when clicking reset', async () => {
+      await quizPage.increment();
+      await quizPage.increment();
+
+      await quizPage.reset();
+
+      // Verify counter is 0 - the display should show "0 × X = 0"
+      const pattern = new RegExp(`^0\\s*${TIMES}\\s*\\d+\\s*=\\s*0$`);
+      await expect(quizPage.display).toHaveText(pattern);
+    });
+
+    test('should verify multiplication calculations are correct', async () => {
+      const multiplier = await quizPage.getMultiplier();
+      expect(multiplier).not.toBeNull();
+
+      for (let i = 1; i <= 5; i++) {
+        await quizPage.increment();
+        await quizPage.expectDisplayToShow(i, multiplier!);
+      }
+    });
+  });
+
+  // ===========================================================================
+  // QUIZ MODE TESTS
+  // ===========================================================================
+
+  test.describe('Quiz Mode', () => {
+    test('should start quiz when clicking Start Quiz button', async () => {
+      await quizPage.startQuiz();
+      await quizPage.expectStatus('Quiz', 'Running');
+    });
+
+    test('should disable manual controls during quiz', async () => {
+      await quizPage.startQuiz();
+      await quizPage.expectControlsDisabled(true);
+      await quizPage.stopQuiz();
+      await quizPage.expectControlsDisabled(false);
+    });
+
+    test('should update status panel during quiz', async () => {
+      await quizPage.expectStatus('Manual', 'Stopped');
+      await quizPage.startQuiz();
+      await quizPage.expectStatus('Quiz', 'Running');
+      await quizPage.stopQuiz();
+      await quizPage.expectStatus('Manual', 'Stopped');
+    });
+
+    test('should transition from question to answer phase', async () => {
+      await quizPage.startQuiz();
+
+      // Wait for the answer phase - the display will include "="
+      // Using Unicode escape for multiplication sign
+      const answerPattern = new RegExp(`^\\d+\\s*${TIMES}\\s*\\d+\\s*=\\s*\\d+$`);
+      await expect(quizPage.display).toHaveText(answerPattern, {
+        timeout: 10000, // Allow more time for question phase to complete
+      });
+
+      await quizPage.stopQuiz();
+    });
+
+    test('should generate new problems', async () => {
+      await quizPage.startQuiz();
+
+      const firstProblem = await quizPage.display.textContent();
+
+      // Wait for content to change (new question or answer phase)
+      await expect(async () => {
+        const currentProblem = await quizPage.display.textContent();
+        expect(currentProblem).not.toBe(firstProblem);
+      }).toPass({
+        timeout: 10000, // Increased timeout
+      });
+
+      await quizPage.stopQuiz();
+    });
+  });
+
+  // ===========================================================================
+  // SETTINGS TESTS
+  // ===========================================================================
+
+  test.describe('Settings', () => {
+    test('should change difficulty and update multiplier range', async () => {
+      // Set to Easy (level 1) - range 2-5
+      await quizPage.setDifficulty(1);
+      await expect(quizPage.difficultyValue).toHaveText('Easy');
+      
+      // Reset to get new multiplier in the correct range
+      await quizPage.reset();
+      await quizPage.expectMultiplierInRange(1);
+    });
+
+    test('should adjust question time slider', async () => {
+      await quizPage.setQuestionTime(10);
+      await expect(quizPage.questionTimeValue).toHaveText('10s');
+    });
+
+    test('should adjust answer time slider', async () => {
+      await quizPage.setAnswerTime(5);
+      await expect(quizPage.answerTimeValue).toHaveText('5s');
+    });
+
+    test('should have proper ARIA attributes on sliders', async () => {
+      await expect(quizPage.difficultySlider).toHaveAttribute('aria-valuemin', '1');
+      await expect(quizPage.difficultySlider).toHaveAttribute('aria-valuemax', '4');
+    });
+  });
+
+  // ===========================================================================
+  // THEME TOGGLE TESTS
+  // ===========================================================================
+
+  test.describe('Theme Toggle', () => {
+    test('should start in dark mode', async ({ page }) => {
+      await expect(page.locator('body')).not.toHaveClass(/light-mode/);
+    });
+
+    test('should toggle to light mode', async ({ page }) => {
+      await quizPage.toggleTheme();
+      await expect(page.locator('body')).toHaveClass(/light-mode/);
+    });
+
+    test('should toggle back to dark mode', async ({ page }) => {
+      await quizPage.toggleTheme();
+      await expect(page.locator('body')).toHaveClass(/light-mode/);
+      await quizPage.toggleTheme();
+      await expect(page.locator('body')).not.toHaveClass(/light-mode/);
+    });
+  });
+});
+
+// =============================================================================
+// MOBILE VIEWPORT TESTS
+// =============================================================================
+
+test.describe('Mobile Viewport', () => {
+  test.use({ viewport: { width: 375, height: 667 } });
+
+  test('should display correctly on mobile viewport', async ({ page }) => {
+    const quizPage = new QuizPage(page);
+    await quizPage.goto();
+
+    await expect(quizPage.display).toBeVisible();
+    await expect(quizPage.startQuizButton).toBeVisible();
+    await expect(quizPage.incrementButton).toBeVisible();
+
+    // Verify no horizontal scrolling
+    const bodyWidth = await page.locator('body').evaluate(el => el.scrollWidth);
+    const viewportWidth = await page.locator('body').evaluate(el => el.clientWidth);
+    expect(bodyWidth).toBeLessThanOrEqual(viewportWidth);
+  });
+});
+
+
+################################################################################
+# FILE: export.sh
+################################################################################
+
+--- METADATA ---
+  File name:             export.sh
+  Relative path:         export.sh
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/export.sh
+  Size:                  17.1 KiB (17554 bytes)
+  Last modified:         2026-07-14 19:29:59.936545352 -0400
+  Permissions:           -rwxr-xr-x
+  Owner:                 kushal:kushal
+  Inode:                 20898100
+  Hard links:            1
+  MIME type:             text/x-shellscript
+  SHA-256:               eb0253320a7aac96a7ba66c2d53ae4697a869051ffccb1f164a6e5b6900169b1
+  Last git commit:       2e82b3b 2026-07-14 19:30:16 -0400 update exclude list
+
+--- CONTENT ---
+#!/usr/bin/env bash
+# =============================================================================
+# export.sh — Repository context dump for LLM consumption
+#
+# Location: <repo root>/export.sh
+#
+# Usage:  bash export.sh
+#         time bash export.sh
+#
+# Behaviour:
+#   • Resolves its own location; works regardless of CWD.
+#   • Silently exits if no Git repository is found at that location.
+#   • Dumps all Git-tracked files (excluding docs/llm/**, yarn.lock, .pnp.cjs,
+#     and .pnp.loader.mjs) to docs/llm/dump.txt.
+#   • Prepends its own source to the dump (self-documentation).
+#   • Emits rich per-file metadata (name, path, size, permissions, mtime, SHA-256).
+#   • Includes a file-tree view of all included files.
+#   • Prints the complete dump to stdout before writing the file.
+# =============================================================================
+
+set -euo pipefail
+IFS=$'\n\t'
+
+# ---------------------------------------------------------------------------
+# 0. Resolve script's own directory — immune to CWD
+# ---------------------------------------------------------------------------
+SCRIPT_PATH="$(readlink -f "${BASH_SOURCE[0]}")"
+SCRIPT_DIR="$(dirname "$SCRIPT_PATH")"
+SCRIPT_NAME="$(basename "$SCRIPT_PATH")"
+
+# ---------------------------------------------------------------------------
+# 1. Validate: must be inside a working Git repository
+# ---------------------------------------------------------------------------
+if ! git -C "$SCRIPT_DIR" rev-parse --is-inside-work-tree &>/dev/null 2>&1; then
+    exit 0
+fi
+
+# Ensure git is usable (index readable, not a bare repo, etc.)
+if ! git -C "$SCRIPT_DIR" status --porcelain &>/dev/null 2>&1; then
+    exit 0
+fi
+
+REPO_ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel 2>/dev/null)" || exit 0
+
+# ---------------------------------------------------------------------------
+# 2. Constants & derived paths
+# ---------------------------------------------------------------------------
+EXCLUDE_DIR="docs/llm"
+
+# Individual files to exclude from the dump, in addition to EXCLUDE_DIR.
+# A bare name (no slash) is excluded wherever it appears; a name containing a
+# slash is treated as an exact repo-relative path.
+#
+# yarn.lock, .pnp.cjs, and .pnp.loader.mjs are all Yarn-generated artifacts
+# (lockfile + PnP resolution map + PnP loader shim). They stay tracked in git
+# for Yarn's Zero-Installs workflow, but they are pure noise for an LLM
+# context dump, so they're excluded here rather than from git itself.
+EXCLUDE_FILES=(
+    "yarn.lock"
+    "package-lock.json"
+    "pnpm-lock.yaml"
+    "*.svg"
+    "*.png"
+    "*.ico"
+    "*.md"
+    "docs/*"
+    "scripts/*"
+    ".gitignore"
+    ".eslintrc.cjs"
+    "eslint.config.js"
+    "src/vite-env.d.ts"
+)
+
+EXCLUDE_FILES_DISPLAY="$(printf '%s, ' "${EXCLUDE_FILES[@]}")"
+EXCLUDE_FILES_DISPLAY="${EXCLUDE_FILES_DISPLAY%, }"
+
+OUTPUT_DIR="${REPO_ROOT}/${EXCLUDE_DIR}"
+OUTPUT_FILE="${OUTPUT_DIR}/dump.txt"
+
+TIMESTAMP="$(date --iso-8601=seconds)"
+GIT_BRANCH="$(git -C "$REPO_ROOT" rev-parse --abbrev-ref HEAD 2>/dev/null || echo 'unknown')"
+GIT_COMMIT="$(git -C "$REPO_ROOT" rev-parse HEAD 2>/dev/null || echo 'unknown')"
+GIT_COMMIT_SHORT="$(git -C "$REPO_ROOT" rev-parse --short HEAD 2>/dev/null || echo 'unknown')"
+GIT_COMMIT_MSG="$(git -C "$REPO_ROOT" log -1 --pretty=format:'%s' 2>/dev/null || echo 'unknown')"
+GIT_COMMIT_DATE="$(git -C "$REPO_ROOT" log -1 --pretty=format:'%ci' 2>/dev/null || echo 'unknown')"
+GIT_REMOTE="$(git -C "$REPO_ROOT" remote get-url origin 2>/dev/null || echo 'none')"
+GIT_STATUS_SUMMARY="$(git -C "$REPO_ROOT" status --short 2>/dev/null | head -20 || echo '')"
+
+HOSTNAME_VAL="$(hostname -f 2>/dev/null || hostname 2>/dev/null || echo 'unknown')"
+USER_VAL="$(id -un 2>/dev/null || echo 'unknown')"
+OS_VAL="$(uname -srm 2>/dev/null || echo 'unknown')"
+
+# ---------------------------------------------------------------------------
+# 3. Collect tracked files, excluding the output directory and EXCLUDE_FILES
+#    git ls-files guarantees only committed/staged files; no build artefacts.
+# ---------------------------------------------------------------------------
+mapfile -t _RAW_FILES < <(
+    git -C "$REPO_ROOT" ls-files \
+        --cached \
+        --others \
+        --exclude-standard \
+        -z \
+        2>/dev/null \
+    | tr '\0' '\n' \
+    | sort -u
+)
+
+ALL_FILES=()
+for _f in "${_RAW_FILES[@]}"; do
+    [[ -z "$_f" ]] && continue
+    # Skip the entire excluded directory tree.
+    [[ "$_f" == "${EXCLUDE_DIR}/"* ]] && continue
+    # Skip any individually-excluded file.
+    _skip=0
+    for _ex in "${EXCLUDE_FILES[@]}"; do
+        if [[ "$_ex" == */* ]]; then
+            [[ "$_f" == "$_ex" ]] && { _skip=1; break; }
+        else
+            [[ "$_f" == "$_ex" || "$_f" == */"$_ex" ]] && { _skip=1; break; }
+        fi
+    done
+    (( _skip )) && continue
+    ALL_FILES+=("$_f")
+done
+
+FILE_COUNT="${#ALL_FILES[@]}"
+
+# ---------------------------------------------------------------------------
+# 4. Helper: human-readable file size
+# ---------------------------------------------------------------------------
+human_size() {
+    local bytes="$1"
+    if   (( bytes < 1024 ));               then printf '%d B'      "$bytes"
+    elif (( bytes < 1048576 ));            then printf '%.1f KiB'  "$(echo "scale=1; $bytes/1024"       | bc)"
+    elif (( bytes < 1073741824 ));         then printf '%.1f MiB'  "$(echo "scale=1; $bytes/1048576"    | bc)"
+    else                                        printf '%.1f GiB'  "$(echo "scale=1; $bytes/1073741824" | bc)"
+    fi
+}
+
+# ---------------------------------------------------------------------------
+# 5. Helper: SHA-256 of a file (portable across Linux distros)
+# ---------------------------------------------------------------------------
+file_sha256() {
+    local path="$1"
+    if command -v sha256sum &>/dev/null; then
+        sha256sum "$path" | awk '{print $1}'
+    elif command -v shasum &>/dev/null; then
+        shasum -a 256 "$path" | awk '{print $1}'
+    else
+        echo 'unavailable'
+    fi
+}
+
+# ---------------------------------------------------------------------------
+# 6. Helper: MIME type (best-effort, no error on missing tool)
+# ---------------------------------------------------------------------------
+file_mime() {
+    local path="$1"
+    if command -v file &>/dev/null; then
+        file --brief --mime-type "$path" 2>/dev/null || echo 'unknown'
+    else
+        echo 'unknown'
+    fi
+}
+
+# ---------------------------------------------------------------------------
+# 7. Build the tree view using 'tree' if available, else pure bash fallback
+# ---------------------------------------------------------------------------
+build_tree() {
+    if command -v tree &>/dev/null; then
+        # --fromfile reads the path list from stdin and renders a tree
+        printf '%s\n' "${ALL_FILES[@]}" \
+        | tree --fromfile -a --noreport 2>/dev/null \
+        || _bash_tree
+    else
+        _bash_tree
+    fi
+}
+
+_bash_tree() {
+    # Pure-bash tree: reconstruct directory hierarchy from the flat file list
+    local -A SEEN_DIRS=()
+    local prev_depth=0
+    local line
+
+    for f in "${ALL_FILES[@]}"; do
+        local dir parts depth i prefix
+        dir="$(dirname "$f")"
+        IFS='/' read -ra parts <<< "$f"
+        depth=$(( ${#parts[@]} - 1 ))
+
+        # Print intermediate directories we haven't seen yet
+        local partial=""
+        for (( i=0; i<depth; i++ )); do
+            if [[ -z "$partial" ]]; then
+                partial="${parts[$i]}"
+            else
+                partial="${partial}/${parts[$i]}"
+            fi
+            if [[ -z "${SEEN_DIRS[$partial]+_}" ]]; then
+                SEEN_DIRS["$partial"]=1
+                prefix="$(printf '│   %.0s' $(seq 1 $i))├── "
+                printf '%s%s/\n' "$prefix" "${parts[$i]}"
+            fi
+        done
+
+        # Print the file itself
+        prefix="$(printf '│   %.0s' $(seq 1 $depth))└── "
+        printf '%s%s\n' "$prefix" "${parts[$depth]}"
+    done
+}
+
+# ---------------------------------------------------------------------------
+# 8. Assemble the dump into a variable (stdout + file simultaneously)
+# ---------------------------------------------------------------------------
+mkdir -p "$OUTPUT_DIR"
+
+# We use a temp file to build, then atomic-rename at the end.
+TMP_FILE="$(mktemp "${OUTPUT_DIR}/.dump.XXXXXX")"
+trap 'rm -f "$TMP_FILE"' EXIT
+
+# Tee everything to both stdout and the temp file
+exec > >(tee "$TMP_FILE") 2>&1
+
+# ── Preamble banner ──────────────────────────────────────────────────────────
+cat <<BANNER
+################################################################################
+#                                                                              #
+#   REPOSITORY CONTEXT DUMP                                                    #
+#   Generated for LLM consumption — do not edit manually                       #
+#                                                                              #
+################################################################################
+
+DUMP METADATA
+═════════════════════════════════════════════════════════════════════════════════
+  Generated at   : ${TIMESTAMP}
+  Generator      : ${SCRIPT_NAME}
+  Host           : ${HOSTNAME_VAL}
+  User           : ${USER_VAL}
+  OS             : ${OS_VAL}
+
+REPOSITORY METADATA
+═════════════════════════════════════════════════════════════════════════════════
+  Repository root: ${REPO_ROOT}
+  Branch         : ${GIT_BRANCH}
+  Commit (full)  : ${GIT_COMMIT}
+  Commit (short) : ${GIT_COMMIT_SHORT}
+  Commit date    : ${GIT_COMMIT_DATE}
+  Commit message : ${GIT_COMMIT_MSG}
+  Remote origin  : ${GIT_REMOTE}
+  Files included : ${FILE_COUNT}
+  Excluded path  : ${EXCLUDE_DIR}/
+  Excluded files : ${EXCLUDE_FILES_DISPLAY}
+
+GIT WORKING TREE STATUS (first 20 lines)
+═════════════════════════════════════════════════════════════════════════════════
+BANNER
+
+if [[ -n "$GIT_STATUS_SUMMARY" ]]; then
+    printf '%s\n' "$GIT_STATUS_SUMMARY"
+else
+    echo "  (clean — no uncommitted changes)"
+fi
+
+# ── Self-documentation: dump this script first ───────────────────────────────
+cat <<SELF_HEADER
+
+################################################################################
+# FILE: ${SCRIPT_NAME}  [THIS SCRIPT — included for full context]
+################################################################################
+SELF_HEADER
+
+printf '\n--- METADATA ---\n'
+_self_size="$(wc -c < "$SCRIPT_PATH")"
+_self_mtime="$(stat --format='%y' "$SCRIPT_PATH" 2>/dev/null \
+               || stat -f '%Sm' -t '%Y-%m-%d %H:%M:%S %z' "$SCRIPT_PATH" 2>/dev/null \
+               || echo 'unavailable')"
+_self_perms="$(stat --format='%A' "$SCRIPT_PATH" 2>/dev/null \
+               || stat -f '%Sp' "$SCRIPT_PATH" 2>/dev/null \
+               || echo 'unavailable')"
+_self_sha="$(file_sha256 "$SCRIPT_PATH")"
+
+printf '  %-22s %s\n'  "File name:"       "$SCRIPT_NAME"
+printf '  %-22s %s\n'  "Relative path:"   "$(realpath --relative-to="$REPO_ROOT" "$SCRIPT_PATH" 2>/dev/null || echo "$SCRIPT_PATH")"
+printf '  %-22s %s\n'  "Size:"            "$(human_size "$_self_size") (${_self_size} bytes)"
+printf '  %-22s %s\n'  "Last modified:"   "$_self_mtime"
+printf '  %-22s %s\n'  "Permissions:"     "$_self_perms"
+printf '  %-22s %s\n'  "SHA-256:"         "$_self_sha"
+printf '  %-22s %s\n'  "MIME type:"       "$(file_mime "$SCRIPT_PATH")"
+printf '\n--- CONTENT ---\n'
+cat "$SCRIPT_PATH"
+
+# ── File tree ─────────────────────────────────────────────────────────────────
+cat <<TREE_HEADER
+
+################################################################################
+# FILE TREE  (all ${FILE_COUNT} included files)
+################################################################################
+.
+TREE_HEADER
+
+build_tree
+echo ""
+
+# ── Per-file content dump ─────────────────────────────────────────────────────
+TOTAL_BYTES=0
+
+for rel_path in "${ALL_FILES[@]}"; do
+    abs_path="${REPO_ROOT}/${rel_path}"
+
+    # Skip if the file no longer exists on disk (deleted but still indexed)
+    [[ -f "$abs_path" ]] || continue
+
+    # ── Metadata collection ────────────────────────────────────────────────
+    file_size="$(wc -c < "$abs_path" 2>/dev/null || echo 0)"
+    TOTAL_BYTES=$(( TOTAL_BYTES + file_size ))
+
+    file_mtime="$(stat --format='%y' "$abs_path" 2>/dev/null \
+                  || stat -f '%Sm' -t '%Y-%m-%d %H:%M:%S %z' "$abs_path" 2>/dev/null \
+                  || echo 'unavailable')"
+
+    file_perms="$(stat --format='%A' "$abs_path" 2>/dev/null \
+                  || stat -f '%Sp' "$abs_path" 2>/dev/null \
+                  || echo 'unavailable')"
+
+    file_owner="$(stat --format='%U:%G' "$abs_path" 2>/dev/null \
+                  || stat -f '%Su:%Sg' "$abs_path" 2>/dev/null \
+                  || echo 'unavailable')"
+
+    file_inode="$(stat --format='%i' "$abs_path" 2>/dev/null \
+                  || stat -f '%i' "$abs_path" 2>/dev/null \
+                  || echo 'unavailable')"
+
+    file_links="$(stat --format='%h' "$abs_path" 2>/dev/null \
+                  || stat -f '%l' "$abs_path" 2>/dev/null \
+                  || echo 'unavailable')"
+
+    file_sha="$(file_sha256 "$abs_path")"
+    file_type="$(file_mime "$abs_path")"
+
+    git_log_line="$(git -C "$REPO_ROOT" log -1 --pretty=format:'%h %ai %s' -- "$rel_path" 2>/dev/null || echo 'unavailable')"
+
+    # ── Section header ─────────────────────────────────────────────────────
+    printf '\n'
+    printf '################################################################################\n'
+    printf '# FILE: %s\n' "$rel_path"
+    printf '################################################################################\n'
+    printf '\n--- METADATA ---\n'
+    printf '  %-22s %s\n'  "File name:"       "$(basename "$rel_path")"
+    printf '  %-22s %s\n'  "Relative path:"   "$rel_path"
+    printf '  %-22s %s\n'  "Absolute path:"   "$abs_path"
+    printf '  %-22s %s\n'  "Size:"            "$(human_size "$file_size") (${file_size} bytes)"
+    printf '  %-22s %s\n'  "Last modified:"   "$file_mtime"
+    printf '  %-22s %s\n'  "Permissions:"     "$file_perms"
+    printf '  %-22s %s\n'  "Owner:"           "$file_owner"
+    printf '  %-22s %s\n'  "Inode:"           "$file_inode"
+    printf '  %-22s %s\n'  "Hard links:"      "$file_links"
+    printf '  %-22s %s\n'  "MIME type:"       "$file_type"
+    printf '  %-22s %s\n'  "SHA-256:"         "$file_sha"
+    printf '  %-22s %s\n'  "Last git commit:" "$git_log_line"
+    printf '\n--- CONTENT ---\n'
+
+    # ── Content emission ───────────────────────────────────────────────────
+    # Binary files: emit a notice instead of raw bytes
+    if [[ "$file_type" == application/octet-stream ]] \
+    || [[ "$file_type" == image/* ]] \
+    || [[ "$file_type" == audio/* ]] \
+    || [[ "$file_type" == video/* ]] \
+    || ! file --brief "$abs_path" 2>/dev/null | grep -qi 'text\|script\|xml\|json\|yaml\|svg\|source\|empty'; then
+        printf '[Binary file — content omitted. Size: %s, SHA-256: %s]\n' \
+            "$(human_size "$file_size")" "$file_sha"
+    else
+        cat "$abs_path"
+        # Ensure there is always a trailing newline so the next header aligns
+        [[ "$(tail -c1 "$abs_path" | wc -c)" -gt 0 ]] \
+            && [[ "$(tail -c1 "$abs_path")" != $'\n' ]] \
+            && printf '\n'
+    fi
+done
+
+# ── Summary footer ────────────────────────────────────────────────────────────
+cat <<FOOTER
+
+################################################################################
+# DUMP SUMMARY
+################################################################################
+  Files dumped   : ${FILE_COUNT}
+  Total size     : $(human_size "$TOTAL_BYTES") (${TOTAL_BYTES} bytes)
+  Output file    : ${OUTPUT_FILE}
+  Completed at   : $(date --iso-8601=seconds)
+################################################################################
+# END OF DUMP
+################################################################################
+FOOTER
+
+# ---------------------------------------------------------------------------
+# 9. Atomic rename — avoids partial writes being read by concurrent processes
+# ---------------------------------------------------------------------------
+mv -f "$TMP_FILE" "$OUTPUT_FILE"
+
+
+################################################################################
+# FILE: .github/workflows/ci-cd.yml
+################################################################################
+
+--- METADATA ---
+  File name:             ci-cd.yml
+  Relative path:         .github/workflows/ci-cd.yml
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/.github/workflows/ci-cd.yml
+  Size:                  8.0 KiB (8262 bytes)
+  Last modified:         2026-01-07 12:58:46.081717203 -0500
+  Permissions:           -rw-r--r--
+  Owner:                 kushal:kushal
+  Inode:                 3382205
+  Hard links:            1
+  MIME type:             text/plain
+  SHA-256:               cd7310e94564b8d98d5cfa15c7578815696218c62fb39a6151b70e61e8c6fc57
+  Last git commit:       a3c0d73 2026-01-07 11:59:20 -0600 run claude script
+
+--- CONTENT ---
 # ==============================================================================
 # CI/CD Pipeline with Playwright Best Practices
 # ==============================================================================
@@ -244,9 +1716,25 @@ jobs:
         uses: actions/deploy-pages@v4
 
 
--------------------------------------------------------------------------------
-FILE: .github/workflows/coverage-comment.yml
--------------------------------------------------------------------------------
+################################################################################
+# FILE: .github/workflows/coverage-comment.yml
+################################################################################
+
+--- METADATA ---
+  File name:             coverage-comment.yml
+  Relative path:         .github/workflows/coverage-comment.yml
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/.github/workflows/coverage-comment.yml
+  Size:                  975 B (975 bytes)
+  Last modified:         2026-01-07 12:17:53.437517049 -0500
+  Permissions:           -rw-r--r--
+  Owner:                 kushal:kushal
+  Inode:                 3382206
+  Hard links:            1
+  MIME type:             text/plain
+  SHA-256:               06cab9e09e461f6619635a8570fd84e8115a5c20326471075e9350004894ad3e
+  Last git commit:       23135bc 2025-08-03 07:38:18 -0700 update for code coverage
+
+--- CONTENT ---
 name: Coverage Comment
 
 on:
@@ -293,494 +1781,25 @@ jobs:
     - name: Write to Job Summary
       run: cat code-coverage-results.md >> $GITHUB_STEP_SUMMARY
 
--------------------------------------------------------------------------------
-FILE: Dockerfile.e2e
--------------------------------------------------------------------------------
-FROM mcr.microsoft.com/playwright:v1.58.2-noble
-
-WORKDIR /app
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
-COPY . .
-RUN yarn build
-
-
--------------------------------------------------------------------------------
-FILE: e2e/pages/index.ts
--------------------------------------------------------------------------------
-/**
- * Page Object Model Exports
- * 
- * This file exports all page objects for easy importing in tests.
- * 
- * Usage in tests:
- *   import { QuizPage } from './pages';
- */
-
-export { QuizPage } from './quiz-page';
-
-
--------------------------------------------------------------------------------
-FILE: e2e/pages/quiz-page.ts
--------------------------------------------------------------------------------
-/**
- * QuizPage - Page Object Model for the Multiplication Drill application
- * 
- * FIXES APPLIED:
- * 1. Changed slider locators to use ID selectors (getByLabel doesn't work reliably
- *    when there's both a <label> and aria-label with different text)
- * 2. Changed slider interaction from fill() to proper range input handling
- * 3. Fixed theme toggle button locator (emoji matching is unreliable)
- */
-
-import { type Page, type Locator, expect } from '@playwright/test';
-
-type DifficultyLevel = 1 | 2 | 3 | 4;
-
-interface DifficultyConfig {
-  name: string;
-  min: number;
-  max: number;
-}
-
-const DIFFICULTY_MAP: Record<DifficultyLevel, DifficultyConfig> = {
-  1: { name: 'Easy', min: 2, max: 5 },
-  2: { name: 'Medium', min: 4, max: 8 },
-  3: { name: 'Hard', min: 6, max: 12 },
-  4: { name: 'Expert', min: 10, max: 20 },
-};
-
-export class QuizPage {
-  readonly page: Page;
-
-  // Display elements
-  readonly display: Locator;
-  readonly progressBar: Locator;
-  readonly timerDisplay: Locator;
-
-  // Quiz control buttons
-  readonly startQuizButton: Locator;
-  readonly stopQuizButton: Locator;
-
-  // Manual mode buttons
-  readonly incrementButton: Locator;
-  readonly resetButton: Locator;
-
-  // Settings sliders - USE ID LOCATORS instead of getByLabel
-  // getByLabel fails when <label> text differs from aria-label
-  readonly questionTimeSlider: Locator;
-  readonly answerTimeSlider: Locator;
-  readonly difficultySlider: Locator;
-
-  // Settings value displays
-  readonly questionTimeValue: Locator;
-  readonly answerTimeValue: Locator;
-  readonly difficultyValue: Locator;
-
-  // Auto-update checkbox
-  readonly autoUpdateCheckbox: Locator;
-
-  // Theme toggle
-  readonly themeToggle: Locator;
-
-  // Status indicators
-  readonly modeStatus: Locator;
-  readonly quizStatus: Locator;
-
-  constructor(page: Page) {
-    this.page = page;
-
-    // Display elements - ID locators are acceptable fallback
-    this.display = page.locator('#display');
-    this.progressBar = page.locator('#progressBar');
-    this.timerDisplay = page.locator('#timerDisplay');
-
-    // Quiz control buttons - getByRole with name is most resilient
-    this.startQuizButton = page.getByRole('button', { name: 'Start Quiz' });
-    this.stopQuizButton = page.getByRole('button', { name: 'Stop Quiz' });
-
-    // Manual mode buttons
-    this.incrementButton = page.getByRole('button', { name: 'Increment' });
-    this.resetButton = page.getByRole('button', { name: 'Reset' });
-
-    // FIX: Use ID locators for sliders instead of getByLabel
-    // The HTML has <label for="questionTime">Question Time:</label> AND
-    // <input aria-label="Question time in seconds"> which can cause conflicts
-    this.questionTimeSlider = page.locator('#questionTime');
-    this.answerTimeSlider = page.locator('#answerTime');
-    this.difficultySlider = page.locator('#difficulty');
-
-    // Settings value displays
-    this.questionTimeValue = page.locator('#questionTimeValue');
-    this.answerTimeValue = page.locator('#answerTimeValue');
-    this.difficultyValue = page.locator('#difficultyValue');
-
-    // FIX: Use locator with type=checkbox and label association
-    this.autoUpdateCheckbox = page.locator('#autoUpdate');
-
-    // FIX: Theme toggle - use class selector since there's no ID in HTML
-    // and emoji matching with getByRole is unreliable
-    this.themeToggle = page.locator('.theme-toggle');
-
-    // Status indicators
-    this.modeStatus = page.locator('#modeStatus');
-    this.quizStatus = page.locator('#quizStatus');
-  }
-
-  // Navigation
-  async goto(): Promise<void> {
-    await this.page.goto('/');
-    await expect(this.display).toBeVisible();
-  }
-
-  // Quiz control methods
-  async startQuiz(): Promise<void> {
-    await this.startQuizButton.click();
-    await expect(this.stopQuizButton).toBeVisible();
-  }
-
-  async stopQuiz(): Promise<void> {
-    await this.stopQuizButton.click();
-    await expect(this.startQuizButton).toBeVisible();
-  }
-
-  async isQuizRunning(): Promise<boolean> {
-    return this.stopQuizButton.isVisible();
-  }
-
-  // Manual mode methods
-  async increment(): Promise<void> {
-    await this.incrementButton.click();
-  }
-
-  async reset(): Promise<void> {
-    await this.resetButton.click();
-  }
-
-  async setAutoUpdate(enable: boolean): Promise<void> {
-    if (enable) {
-      await this.autoUpdateCheckbox.check();
-    } else {
-      await this.autoUpdateCheckbox.uncheck();
-    }
-  }
-
-  // FIX: Proper slider interaction - fill() doesn't work on range inputs!
-  // Use evaluate() to set the value directly and dispatch input event
-  async setQuestionTime(seconds: number): Promise<void> {
-    await this.questionTimeSlider.evaluate((el: HTMLInputElement, val: number) => {
-      el.value = val.toString();
-      el.dispatchEvent(new Event('input', { bubbles: true }));
-    }, seconds);
-    await expect(this.questionTimeValue).toHaveText(`${seconds}s`);
-  }
-
-  async setAnswerTime(seconds: number): Promise<void> {
-    await this.answerTimeSlider.evaluate((el: HTMLInputElement, val: number) => {
-      el.value = val.toString();
-      el.dispatchEvent(new Event('input', { bubbles: true }));
-    }, seconds);
-    await expect(this.answerTimeValue).toHaveText(`${seconds}s`);
-  }
-
-  async setDifficulty(level: DifficultyLevel): Promise<void> {
-    await this.difficultySlider.evaluate((el: HTMLInputElement, val: number) => {
-      el.value = val.toString();
-      el.dispatchEvent(new Event('input', { bubbles: true }));
-    }, level);
-    const expectedName = DIFFICULTY_MAP[level].name;
-    await expect(this.difficultyValue).toHaveText(expectedName);
-  }
-
-  // Toggle theme
-  async toggleTheme(): Promise<void> {
-    await this.themeToggle.click();
-  }
-
-  // Helper methods
-  getDifficultyRange(level: DifficultyLevel): { min: number; max: number } {
-    return DIFFICULTY_MAP[level];
-  }
-
-  async getMultiplier(): Promise<number | null> {
-    const text = await this.display.textContent();
-    if (!text) return null;
-    // Match pattern like "5 × 10 = 50" and extract the second number (multiplier)
-    const match = text.match(/\d+\s*×\s*(\d+)/);
-    return match ? parseInt(match[1], 10) : null;
-  }
-
-  // Assertion helpers
-  async expectDisplayToShow(counter: number, multiplier: number): Promise<void> {
-    const expected = `${counter} × ${multiplier} = ${counter * multiplier}`;
-    await expect(this.display).toHaveText(expected);
-  }
-
-  async expectQuizQuestion(): Promise<void> {
-    await expect(this.display).toHaveText(/^\d+\s*×\s*\d+$/);
-  }
-
-  async expectQuizAnswer(): Promise<void> {
-    await expect(this.display).toHaveText(/^\d+\s*×\s*\d+\s*=\s*\d+$/);
-  }
-
-  async expectControlsDisabled(disabled: boolean): Promise<void> {
-    if (disabled) {
-      await expect(this.incrementButton).toBeDisabled();
-      await expect(this.resetButton).toBeDisabled();
-      await expect(this.questionTimeSlider).toBeDisabled();
-      await expect(this.answerTimeSlider).toBeDisabled();
-      await expect(this.difficultySlider).toBeDisabled();
-      await expect(this.autoUpdateCheckbox).toBeDisabled();
-    } else {
-      await expect(this.incrementButton).toBeEnabled();
-      await expect(this.resetButton).toBeEnabled();
-      await expect(this.questionTimeSlider).toBeEnabled();
-      await expect(this.answerTimeSlider).toBeEnabled();
-      await expect(this.difficultySlider).toBeEnabled();
-      await expect(this.autoUpdateCheckbox).toBeEnabled();
-    }
-  }
-
-  async expectStatus(mode: 'Manual' | 'Quiz', quizState: 'Stopped' | 'Running'): Promise<void> {
-    await expect(this.modeStatus).toHaveText(mode);
-    await expect(this.quizStatus).toHaveText(quizState);
-  }
-
-  async expectMultiplierInRange(level: DifficultyLevel): Promise<void> {
-    const multiplier = await this.getMultiplier();
-    const range = this.getDifficultyRange(level);
-    
-    expect(multiplier).not.toBeNull();
-    expect(multiplier).toBeGreaterThanOrEqual(range.min);
-    expect(multiplier).toBeLessThanOrEqual(range.max);
-  }
-}
-
-
--------------------------------------------------------------------------------
-FILE: e2e/quiz.spec.ts
--------------------------------------------------------------------------------
-/**
- * Multiplication Drill E2E Tests
- * 
- * FIXES APPLIED:
- * 1. Use Unicode escape for multiplication sign to avoid encoding issues
- * 2. Fixed regex patterns to match actual app output
- * 3. Increased timeouts for quiz transitions
- */
-
-import { test, expect } from '@playwright/test';
-import { QuizPage } from './pages/quiz-page';
-
-// Unicode multiplication sign (×) - using escape to avoid encoding issues
-const TIMES = '\u00D7';
-
-let quizPage: QuizPage;
-
-test.describe('Multiplication Drill Application', () => {
-  test.beforeEach(async ({ page }) => {
-    quizPage = new QuizPage(page);
-    await quizPage.goto();
-  });
-
-  // ===========================================================================
-  // INITIAL STATE TESTS
-  // ===========================================================================
-
-  test.describe('Initial State', () => {
-    test('should load the page with correct title', async ({ page }) => {
-      await expect(page).toHaveTitle('Reactive Math Quiz');
-    });
-
-    test('should display initial manual mode equation', async () => {
-      // Should show pattern like "0 × 7 = 0" (counter × multiplier = result)
-      const pattern = new RegExp(`^\\d+\\s*${TIMES}\\s*\\d+\\s*=\\s*\\d+$`);
-      await expect(quizPage.display).toHaveText(pattern);
-    });
-
-    test('should have all controls enabled in manual mode', async () => {
-      await quizPage.expectControlsDisabled(false);
-    });
-
-    test('should show correct initial status', async () => {
-      await quizPage.expectStatus('Manual', 'Stopped');
-    });
-  });
-
-  // ===========================================================================
-  // MANUAL MODE TESTS
-  // ===========================================================================
-
-  test.describe('Manual Mode', () => {
-    test('should increment counter when clicking increment button', async () => {
-      const multiplier = await quizPage.getMultiplier();
-      expect(multiplier).not.toBeNull();
-
-      await quizPage.increment();
-      await quizPage.expectDisplayToShow(1, multiplier!);
-
-      await quizPage.increment();
-      await quizPage.expectDisplayToShow(2, multiplier!);
-    });
-
-    test('should reset counter and generate new multiplier when clicking reset', async () => {
-      await quizPage.increment();
-      await quizPage.increment();
-
-      await quizPage.reset();
-
-      // Verify counter is 0 - the display should show "0 × X = 0"
-      const pattern = new RegExp(`^0\\s*${TIMES}\\s*\\d+\\s*=\\s*0$`);
-      await expect(quizPage.display).toHaveText(pattern);
-    });
-
-    test('should verify multiplication calculations are correct', async () => {
-      const multiplier = await quizPage.getMultiplier();
-      expect(multiplier).not.toBeNull();
-
-      for (let i = 1; i <= 5; i++) {
-        await quizPage.increment();
-        await quizPage.expectDisplayToShow(i, multiplier!);
-      }
-    });
-  });
-
-  // ===========================================================================
-  // QUIZ MODE TESTS
-  // ===========================================================================
-
-  test.describe('Quiz Mode', () => {
-    test('should start quiz when clicking Start Quiz button', async () => {
-      await quizPage.startQuiz();
-      await quizPage.expectStatus('Quiz', 'Running');
-    });
-
-    test('should disable manual controls during quiz', async () => {
-      await quizPage.startQuiz();
-      await quizPage.expectControlsDisabled(true);
-      await quizPage.stopQuiz();
-      await quizPage.expectControlsDisabled(false);
-    });
-
-    test('should update status panel during quiz', async () => {
-      await quizPage.expectStatus('Manual', 'Stopped');
-      await quizPage.startQuiz();
-      await quizPage.expectStatus('Quiz', 'Running');
-      await quizPage.stopQuiz();
-      await quizPage.expectStatus('Manual', 'Stopped');
-    });
-
-    test('should transition from question to answer phase', async () => {
-      await quizPage.startQuiz();
-
-      // Wait for the answer phase - the display will include "="
-      // Using Unicode escape for multiplication sign
-      const answerPattern = new RegExp(`^\\d+\\s*${TIMES}\\s*\\d+\\s*=\\s*\\d+$`);
-      await expect(quizPage.display).toHaveText(answerPattern, {
-        timeout: 10000, // Allow more time for question phase to complete
-      });
-
-      await quizPage.stopQuiz();
-    });
-
-    test('should generate new problems', async () => {
-      await quizPage.startQuiz();
-
-      const firstProblem = await quizPage.display.textContent();
-
-      // Wait for content to change (new question or answer phase)
-      await expect(async () => {
-        const currentProblem = await quizPage.display.textContent();
-        expect(currentProblem).not.toBe(firstProblem);
-      }).toPass({
-        timeout: 10000, // Increased timeout
-      });
-
-      await quizPage.stopQuiz();
-    });
-  });
-
-  // ===========================================================================
-  // SETTINGS TESTS
-  // ===========================================================================
-
-  test.describe('Settings', () => {
-    test('should change difficulty and update multiplier range', async () => {
-      // Set to Easy (level 1) - range 2-5
-      await quizPage.setDifficulty(1);
-      await expect(quizPage.difficultyValue).toHaveText('Easy');
-      
-      // Reset to get new multiplier in the correct range
-      await quizPage.reset();
-      await quizPage.expectMultiplierInRange(1);
-    });
-
-    test('should adjust question time slider', async () => {
-      await quizPage.setQuestionTime(10);
-      await expect(quizPage.questionTimeValue).toHaveText('10s');
-    });
-
-    test('should adjust answer time slider', async () => {
-      await quizPage.setAnswerTime(5);
-      await expect(quizPage.answerTimeValue).toHaveText('5s');
-    });
-
-    test('should have proper ARIA attributes on sliders', async () => {
-      await expect(quizPage.difficultySlider).toHaveAttribute('aria-valuemin', '1');
-      await expect(quizPage.difficultySlider).toHaveAttribute('aria-valuemax', '4');
-    });
-  });
-
-  // ===========================================================================
-  // THEME TOGGLE TESTS
-  // ===========================================================================
-
-  test.describe('Theme Toggle', () => {
-    test('should start in dark mode', async ({ page }) => {
-      await expect(page.locator('body')).not.toHaveClass(/light-mode/);
-    });
-
-    test('should toggle to light mode', async ({ page }) => {
-      await quizPage.toggleTheme();
-      await expect(page.locator('body')).toHaveClass(/light-mode/);
-    });
-
-    test('should toggle back to dark mode', async ({ page }) => {
-      await quizPage.toggleTheme();
-      await expect(page.locator('body')).toHaveClass(/light-mode/);
-      await quizPage.toggleTheme();
-      await expect(page.locator('body')).not.toHaveClass(/light-mode/);
-    });
-  });
-});
-
-// =============================================================================
-// MOBILE VIEWPORT TESTS
-// =============================================================================
-
-test.describe('Mobile Viewport', () => {
-  test.use({ viewport: { width: 375, height: 667 } });
-
-  test('should display correctly on mobile viewport', async ({ page }) => {
-    const quizPage = new QuizPage(page);
-    await quizPage.goto();
-
-    await expect(quizPage.display).toBeVisible();
-    await expect(quizPage.startQuizButton).toBeVisible();
-    await expect(quizPage.incrementButton).toBeVisible();
-
-    // Verify no horizontal scrolling
-    const bodyWidth = await page.locator('body').evaluate(el => el.scrollWidth);
-    const viewportWidth = await page.locator('body').evaluate(el => el.clientWidth);
-    expect(bodyWidth).toBeLessThanOrEqual(viewportWidth);
-  });
-});
-
-
--------------------------------------------------------------------------------
-FILE: index.html
--------------------------------------------------------------------------------
+################################################################################
+# FILE: index.html
+################################################################################
+
+--- METADATA ---
+  File name:             index.html
+  Relative path:         index.html
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/index.html
+  Size:                  3.4 KiB (3486 bytes)
+  Last modified:         2026-01-07 12:17:53.437517049 -0500
+  Permissions:           -rw-r--r--
+  Owner:                 kushal:kushal
+  Inode:                 3382214
+  Hard links:            1
+  MIME type:             text/html
+  SHA-256:               c03cc80c9f61c8f22acb523422d196398134f4166504620193171b73f0397152
+  Last git commit:       6c1b6ec 2025-08-04 05:41:00 -0700 add code updates by claude in response to review
+
+--- CONTENT ---
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -862,9 +1881,480 @@ FILE: index.html
 </body>
 </html>
 
--------------------------------------------------------------------------------
-FILE: package.json
--------------------------------------------------------------------------------
+################################################################################
+# FILE: manual-testing-notes.md
+################################################################################
+
+--- METADATA ---
+  File name:             manual-testing-notes.md
+  Relative path:         manual-testing-notes.md
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/manual-testing-notes.md
+  Size:                  9.4 KiB (9658 bytes)
+  Last modified:         2026-01-07 12:17:53.437517049 -0500
+  Permissions:           -rw-r--r--
+  Owner:                 kushal:kushal
+  Inode:                 3382216
+  Hard links:            1
+  MIME type:             text/plain
+  SHA-256:               7ed1532ce7e00f0788d9c079f923ac8ba7c95b81325f2165440f0b15528b82f7
+  Last git commit:       c4b9bb8 2025-08-08 10:05:21 -0700 add documentation
+
+--- CONTENT ---
+# Comprehensive Testing Notes - Multiplication Drill Application
+
+## 1. Visual and Theme Testing
+
+### Dark/Light Mode Toggle
+- **Location**: Top-right corner (🌓 button)
+- **Test Cases**:
+  1. Default state should be dark mode
+  2. Click toggle → switches to light mode (rainbow gradient background animation)
+  3. Click again → returns to dark mode
+  4. Theme preference persists after page reload
+  5. Verify all UI elements remain readable in both themes
+  6. Check contrast ratios meet accessibility standards
+
+## 2. Quiz Mode Testing
+
+### Basic Quiz Flow
+1. **Starting a Quiz**:
+   - Click "Start Quiz" button
+   - Button text changes to "Stop Quiz"
+   - Display shows multiplication problem (e.g., "7 × 8")
+   - Progress bar begins filling
+   - Timer shows "Question: X.Xs"
+   - Manual controls become disabled (grayed out)
+
+2. **Question Phase**:
+   - Problem displays without answer for configured duration
+   - Progress bar fills from left to right (green gradient)
+   - Timer counts down from question time setting
+   - Numbers in problem should match difficulty range
+
+3. **Answer Phase**:
+   - Display shows full equation with answer (e.g., "7 × 8 = 56")
+   - Progress bar changes color (orange/yellow gradient)
+   - Timer shows "Answer: X.Xs" and counts down
+   - Progress bar resets and fills again for answer duration
+
+4. **Continuous Flow**:
+   - After answer phase, automatically starts new problem
+   - Problems should vary (not repeat same numbers constantly)
+   - Quiz continues until manually stopped
+
+5. **Stopping Quiz**:
+   - Click "Stop Quiz" button
+   - Returns to manual mode display
+   - Shows current counter value with multiplier
+   - All controls re-enable
+   - Timer shows "Ready"
+
+## 3. Settings Configuration
+
+### Question Time Slider
+- **Range**: 1-30 seconds
+- **Default**: 5 seconds
+- **Test Cases**:
+  1. Drag slider to minimum (1s) - verify "1s" displays
+  2. Drag to maximum (30s) - verify "30s" displays
+  3. Set to 10s, start quiz, verify question displays for 10 seconds
+  4. Cannot be adjusted during active quiz
+  5. Setting persists after page reload
+
+### Answer Time Slider
+- **Range**: 1-30 seconds
+- **Default**: 3 seconds
+- **Test Cases**:
+  1. Similar to Question Time tests
+  2. Verify answer phase uses this duration
+  3. Can be different from question time
+
+### Difficulty Slider
+- **Range**: 1-4 (Easy/Medium/Hard/Expert)
+- **Default**: 3 (Hard)
+- **Test Cases**:
+  1. **Easy (1)**: Problems use numbers 2-5
+  2. **Medium (2)**: Problems use numbers 4-8
+  3. **Hard (3)**: Problems use numbers 6-12
+  4. **Expert (4)**: Problems use numbers 10-20
+  5. Changing difficulty updates manual mode multiplier immediately
+  6. Cannot be changed during active quiz
+  7. Verify problem ranges in quiz mode match selected difficulty
+
+## 4. Manual Mode Testing
+
+### Increment Button
+- **Test Cases**:
+  1. Each click increases counter by 1
+  2. Display updates to show: `[counter] × [multiplier] = [product]`
+  3. Multiplier changes based on difficulty setting
+  4. Last Update time refreshes with each click
+  5. Button disabled during quiz mode
+
+### Reset Button
+- **Test Cases**:
+  1. Resets counter to 0
+  2. Generates new random multiplier within difficulty range
+  3. Display shows "0 × [new multiplier] = 0"
+  4. Last Update time refreshes
+  5. Button disabled during quiz mode
+
+### Auto-Update Checkbox
+- **Test Cases**:
+  1. When checked, counter increments every 3 seconds
+  2. Only works in manual mode (not during quiz)
+  3. Stops auto-increment when unchecked
+  4. Auto-update pauses when browser tab loses focus (battery saving)
+  5. Resumes when tab regains focus
+  6. Setting persists after page reload
+  7. Checkbox disabled during quiz mode
+
+## 5. Display and Visual Feedback
+
+### Main Display
+- **Test Cases**:
+  1. Font size is large and readable
+  2. Has subtle shine animation effect
+  3. Shows different content based on mode:
+     - Manual: `[counter] × [multiplier] = [result]`
+     - Quiz Question: `[num1] × [num2]`
+     - Quiz Answer: `[num1] × [num2] = [result]`
+
+### Progress Bar
+- **Test Cases**:
+  1. Hidden in manual mode
+  2. Green gradient during question phase
+  3. Orange gradient during answer phase
+  4. Smooth animation from 0% to 100%
+  5. Has shimmer effect overlay
+  6. Resets between phases
+
+### Status Panel
+- **Always Visible Information**:
+  1. **Mode**: Shows "Manual" or "Quiz"
+  2. **Quiz State**: Shows "Stopped" or "Running"
+  3. **Last Update**: Shows timestamp of last change
+
+## 6. Accessibility Testing
+
+### Keyboard Navigation
+1. **Tab Order**:
+   - All interactive elements reachable via Tab key
+   - Logical tab order (top to bottom, left to right)
+   - Focus indicators visible on all elements
+
+2. **Slider Controls**:
+   - Arrow keys adjust values
+   - Home/End keys jump to min/max
+   - Values announced to screen readers
+
+3. **ARIA Labels**:
+   - All sliders have descriptive labels
+   - Current values announced
+   - Difficulty announces name (Easy/Medium/Hard/Expert)
+
+### Screen Reader Testing
+- All controls properly labeled
+- State changes announced
+- Timer updates readable
+- Quiz problems and answers announced
+
+## 7. Performance and Edge Cases
+
+### Browser Compatibility
+- Test on Chrome, Firefox, Safari, Edge
+- Mobile browsers (iOS Safari, Chrome Mobile)
+- Verify animations smooth on all platforms
+
+### Local Storage
+1. **Settings Persistence**:
+   - Question time, answer time, difficulty, auto-update state
+   - Survives page refresh
+   - Handles corrupted storage gracefully
+
+2. **Theme Persistence**:
+   - Dark/light mode preference saved
+   - Applies immediately on page load
+
+### Edge Cases to Test
+1. **Rapid Clicking**:
+   - Spam increment button - should handle gracefully
+   - Quickly toggle quiz on/off - no crashes or stuck states
+
+2. **Extreme Settings**:
+   - 1 second question + 1 second answer - still playable
+   - 30 second timers - progress bar scales correctly
+
+3. **Browser States**:
+   - Page refresh during quiz - returns to manual mode
+   - Multiple tabs open - each maintains independent state
+   - Private/incognito mode - works without localStorage
+
+4. **Timing Precision**:
+   - Timer counts down smoothly
+   - No skipped numbers in countdown
+   - Phases transition at exactly 0.0s
+
+## 8. Mobile Testing
+
+### Responsive Design
+1. **Small Screens** (< 600px):
+   - Container fits screen width
+   - Font sizes remain readable
+   - All controls accessible
+   - No horizontal scrolling
+
+2. **Touch Interactions**:
+   - Buttons have adequate touch targets (minimum 44x44px)
+   - Sliders draggable with touch
+   - No hover-dependent functionality
+
+3. **Orientation**:
+   - Works in portrait and landscape
+   - Layout adjusts appropriately
+
+## 9. Data Validation
+
+### Number Ranges
+1. Verify multiplier stays within difficulty bounds
+2. Quiz problems use correct number ranges
+3. No negative numbers or decimals
+4. Products calculate correctly
+
+### Timer Behavior
+1. Never goes negative
+2. Displays one decimal place consistently
+3. Stops at exactly 0.0
+
+## 10. User Experience Testing
+
+### First-Time User
+1. Interface intuitive without instructions
+2. Default settings provide good experience
+3. Purpose of each control clear
+
+### Feedback and Responsiveness
+1. All actions have immediate visual feedback
+2. Disabled states clearly indicated
+3. Loading/transition states smooth
+4. No confusing delays or lag
+
+## 11. Regression Testing Checklist
+
+After any code changes, verify:
+- [ ] Theme toggle works and persists
+- [ ] Quiz start/stop functions correctly
+- [ ] All sliders update values and labels
+- [ ] Manual mode increment/reset work
+- [ ] Auto-update functions with 3-second interval
+- [ ] Settings save and restore after refresh
+- [ ] Progress bar animations smooth
+- [ ] Timer counts down accurately
+- [ ] Difficulty ranges apply correctly
+- [ ] All buttons disable during quiz
+- [ ] Status panel updates correctly
+- [ ] No console errors in browser
+- [ ] Mobile responsive design intact
+- [ ] Accessibility features functional
+
+## 12. Automated Test Coverage
+
+### Unit Tests (Vitest)
+- Signal system: 100% coverage
+- State computations: 95%+ coverage
+- Utility functions: 100% coverage
+- Debouncing logic verified
+- localStorage mock testing
+
+### E2E Tests (Playwright)
+- Full user flows across browsers
+- Settings persistence
+- Theme switching
+- Quiz lifecycle
+- Manual mode operations
+- Auto-update functionality
+
+## Test Scenarios for QA
+
+### Scenario 1: Complete Quiz Session
+1. Set difficulty to Easy
+2. Set question time to 3s, answer time to 2s
+3. Start quiz
+4. Observe 3 complete question-answer cycles
+5. Stop quiz
+6. Verify return to manual mode
+
+### Scenario 2: Settings Persistence
+1. Change all settings to non-default values
+2. Enable auto-update
+3. Switch to light theme
+4. Refresh page
+5. Verify all settings retained
+
+### Scenario 3: Auto-Update Battery Saver
+1. Enable auto-update in manual mode
+2. Observe counter increment
+3. Switch to different browser tab
+4. Wait 10 seconds
+5. Return to app tab
+6. Verify counter only incremented while tab was active
+
+### Scenario 4: Accessibility Navigation
+1. Unplug mouse (desktop) or use keyboard only
+2. Tab through entire interface
+3. Adjust all sliders with arrow keys
+4. Start and stop quiz with Enter/Space
+5. Verify all functions accessible
+
+## Bug Reporting Template
+
+When reporting issues, include:
+1. **Browser**: (e.g., Chrome 120, Safari 17)
+2. **Device**: (Desktop/Mobile, OS)
+3. **Steps to Reproduce**:
+   - Exact sequence of actions
+   - Settings values if relevant
+4. **Expected Behavior**:
+5. **Actual Behavior**:
+6. **Screenshot/Video**: If applicable
+7. **Console Errors**: Open DevTools (F12) and check Console tab
+
+################################################################################
+# FILE: MIGRATION.md
+################################################################################
+
+--- METADATA ---
+  File name:             MIGRATION.md
+  Relative path:         MIGRATION.md
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/MIGRATION.md
+  Size:                  2.5 KiB (2658 bytes)
+  Last modified:         2026-01-07 12:17:53.437517049 -0500
+  Permissions:           -rw-r--r--
+  Owner:                 kushal:kushal
+  Inode:                 3382208
+  Hard links:            1
+  MIME type:             text/plain
+  SHA-256:               ef5495e10feb4afa4db6c2cd30db52cfdd1f835947b9992c249db7f5749d0504
+  Last git commit:       d8ec9ed 2025-08-03 05:12:23 -0700 add code changes by claude
+
+--- CONTENT ---
+# Migration Guide: HTML to TypeScript
+
+This guide documents the migration from the original single HTML file to a TypeScript-based Vite project.
+
+## What Changed
+
+### Project Structure
+- **Before**: Single `index.html` file with inline CSS and JavaScript
+- **After**: Modular TypeScript files with proper separation of concerns
+
+### Build System
+- **Before**: No build system, direct browser execution
+- **After**: Vite for development and production builds
+
+### Type Safety
+- **Before**: Plain JavaScript with no type checking
+- **After**: Full TypeScript with strict type checking
+
+### Testing
+- **Before**: No automated tests
+- **After**: Comprehensive test suite with Vitest
+
+### CI/CD
+- **Before**: Manual deployment
+- **After**: Automated GitHub Actions pipeline
+
+## Key Improvements
+
+1. **Testability**: All logic is now unit tested
+2. **Maintainability**: Code is modular and typed
+3. **Performance**: Vite provides optimized production builds
+4. **Developer Experience**: Hot module replacement, type checking, linting
+
+## Migration Steps Taken
+
+1. **Extracted Signal System** (`src/signals.ts`)
+   - Preserved the exact reactive behavior
+   - Added TypeScript types
+   - Made it testable
+
+2. **Separated State Management** (`src/state.ts`)
+   - Centralized all application state
+   - Kept computed signals intact
+
+3. **Modularized Utilities** (`src/utils.ts`)
+   - Extracted helper functions
+   - Added proper error handling
+
+4. **Preserved All Functionality**
+   - Quiz mode works identically
+   - Manual mode unchanged
+   - Settings persistence maintained
+   - Theme switching preserved
+   - Animations and styling intact
+
+## No Breaking Changes
+
+The application behaves exactly the same as before:
+- All features work identically
+- LocalStorage keys are unchanged
+- UI/UX is preserved
+- No user-facing changes
+
+## For Developers
+
+### Running Locally
+
+```bash
+# Install dependencies
+npm install
+
+# Start dev server (replaces opening HTML file)
+npm run dev
+```
+
+### Making Changes
+
+1. TypeScript will catch type errors at compile time
+2. Tests ensure functionality isn't broken
+3. Linter maintains code quality
+4. CI/CD automates deployment
+
+### Adding Features
+
+The modular structure makes it easy to:
+- Add new quiz modes
+- Implement additional math operations
+- Create new UI components
+- Extend the signal system
+
+## Benefits of Migration
+
+1. **Reliability**: Tests prevent regressions
+2. **Scalability**: Modular architecture supports growth
+3. **Collaboration**: TypeScript and tests make it easier for others to contribute
+4. **Performance**: Optimized builds and code splitting
+5. **Modern Tooling**: Latest development tools and practices
+
+################################################################################
+# FILE: package.json
+################################################################################
+
+--- METADATA ---
+  File name:             package.json
+  Relative path:         package.json
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/package.json
+  Size:                  1.3 KiB (1350 bytes)
+  Last modified:         2026-03-27 12:46:59.839032996 -0400
+  Permissions:           -rw-r--r--
+  Owner:                 kushal:kushal
+  Inode:                 3382217
+  Hard links:            1
+  MIME type:             application/json
+  SHA-256:               370448bbea104d6b384e11ac4c23abedace4578077578fe27c946ad1c73af79e
+  Last git commit:       190b951 2026-03-27 12:47:26 -0400 add all files
+
+--- CONTENT ---
 {
   "name": "multiplicationdrill",
   "private": true,
@@ -901,9 +2391,25 @@ FILE: package.json
 }
 
 
--------------------------------------------------------------------------------
-FILE: playwright.config.ts
--------------------------------------------------------------------------------
+################################################################################
+# FILE: playwright.config.ts
+################################################################################
+
+--- METADATA ---
+  File name:             playwright.config.ts
+  Relative path:         playwright.config.ts
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/playwright.config.ts
+  Size:                  8.3 KiB (8507 bytes)
+  Last modified:         2026-01-07 17:40:33.285265362 -0500
+  Permissions:           -rw-r--r--
+  Owner:                 kushal:kushal
+  Inode:                 3382218
+  Hard links:            1
+  MIME type:             application/javascript
+  SHA-256:               b098f256c648b4a40b613c32687a0205174c29e03110ed3be39a5e4000544305
+  Last git commit:       ac34183 2026-01-07 16:42:06 -0600 wip
+
+--- CONTENT ---
 /**
  * Playwright Configuration
  * 
@@ -1201,476 +2707,390 @@ export default defineConfig({
 });
 
 
--------------------------------------------------------------------------------
-FILE: src/__tests__/signals.test.ts
--------------------------------------------------------------------------------
-import { describe, it, expect, vi } from 'vitest';
-import { Signal, ComputedSignal, effect } from '../signals';
+################################################################################
+# FILE: public/vite.svg
+################################################################################
 
-describe('Signal', () => {
-  it('should store and retrieve values', () => {
-    const signal = new Signal(5);
-    expect(signal.get()).toBe(5);
+--- METADATA ---
+  File name:             vite.svg
+  Relative path:         public/vite.svg
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/public/vite.svg
+  Size:                  1.4 KiB (1497 bytes)
+  Last modified:         2026-01-07 12:17:53.437532194 -0500
+  Permissions:           -rw-r--r--
+  Owner:                 kushal:kushal
+  Inode:                 3382221
+  Hard links:            1
+  MIME type:             image/svg+xml
+  SHA-256:               4a748afd443918bb16591c834c401dae33e87861ab5dbad0811c3a3b4a9214fb
+  Last git commit:       44a1ead 2025-08-03 04:49:26 -0700 add boilerplate code
+
+--- CONTENT ---
+[Binary file — content omitted. Size: 1.4 KiB, SHA-256: 4a748afd443918bb16591c834c401dae33e87861ab5dbad0811c3a3b4a9214fb]
+
+################################################################################
+# FILE: README.md
+################################################################################
+
+--- METADATA ---
+  File name:             README.md
+  Relative path:         README.md
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/README.md
+  Size:                  5.9 KiB (6127 bytes)
+  Last modified:         2026-02-18 22:08:24.523061851 -0500
+  Permissions:           -rw-r--r--
+  Owner:                 kushal:kushal
+  Inode:                 3382209
+  Hard links:            1
+  MIME type:             text/plain
+  SHA-256:               3f77dd253d3a38a98261483b9159794bd4ca91596459a12363ab3b138f7bd2f4
+  Last git commit:       1a3a004 2026-02-18 22:08:32 -0500 add a new line in readme
+
+--- CONTENT ---
+# Multiplication Drill
+
+[![CI/CD Pipeline](https://github.com/multiplicationdrill/multiplicationdrill.github.io/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/multiplicationdrill/multiplicationdrill.github.io/actions/workflows/ci-cd.yml)
+[![codecov](https://codecov.io/gh/multiplicationdrill/multiplicationdrill.github.io/branch/master/graph/badge.svg)](https://codecov.io/gh/multiplicationdrill/multiplicationdrill.github.io)
+
+A reactive math quiz application built with TypeScript and a custom signal-based state management system.
+
+**Live Demo**: [https://multiplicationdrill.github.io](https://multiplicationdrill.github.io)
+
+## Features
+
+- **Interactive Math Quiz**: Practice multiplication with timed questions and answers
+- **Difficulty Levels**: Choose from Easy, Medium, Hard, or Expert
+  - Easy: 2-5 range
+  - Medium: 4-8 range
+  - Hard: 6-12 range
+  - Expert: 10-20 range
+- **Manual Mode**: Increment counter manually or with auto-update
+  - Dynamic multiplier based on difficulty level
+  - Auto-update every 3 seconds when enabled
+  - Pauses when tab is not visible to save battery
+- **Accessibility**: Full keyboard navigation and screen reader support
+  - ARIA labels on all interactive elements
+  - Visible focus indicators
+  - Keyboard-accessible sliders
+- **Dark/Light Theme**: Toggle between themes with persistent preference
+- **Responsive Design**: Works on desktop and mobile devices
+- **Settings Persistence**: Your preferences are saved locally with debounced writes
+- **Performance Optimized**: 
+  - Debounced localStorage writes reduce disk I/O by 75%
+  - Auto-update pauses when tab loses focus
+  - Efficient reactive updates via signal system
+
+## Technology Stack
+
+- **TypeScript**: For type-safe code
+- **Vite 7**: Fast build tool and dev server
+- **Custom Signal System**: Reactive state management inspired by SolidJS
+- **Vitest**: Unit testing framework with 95%+ code coverage
+- **Playwright**: End-to-end testing across Chrome, Firefox, and WebKit
+- **GitHub Actions**: CI/CD pipeline
+- **GitHub Pages**: Hosting
+
+## Development
+
+### Prerequisites
+
+- Node.js 22+ and Yarn
+
+### Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/multiplicationdrill/multiplicationdrill.github.io.git
+cd multiplicationdrill.github.io
+
+# Install dependencies
+yarn install
+
+# Run development server
+yarn dev
+```
+
+### Available Scripts
+
+- `yarn dev` - Start development server
+- `yarn build` - Build for production
+- `yarn preview` - Preview production build
+- `yarn test` - Run tests
+- `yarn test:ui` - Run tests with UI
+- `yarn test:coverage` - Run tests with coverage
+- `yarn test:e2e` - Run end-to-end tests
+- `yarn test:e2e:ui` - Run E2E tests with UI
+- `yarn test:all` - Run all tests (unit + E2E)
+- `yarn lint` - Run linter
+- `yarn type-check` - Check TypeScript types
+
+## Architecture
+
+### Signal System
+
+The application uses a custom reactive signal system for state management:
+
+- **Signal**: Holds a value and notifies observers when it changes
+- **ComputedSignal**: Derives values from other signals, with automatic dependency tracking
+- **effect**: Runs side effects when dependencies change
+
+### Project Structure
+
+```
+src/
+├── __tests__/       # Unit tests
+├── signals.ts       # Signal system implementation
+├── types.ts         # TypeScript type definitions
+├── utils.ts         # Utility functions
+├── state.ts         # Application state
+├── app.ts           # Main application logic
+├── main.ts          # Entry point
+└── style.css        # Styles
+
+Additional files:
+├── index.html       # HTML template
+├── vite.config.ts   # Vite configuration
+├── vitest.config.ts # Vitest configuration
+├── tsconfig.json    # TypeScript configuration
+├── package.json     # Dependencies and scripts
+└── .github/
+    └── workflows/
+        └── ci-cd.yml # GitHub Actions pipeline
+```
+
+## Testing
+
+The project uses Vitest for unit testing and Playwright for end-to-end testing:
+
+```bash
+# Run unit tests
+yarn test
+
+# Run unit tests with UI
+yarn test:ui
+
+# Run unit tests with coverage
+yarn test:coverage
+
+# Run end-to-end tests
+yarn test:e2e
+
+# Run all tests
+yarn test:all
+```
+
+Test coverage:
+- **Unit tests**: 95.81% coverage
+- **E2E tests**: All major user flows
+- Tests cover:
+  - Signal system functionality
+  - Utility functions with debouncing
+  - State computations
+  - Local storage persistence
+  - Accessibility features
+  - Cross-browser compatibility
+
+## Deployment
+
+The application is automatically deployed to GitHub Pages when changes are pushed to the master branch:
+
+1. Tests run on Node.js 22.x and 24.x
+2. Linting and type checking are performed
+3. If all checks pass, the app is built and deployed
+4. Deployment uses GitHub's native Pages action
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+### Code Quality
+
+- All code must pass TypeScript type checking
+- ESLint must pass with no warnings
+- All tests must pass
+- New features should include tests
+
+## Recent Changes
+
+- **Performance Optimizations**: Debounced localStorage writes, visibility API integration
+- **Accessibility Improvements**: Full ARIA support, keyboard navigation, focus indicators
+- **Enhanced Testing**: Added Playwright E2E tests, improved coverage to 95%+
+- **Edge Case Handling**: Guards against zero times, robust localStorage error handling
+- **Dynamic Multiplier**: The manual mode now uses a multiplier based on the difficulty level instead of always using 10
+- **Improved Build System**: Migrated from single HTML file to modular TypeScript with Vite
+- **CI/CD Pipeline**: Automated testing and deployment with GitHub Actions
+
+## License
+
+This project is open source and available under the AGPL license.
+
+---
+
+*Notice: This project contains code generated by Large Language Models such as Claude and Gemini. All code is experimental whether explicitly stated or not.*
+
+
+################################################################################
+# FILE: scripts/coverage-report.js
+################################################################################
+
+--- METADATA ---
+  File name:             coverage-report.js
+  Relative path:         scripts/coverage-report.js
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/scripts/coverage-report.js
+  Size:                  2.6 KiB (2735 bytes)
+  Last modified:         2026-01-07 12:17:53.437532194 -0500
+  Permissions:           -rw-r--r--
+  Owner:                 kushal:kushal
+  Inode:                 3382223
+  Hard links:            1
+  MIME type:             application/javascript
+  SHA-256:               03a617f52b2bfd0e5f53fc4579395717959aba14ec5dd23df4722ff69040aa53
+  Last git commit:       23135bc 2025-08-03 07:38:18 -0700 update for code coverage
+
+--- CONTENT ---
+#!/usr/bin/env node
+
+import { readFileSync } from 'fs';
+import { join } from 'path';
+
+try {
+  const coverageFile = join(process.cwd(), 'coverage', 'coverage-summary.json');
+  const coverage = JSON.parse(readFileSync(coverageFile, 'utf8'));
+  
+  console.log('\n📊 Coverage Summary\n');
+  console.log('┌─────────────┬──────────┬──────────┬──────────┬──────────┐');
+  console.log('│ File        │ Lines    │ Branches │ Functions│ Stmts    │');
+  console.log('├─────────────┼──────────┼──────────┼──────────┼──────────┤');
+  
+  for (const [file, data] of Object.entries(coverage)) {
+    if (file === 'total') continue;
     
-    signal.set(10);
-    expect(signal.get()).toBe(10);
-  });
-
-  it('should notify observers when value changes', () => {
-    const signal = new Signal(5);
-    const observer = vi.fn();
+    const fileName = file.split('/').pop().padEnd(11);
+    const lines = `${data.lines.pct}%`.padEnd(8);
+    const branches = `${data.branches.pct}%`.padEnd(8);
+    const functions = `${data.functions.pct}%`.padEnd(8);
+    const statements = `${data.statements.pct}%`.padEnd(8);
     
-    // Register observer via effect
-    effect(() => {
-      signal.get();
-      observer();
-    });
-    
-    // Initial call during effect setup
-    expect(observer).toHaveBeenCalledTimes(1);
-    
-    // Change value
-    signal.set(10);
-    expect(observer).toHaveBeenCalledTimes(2);
-  });
+    console.log(`│ ${fileName} │ ${lines} │ ${branches} │ ${functions} │ ${statements} │`);
+  }
+  
+  console.log('├─────────────┼──────────┼──────────┼──────────┼──────────┤');
+  
+  const total = coverage.total;
+  const totalLines = `${total.lines.pct}%`.padEnd(8);
+  const totalBranches = `${total.branches.pct}%`.padEnd(8);
+  const totalFunctions = `${total.functions.pct}%`.padEnd(8);
+  const totalStatements = `${total.statements.pct}%`.padEnd(8);
+  
+  console.log(`│ ${'TOTAL'.padEnd(11)} │ ${totalLines} │ ${totalBranches} │ ${totalFunctions} │ ${totalStatements} │`);
+  console.log('└─────────────┴──────────┴──────────┴──────────┴──────────┘');
+  
+  // Check thresholds
+  const threshold = 80;
+  const failed = [];
+  
+  if (total.lines.pct < threshold) failed.push('lines');
+  if (total.branches.pct < threshold) failed.push('branches');
+  if (total.functions.pct < threshold) failed.push('functions');
+  if (total.statements.pct < threshold) failed.push('statements');
+  
+  if (failed.length > 0) {
+    console.log(`\n❌ Coverage below ${threshold}% for: ${failed.join(', ')}`);
+    process.exit(1);
+  } else {
+    console.log(`\n✅ All coverage metrics above ${threshold}%`);
+  }
+  
+} catch (error) {
+  console.error('❌ Could not read coverage report. Run "yarn test:coverage" first.');
+  process.exit(1);
+}
 
-  it('should not notify if value does not change', () => {
-    const signal = new Signal(5);
-    const observer = vi.fn();
-    
-    effect(() => {
-      signal.get();
-      observer();
-    });
-    
-    expect(observer).toHaveBeenCalledTimes(1);
-    
-    // Set same value
-    signal.set(5);
-    expect(observer).toHaveBeenCalledTimes(1);
-  });
-});
+################################################################################
+# FILE: setup.sh
+################################################################################
 
-describe('ComputedSignal', () => {
-  it('should compute value based on dependencies', () => {
-    const a = new Signal(5);
-    const b = new Signal(10);
-    const sum = new ComputedSignal(() => a.get() + b.get());
-    
-    expect(sum.get()).toBe(15);
-    
-    a.set(7);
-    expect(sum.get()).toBe(17);
-    
-    b.set(20);
-    expect(sum.get()).toBe(27);
-  });
+--- METADATA ---
+  File name:             setup.sh
+  Relative path:         setup.sh
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/setup.sh
+  Size:                  1.0 KiB (1043 bytes)
+  Last modified:         2026-01-07 12:17:53.437532194 -0500
+  Permissions:           -rw-r--r--
+  Owner:                 kushal:kushal
+  Inode:                 3382224
+  Hard links:            1
+  MIME type:             text/x-shellscript
+  SHA-256:               6e841e13f95076652afb27e200a44d29369f8d91fb89b1153ff6dd559a7f0437
+  Last git commit:       d8ec9ed 2025-08-03 05:12:23 -0700 add code changes by claude
 
-  it('should only recompute when accessed after becoming stale', () => {
-    const signal = new Signal(5);
-    const computeFn = vi.fn(() => signal.get() * 2);
-    const computed = new ComputedSignal(computeFn);
-    
-    // First access computes
-    expect(computed.get()).toBe(10);
-    expect(computeFn).toHaveBeenCalledTimes(1);
-    
-    // Second access without change doesn't recompute
-    expect(computed.get()).toBe(10);
-    expect(computeFn).toHaveBeenCalledTimes(1);
-    
-    // Change dependency
-    signal.set(7);
-    
-    // Access after change recomputes
-    expect(computed.get()).toBe(14);
-    expect(computeFn).toHaveBeenCalledTimes(2);
-  });
+--- CONTENT ---
+#!/bin/bash
 
-  it('should handle nested computed signals', () => {
-    const base = new Signal(2);
-    const doubled = new ComputedSignal(() => base.get() * 2);
-    const quadrupled = new ComputedSignal(() => doubled.get() * 2);
-    
-    expect(quadrupled.get()).toBe(8);
-    
-    base.set(3);
-    expect(quadrupled.get()).toBe(12);
-  });
-});
+# Setup script for Multiplication Drill project
 
-describe('effect', () => {
-  it('should run immediately and on dependency changes', () => {
-    const signal = new Signal(5);
-    const sideEffect = vi.fn();
-    
-    effect(() => {
-      signal.get();
-      sideEffect();
-    });
-    
-    expect(sideEffect).toHaveBeenCalledTimes(1);
-    
-    signal.set(10);
-    expect(sideEffect).toHaveBeenCalledTimes(2);
-  });
+echo "🚀 Setting up Multiplication Drill project..."
 
-  it('should handle multiple dependencies', () => {
-    const a = new Signal(1);
-    const b = new Signal(2);
-    const sideEffect = vi.fn();
-    
-    effect(() => {
-      a.get();
-      b.get();
-      sideEffect();
-    });
-    
-    expect(sideEffect).toHaveBeenCalledTimes(1);
-    
-    a.set(10);
-    expect(sideEffect).toHaveBeenCalledTimes(2);
-    
-    b.set(20);
-    expect(sideEffect).toHaveBeenCalledTimes(3);
-  });
+# Check if Node.js is installed
+if ! command -v node &> /dev/null; then
+    echo "❌ Node.js is not installed. Please install Node.js 18+ first."
+    exit 1
+fi
 
-  it('should support nested effects', () => {
-    const signal = new Signal(1);
-    const outer = vi.fn();
-    const inner = vi.fn();
-    
-    effect(() => {
-      outer();
-      signal.get();
-      
-      effect(() => {
-        inner();
-        signal.get();
-      });
-    });
-    
-    expect(outer).toHaveBeenCalledTimes(1);
-    expect(inner).toHaveBeenCalledTimes(1);
-    
-    signal.set(2);
-    // Outer effect runs, creating new inner effect
-    expect(outer).toHaveBeenCalledTimes(2);
-    // Inner effect runs twice: once from outer re-run, once from signal change
-    expect(inner.mock.calls.length).toBeGreaterThanOrEqual(2);
-  });
-});
+# Check Node.js version
+NODE_VERSION=$(node -v | cut -d'v' -f2 | cut -d'.' -f1)
+if [ "$NODE_VERSION" -lt 18 ]; then
+    echo "❌ Node.js version 18+ is required. Current version: $(node -v)"
+    exit 1
+fi
 
--------------------------------------------------------------------------------
-FILE: src/__tests__/state.test.ts
--------------------------------------------------------------------------------
-import { describe, it, expect, beforeEach } from 'vitest';
-import { state, displayText, progressPercent, timerDisplayText } from '../state';
+echo "✅ Node.js $(node -v) detected"
 
-describe('State', () => {
-  beforeEach(() => {
-    // Reset state to defaults
-    state.counter.set(0);
-    state.isQuizActive.set(false);
-    state.currentPhase.set('idle');
-    state.timeRemaining.set(0);
-    state.currentProblem.set({ a: 0, b: 0 });
-    state.questionTime.set(5);
-    state.answerTime.set(3);
-  });
+# Create directory structure
+echo "📁 Creating directory structure..."
+mkdir -p src/__tests__
+mkdir -p .github/workflows
 
-  describe('displayText computed signal', () => {
-    it('should show manual mode display when quiz is inactive', () => {
-      state.counter.set(5);
-      state.seed.set(10);
-      expect(displayText.get()).toBe('5 × 10 = 50');
-      
-      state.seed.set(7);
-      expect(displayText.get()).toBe('5 × 7 = 35');
-    });
+# Install dependencies
+echo "📦 Installing dependencies..."
+npm install
 
-    it('should show question during quiz question phase', () => {
-      state.isQuizActive.set(true);
-      state.currentPhase.set('question');
-      state.currentProblem.set({ a: 7, b: 8 });
-      expect(displayText.get()).toBe('7 × 8');
-    });
+# Run initial build
+echo "🔨 Running initial build..."
+npm run build
 
-    it('should show answer during quiz answer phase', () => {
-      state.isQuizActive.set(true);
-      state.currentPhase.set('answer');
-      state.currentProblem.set({ a: 7, b: 8 });
-      expect(displayText.get()).toBe('7 × 8 = 56');
-    });
-  });
+# Run tests
+echo "🧪 Running tests..."
+npm test
 
-  describe('progressPercent computed signal', () => {
-    it('should return 0 when quiz is inactive', () => {
-      state.isQuizActive.set(false);
-      expect(progressPercent.get()).toBe(0);
-    });
+echo "✨ Setup complete! You can now:"
+echo "  - Run 'npm run dev' to start the development server"
+echo "  - Run 'npm test' to run tests"
+echo "  - Run 'npm run build' to build for production"
 
-    it('should calculate progress for question phase', () => {
-      state.isQuizActive.set(true);
-      state.currentPhase.set('question');
-      state.questionTime.set(10);
-      state.timeRemaining.set(7); // 3 seconds elapsed
-      expect(progressPercent.get()).toBe(30); // (10-7)/10 * 100
-    });
+################################################################################
+# FILE: src/app.ts
+################################################################################
 
-    it('should calculate progress for answer phase', () => {
-      state.isQuizActive.set(true);
-      state.currentPhase.set('answer');
-      state.answerTime.set(5);
-      state.timeRemaining.set(2); // 3 seconds elapsed
-      expect(progressPercent.get()).toBe(60); // (5-2)/5 * 100
-    });
+--- METADATA ---
+  File name:             app.ts
+  Relative path:         src/app.ts
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/src/app.ts
+  Size:                  10.0 KiB (10323 bytes)
+  Last modified:         2026-03-25 06:00:15.527930537 -0400
+  Permissions:           -rw-r--r--
+  Owner:                 kushal:kushal
+  Inode:                 3382230
+  Hard links:            1
+  MIME type:             application/javascript
+  SHA-256:               8560c41cc50904b005f98ab2188cdda694c070f2c23b20dba90dccc320980945
+  Last git commit:       2382479 2026-03-25 06:00:52 -0400 add all changes by claude
 
-    it('should handle zero total time', () => {
-      state.isQuizActive.set(true);
-      state.currentPhase.set('question');
-      state.questionTime.set(0);
-      expect(progressPercent.get()).toBe(0);
-    });
-  });
-
-  describe('timerDisplayText computed signal', () => {
-    it('should show "Ready" when quiz is inactive', () => {
-      state.isQuizActive.set(false);
-      expect(timerDisplayText.get()).toBe('Ready');
-    });
-
-    it('should show phase and time during quiz', () => {
-      state.isQuizActive.set(true);
-      state.currentPhase.set('question');
-      state.timeRemaining.set(3.5);
-      expect(timerDisplayText.get()).toBe('Question: 3.5s');
-
-      state.currentPhase.set('answer');
-      state.timeRemaining.set(1.2);
-      expect(timerDisplayText.get()).toBe('Answer: 1.2s');
-    });
-  });
-});
-
--------------------------------------------------------------------------------
-FILE: src/__tests__/utils.test.ts
--------------------------------------------------------------------------------
-import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
-import {
-  getDifficultyRange,
-  getDifficultyName,
-  randomInRange,
-  generateProblem,
-  generateSeed,
-  loadSettings,
-  saveSettings,
-  loadTheme,
-  saveTheme,
-  debounce,
-} from '../utils';
-
-// Mock localStorage
-const localStorageMock = (() => {
-  let store: Record<string, string> = {};
-
-  return {
-    getItem: (key: string) => store[key] || null,
-    setItem: (key: string, value: string) => { store[key] = value; },
-    removeItem: (key: string) => { delete store[key]; },
-    clear: () => { store = {}; },
-  };
-})();
-
-Object.defineProperty(window, 'localStorage', {
-  value: localStorageMock,
-});
-
-describe('getDifficultyRange', () => {
-  it('should return correct ranges for each difficulty level', () => {
-    expect(getDifficultyRange(1)).toEqual({ min: 2, max: 5 });
-    expect(getDifficultyRange(2)).toEqual({ min: 4, max: 8 });
-    expect(getDifficultyRange(3)).toEqual({ min: 6, max: 12 });
-    expect(getDifficultyRange(4)).toEqual({ min: 10, max: 20 });
-  });
-});
-
-describe('getDifficultyName', () => {
-  it('should return correct names for each difficulty level', () => {
-    expect(getDifficultyName(1)).toBe('Easy');
-    expect(getDifficultyName(2)).toBe('Medium');
-    expect(getDifficultyName(3)).toBe('Hard');
-    expect(getDifficultyName(4)).toBe('Expert');
-  });
-});
-
-describe('randomInRange', () => {
-  it('should generate numbers within specified range', () => {
-    for (let i = 0; i < 100; i++) {
-      const num = randomInRange(5, 10);
-      expect(num).toBeGreaterThanOrEqual(5);
-      expect(num).toBeLessThanOrEqual(10);
-    }
-  });
-
-  it('should handle single value range', () => {
-    const num = randomInRange(5, 5);
-    expect(num).toBe(5);
-  });
-});
-
-describe('generateProblem', () => {
-  it('should generate problems within difficulty range', () => {
-    // Test Easy difficulty
-    for (let i = 0; i < 20; i++) {
-      const problem = generateProblem(1);
-      expect(problem.a).toBeGreaterThanOrEqual(2);
-      expect(problem.a).toBeLessThanOrEqual(5);
-      expect(problem.b).toBeGreaterThanOrEqual(2);
-      expect(problem.b).toBeLessThanOrEqual(5);
-    }
-
-    // Test Expert difficulty
-    for (let i = 0; i < 20; i++) {
-      const problem = generateProblem(4);
-      expect(problem.a).toBeGreaterThanOrEqual(10);
-      expect(problem.a).toBeLessThanOrEqual(20);
-      expect(problem.b).toBeGreaterThanOrEqual(10);
-      expect(problem.b).toBeLessThanOrEqual(20);
-    }
-  });
-});
-
-describe('generateSeed', () => {
-  it('should generate seed within difficulty range', () => {
-    // Test Easy difficulty
-    for (let i = 0; i < 20; i++) {
-      const seed = generateSeed(1);
-      expect(seed).toBeGreaterThanOrEqual(2);
-      expect(seed).toBeLessThanOrEqual(5);
-    }
-
-    // Test Expert difficulty
-    for (let i = 0; i < 20; i++) {
-      const seed = generateSeed(4);
-      expect(seed).toBeGreaterThanOrEqual(10);
-      expect(seed).toBeLessThanOrEqual(20);
-    }
-  });
-});
-
-describe('Settings persistence', () => {
-  beforeEach(() => {
-    localStorageMock.clear();
-  });
-
-  it('should save and load settings', () => {
-    const settings = {
-      questionTime: 10,
-      answerTime: 5,
-      difficulty: 2 as const,
-      autoUpdate: true,
-    };
-
-    saveSettings(settings);
-    const loaded = loadSettings();
-    expect(loaded).toEqual(settings);
-  });
-
-  it('should return null for missing settings', () => {
-    expect(loadSettings()).toBeNull();
-  });
-
-  it('should handle corrupted localStorage data', () => {
-    localStorageMock.setItem('mathQuizSettings', 'invalid json');
-    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-
-    expect(loadSettings()).toBeNull();
-    expect(consoleSpy).toHaveBeenCalled();
-
-    consoleSpy.mockRestore();
-  });
-});
-
-describe('Theme persistence', () => {
-  beforeEach(() => {
-    localStorageMock.clear();
-  });
-
-  it('should save and load theme', () => {
-    saveTheme('light');
-    expect(loadTheme()).toBe('light');
-
-    saveTheme('dark');
-    expect(loadTheme()).toBe('dark');
-  });
-
-  it('should default to dark theme', () => {
-    expect(loadTheme()).toBe('dark');
-  });
-});
-
-describe('debounce', () => {
-  beforeEach(() => {
-    vi.useFakeTimers();
-  });
-
-  afterEach(() => {
-    vi.useRealTimers();
-  });
-
-  it('should debounce function calls', () => {
-    const fn = vi.fn();
-    const debounced = debounce(fn, 100);
-
-    // Call multiple times rapidly
-    debounced();
-    debounced();
-    debounced();
-
-    // Function shouldn't be called yet
-    expect(fn).not.toHaveBeenCalled();
-
-    // Fast forward time
-    vi.advanceTimersByTime(100);
-
-    // Function should be called once
-    expect(fn).toHaveBeenCalledTimes(1);
-  });
-
-  it('should pass arguments to debounced function', () => {
-    const fn = vi.fn();
-    const debounced = debounce(fn, 100);
-
-    debounced('arg1', 'arg2');
-    vi.advanceTimersByTime(100);
-
-    expect(fn).toHaveBeenCalledWith('arg1', 'arg2');
-  });
-
-  it('should cancel previous timeout on new call', () => {
-    const fn = vi.fn();
-    const debounced = debounce(fn, 100);
-
-    debounced();
-    vi.advanceTimersByTime(50);
-    debounced(); // This should cancel the first timeout
-    vi.advanceTimersByTime(50);
-
-    // Function still shouldn't be called
-    expect(fn).not.toHaveBeenCalled();
-
-    vi.advanceTimersByTime(50);
-
-    // Now it should be called once
-    expect(fn).toHaveBeenCalledTimes(1);
-  });
-});
-
-
--------------------------------------------------------------------------------
-FILE: src/app.ts
--------------------------------------------------------------------------------
+--- CONTENT ---
 import { effect } from './signals';
 import { state, displayText, progressPercent, timerDisplayText } from './state';
 import { DifficultyLevel, Settings } from './types';
@@ -1993,9 +3413,25 @@ export function initialize(): void {
 export { state, elements };
 
 
--------------------------------------------------------------------------------
-FILE: src/main.ts
--------------------------------------------------------------------------------
+################################################################################
+# FILE: src/main.ts
+################################################################################
+
+--- METADATA ---
+  File name:             main.ts
+  Relative path:         src/main.ts
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/src/main.ts
+  Size:                  661 B (661 bytes)
+  Last modified:         2026-01-07 12:17:53.438710884 -0500
+  Permissions:           -rw-r--r--
+  Owner:                 kushal:kushal
+  Inode:                 3382231
+  Hard links:            1
+  MIME type:             application/javascript
+  SHA-256:               2043f1d7a4967ba1154c28fbd6efaf07ea358e1393a19c6e0e9089c95952cb75
+  Last git commit:       0d876ed 2025-08-03 06:00:35 -0700 clean up with claude
+
+--- CONTENT ---
 import './style.css';
 import { initialize, toggleQuiz, increment, reset, toggleAutoUpdate, toggleTheme } from './app';
 
@@ -2019,9 +3455,25 @@ window.toggleTheme = toggleTheme;
 // Initialize the app when DOM is ready
 document.addEventListener('DOMContentLoaded', initialize);
 
--------------------------------------------------------------------------------
-FILE: src/signals.ts
--------------------------------------------------------------------------------
+################################################################################
+# FILE: src/signals.ts
+################################################################################
+
+--- METADATA ---
+  File name:             signals.ts
+  Relative path:         src/signals.ts
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/src/signals.ts
+  Size:                  2.2 KiB (2319 bytes)
+  Last modified:         2026-03-25 05:59:57.545476966 -0400
+  Permissions:           -rw-r--r--
+  Owner:                 kushal:kushal
+  Inode:                 3382232
+  Hard links:            1
+  MIME type:             application/javascript
+  SHA-256:               97605e88417c6f49a19c65d1cfed7bd765463ff4d93b014f1c7d6693f0d2f355
+  Last git commit:       2382479 2026-03-25 06:00:52 -0400 add all changes by claude
+
+--- CONTENT ---
 // Robust Signal System with TypeScript
 export type EffectFn = () => void;
 
@@ -2119,9 +3571,25 @@ export function effect(effectFn: EffectFn): void {
 }
 
 
--------------------------------------------------------------------------------
-FILE: src/state.ts
--------------------------------------------------------------------------------
+################################################################################
+# FILE: src/state.ts
+################################################################################
+
+--- METADATA ---
+  File name:             state.ts
+  Relative path:         src/state.ts
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/src/state.ts
+  Size:                  1.8 KiB (1867 bytes)
+  Last modified:         2026-03-25 06:00:06.568012653 -0400
+  Permissions:           -rw-r--r--
+  Owner:                 kushal:kushal
+  Inode:                 3382233
+  Hard links:            1
+  MIME type:             application/javascript
+  SHA-256:               d795df8d83b05d01f86c3dfe0d70376c84098cce91dac38799a7c6dee7c1c48c
+  Last git commit:       2382479 2026-03-25 06:00:52 -0400 add all changes by claude
+
+--- CONTENT ---
 import { Signal, ComputedSignal } from './signals';
 import { Problem, QuizPhase, DifficultyLevel } from './types';
 import { generateSeed } from './utils';
@@ -2180,9 +3648,25 @@ export const timerDisplayText = new ComputedSignal(() => {
 });
 
 
--------------------------------------------------------------------------------
-FILE: src/style.css
--------------------------------------------------------------------------------
+################################################################################
+# FILE: src/style.css
+################################################################################
+
+--- METADATA ---
+  File name:             style.css
+  Relative path:         src/style.css
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/src/style.css
+  Size:                  7.1 KiB (7342 bytes)
+  Last modified:         2026-01-07 12:17:53.438710884 -0500
+  Permissions:           -rw-r--r--
+  Owner:                 kushal:kushal
+  Inode:                 3382234
+  Hard links:            1
+  MIME type:             text/plain
+  SHA-256:               ee69154b6f599efbdc412037f0b22de01217b1f0bcee1322a8a5a273ab16c618
+  Last git commit:       6c1b6ec 2025-08-04 05:41:00 -0700 add code updates by claude in response to review
+
+--- CONTENT ---
 :root {
     --bg-primary: #0a0a0a;
     --bg-secondary: #1a1a1a;
@@ -2545,9 +4029,561 @@ button:disabled:hover::before {
     }
 }
 
--------------------------------------------------------------------------------
-FILE: src/types.ts
--------------------------------------------------------------------------------
+################################################################################
+# FILE: src/__tests__/signals.test.ts
+################################################################################
+
+--- METADATA ---
+  File name:             signals.test.ts
+  Relative path:         src/__tests__/signals.test.ts
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/src/__tests__/signals.test.ts
+  Size:                  3.7 KiB (3875 bytes)
+  Last modified:         2026-01-07 12:17:53.438667242 -0500
+  Permissions:           -rw-r--r--
+  Owner:                 kushal:kushal
+  Inode:                 3382227
+  Hard links:            1
+  MIME type:             application/javascript
+  SHA-256:               0ee75fbba129b94bb89b282dd16b2c7c13b4ecd198c28c85f6b7c426fdeb8f61
+  Last git commit:       d8ec9ed 2025-08-03 05:12:23 -0700 add code changes by claude
+
+--- CONTENT ---
+import { describe, it, expect, vi } from 'vitest';
+import { Signal, ComputedSignal, effect } from '../signals';
+
+describe('Signal', () => {
+  it('should store and retrieve values', () => {
+    const signal = new Signal(5);
+    expect(signal.get()).toBe(5);
+    
+    signal.set(10);
+    expect(signal.get()).toBe(10);
+  });
+
+  it('should notify observers when value changes', () => {
+    const signal = new Signal(5);
+    const observer = vi.fn();
+    
+    // Register observer via effect
+    effect(() => {
+      signal.get();
+      observer();
+    });
+    
+    // Initial call during effect setup
+    expect(observer).toHaveBeenCalledTimes(1);
+    
+    // Change value
+    signal.set(10);
+    expect(observer).toHaveBeenCalledTimes(2);
+  });
+
+  it('should not notify if value does not change', () => {
+    const signal = new Signal(5);
+    const observer = vi.fn();
+    
+    effect(() => {
+      signal.get();
+      observer();
+    });
+    
+    expect(observer).toHaveBeenCalledTimes(1);
+    
+    // Set same value
+    signal.set(5);
+    expect(observer).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('ComputedSignal', () => {
+  it('should compute value based on dependencies', () => {
+    const a = new Signal(5);
+    const b = new Signal(10);
+    const sum = new ComputedSignal(() => a.get() + b.get());
+    
+    expect(sum.get()).toBe(15);
+    
+    a.set(7);
+    expect(sum.get()).toBe(17);
+    
+    b.set(20);
+    expect(sum.get()).toBe(27);
+  });
+
+  it('should only recompute when accessed after becoming stale', () => {
+    const signal = new Signal(5);
+    const computeFn = vi.fn(() => signal.get() * 2);
+    const computed = new ComputedSignal(computeFn);
+    
+    // First access computes
+    expect(computed.get()).toBe(10);
+    expect(computeFn).toHaveBeenCalledTimes(1);
+    
+    // Second access without change doesn't recompute
+    expect(computed.get()).toBe(10);
+    expect(computeFn).toHaveBeenCalledTimes(1);
+    
+    // Change dependency
+    signal.set(7);
+    
+    // Access after change recomputes
+    expect(computed.get()).toBe(14);
+    expect(computeFn).toHaveBeenCalledTimes(2);
+  });
+
+  it('should handle nested computed signals', () => {
+    const base = new Signal(2);
+    const doubled = new ComputedSignal(() => base.get() * 2);
+    const quadrupled = new ComputedSignal(() => doubled.get() * 2);
+    
+    expect(quadrupled.get()).toBe(8);
+    
+    base.set(3);
+    expect(quadrupled.get()).toBe(12);
+  });
+});
+
+describe('effect', () => {
+  it('should run immediately and on dependency changes', () => {
+    const signal = new Signal(5);
+    const sideEffect = vi.fn();
+    
+    effect(() => {
+      signal.get();
+      sideEffect();
+    });
+    
+    expect(sideEffect).toHaveBeenCalledTimes(1);
+    
+    signal.set(10);
+    expect(sideEffect).toHaveBeenCalledTimes(2);
+  });
+
+  it('should handle multiple dependencies', () => {
+    const a = new Signal(1);
+    const b = new Signal(2);
+    const sideEffect = vi.fn();
+    
+    effect(() => {
+      a.get();
+      b.get();
+      sideEffect();
+    });
+    
+    expect(sideEffect).toHaveBeenCalledTimes(1);
+    
+    a.set(10);
+    expect(sideEffect).toHaveBeenCalledTimes(2);
+    
+    b.set(20);
+    expect(sideEffect).toHaveBeenCalledTimes(3);
+  });
+
+  it('should support nested effects', () => {
+    const signal = new Signal(1);
+    const outer = vi.fn();
+    const inner = vi.fn();
+    
+    effect(() => {
+      outer();
+      signal.get();
+      
+      effect(() => {
+        inner();
+        signal.get();
+      });
+    });
+    
+    expect(outer).toHaveBeenCalledTimes(1);
+    expect(inner).toHaveBeenCalledTimes(1);
+    
+    signal.set(2);
+    // Outer effect runs, creating new inner effect
+    expect(outer).toHaveBeenCalledTimes(2);
+    // Inner effect runs twice: once from outer re-run, once from signal change
+    expect(inner.mock.calls.length).toBeGreaterThanOrEqual(2);
+  });
+});
+
+################################################################################
+# FILE: src/__tests__/state.test.ts
+################################################################################
+
+--- METADATA ---
+  File name:             state.test.ts
+  Relative path:         src/__tests__/state.test.ts
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/src/__tests__/state.test.ts
+  Size:                  2.8 KiB (2906 bytes)
+  Last modified:         2026-01-07 12:17:53.438710884 -0500
+  Permissions:           -rw-r--r--
+  Owner:                 kushal:kushal
+  Inode:                 3382228
+  Hard links:            1
+  MIME type:             application/javascript
+  SHA-256:               90da4856956c54d3e921ee6207e7b73776315936e0e9c658a238f90b359097e5
+  Last git commit:       317b9dd 2025-08-03 06:23:13 -0700 change requirements with claude
+
+--- CONTENT ---
+import { describe, it, expect, beforeEach } from 'vitest';
+import { state, displayText, progressPercent, timerDisplayText } from '../state';
+
+describe('State', () => {
+  beforeEach(() => {
+    // Reset state to defaults
+    state.counter.set(0);
+    state.isQuizActive.set(false);
+    state.currentPhase.set('idle');
+    state.timeRemaining.set(0);
+    state.currentProblem.set({ a: 0, b: 0 });
+    state.questionTime.set(5);
+    state.answerTime.set(3);
+  });
+
+  describe('displayText computed signal', () => {
+    it('should show manual mode display when quiz is inactive', () => {
+      state.counter.set(5);
+      state.seed.set(10);
+      expect(displayText.get()).toBe('5 × 10 = 50');
+      
+      state.seed.set(7);
+      expect(displayText.get()).toBe('5 × 7 = 35');
+    });
+
+    it('should show question during quiz question phase', () => {
+      state.isQuizActive.set(true);
+      state.currentPhase.set('question');
+      state.currentProblem.set({ a: 7, b: 8 });
+      expect(displayText.get()).toBe('7 × 8');
+    });
+
+    it('should show answer during quiz answer phase', () => {
+      state.isQuizActive.set(true);
+      state.currentPhase.set('answer');
+      state.currentProblem.set({ a: 7, b: 8 });
+      expect(displayText.get()).toBe('7 × 8 = 56');
+    });
+  });
+
+  describe('progressPercent computed signal', () => {
+    it('should return 0 when quiz is inactive', () => {
+      state.isQuizActive.set(false);
+      expect(progressPercent.get()).toBe(0);
+    });
+
+    it('should calculate progress for question phase', () => {
+      state.isQuizActive.set(true);
+      state.currentPhase.set('question');
+      state.questionTime.set(10);
+      state.timeRemaining.set(7); // 3 seconds elapsed
+      expect(progressPercent.get()).toBe(30); // (10-7)/10 * 100
+    });
+
+    it('should calculate progress for answer phase', () => {
+      state.isQuizActive.set(true);
+      state.currentPhase.set('answer');
+      state.answerTime.set(5);
+      state.timeRemaining.set(2); // 3 seconds elapsed
+      expect(progressPercent.get()).toBe(60); // (5-2)/5 * 100
+    });
+
+    it('should handle zero total time', () => {
+      state.isQuizActive.set(true);
+      state.currentPhase.set('question');
+      state.questionTime.set(0);
+      expect(progressPercent.get()).toBe(0);
+    });
+  });
+
+  describe('timerDisplayText computed signal', () => {
+    it('should show "Ready" when quiz is inactive', () => {
+      state.isQuizActive.set(false);
+      expect(timerDisplayText.get()).toBe('Ready');
+    });
+
+    it('should show phase and time during quiz', () => {
+      state.isQuizActive.set(true);
+      state.currentPhase.set('question');
+      state.timeRemaining.set(3.5);
+      expect(timerDisplayText.get()).toBe('Question: 3.5s');
+
+      state.currentPhase.set('answer');
+      state.timeRemaining.set(1.2);
+      expect(timerDisplayText.get()).toBe('Answer: 1.2s');
+    });
+  });
+});
+
+################################################################################
+# FILE: src/__tests__/utils.test.ts
+################################################################################
+
+--- METADATA ---
+  File name:             utils.test.ts
+  Relative path:         src/__tests__/utils.test.ts
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/src/__tests__/utils.test.ts
+  Size:                  5.3 KiB (5451 bytes)
+  Last modified:         2026-03-25 06:00:26.146762690 -0400
+  Permissions:           -rw-r--r--
+  Owner:                 kushal:kushal
+  Inode:                 3382229
+  Hard links:            1
+  MIME type:             application/javascript
+  SHA-256:               254f3cb03b1efdbf17e53840a3a36245decdaa8168af55201b2b43629d4b6cab
+  Last git commit:       2382479 2026-03-25 06:00:52 -0400 add all changes by claude
+
+--- CONTENT ---
+import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
+import {
+  getDifficultyRange,
+  getDifficultyName,
+  randomInRange,
+  generateProblem,
+  generateSeed,
+  loadSettings,
+  saveSettings,
+  loadTheme,
+  saveTheme,
+  debounce,
+} from '../utils';
+
+// Mock localStorage
+const localStorageMock = (() => {
+  let store: Record<string, string> = {};
+
+  return {
+    getItem: (key: string) => store[key] || null,
+    setItem: (key: string, value: string) => { store[key] = value; },
+    removeItem: (key: string) => { delete store[key]; },
+    clear: () => { store = {}; },
+  };
+})();
+
+Object.defineProperty(window, 'localStorage', {
+  value: localStorageMock,
+});
+
+describe('getDifficultyRange', () => {
+  it('should return correct ranges for each difficulty level', () => {
+    expect(getDifficultyRange(1)).toEqual({ min: 2, max: 5 });
+    expect(getDifficultyRange(2)).toEqual({ min: 4, max: 8 });
+    expect(getDifficultyRange(3)).toEqual({ min: 6, max: 12 });
+    expect(getDifficultyRange(4)).toEqual({ min: 10, max: 20 });
+  });
+});
+
+describe('getDifficultyName', () => {
+  it('should return correct names for each difficulty level', () => {
+    expect(getDifficultyName(1)).toBe('Easy');
+    expect(getDifficultyName(2)).toBe('Medium');
+    expect(getDifficultyName(3)).toBe('Hard');
+    expect(getDifficultyName(4)).toBe('Expert');
+  });
+});
+
+describe('randomInRange', () => {
+  it('should generate numbers within specified range', () => {
+    for (let i = 0; i < 100; i++) {
+      const num = randomInRange(5, 10);
+      expect(num).toBeGreaterThanOrEqual(5);
+      expect(num).toBeLessThanOrEqual(10);
+    }
+  });
+
+  it('should handle single value range', () => {
+    const num = randomInRange(5, 5);
+    expect(num).toBe(5);
+  });
+});
+
+describe('generateProblem', () => {
+  it('should generate problems within difficulty range', () => {
+    // Test Easy difficulty
+    for (let i = 0; i < 20; i++) {
+      const problem = generateProblem(1);
+      expect(problem.a).toBeGreaterThanOrEqual(2);
+      expect(problem.a).toBeLessThanOrEqual(5);
+      expect(problem.b).toBeGreaterThanOrEqual(2);
+      expect(problem.b).toBeLessThanOrEqual(5);
+    }
+
+    // Test Expert difficulty
+    for (let i = 0; i < 20; i++) {
+      const problem = generateProblem(4);
+      expect(problem.a).toBeGreaterThanOrEqual(10);
+      expect(problem.a).toBeLessThanOrEqual(20);
+      expect(problem.b).toBeGreaterThanOrEqual(10);
+      expect(problem.b).toBeLessThanOrEqual(20);
+    }
+  });
+});
+
+describe('generateSeed', () => {
+  it('should generate seed within difficulty range', () => {
+    // Test Easy difficulty
+    for (let i = 0; i < 20; i++) {
+      const seed = generateSeed(1);
+      expect(seed).toBeGreaterThanOrEqual(2);
+      expect(seed).toBeLessThanOrEqual(5);
+    }
+
+    // Test Expert difficulty
+    for (let i = 0; i < 20; i++) {
+      const seed = generateSeed(4);
+      expect(seed).toBeGreaterThanOrEqual(10);
+      expect(seed).toBeLessThanOrEqual(20);
+    }
+  });
+});
+
+describe('Settings persistence', () => {
+  beforeEach(() => {
+    localStorageMock.clear();
+  });
+
+  it('should save and load settings', () => {
+    const settings = {
+      questionTime: 10,
+      answerTime: 5,
+      difficulty: 2 as const,
+      autoUpdate: true,
+    };
+
+    saveSettings(settings);
+    const loaded = loadSettings();
+    expect(loaded).toEqual(settings);
+  });
+
+  it('should return null for missing settings', () => {
+    expect(loadSettings()).toBeNull();
+  });
+
+  it('should handle corrupted localStorage data', () => {
+    localStorageMock.setItem('mathQuizSettings', 'invalid json');
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    expect(loadSettings()).toBeNull();
+    expect(consoleSpy).toHaveBeenCalled();
+
+    consoleSpy.mockRestore();
+  });
+});
+
+describe('Theme persistence', () => {
+  beforeEach(() => {
+    localStorageMock.clear();
+  });
+
+  it('should save and load theme', () => {
+    saveTheme('light');
+    expect(loadTheme()).toBe('light');
+
+    saveTheme('dark');
+    expect(loadTheme()).toBe('dark');
+  });
+
+  it('should default to dark theme', () => {
+    expect(loadTheme()).toBe('dark');
+  });
+});
+
+describe('debounce', () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it('should debounce function calls', () => {
+    const fn = vi.fn();
+    const debounced = debounce(fn, 100);
+
+    // Call multiple times rapidly
+    debounced();
+    debounced();
+    debounced();
+
+    // Function shouldn't be called yet
+    expect(fn).not.toHaveBeenCalled();
+
+    // Fast forward time
+    vi.advanceTimersByTime(100);
+
+    // Function should be called once
+    expect(fn).toHaveBeenCalledTimes(1);
+  });
+
+  it('should pass arguments to debounced function', () => {
+    const fn = vi.fn();
+    const debounced = debounce(fn, 100);
+
+    debounced('arg1', 'arg2');
+    vi.advanceTimersByTime(100);
+
+    expect(fn).toHaveBeenCalledWith('arg1', 'arg2');
+  });
+
+  it('should cancel previous timeout on new call', () => {
+    const fn = vi.fn();
+    const debounced = debounce(fn, 100);
+
+    debounced();
+    vi.advanceTimersByTime(50);
+    debounced(); // This should cancel the first timeout
+    vi.advanceTimersByTime(50);
+
+    // Function still shouldn't be called
+    expect(fn).not.toHaveBeenCalled();
+
+    vi.advanceTimersByTime(50);
+
+    // Now it should be called once
+    expect(fn).toHaveBeenCalledTimes(1);
+  });
+});
+
+
+################################################################################
+# FILE: src/typescript.svg
+################################################################################
+
+--- METADATA ---
+  File name:             typescript.svg
+  Relative path:         src/typescript.svg
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/src/typescript.svg
+  Size:                  1.4 KiB (1435 bytes)
+  Last modified:         2026-01-07 12:17:53.438710884 -0500
+  Permissions:           -rw-r--r--
+  Owner:                 kushal:kushal
+  Inode:                 3382236
+  Hard links:            1
+  MIME type:             image/svg+xml
+  SHA-256:               f6ead1af17acc3f55ad857f3bc936df8754281e2932c1b472dbb9b36ab873f1c
+  Last git commit:       44a1ead 2025-08-03 04:49:26 -0700 add boilerplate code
+
+--- CONTENT ---
+[Binary file — content omitted. Size: 1.4 KiB, SHA-256: f6ead1af17acc3f55ad857f3bc936df8754281e2932c1b472dbb9b36ab873f1c]
+
+################################################################################
+# FILE: src/types.ts
+################################################################################
+
+--- METADATA ---
+  File name:             types.ts
+  Relative path:         src/types.ts
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/src/types.ts
+  Size:                  796 B (796 bytes)
+  Last modified:         2026-03-25 05:59:35.172977312 -0400
+  Permissions:           -rw-r--r--
+  Owner:                 kushal:kushal
+  Inode:                 3382235
+  Hard links:            1
+  MIME type:             text/plain
+  SHA-256:               0219694e90823a16fb03bc30728f2c14a86ed16d4e004297e17a5e505e57874c
+  Last git commit:       2382479 2026-03-25 06:00:52 -0400 add all changes by claude
+
+--- CONTENT ---
 export interface Problem {
   readonly a: number;
   readonly b: number;
@@ -2583,9 +4619,25 @@ export interface AppState {
 }
 
 
--------------------------------------------------------------------------------
-FILE: src/utils.ts
--------------------------------------------------------------------------------
+################################################################################
+# FILE: src/utils.ts
+################################################################################
+
+--- METADATA ---
+  File name:             utils.ts
+  Relative path:         src/utils.ts
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/src/utils.ts
+  Size:                  2.6 KiB (2758 bytes)
+  Last modified:         2026-03-25 05:59:45.099791565 -0400
+  Permissions:           -rw-r--r--
+  Owner:                 kushal:kushal
+  Inode:                 3382237
+  Hard links:            1
+  MIME type:             application/javascript
+  SHA-256:               1d79ecd1b7baa9818f2b325caa04d9575a2fa6467df0c48c5362434e0f78211e
+  Last git commit:       2382479 2026-03-25 06:00:52 -0400 add all changes by claude
+
+--- CONTENT ---
 import { DifficultyLevel, DifficultyRange, Problem, Settings } from './types';
 
 // ES2025: Use Map for O(1) lookup instead of switch statements
@@ -2690,9 +4742,25 @@ export function debounce<T extends (...args: unknown[]) => void>(
 }
 
 
--------------------------------------------------------------------------------
-FILE: tsconfig.e2e.json
--------------------------------------------------------------------------------
+################################################################################
+# FILE: tsconfig.e2e.json
+################################################################################
+
+--- METADATA ---
+  File name:             tsconfig.e2e.json
+  Relative path:         tsconfig.e2e.json
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/tsconfig.e2e.json
+  Size:                  623 B (623 bytes)
+  Last modified:         2026-03-25 05:59:06.264363513 -0400
+  Permissions:           -rw-r--r--
+  Owner:                 kushal:kushal
+  Inode:                 3394925
+  Hard links:            1
+  MIME type:             text/plain
+  SHA-256:               eca1fca30bd72f3414628c83101610787f60792733efa7a906afc54619e53187
+  Last git commit:       2382479 2026-03-25 06:00:52 -0400 add all changes by claude
+
+--- CONTENT ---
 {
   "compilerOptions": {
     "target": "ES2025",
@@ -2719,9 +4787,25 @@ FILE: tsconfig.e2e.json
 }
 
 
--------------------------------------------------------------------------------
-FILE: tsconfig.json
--------------------------------------------------------------------------------
+################################################################################
+# FILE: tsconfig.json
+################################################################################
+
+--- METADATA ---
+  File name:             tsconfig.json
+  Relative path:         tsconfig.json
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/tsconfig.json
+  Size:                  716 B (716 bytes)
+  Last modified:         2026-03-25 05:58:49.346925721 -0400
+  Permissions:           -rw-r--r--
+  Owner:                 kushal:kushal
+  Inode:                 3382239
+  Hard links:            1
+  MIME type:             text/plain
+  SHA-256:               d8a8e9e0102291fa821bdb4543c6ee70449e65f54b93aaaf95be7a4b0c885e81
+  Last git commit:       2382479 2026-03-25 06:00:52 -0400 add all changes by claude
+
+--- CONTENT ---
 {
   "compilerOptions": {
     "target": "ES2025",
@@ -2751,9 +4835,25 @@ FILE: tsconfig.json
 }
 
 
--------------------------------------------------------------------------------
-FILE: vite.config.ts
--------------------------------------------------------------------------------
+################################################################################
+# FILE: vite.config.ts
+################################################################################
+
+--- METADATA ---
+  File name:             vite.config.ts
+  Relative path:         vite.config.ts
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/vite.config.ts
+  Size:                  330 B (330 bytes)
+  Last modified:         2026-03-25 05:59:25.774612503 -0400
+  Permissions:           -rw-r--r--
+  Owner:                 kushal:kushal
+  Inode:                 3382240
+  Hard links:            1
+  MIME type:             application/javascript
+  SHA-256:               2e3717c4c721c6d3a4e3c97868c9f4d85929ac053959166e7d99f402e28032b4
+  Last git commit:       2382479 2026-03-25 06:00:52 -0400 add all changes by claude
+
+--- CONTENT ---
 import { defineConfig } from 'vite';
 
 export default defineConfig({
@@ -2771,9 +4871,25 @@ export default defineConfig({
 });
 
 
--------------------------------------------------------------------------------
-FILE: vitest.config.ts
--------------------------------------------------------------------------------
+################################################################################
+# FILE: vitest.config.ts
+################################################################################
+
+--- METADATA ---
+  File name:             vitest.config.ts
+  Relative path:         vitest.config.ts
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/vitest.config.ts
+  Size:                  914 B (914 bytes)
+  Last modified:         2026-03-25 06:00:36.349046394 -0400
+  Permissions:           -rw-r--r--
+  Owner:                 kushal:kushal
+  Inode:                 3382241
+  Hard links:            1
+  MIME type:             application/javascript
+  SHA-256:               b0635c6603f41b8ac3c6fb8446fa8431d5c7a77f8977b349f89061e893af52db
+  Last git commit:       2382479 2026-03-25 06:00:52 -0400 add all changes by claude
+
+--- CONTENT ---
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
@@ -2813,6 +4929,13 @@ export default defineConfig({
 });
 
 
-===============================================================================
-EXPORT COMPLETE — 23 files
-===============================================================================
+################################################################################
+# DUMP SUMMARY
+################################################################################
+  Files dumped   : 31
+  Total size     : 119.3 KiB (122227 bytes)
+  Output file    : /home/kushal/src/ts/multiplicationdrill/docs/llm/dump.txt
+  Completed at   : 2026-07-14T19:30:28-04:00
+################################################################################
+# END OF DUMP
+################################################################################
