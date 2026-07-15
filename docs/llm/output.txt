@@ -5137,4 +5137,19 @@ Done in 4.72s.
 real	0m4.868s
 user	0m2.105s
 sys	0m0.678s
+kushal@fedora:~/src/ts/multiplicationdrill$ time yarn outdated
+yarn outdated v1.22.22
+(node:24815) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+info Color legend : 
+ "<red>"    : Major Update backward-incompatible updates 
+ "<yellow>" : Minor Update backward-compatible features 
+ "<green>"  : Patch Update backward-compatible bug fixes
+Package    Current Wanted Latest Package Type    URL                            
+typescript 6.0.3   6.0.3  7.0.2  devDependencies https://www.typescriptlang.org/
+Done in 1.54s.
+
+real	0m1.695s
+user	0m0.801s
+sys	0m0.291s
 kushal@fedora:~/src/ts/multiplicationdrill$ cd ~/src/ts/multiplicationdrill/; time yarn outdated; time yarn install; time yarn lint; time bash export.sh; time yarn; time yarn build; time yarn test:all; time git add .; time git commit --message "add all files"; time git remote show origin; time git push origin --all;
