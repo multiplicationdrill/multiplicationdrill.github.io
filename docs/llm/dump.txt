@@ -7,7 +7,7 @@
 
 DUMP METADATA
 ═════════════════════════════════════════════════════════════════════════════════
-  Generated at   : 2026-07-14T20:03:24-04:00
+  Generated at   : 2026-07-14T20:14:13-04:00
   Generator      : export.sh
   Host           : fedora
   User           : kushal
@@ -17,10 +17,10 @@ REPOSITORY METADATA
 ═════════════════════════════════════════════════════════════════════════════════
   Repository root: /home/kushal/src/ts/multiplicationdrill
   Branch         : master
-  Commit (full)  : 6caee4f8472f8bc90d8e4bad0e5af6c45a8c33bb
-  Commit (short) : 6caee4f
-  Commit date    : 2026-07-14 20:03:12 -0400
-  Commit message : update packages
+  Commit (full)  : 1ab2281ef7c94ce00d2db96ba0277c3e758fc095
+  Commit (short) : 1ab2281
+  Commit date    : 2026-07-14 20:14:03 -0400
+  Commit message : run yarn outdated
   Remote origin  : git@github.com:multiplicationdrill/multiplicationdrill.github.io.git
   Files included : 31
   Excluded path  : docs/llm/
@@ -4936,7 +4936,7 @@ export default defineConfig({
   Files dumped   : 31
   Total size     : 119.3 KiB (122234 bytes)
   Output file    : /home/kushal/src/ts/multiplicationdrill/docs/llm/dump.txt
-  Completed at   : 2026-07-14T20:03:25-04:00
+  Completed at   : 2026-07-14T20:14:14-04:00
 ################################################################################
 # END OF DUMP
 ################################################################################
