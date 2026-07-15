@@ -5112,4 +5112,29 @@ user	0m1.681s
 sys	0m0.433s
 kushal@fedora:~/src/ts/multiplicationdrill$ yarn --version
 1.22.22
-kushal@fedora:~/src/ts/multiplicationdrill$ 
+kushal@fedora:~/src/ts/multiplicationdrill$ yarn --version
+1.22.22
+kushal@fedora:~/src/ts/multiplicationdrill$ time yarn install
+yarn install v1.22.22
+info No lockfile found.
+[1/4] Resolving packages...
+⠁ (node:24721) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+[2/4] Fetching packages...
+[3/4] Linking dependencies...
+warning Workspaces can only be enabled in private projects.
+warning Workspaces can only be enabled in private projects.
+warning Workspaces can only be enabled in private projects.
+warning Workspaces can only be enabled in private projects.
+warning Workspaces can only be enabled in private projects.
+warning Workspaces can only be enabled in private projects.
+warning Workspaces can only be enabled in private projects.
+warning Workspaces can only be enabled in private projects.
+[4/4] Building fresh packages...
+success Saved lockfile.
+Done in 4.72s.
+
+real	0m4.868s
+user	0m2.105s
+sys	0m0.678s
+kushal@fedora:~/src/ts/multiplicationdrill$ cd ~/src/ts/multiplicationdrill/; time yarn outdated; time yarn install; time yarn lint; time bash export.sh; time yarn; time yarn build; time yarn test:all; time git add .; time git commit --message "add all files"; time git remote show origin; time git push origin --all;
