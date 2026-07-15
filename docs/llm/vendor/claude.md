@@ -2091,3 +2091,50 @@ Claude is AI and can make mistakes. Please double-check cited sources.
 30
 80
 100
+
+
+
+
+
+
+
+What does this mean? 
+How do I fix it? 
+kushal@fedora:~/src/ts/multiplicationdrill$ time yarn outdated
+yarn outdated v1.22.22
+error Outdated lockfile. Please run `yarn install` and try again.
+info Visit https://yarnpkg.com/en/docs/cli/outdated for documentation about this command.
+
+real	0m0.143s
+user	0m0.106s
+sys	0m0.047s
+kushal@fedora:~/src/ts/multiplicationdrill$ time yarn install
+yarn install v1.22.22
+[1/4] Resolving packages...
+⠁ (node:23879) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+[2/4] Fetching packages...
+[3/4] Linking dependencies...
+warning Workspaces can only be enabled in private projects.
+warning Workspaces can only be enabled in private projects.
+warning Workspaces can only be enabled in private projects.
+warning Workspaces can only be enabled in private projects.
+warning Workspaces can only be enabled in private projects.
+warning Workspaces can only be enabled in private projects.
+warning Workspaces can only be enabled in private projects.
+warning Workspaces can only be enabled in private projects.
+error Invariant Violation: could not find a copy of vite to link in /home/kushal/src/ts/multiplicationdrill/node_modules/vitest/node_modules
+    at invariant (/home/kushal/.cache/node/corepack/v1/yarn/1.22.22/lib/cli.js:2318:15)
+    at PackageLinker.<anonymous> (/home/kushal/.cache/node/corepack/v1/yarn/1.22.22/lib/cli.js:48524:7)
+    at Generator.next (<anonymous>)
+    at step (/home/kushal/.cache/node/corepack/v1/yarn/1.22.22/lib/cli.js:310:30)
+    at /home/kushal/.cache/node/corepack/v1/yarn/1.22.22/lib/cli.js:321:13
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+info Visit https://yarnpkg.com/en/docs/cli/install for documentation about this command.
+
+real	0m3.635s
+user	0m1.681s
+sys	0m0.433s
+kushal@fedora:~/src/ts/multiplicationdrill$ yarn --version
+1.22.22
+kushal@fedora:~/src/ts/multiplicationdrill$ 
