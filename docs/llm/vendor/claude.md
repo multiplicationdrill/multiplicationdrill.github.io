@@ -1198,3 +1198,896 @@ After running `yarn install`, you should be able to run the full `test:all` pipe
 
 
 
+00
+78
+100
+
+I would like to update this project to all the latest packages as well as container images and also github action versions, everything except keep yarn at v1 but everything else should be updated to the latest version possible. 
+Please review the new and upgraded `dump.txt` and give me full files for all files that need to change. 
+
+
+/
+Claude finished the response
+I would like to update this project to all the latest packages as well as container images and also github action versions, everything except keep yarn at v1 but everything else should be updated to the latest version possible. 
+Please review the new and upgraded dump.txt and give me full files for all files that need to change.
+
+
+Examined truncated dump file to identify necessary updates
+Examined truncated dump file to identify necessary updates
+I need to start by examining the project files to understand what we're working with, then research the latest versions available for all the dependencies, container images, and GitHub Actions while keeping Yarn locked at v1.
+
+
+Reading the full project dump to understand current state before upgrading
+I need to work through the full dump systematically since it's quite large, so I'm going to read through it in sections to get a complete picture of all the files involved.
+
+Done
+The dump is large and got truncated. Let me read the full contents in chunks so I know exactly what I'm working with.
+
+
+Investigating duplicate file contents in dump.txt output
+Investigating duplicate file contents in dump.txt output
+
+Reading dump.txt lines 219-800 (export.sh tail, tree, and start of package files)
+I need to look at the remaining sections of the project to get a complete picture—specifically the package.json, GitHub Actions workflows, and other configuration files that I haven't reviewed yet.
+
+
+Reading dump.txt lines 433-590 (file tree and package.json area)
+I'm getting a clearer picture of the test setup now—the Dockerfile is using Playwright v1.58.2 on a Noble base image. I should look further into the configuration to see how the package dependencies are defined and what the test workflows look like.
+
+Done
+Now let me read the critical config files — package.json, the GitHub Actions workflows, and the Playwright config. Let me continue from line 800.
+
+
+Reconciling duplicate script entries within file structure
+Reconciling duplicate script entries within file structure
+
+Reading dump.txt lines 800-1400 (rest of quiz-page, spec, workflows)
+I'm noticing the dump.txt file seems to contain duplicate content from export.sh, which is odd since the file tree only showed export.sh once. Let me trace through this more carefully to understand what's actually in the dump.
+
+txt file and whether there's something I'm missing about how these files are structured.
+
+Done
+I'm seeing what looks like a repeated section. Let me check the truncated part (1013-1188) to understand the file structure here.
+
+
+Navigated duplicate file entries and located package configuration files
+Navigated duplicate file entries and located package configuration files
+
+Reading dump.txt lines 1013-1188 to understand section boundaries
+I notice the export.sh script appears twice in the dump—once as the self-documented version at the top and again in the alphabetical file listing—which makes sense given how the script works. I'm skipping ahead to find package.json and the GitHub workflows in the later sections.
+
+Done
+That clears it up — export.sh appears twice (once self-documented at top, once in the alphabetical listing). I can skip its second copy. Let me jump ahead to find package.json and the workflows.
+
+
+Cataloging critical files requiring dependency updates
+Cataloging critical files requiring dependency updates
+
+Reading dump.txt lines 1490-2100 to find package.json and workflows
+Looking at the CI/CD workflow configuration, I can see it's using several GitHub Actions with specific versions—checking out code, setting up Node across versions 20, 22, and 24, running codecov for coverage reports, caching dependencies, and handling artifact uploads and page deployments. The workflow appears to be starting its execution flow.
+
+Now I'm trying to locate the package.json file in the project structure since I haven't examined it yet. The file listing suggests it should appear after MIGRATION.md, but I need to search through the dump to find its exact location and see what dependencies and scripts are configured.
+
+Done
+Let me locate the key config files precisely rather than paging through everything.
+
+
+Identified critical files requiring dependency and tooling updates
+Identified critical files requiring dependency and tooling updates
+
+Listing all file section headers with line numbers in dump.txt
+
+Script
+I'm identifying the key files that need updates for this dependency upgrade: the package.json with all the version specs, the CI/CD workflow configuration, the coverage comment workflow, and the Dockerfile that pins the Playwright version.
+
+Now I'm noticing something odd — the scripts/coverage-report.js file appears in the dump even though the exclude list should filter it out with the scripts/* pattern. This suggests the dump might have been generated with an older version of the export script before that exclusion was added, even though the current export.sh shows it in the exclude list.
+
+Anyway, that's not critical for what I need to do. The user wants me to update all dependencies to their latest versions, bump container images, update GitHub Actions, keep yarn at v1, and provide the complete modified files. The main files I'll need to change are package.json for dependencies, the Dockerfiles for container images, and the CI/CD workflow files for action and Node versions.
+
+Let me start by reading package.json to see what we're working with.
+
+Show more
+Done
+Now I have a complete map. Let me read the files most likely to change, starting with package.json.
+
+
+Discrepancy detected between workflow and package scripts
+Discrepancy detected between workflow and package scripts
+
+Reading package.json section
+Looking at the dependency versions in the project, I see we're using ESLint 10, Playwright for testing, TypeScript 6, and Vitest with coverage tools for the test suite.
+
+Now I'm checking the CI/CD configuration files and Playwright setup to understand the testing and deployment pipeline. The version numbers are interesting — TypeScript 6 and Vite 8 suggest this is a mid-2026 project, which aligns with the newer tooling ecosystem where TypeScript's native compiler and Rolldown integration have matured.
+
+I need to verify these versions against the npm registry and GitHub releases since the project guidelines are strict about not hallucinating — I should confirm what breaking changes exist in these major versions before proceeding with any recommendations. Now I need to read the remaining configuration files to understand the full scope of what needs updating, then I'll query the registries for the latest versions before generating the complete updated files.
+
+Show less
+Done
+Let me read the CI/CD workflow header and the coverage-comment workflow.
+
+
+Scrutinizing remaining config files for version-specific updates
+Scrutinizing remaining config files for version-specific updates
+
+Reading ci-cd.yml header and coverage-comment.yml workflow
+
+Reading coverage-comment.yml workflow content
+I'm checking the workflow configuration and noticing a mismatch—the coverage comment workflow references yarn test:coverage, but looking at the package.json scripts, that command doesn't actually exist. The available test scripts are test, test:run, test:e2e, and test:coverage:ci, but there's no plain test:coverage script defined.
+
+This is a pre-existing issue that's outside the scope of just updating versions, so I'll note it but keep the workflow file as-is for now and flag the discrepancy. Since I'm bumping the action versions in the coverage-comment.yml file anyway, I should move on to checking the playwright configuration next.
+
+Done
+Now the Playwright config, which may need updates for the latest Playwright.
+
+
+Testing npm registry accessibility for version retrieval
+Testing npm registry accessibility for version retrieval
+
+Reading playwright.config.ts
+The playwright.config.ts file is stable and shouldn't require changes for a version bump. I'm now reviewing the remaining config files like tsconfig.json, tsconfig.e2e.json, vite.config.ts, and vitest.config.ts to see if any need updates—the TypeScript config is already targeting ES2025.
+
+I need to focus on what actually needs updating: package dependencies, container images in the Dockerfile, and GitHub action versions in the CI/CD workflows, while keeping yarn v1. Rather than guessing at versions, I should look up the actual latest releases from npm and GitHub to ensure accuracy. I also need to check several GitHub Actions like actions/cache, actions/upload-artifact, actions/deploy-pages, and a few third-party actions for code coverage and pull request comments. For the Playwright Docker image, the tag format follows the npm package version with a specific base variant, so I'll need to match it to the @playwright/test version I find.
+
+Since mcr.microsoft.com isn't in my allowed domains, I can't query it directly, but I know Playwright publishes images tagged with their version and Ubuntu codename. Noble is the current base as of my last update, though by mid-2026 there could be a newer Ubuntu release. I should check the Playwright GitHub releases and Docker documentation to confirm the latest version and what base image tags they're actually publishing.
+
+Show less
+Done
+The Playwright config and the tsconfig/vite/vitest configs I've already seen are API-stable and shouldn't need changes for version bumps. The files that actually need editing are package.json, Dockerfile.e2e, and the two workflow files.
+
+Now the critical part: I must not guess at versions. Let me query the npm registry and GitHub API directly for the true latest versions. First, checking my tooling.
+
+
+Strategized tool selection for fetching latest package versions efficiently
+Strategized tool selection for fetching latest package versions efficiently
+
+Checking availability of curl, jq, node, npm
+
+Script
+I need to check if jq is available, but since it's not, I'll use npm to fetch package versions instead. The npm registry is accessible, so I can use npm view to get the latest version for each package—that's the most straightforward approach.
+
+I should handle the PAT securely by storing it in an environment variable without echoing it, though I won't need authentication for npm queries. Let me start with the npm packages first since they don't require any credentials.
+
+Done
+curl, node, and npm are available (jq isn't — I'll parse with node). Let me query the npm registry for the true latest version of every dependency.
+
+
+Configuring token authentication to circumvent rate limits
+Configuring token authentication to circumvent rate limits
+
+Fetching latest published version of each npm dependency
+
+Script
+I'm checking the latest package versions from npm and noticing TypeScript just jumped to version 7, which is a major version bump from 6. The rest of the dependencies are also at their current releases, with typescript-eslint at version 8.
+
+This TypeScript 7 release is significant because it's the native Go-based compiler port that Microsoft announced, which could have breaking changes. The user's current setup is on TypeScript 6, so upgrading to 7 would be a substantial change that needs careful consideration for compatibility.
+
+I also need to verify that the Node.js version support in the CI matrix aligns with what will be current by July 2026 — Node 20 is approaching EOL in April 2026, so the matrix might need updating to focus on Node 24 and beyond. I should update the CI matrix to reflect the maintained Node versions as of July 2026—dropping Node 20 since it'll be EOL by then and adding Node 26 as the current release. Before finalizing the matrix though, I want to verify Node's actual release schedule and then look up the latest versions for GitHub Actions, TypeScript, and the Playwright Docker base image.
+
+I'll need to query the GitHub API for the latest release tags of the actions I'm using—checkout, setup-node, cache, artifact uploads, deploy-pages, codecov, and the code coverage tools—to pin them to their latest major versions.
+
+The tricky part is handling the PAT securely. I can't just paste it into a visible bash command since the tool calls are shown to the user, and they specifically asked me not to include it in the response. I need to think through whether the GitHub API actually requires authentication for these queries, or if I can make the requests without it. the user's intent here. Let me start by checking the unauthenticated rate limit to see if I even need the token—if I have enough quota for ~9 calls, I can skip it entirely and keep things simpler.
+
+Show less
+Done
+Excellent — real versions retrieved. Notable: TypeScript's latest is now 7.0.2 (a major jump from the current 6), and @types/node is 26. Both major bumps need care. Now the GitHub Actions. Let me first check whether I even need the token by looking at the current unauthenticated rate-limit budget.
+
+
+Orchestrated token-authenticated API calls to fetch latest versions
+Orchestrated token-authenticated API calls to fetch latest versions
+
+Checking unauthenticated GitHub API rate limit budget
+
+Script
+The rate limit on this shared IP is maxed out, so I need to use the token the user provided. I'll set it as an environment variable and verify it works before proceeding.
+
+I'm not sure if environment variables persist across separate bash invocations, so I'll bundle everything into a single script — setting the token once, then looping through all the action repositories to fetch their latest release tags, and also checking the Playwright repo to cross-reference the Docker image version. I'll parse the tag_name from each releases/latest endpoint using the Authorization header.
+
+Done
+Rate limit is exhausted (0/60) on this shared IP, so the token is needed for its intended purpose. I'll set it once and run all GitHub API calls in a single step.
+
+
+Cataloging latest GitHub Action versions for systematic upgrades
+Cataloging latest GitHub Action versions for systematic upgrades
+
+Fetching authenticated rate limit and latest release tags for all GitHub Actions plus Playwright
+
+Script
+I need to switch from using bash arrays to a simpler approach since the environment is running dash instead of bash. I'll either invoke bash explicitly with bash -c or just pass the headers directly in each curl command to avoid the array syntax altogether.
+
+Done
+The shell is dash, not bash — no arrays. Let me rewrite without them.
+
+
+Investigating TypeScript compatibility and researching upgrade implications
+Investigating TypeScript compatibility and researching upgrade implications
+
+Fetching authenticated rate limit and latest release tags for all GitHub Actions plus Playwright (dash-compatible)
+
+Script
+The authentication token is working, and I've got the latest release versions for the GitHub Actions. I need to update the workflow file to bump each action to its newest version—checkout and upload-artifact to v7, setup-node to v7, cache to v6, and upload-pages-artifact to v5.
+
+For GitHub Actions, the convention is to pin to the major version tag (like @v7) since those are maintained as moving tags pointing to the latest release in that version line. Most of these have newer major versions available, but CodeCoverageSummary is already at its latest (v1.3.0), and I should verify these major version tags actually exist before updating. I'm verifying that the major version tags actually exist for each of these repositories by checking the git refs. The key remaining items are understanding TypeScript 7's breaking changes and whether the build command still works, plus confirming the Playwright Docker base image codename.
+
+I also need to figure out what Node versions are actively maintained by July 2026 and update the test matrix accordingly. The good news is that most dependencies are already on their major versions—ESLint 10, Vite 8, Vitest 4, jsdom 29—so those are just patch and minor bumps with low risk. The only significant major version jump is TypeScript 6 to 7, which requires careful investigation since it's a native Go port.
+
+Before committing to TypeScript 7, I should verify that the native implementation is stable and feature-complete by the 7.0.2 release. I need to check whether it supports the same tsconfig options the project uses (like ES2025 target and bundler module resolution) and confirm that the standard tsc CLI still works with vite build.
+
+I should also verify @types/node 26 compatibility with the Node versions in CI, then search for any breaking changes in TypeScript 7, the Playwright Docker image, and Node's release schedule before finalizing the upgrade recommendations.
+
+Show less
+Done
+Token works (5000/5000). Now let me verify that the major-version moving tags I intend to pin to actually exist (rather than assuming the convention holds), and confirm the Playwright Docker base-image codename.
+
+
+Investigated dependency updates and researched container image compatibility
+Investigated dependency updates and researched container image compatibility
+
+Verifying each major-version moving tag exists (HTTP 200 = exists)
+
+Script
+The token's done its job. Now I need to dig into three key areas: TypeScript 7's breaking changes and whether it's a native port with CLI compatibility, what base image Playwright's Docker setup uses, and Node.js's release and EOL timeline for mid-2026 to plan the CI matrix properly. Starting with the Playwright Docker image since that's the most straightforward to check.
+
+For the image tags, Playwright uses the format v{version}-{codename} or just v{version} for the default. Historically they've offered -noble for Ubuntu 24.04 and -jammy for 22.04, with the untagged version pointing to whatever's recommended. The project currently uses -noble, which is solid through 2029 as an LTS. By the time we hit Playwright 1.61.1 in mid-2026, Ubuntu 26.04 might exist, but sticking with -noble keeps things stable and consistent with the current setup.
+
+The main update here is really the Playwright version jump from 1.58.2 to 1.61.1—that's the substantive change. The Ubuntu base is secondary. I should check what codenames Playwright 1.61 actually publishes to make sure I'm using what's available.
+
+Show less
+Done
+All major tags verified (HTTP 200). The token has served its purpose. Now for the research that registries can't answer — I need to verify the TypeScript 7 situation, the Playwright Docker base-image codename, and the current Node.js support matrix. Let me start with Playwright's Docker images since that directly drives the Dockerfile.
+
+
+Synthesizing TypeScript 7.0 findings and project impact
+Synthesizing TypeScript 7.0 findings and project impact
+
+Playwright Docker image tags mcr.microsoft.com noble ubuntu 2026
+10 results
+
+
+Docker | Playwright
+playwright.dev
+
+microsoft/playwright - Docker Image
+hub.docker.com
+
+Microsoft Artifact Registry
+mcr.microsoft.com
+
+Docker | Playwright Python
+playwright.dev
+
+microsoft/playwright-python - Docker Image
+hub.docker.com
+
+Docker | Playwright Java
+playwright.dev
+
+Docker Images | microsoft/playwright-dotnet | DeepWiki
+deepwiki.com
+
+[Feature]: Docker images/tags for running the Playwright Server · Issue #38104 · microsoft/playwright
+github.com
+
+Playwright Docker: Stop Chasing Missing Browser Libraries in CI | Autonoma
+getautonoma.com
+
+Docker | Playwright .NET
+playwright.dev
+Looking at the Playwright Docker documentation, the current images are based on Ubuntu 24.04 LTS (Noble) and Ubuntu 22.04 LTS (Jammy), with the example showing the noble-tagged image at version 1.61.0.
+
+Checking the latest releases, npm and GitHub both confirm version 1.61.1 is the most recent, so the correct Docker tag would be mcr.microsoft.com/playwright:v1.61.1-noble. Since Playwright publishes Docker images for each release, this tag should be available even though the documentation examples still reference 1.61.0.
+
+Now I need to dig into TypeScript 7 — specifically whether the native Go-based compiler in version 7.0.2 is production-ready and what breaking changes might affect this project. This is important because the codebase has references to TypeScript 6 modernizations, and the build pipeline runs tsc && vite build with type-checking via tsc --noEmit, so any compatibility issues could be significant.
+
+Show less
+Done
+The docs confirm noble (Ubuntu 24.04) is still Playwright's newest base — images are currently published for Ubuntu 24.04 LTS (Noble Numbat) with noble tags and Ubuntu 22.04 LTS (Jammy Jellyfish) with jammy tags. So the Docker tag becomes v1.61.1-noble. 
+Playwright
+
+Now the most important question: TypeScript's latest is 7.0.2 — the native compiler rewrite. I need to verify it's a safe drop-in for this project before recommending it. Let me research.
+
+
+Scrutinizing TypeScript version compatibility constraints
+Scrutinizing TypeScript version compatibility constraints
+
+TypeScript 7.0 native compiler release stable breaking changes tsc
+10 results
+
+
+Announcing TypeScript 7.0 - TypeScript
+devblogs.microsoft.com
+
+TypeScript 7.0 Guide: Native Compiler, Features & Migration 2026
+picode.bunnode.com
+
+Go-based TypeScript 7.0 reaches release candidate stage | InfoWorld
+www.infoworld.com
+
+TypeScript 7.0 RC Moves Microsoft's Go Rewrite Into the Mainline Compiler -- Visual Studio Magazine
+visualstudiomagazine.com
+
+TypeScript 7 Now Stable: 10× Faster Builds, But Not for Vue or Svelte Yet
+www.techtimes.com
+
+TypeScript 7 (tsgo): 10x Faster Compiler in 2026 | Nerd Level Tech
+nerdleveltech.com
+
+TypeScript 7.0 Native Compiler: What Breaks, What Gets 10x Faster, and How to Migrate - Developers Digest
+www.developersdigest.tech
+
+TypeScript 6.x to 7.0 Migration Guide - Agent Guide · GitHub
+gist.github.com
+
+TypeScript 7.0 RC: Go Compiler 10x Faster [2026] – Tech Insider Ireland
+tech-insider.org
+
+Announcing TypeScript 7.0 RC - TypeScript
+devblogs.microsoft.com
+I'm looking at the TypeScript 7.0 release details—it's the native Go implementation that became stable around early-to-mid July 2026, with version 7.0.2 now being the latest on npm. The RC came out in mid-June with a stable release expected within a month, which aligns with the current timeline.
+
+The installation and command-line interface remain unchanged—you still install typescript from npm and run tsc as before, so existing build scripts like tsc && vite build continue to work without modification. Type-checking is fully backward-compatible with 6.0, meaning application code should compile without changes.
+
+The real breaking changes are in configuration defaults. TypeScript 7.0 enforces what were previously 6.0 deprecations and adopts new defaults: rootDir now infers from the source directory structure, types defaults to an empty array (which this project already has), strict mode is on by default (already explicit here), module defaults to esnext, and moduleResolution requires either "bundler" or "nodenext" instead of "node" (this project already uses "bundler"). The target: es5 option has been removed entirely.
+
+The critical blocker for this project is that TypeScript 7.0 doesn't expose a stable programmatic API until 7.1 in October 2026. Since the project uses typescript-eslint for linting, and that tool imports the TypeScript compiler as a library, it may break when TS 7.0 is installed. Microsoft's workaround is to use an npm alias to keep typescript pointing at a 6.0-compatible package for tooling, or maintain TS 6.0 alongside the new version.
+
+The migration guide explicitly warns against trying to update custom AST transformers, ts-morph scripts, or typescript-eslint to use the new compiler API — those should stay on the 6.0 API alias until 7.1 releases. The recommended approach is installing typescript@npm:@typescript/typescript6 as an alias for API consumers while adding the native compiler under a separate alias.
+
+Now I'm weighing the tension between what the project needs: tsc for fast native compilation in the build pipeline versus maintaining compatibility with the linting toolchain. Option A keeps the native 7.0 compiler but risks breaking typescript-eslint's imports. Option B uses a compatibility package that provides a separate tsc6 binary, letting you run TypeScript 7.0 alongside the older compiler without naming conflicts — though I need to check what the full re-export situation is. 6.0 API via npm aliases so typescript-eslint can resolve to the correct version. But wait—if TypeScript 7.0 is installed as typescript in node_modules, and typescript-eslint has a peer dependency on typescript, won't it just import the 7.0 package directly? The problem is that 7.0's programmatic API isn't guaranteed to be stable or even available, so typescript-eslint would break trying to use it.
+
+This is a real blocker. I need to figure out whether typescript-eslint 8.64.0 actually supports TypeScript 7, or if there's a newer version that does. That's the critical piece here—if typescript-eslint can't work with the native compiler, then bumping to TypeScript 7 would break linting entirely.
+
+Let me think through the practical options. One approach would be to install TypeScript 7 as the main package and set up an alias for TypeScript 6 that typescript-eslint could use instead. With Yarn v1, I could use the npm: syntax to create that alias, but the tricky part is actually getting typescript-eslint to resolve to the aliased version rather than the real typescript package.
+
+Actually, Microsoft's recommendation makes more sense now: keep the default typescript package pointing to version 6 via an alias, so all tooling like typescript-eslint works seamlessly. Then install the native TypeScript 7 compiler separately under a different name for faster command-line builds. This way tsc6 would run the 6.0 compiler while tsc would run the native 7.0 version.
+
+But the documentation seems inconsistent about what the actual package names are—it mentions @typescript/native as a second alias, but that doesn't appear to be a real package. I'm realizing I shouldn't try to over-engineer this; the right answer really depends on what's actually available in the current TypeScript ecosystem and how typescript-eslint is currently set up.
+
+Let me check whether typescript-eslint 8.64 or a newer 8.x version already supports TypeScript 7.0 natively—if it does, then a simple version bump solves everything. I need to look at the peer dependency declarations for typescript-eslint and see if there's any documented support for TS 7. Actually, I should also verify whether TypeScript 7.0 is actually the latest version right now.
+
+The user's directive is clear: update everything to the latest possible version. That means TypeScript 7.0.2 if it's available. But the critical constraint is that the entire pipeline—linting, type-checking, unit tests, e2e, and the build—must still work. If bumping TypeScript to 7 breaks the linter because typescript-eslint isn't compatible, I'd be handing them a broken upgrade. So I need to confirm typescript-eslint compatibility with TS 7 before proceeding.
+
+Show less
+Done
+This is the crux of the whole upgrade. TypeScript 7.0 is the native Go compiler and is now the latest tag. The key findings that matter for this project:
+
+The package name and binary did not change for the stable release — you install typescript from npm exactly like before, and you still run tsc. So tsc && vite build and tsc --noEmit keep working. 
+GitHub
+The Go codebase was methodically ported rather than rewritten, and its type-checking logic is structurally identical to TypeScript 6.0, so application code compiles unchanged. 
+Microsoft Developer Blogs
+But the catch: tools that import from typescript and call into the compiler API — typescript-eslint, ts-morph, custom transformers — are not guaranteed to work against the Go compiler, and a stable programmatic API is targeted for TypeScript 7.1, not 7.0. 
+GitHub
+This project lints with typescript-eslint, which imports the TS compiler API. That's the linchpin. Let me verify typescript-eslint's actual TS 7 compatibility before deciding how to bump it.
+
+
+Reconciling TypeScript version compatibility constraints across tooling
+Reconciling TypeScript version compatibility constraints across tooling
+
+Checking typescript-eslint peer dependency ranges and whether a newer major supports TS 7
+
+Script
+The key finding is that typescript-eslint version 8.64.0, along with its parsing dependency typescript-estree, both explicitly declare support only up to TypeScript 6.0.x, which means TypeScript 7.0 isn't supported by the latest version.
+
+Since the user wants everything updated to the latest possible, but the constraint is that linting must continue working, I'm realizing that the actual latest TypeScript version achievable here is bounded by what typescript-eslint can handle—not by what TypeScript itself offers.
+
+Let me figure out what the latest 6.0.x version is, since that's the highest TypeScript version that typescript-eslint 8.64.0 will accept. Option A keeps TypeScript at 6.0.x and bumps everything else, which is the safe and correct approach. Option B would involve some workaround with npm aliases to force TypeScript 7, but that's fragile and not something the TypeScript team recommends for tooling. Removing type-aware linting would be a step backward, so the real answer is Option A: stick with TypeScript 6.0.x since typescript-eslint 8.64.0 doesn't support 7.0 yet. I should bump typescript-eslint to its latest version along with everything else, and explain to the user that TypeScript 7 support will come once typescript-eslint catches up, likely around late 2026. Let me verify one detail about the user's setup first.
+
+Looking at the existing package.json, the project already has TypeScript 6.0.2 and typescript-eslint 8.57.2, so the upgrade path is straightforward: bump typescript-eslint from 8.57.2 to 8.64.0 while keeping TypeScript on 6.0.x, then update everything else to latest. But I should reconsider the user's phrasing—they said "latest version possible," which might mean they want me to push as far as I can go rather than play it safe.
+
+The user's preferences lean toward aggressive upgrades once breaking changes are understood, and I've now identified the key constraint: typescript-eslint doesn't support TypeScript 7 yet. So the right move is to go as far as I can within that boundary—update everything aggressively except respect the TS/tsel compatibility wall.
+
+I should verify the exact latest 6.x TypeScript version to pin it precisely, and check whether the typescript-eslint canary supports TS 7 (though a canary wouldn't be appropriate for a showcase project anyway). I'm also checking @types/node compatibility to make sure there aren't other hidden version constraints. Looking up the exact latest 6.0.x release and verifying typescript-eslint's peer dependency constraints for that version.
+
+Show less
+Done
+This is decisive. The latest typescript-eslint (8.64.0) — and its parser @typescript-eslint/typescript-estree — both declare a typescript peer range of >=4.8.4 <6.1.0. There is no v9/v10 of typescript-eslint yet (latest major is 8). So the latest linter explicitly does not support TypeScript 7 (or even 6.1+).
+
+That means bumping typescript to 7.0.2 would break yarn lint, which is the first gate in the commit pipeline. Let me confirm the precise latest TypeScript 6.0.x to pin to, and sanity-check the canary linter just in case.
+
+
+Validating Node.js release schedules and deprecating outdated versions
+Validating Node.js release schedules and deprecating outdated versions
+
+Finding latest stable TypeScript 6.0.x and confirming canary linter still caps below TS7
+
+Script
+I'm seeing the version compatibility landscape now: TypeScript has stable releases at 6.0.3 and 7.0.2, but typescript-eslint's latest canary still caps TypeScript at below 6.1.0, meaning no version of typescript-eslint supports TypeScript 7 yet. Looking at the @types/node typesVersions, there are entries for older TypeScript versions but the data cuts off mid-entry.
+
+The decision is clear: stick with TypeScript 6.0.3 since upgrading to 7.0.2 would break the linting step. The fact that TypeScript 7.1 dev builds are already being published (dated today) confirms that the stable API typescript-eslint needs won't be available until around October 2026. The existing tsconfig is already properly configured with strict mode and the right module resolution, so bumping from 6.0.2 to 6.0.3 is just a patch with no additional changes needed.
+
+For the actual updates, I need to modify four files: package.json gets the latest devDependencies (keeping TypeScript pinned), the Dockerfile gets the newer Playwright image, and both CI/CD workflow files get updated action versions and the Node matrix. Starting with the package.json devDependencies — @eslint/js goes to 10.0.1 and @playwright/test to 1.61.1.
+
+Updating devDependencies list...
+
+I'm reconsidering the TypeScript version constraint — should I use the tilde operator ~6.0.3 instead to lock it to patch-only updates within 6.0.x, ensuring it never accidentally bumps to 6.1.0 and breaks the typescript-eslint compatibility requirement? .0.3is the safer choice—it respects the typescript-eslint peer constraint by staying strictly below 6.1.0, even though it deviates from the project's caret style. I'll go with that and explain the reasoning. I'm torn between^6.0.3and~6.0.3` — the caret allows future 6.x releases while the tilde locks to patch versions only. Since typescript-eslint's next major jump goes straight to 7.0.2, the caret would safely resolve to 6.0.3 today, but I should use the tilde to be explicit about not wanting any minor version bumps until TypeScript 7 support lands.
+
+For the Dockerfile, I'm bumping Playwright from v1.58.2 to v1.61.1 while keeping everything else the same, including the Yarn v1 lockfile approach. Yarn will still be available since we're staying within the noble base family. Now I need to bump the GitHub Actions versions across the board — checkout, setup-node, codecov, cache, and artifact uploads all need updating to their latest versions. For the Node matrix, I should drop 20.x since it's past EOL as of April 2026, and keep 22.x and 24.x going forward. So the updated matrix would be [22.x, 24.x, 26.x] — dropping the EOL Node 20 and adding the current Node 26 release, while keeping 22 as the maintenance LTS version that the codecov gate depends on, and 24 as the active LTS. Before I finalize this, I should verify Node 26's actual release status and LTS timeline to make sure I'm not making assumptions.
+
+I'm also double-checking whether actions/setup-node@v7 has any breaking changes around the cache: 'yarn' option, since recent setup-node updates have shifted some defaults and deprecated certain features.
+
+The project does have a yarn.lock file in the repo, so caching should work fine. For the codecov-action bump from v4 to v7, that's a significant jump—codecov tightened token requirements for uploads in recent versions, though public repos can sometimes use tokenless uploads with OIDC. The existing config doesn't pass a token and uses fail_ci_if_error: false, so even if v7 needs one, the CI won't break. The action also accepts files:, flags:, and name: parameters that are already configured.
+
+I'm noticing there's a pre-existing bug in the coverage-comment workflow: it calls yarn test:coverage, but package.json only defines test:coverage:ci. That script doesn't exist, so the workflow would fail. Since I'm already editing that file for version bumps, I should fix this mismatch. I'm torn between strictly adhering to the "update versions only" constraint and the reality that I'd be handing back a file with a broken command. The safest move is to flag the bug explicitly in my explanation and offer the fix as an option, rather than silently changing their workflow file — that way I'm being honest about what I found without overstepping into unrequested changes. I'm torn between fixing the broken script reference and respecting their intent—a non-functional CI job isn't great hygiene, but changing it without asking could surprise them. I'll go ahead and fix it to the correct script name, but I'll make it very explicit and prominent so they can easily revert if they want. Let me double-check the scripts block to make sure I'm reading the available commands correctly.
+
+Looking at the package.json scripts, I can confirm there's no test:coverage script defined—only test:coverage:ci which runs vitest with coverage reporting. So the CI config is definitely pointing to a non-existent script.
+
+Now I'm reconsidering the scope here. The user specifically asked for version updates only—packages, containers, and actions. They didn't ask me to fix bugs or behavioral issues. Even though fixing the script name would resolve the coverage problem, that's technically outside what they requested.
+
+But I'm weighing this against the principle that every response should be immediately usable. A workflow that calls a non-existent script is objectively broken. I think the right move is to fix it AND flag it prominently at the top so there's complete transparency about what I changed and why. That way I'm being helpful without surprising them, and I'm not handing back a file I know won't work.
+
+Let me verify whether the step is actually broken though—the downstream actions like the sticky comment and coverage summary still run regardless, so maybe the workflow continues even if that particular step fails.
+
+Actually no, if yarn run test:coverage doesn't exist, it exits non-zero and fails the job. So it's definitely broken and needs fixing.
+
+Now I'm also thinking about the Node versions across these workflows. The user asked for latest, and both files are pinned to 22.x. I could bump them to 24.x since that's the current active LTS, which would be more aligned with "latest." So I'll bump the single-version jobs to 24.x since that's the active LTS, keeping the test matrix at [22.x, 24.x, 26.x] with the codecov gate still on 22.x—that works fine since 22.x remains in the matrix. The gate's placement is somewhat arbitrary, but keeping it on 22.x is consistent with the current setup. to 24.x instead to keep things consistent — deploy and coverage both use the Active LTS, while the unit matrix still spans the full range of supported versions. "update everything to latest" does cover runtime versions in the matrix, especially since Node 20 is EOL and @types/node is already at 26. Keeping an outdated Node version would be inconsistent with the goal of staying current. I'll proceed with the matrix update and justify it as part of the broader modernization. I'm verifying Node's release schedule against my assumptions—checking that Node 20 is indeed EOL by July 2026, Node 22 is in maintenance, Node 24 is active LTS, and Node 26 is current. The pattern is consistent with Node's established cadence, so I'm confident, but I'll do a quick search to confirm the EOL dates before committing to the matrix update.
+
+Show less
+Done
+Now I have everything decisive:
+
+TypeScript stable line: only 6.0.2, 6.0.3, then 7.0.2. Latest 6.x is 6.0.3.
+Even the canary typescript-eslint (8.64.1-alpha.2) still caps typescript at <6.1.0. So no linter release supports TS 7 yet. next: 7.1.0-dev... confirms 7.1 (with the API typescript-eslint needs) is still in development.
+@types/node@26 only has compat shims for TS ≤5.7, so it's fine on TS 6.0.3.
+So the correct call: hold TypeScript at ~6.0.3 (the latest the toolchain supports) and take everything else to latest. Bumping to 7.0.2 would break yarn lint.
+
+Let me verify the Node.js support schedule so my CI matrix claims are accurate, then I'll write the files.
+
+
+Constructing complete, copy-pasteable configuration files meticulously
+Constructing complete, copy-pasteable configuration files meticulously
+
+Node.js release schedule 2026 Node 20 end of life Node 24 active LTS Node 26
+10 results
+
+
+Node.js | endoflife.date
+endoflife.date
+
+HeroDevs Blog | Node.js Version Support: EOL Dates and Latest Releases (July 2026)
+www.herodevs.com
+
+Node.js — Node.js Releases
+nodejs.org
+
+Node.js — Evolving the Node.js Release Schedule
+nodejs.org
+
+GitHub - nodejs/Release: Node.js Release Working Group · GitHub
+github.com
+
+Node.js 26 Released: What's New | InMotion Hosting
+www.inmotionhosting.com
+
+Node.js is changing its release schedule and version numbers
+nodejsdesignpatterns.com
+
+Node.js End of Life (EOL) Dates and End of Support (EOS) Dates | 26.5.0 - July 2026 Release
+eosl.date
+
+Node 22 vs Node 24 in 2026: LTS Support, Breaking Changes, and Upgrade Path — PkgPulse Guides
+www.pkgpulse.com
+
+Node.js 26 Is Current and Node.js 24 Is LTS: What Developers Should Upgrade Now — USA Content Hub
+us-content-hub.vercel.app
+I'm checking the Node.js release schedule against the official documentation and confirming my version support strategy: Node 20 is reaching end-of-life in mid-2026 so I should drop it, Node 22 remains in maintenance LTS through 2027, and Node 24 just entered active LTS status as of late 2025.
+
+The documentation explicitly recommends a mid-2026 CI matrix of Node 22, 24, and 26 (the current release), which aligns perfectly with what I'm planning. Node 24 will serve as the active LTS default for build and deployment jobs.
+
+I'm also verifying that Node 26's removal of internal stream modules won't affect this browser-based Vite frontend—the Node runtime is only used for build tooling and testing, and all those tools (Vite, Vitest, jsdom, ESLint) are modern enough to handle Node 26 without issues.
+
+Now I need to ensure both execution paths for Playwright are updated: the CI workflow runs Playwright directly on the runner with browser installation, while the local Dockerfile uses a separate container image. Both need @playwright/test bumped to 1.61.1.
+
+I'm also checking the setup-node and upload-artifact action versions — actions/setup-node@v7 still supports cache: 'yarn' and Node 26 is available, so those are fine. For actions/upload-artifact@v7, the major breaking change was between v3 and v4 when artifacts became immutable, but v7 should handle the current workflow without issues. The Pages actions are tightly coupled and their inputs remain stable across versions, so the upgrade is safe. For codecov, the v4+ shift to requiring CODECOV_TOKEN and the CLI-based uploader is already accounted for—since fail_ci_if_error is false and the repo is public, tokenless OIDC upload will work fine, so I can proceed with the version bump without changes. Given the user's emphasis on CI hygiene and immediately usable workflows, I should fix the broken script reference in coverage-comment.yml from yarn test:coverage to yarn test:coverage:ci and flag it clearly, rather than leaving a broken reference that would fail on every PR. I'll be transparent about the change and the reasoning behind it. I'll return the coverage-comment.yml file with the corrected script reference since returning a broken file defeats the purpose, and I'll flag this fix prominently as a separate issue beyond the version bumps so the user knows exactly what changed and why. Now let me verify the current content of each file to ensure I'm working with the right versions. I'll present the complete files as inline code blocks for direct copy-paste, since that matches the established workflow and the user's strong preference for this format. I need to carefully review the complete header comment block at the top of the ci-cd.yml file to make sure I reproduce it exactly as written.
+
+Show less
+Done
+Confirmed against the authoritative nodejs/Release schedule: Node 20 "Iron" reached End-of-Life on 2026-04-30, Node 22 is Maintenance LTS (EOL 2027-04-30), Node 24 "Krypton" is Active LTS (EOL 2028-04-30), and Node 26 is Current (released 2026-05-05, LTS 2026-10-28). The recommended mid-2026 CI matrix is Node.js 22 LTS, 24 LTS, and 26 Current. So the matrix becomes [22.x, 24.x, 26.x] (dropping EOL 20) with Node 24 (Active LTS) as the single-version default. 
+GitHub
+USA Content Hub
+
+Let me re-read the full CI/CD workflow header comment so I reproduce the file faithfully with only version changes.
+
+
+Orchestrated comprehensive dependency upgrades while strategically holding TypeScript version
+Orchestrated comprehensive dependency upgrades while strategically holding TypeScript version
+
+Re-reading the ci-cd.yml top comment block to reproduce verbatim
+Now I'm putting together all four files as complete, copy-pasteable versions. I need to be careful with the Get Playwright version step in the CI/CD workflow—it extracts the version using jq to parse the JSON output from Yarn, which is available by default on ubuntu-latest runners.
+
+For the package.json updates, I'm bumping most devDependencies to their latest versions while keeping TypeScript pinned with a tilde to stay below 6.1.0. The Dockerfile needs the Playwright image updated to v1.61.1-noble, and the CI/CD workflow needs the checkout action bumped to v7.
+
+Now I'm updating the GitHub Actions versions throughout the workflow: checkout and setup-node go to v7, the Node matrix shifts from [20.x, 22.x, 24.x] to [22.x, 24.x, 26.x], codecov-action moves to v7 with the gate switched to the 24.x node version, the e2e-tests job uses 24.x for setup-node, and cache and upload-artifact get bumped to v6.
+
+For the coverage-comment workflow, I'm making similar version updates—checkout and setup-node to v7, Node version to 24.x—plus the critical fix of changing yarn test:coverage to yarn test:coverage:ci, while CodeCoverageSummary stays at its current version and sticky-pull-request-comment moves to v3.
+
+Now I'll write out both complete workflow files for them to copy directly into their repo. I should briefly note which config files stay unchanged since the major versions aren't shifting, then write out the complete package.json, ci-cd.yml, and other files that do need updates, being careful with YAML formatting and avoiding any mention of sensitive credentials.
+
+Writing package.json... Writing package scripts... Finishing the Dockerfile setup, then I need to write out the CI/CD workflow and coverage comment configurations. I'm verifying the Playwright image tag v1.61.1-noble exists — the release is current and the docs confirm this naming convention, so I'm confident moving forward with it. I should also mention that after updating package.json, they'll need to run yarn install locally to regenerate yarn.lock before committing it — since CI uses --frozen-lockfile, a stale lock file would cause the build to fail.
+
+Show less
+Done
+I now have everything verified against the registries and the authoritative schedules. Before the files, the one decision that shapes this whole upgrade:
+
+TypeScript stays on 6.0.x — it cannot go to the latest (7.0.2) without breaking your lint step. TypeScript 7.0 is the native Go compiler, and while it's a drop-in for tsc itself, typescript-eslint's latest release (8.64.0) and its canary both still declare a peer range of typescript >=4.8.4 <6.1.0. No linter release supports TS 7 yet, because TypeScript 7.0 ships without a stable programmatic API; that API is targeted for 7.1 (the 7.1.0-dev builds confirm it's still in progress). Since yarn lint is the first gate in your pipeline, jumping to TS 7 now would hand you a broken build. So I've pinned typescript to ~6.0.3 (latest 6.x, tilde to stay under the <6.1.0 ceiling that the linter enforces) and taken everything else to true latest. TS 7 becomes viable here once typescript-eslint ships 7.x support, around the TS 7.1 timeframe. 
+Tech Times
+
+Everything else confirmed current via the npm registry and GitHub releases:
+
+Package	Was	Now
+@eslint/js	^10.0.0	^10.0.1
+@playwright/test	^1.58.2	^1.61.1
+@types/node	^25.5.0	^26.1.1
+@vitest/coverage-v8	^4.1.2	^4.1.10
+@vitest/ui	^4.1.2	^4.1.10
+eslint	^10.1.0	^10.7.0
+globals	^17.4.0	^17.7.0
+jsdom	^29.0.1	^29.1.1
+typescript	^6.0.2	~6.0.3 (held)
+typescript-eslint	^8.57.2	^8.64.0
+vite	^8.0.3	^8.1.4
+vitest	^4.1.2	^4.1.10
+GitHub Actions (all major moving tags verified to exist): checkout v4→v7, setup-node v4→v7, cache v4→v6, upload-artifact v4→v7, upload-pages-artifact v3→v5, deploy-pages v4→v5, codecov-action v4→v7, sticky-pull-request-comment v2→v3. irongut/CodeCoverageSummary@v1.3.0 is unchanged — v1.3.0 is still its latest release.
+
+Container image: v1.58.2-noble→v1.61.1-noble (noble is still Playwright's newest base; jammy is the only other).
+
+Node CI matrix: [20.x, 22.x, 24.x]→[22.x, 24.x, 26.x] (Node 20 hit EOL 2026-04-30) and single-version jobs move to Node 24 (Active LTS).
+
+Configs that need no changes: tsconfig.json, tsconfig.e2e.json, vite.config.ts, vitest.config.ts, playwright.config.ts — all stay on the same major versions, so their APIs are unchanged.
+
+package.json
+
+json
+{
+  "name": "multiplicationdrill",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "lint": "eslint src --max-warnings 0",
+    "type-check": "tsc --noEmit",
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:e2e": "playwright test",
+    "test:coverage:ci": "vitest run --coverage",
+    "e2e:container:build": "podman build -f Dockerfile.e2e -t multiplicationdrill-e2e .",
+    "e2e:container": "podman run --rm -e CI=true -v $(pwd)/playwright-report:/app/playwright-report:Z -v $(pwd)/test-results:/app/test-results:Z multiplicationdrill-e2e yarn test:e2e",
+    "e2e:containernoci": "podman run --rm -it --cpus=8 --memory=8g -v $(pwd)/playwright-report:/app/playwright-report:Z -v $(pwd)/test-results:/app/test-results:Z multiplicationdrill-e2e yarn test:e2e",
+    "test:all": "yarn lint && yarn type-check && yarn test:run && yarn e2e:container:build && yarn e2e:containernoci"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.61.1",
+    "@types/node": "^26.1.1",
+    "@vitest/coverage-v8": "^4.1.10",
+    "@vitest/ui": "^4.1.10",
+    "eslint": "^10.7.0",
+    "globals": "^17.7.0",
+    "jsdom": "^29.1.1",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.64.0",
+    "vite": "^8.1.4",
+    "vitest": "^4.1.10"
+  }
+}
+Dockerfile.e2e
+
+dockerfile
+FROM mcr.microsoft.com/playwright:v1.61.1-noble
+
+WORKDIR /app
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
+COPY . .
+RUN yarn build
+.github/workflows/ci-cd.yml
+
+yaml
+# ==============================================================================
+# CI/CD Pipeline with Playwright Best Practices
+# ==============================================================================
+# This workflow implements ALL Playwright CI best practices:
+#
+# 1. BROWSER CACHING
+#    - Caches Playwright browsers to speed up subsequent runs
+#    - Uses hash of playwright version as cache key
+#
+# 2. OPTIMIZED BROWSER INSTALLATION
+#    - Only installs browsers needed for testing
+#    - Uses --with-deps for system dependencies
+#
+# 3. ARTIFACT UPLOAD
+#    - Always uploads HTML report for debugging
+#    - Uploads trace files when tests fail
+#
+# 4. GITHUB REPORTER
+#    - Test results appear as PR annotations
+#    - Easy to see what failed without leaving GitHub
+#
+# @see https://playwright.dev/docs/ci
+# @see https://playwright.dev/docs/best-practices#run-tests-on-ci
+# ==============================================================================
+
+name: CI/CD Pipeline
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  # ============================================================================
+  # UNIT TESTS
+  # ============================================================================
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [22.x, 24.x, 26.x]
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v7
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Run linter
+        run: yarn lint
+
+      - name: Run type check
+        run: yarn type-check
+
+      - name: Run unit tests with coverage
+        run: yarn test:coverage:ci
+
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v7
+        if: matrix.node-version == '24.x'
+        with:
+          files: ./coverage/lcov.info
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: false
+
+  # ============================================================================
+  # E2E TESTS WITH PLAYWRIGHT
+  # ============================================================================
+  # This job implements ALL Playwright CI best practices
+  # ============================================================================
+  e2e-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24.x'
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      # ========================================================================
+      # PLAYWRIGHT BROWSER CACHING
+      # ========================================================================
+      # WHY: Playwright browsers are ~500MB each
+      # Caching them saves significant download time on each run
+      # 
+      # Cache key includes:
+      # - OS (ubuntu-latest)
+      # - Playwright version from package.json
+      #
+      # This ensures cache is invalidated when Playwright version changes
+      # ========================================================================
+      - name: Get Playwright version
+        id: playwright-version
+        run: echo "version=$(yarn info @playwright/test version --json | jq -r '.data')" >> $GITHUB_OUTPUT
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v6
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.playwright-version.outputs.version }}
+
+      # ========================================================================
+      # OPTIMIZED BROWSER INSTALLATION
+      # ========================================================================
+      # BEST PRACTICE: Only install browsers you actually use
+      #
+      # Options:
+      # - 'npx playwright install --with-deps' - installs ALL browsers
+      # - 'npx playwright install chromium --with-deps' - installs only Chromium
+      #
+      # We install all browsers because our config tests on chromium, firefox,
+      # and webkit. If you only need Chromium, change this to save time.
+      #
+      # --with-deps installs system dependencies (fonts, libraries, etc.)
+      # This is REQUIRED on fresh CI machines
+      # ========================================================================
+      - name: Install Playwright Browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps
+
+      # Install only system deps if browsers were cached
+      - name: Install Playwright system dependencies
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps
+
+      # ========================================================================
+      # BUILD PROJECT
+      # ========================================================================
+      # E2E tests run against the built application
+      # This ensures we're testing what will actually be deployed
+      # ========================================================================
+      - name: Build project for E2E tests
+        run: yarn build
+
+      # ========================================================================
+      # RUN E2E TESTS
+      # ========================================================================
+      # The playwright.config.ts handles:
+      # - Starting the dev server
+      # - Running tests in parallel
+      # - Collecting traces on failure
+      # - Generating HTML report
+      # ========================================================================
+      - name: Run E2E tests
+        run: yarn test:e2e
+
+      # ========================================================================
+      # ARTIFACT UPLOAD - ALWAYS
+      # ========================================================================
+      # Upload the HTML report even if tests pass
+      # This allows reviewing test results in detail
+      #
+      # if: always() ensures upload happens even when tests fail
+      # ========================================================================
+      - name: Upload Playwright Report
+        uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+
+      # ========================================================================
+      # ARTIFACT UPLOAD - TEST RESULTS (on failure)
+      # ========================================================================
+      # Test results directory contains:
+      # - Screenshots
+      # - Videos (if recorded)
+      # - Traces
+      #
+      # Only uploaded on failure to save storage
+      # ========================================================================
+      - name: Upload test results
+        uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: test-results
+          path: test-results/
+          retention-days: 7
+
+  # ============================================================================
+  # BUILD AND DEPLOY
+  # ============================================================================
+  build:
+    needs: [test, e2e-tests]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24.x'
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build project
+        run: yarn build
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: ./dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
+.github/workflows/coverage-comment.yml
+
+One change here beyond version bumps, flagged so it's not a surprise: the "Run tests with coverage" step called yarn test:coverage, but your package.json has no such script (only test:coverage:ci), so this job currently fails on every PR. I pointed it at your actual coverage script. If you meant to add a separate test:coverage script instead, revert that one line.
+
+yaml
+name: Coverage Comment
+
+on:
+  pull_request:
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+      pull-requests: write
+    
+    steps:
+    - uses: actions/checkout@v7
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v7
+      with:
+        node-version: '24.x'
+        cache: 'yarn'
+
+    - name: Install dependencies
+      run: yarn install --frozen-lockfile
+
+    - name: Run tests with coverage
+      run: yarn test:coverage:ci
+
+    - name: Coverage Summary
+      uses: irongut/CodeCoverageSummary@v1.3.0
+      with:
+        filename: coverage/lcov.info
+        badge: true
+        format: markdown
+        output: both
+
+    - name: Add Coverage PR Comment
+      uses: marocchino/sticky-pull-request-comment@v3
+      if: github.event_name == 'pull_request'
+      with:
+        recreate: true
+        path: code-coverage-results.md
+
+    - name: Write to Job Summary
+      run: cat code-coverage-results.md >> $GITHUB_STEP_SUMMARY
+Two operational notes:
+
+Because CI and Dockerfile.e2e both install with --frozen-lockfile, regenerate the lockfile before pushing: run yarn install locally to update yarn.lock against the new package.json, then commit it. A stale lock will fail the frozen installs.
+
+On codecov/codecov-action@v7: v5+ expects a CODECOV_TOKEN repository secret even for tokenless-eligible public repos in some configurations. Your fail_ci_if_error: false means a missing token won't break the pipeline (the upload just warns), so this is safe to ship as-is — add the secret later if you want the uploads to be reliable.
+
+
+Want to be notified when Claude responds?
+
+
+
+
+
+
+Claude is AI and can make mistakes. Please double-check cited sources.
+
+
+
+
+30
+80
+100
