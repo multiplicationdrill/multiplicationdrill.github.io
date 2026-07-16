@@ -1,36 +1,48 @@
 kushal@fedora:~/src/ts/multiplicationdrill$ cd ~/src/ts/multiplicationdrill/; time yarn outdated; time yarn install; time yarn lint; time bash export.sh; time yarn; time yarn build; time yarn test:all; time git add .; time git commit --message "add all files"; time git remote show origin; time git push origin --all;
 yarn outdated v1.22.22
-(node:73669) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+error Outdated lockfile. Please run `yarn install` and try again.
+info Visit https://yarnpkg.com/en/docs/cli/outdated for documentation about this command.
+(node:86233) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
 (Use `node --trace-deprecation ...` to show where the warning was created)
-info Color legend : 
- "<red>"    : Major Update backward-incompatible updates 
- "<yellow>" : Minor Update backward-compatible features 
- "<green>"  : Patch Update backward-compatible bug fixes
-Package    Current Wanted Latest Package Type    URL                            
-typescript 6.0.3   6.0.3  7.0.2  devDependencies https://www.typescriptlang.org/
-vite       8.1.4   8.1.5  8.1.5  devDependencies https://vite.dev               
-Done in 1.78s.
 
-real	0m1.920s
-user	0m0.844s
-sys	0m0.261s
+real	0m0.713s
+user	0m0.635s
+sys	0m0.172s
 yarn install v1.22.22
 [1/4] Resolving packages...
-(node:73681) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+⠁ (node:86245) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
 (Use `node --trace-deprecation ...` to show where the warning was created)
-success Already up-to-date.
-Done in 0.07s.
+[2/4] Fetching packages...
+[3/4] Linking dependencies...
+warning Workspaces can only be enabled in private projects.
+warning Workspaces can only be enabled in private projects.
+warning Workspaces can only be enabled in private projects.
+warning Workspaces can only be enabled in private projects.
+warning Workspaces can only be enabled in private projects.
+warning Workspaces can only be enabled in private projects.
+warning Workspaces can only be enabled in private projects.
+warning Workspaces can only be enabled in private projects.
+error Invariant Violation: could not find a copy of vite to link in /home/kushal/src/ts/multiplicationdrill/node_modules/vitest/node_modules
+    at invariant (/home/kushal/.cache/node/corepack/v1/yarn/1.22.22/lib/cli.js:2318:15)
+    at PackageLinker.<anonymous> (/home/kushal/.cache/node/corepack/v1/yarn/1.22.22/lib/cli.js:48524:7)
+    at Generator.next (<anonymous>)
+    at step (/home/kushal/.cache/node/corepack/v1/yarn/1.22.22/lib/cli.js:310:30)
+    at /home/kushal/.cache/node/corepack/v1/yarn/1.22.22/lib/cli.js:321:13
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+info Visit https://yarnpkg.com/en/docs/cli/install for documentation about this command.
 
-real	0m0.187s
-user	0m0.167s
-sys	0m0.053s
+real	0m0.958s
+user	0m0.656s
+sys	0m0.347s
 yarn run v1.22.22
 $ eslint src --max-warnings 0
-Done in 1.17s.
+/bin/sh: line 1: eslint: command not found
+error Command failed with exit code 127.
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
 
-real	0m1.285s
-user	0m1.846s
-sys	0m0.336s
+real	0m0.155s
+user	0m0.113s
+sys	0m0.051s
 ################################################################################
 #                                                                              #
 #   REPOSITORY CONTEXT DUMP                                                    #
@@ -40,7 +52,7 @@ sys	0m0.336s
 
 DUMP METADATA
 ═════════════════════════════════════════════════════════════════════════════════
-  Generated at   : 2026-07-16T03:54:44-04:00
+  Generated at   : 2026-07-16T04:07:18-04:00
   Generator      : export.sh
   Host           : fedora
   User           : kushal
@@ -50,10 +62,10 @@ REPOSITORY METADATA
 ═════════════════════════════════════════════════════════════════════════════════
   Repository root: /home/kushal/src/ts/multiplicationdrill
   Branch         : master
-  Commit (full)  : b8bba3256d1943ce40a4cfbb1c82b7107772be74
-  Commit (short) : b8bba32
-  Commit date    : 2026-07-16 03:53:54 -0400
-  Commit message : delete zip file
+  Commit (full)  : 8c7e1751f32d2e8f327856735f2c89424e491009
+  Commit (short) : 8c7e175
+  Commit date    : 2026-07-16 04:07:04 -0400
+  Commit message : update vite
   Remote origin  : git@github.com:multiplicationdrill/multiplicationdrill.github.io.git
   Files included : 36
   Excluded path  : docs/llm/
@@ -2811,14 +2823,14 @@ range. Existing saved difficulty values remain valid.
   Relative path:         package.json
   Absolute path:         /home/kushal/src/ts/multiplicationdrill/package.json
   Size:                  1.3 KiB (1353 bytes)
-  Last modified:         2026-07-14 20:01:19.147849528 -0400
+  Last modified:         2026-07-16 04:06:29.053963349 -0400
   Permissions:           -rw-r--r--
   Owner:                 kushal:kushal
   Inode:                 3382217
   Hard links:            1
   MIME type:             application/json
-  SHA-256:               a79e1ba72845908dc7a732b5ad423daa1c959d58f1ea6de4600dcc96bd1e660a
-  Last git commit:       6caee4f 2026-07-14 20:03:12 -0400 update packages
+  SHA-256:               2373c53fb0925328bd839c1d0148efc69e354b9d3a495094d6c0b7789e11f397
+  Last git commit:       8c7e175 2026-07-16 04:07:04 -0400 update vite
 
 --- CONTENT ---
 {
@@ -2851,7 +2863,7 @@ range. Existing saved difficulty values remain valid.
     "jsdom": "^29.1.1",
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.64.0",
-    "vite": "^8.1.4",
+    "vite": "^8.1.5",
     "vitest": "^4.1.10"
   }
 }
@@ -6456,115 +6468,71 @@ export default defineConfig({
   Files dumped   : 36
   Total size     : 173.8 KiB (178024 bytes)
   Output file    : /home/kushal/src/ts/multiplicationdrill/docs/llm/dump.txt
-  Completed at   : 2026-07-16T03:54:45-04:00
+  Completed at   : 2026-07-16T04:07:19-04:00
 ################################################################################
 # END OF DUMP
 ################################################################################
 
-real	0m1.108s
-user	0m0.487s
-sys	0m0.725s
+real	0m1.092s
+user	0m0.475s
+sys	0m0.743s
 yarn install v1.22.22
 [1/4] Resolving packages...
-(node:74871) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+⠁ (node:87425) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
 (Use `node --trace-deprecation ...` to show where the warning was created)
-success Already up-to-date.
-Done in 0.06s.
+[2/4] Fetching packages...
+[3/4] Linking dependencies...
+warning Workspaces can only be enabled in private projects.
+warning Workspaces can only be enabled in private projects.
+warning Workspaces can only be enabled in private projects.
+warning Workspaces can only be enabled in private projects.
+warning Workspaces can only be enabled in private projects.
+warning Workspaces can only be enabled in private projects.
+warning Workspaces can only be enabled in private projects.
+warning Workspaces can only be enabled in private projects.
+error Invariant Violation: could not find a copy of vite to link in /home/kushal/src/ts/multiplicationdrill/node_modules/vitest/node_modules
+    at invariant (/home/kushal/.cache/node/corepack/v1/yarn/1.22.22/lib/cli.js:2318:15)
+    at PackageLinker.<anonymous> (/home/kushal/.cache/node/corepack/v1/yarn/1.22.22/lib/cli.js:48524:7)
+    at Generator.next (<anonymous>)
+    at step (/home/kushal/.cache/node/corepack/v1/yarn/1.22.22/lib/cli.js:310:30)
+    at /home/kushal/.cache/node/corepack/v1/yarn/1.22.22/lib/cli.js:321:13
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+info Visit https://yarnpkg.com/en/docs/cli/install for documentation about this command.
 
-real	0m0.179s
-user	0m0.159s
-sys	0m0.060s
+real	0m0.799s
+user	0m0.560s
+sys	0m0.206s
 yarn run v1.22.22
 $ tsc && vite build
-vite v8.1.4 building client environment for production...
-✓ 11 modules transformed.
-computing gzip size...
-dist/index.html                 3.48 kB │ gzip: 0.93 kB
-dist/assets/main-BoX5X9DY.css   5.54 kB │ gzip: 1.66 kB
-dist/assets/main-SXnVGiX8.js   11.95 kB │ gzip: 4.08 kB │ map: 54.24 kB
+/bin/sh: line 1: tsc: command not found
+error Command failed with exit code 127.
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
 
-✓ built in 80ms
-Done in 1.27s.
-
-real	0m1.386s
-user	0m2.108s
-sys	0m0.387s
+real	0m0.149s
+user	0m0.100s
+sys	0m0.057s
 yarn run v1.22.22
 $ yarn lint && yarn type-check && yarn test:run && yarn e2e:container:build && yarn e2e:containernoci
 $ eslint src --max-warnings 0
-$ tsc --noEmit
-$ vitest run
+/bin/sh: line 1: eslint: command not found
+error Command failed with exit code 127.
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+error Command failed with exit code 127.
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
 
- RUN  v4.1.10 /home/kushal/src/ts/multiplicationdrill
+real	0m0.301s
+user	0m0.213s
+sys	0m0.097s
 
- ✓ src/__tests__/signals.test.ts (9 tests) 5ms
- ✓ src/__tests__/state.test.ts (11 tests) 4ms
- ✓ src/__tests__/srs.test.ts (16 tests) 5ms
- ✓ src/__tests__/utils.test.ts (16 tests) 11ms
- ✓ src/__tests__/difficulty.test.ts (19 tests) 188ms
+real	0m0.006s
+user	0m0.004s
+sys	0m0.002s
+[master 9559b92] add all files
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
- Test Files  5 passed (5)
-      Tests  71 passed (71)
-   Start at  03:54:49
-   Duration  934ms (transform 323ms, setup 0ms, import 390ms, tests 214ms, environment 2.83s)
-
-$ podman build -f Dockerfile.e2e -t multiplicationdrill-e2e .
-STEP 1/6: FROM mcr.microsoft.com/playwright:v1.61.1-noble
-STEP 2/6: WORKDIR /app
---> Using cache b4a5137e7730fe43a0c02f2a9b2910964f9cf2876531530d5d51c192475f9795
---> b4a5137e7730
-STEP 3/6: COPY package.json yarn.lock ./
---> Using cache 0f8041726b1a95c6a7085817bb62fc3b55e2b03d21e0bdbef4c6bf519871438e
---> 0f8041726b1a
-STEP 4/6: RUN yarn install --frozen-lockfile
---> Using cache 598f62f8353e2bb1c8c7c17cad8d752c7f6bcb7e4c97eafea8169cd7fda572b8
---> 598f62f8353e
-STEP 5/6: COPY . .
---> 7aecae7ba513
-STEP 6/6: RUN yarn build
-yarn run v1.22.22
-$ tsc && vite build
-vite v8.1.4 building client environment for production...
-transforming...✓ 11 modules transformed.
-rendering chunks...
-computing gzip size...
-dist/index.html                 3.48 kB │ gzip: 0.93 kB
-dist/assets/main-BoX5X9DY.css   5.54 kB │ gzip: 1.66 kB
-dist/assets/main-SXnVGiX8.js   11.95 kB │ gzip: 4.08 kB │ map: 54.24 kB
-
-✓ built in 65ms
-Done in 1.32s.
-COMMIT multiplicationdrill-e2e
---> e89c3bbba9c4
-Successfully tagged localhost/multiplicationdrill-e2e:latest
-e89c3bbba9c464b4567e9f562001031bd918e8993c619198af25a9472852639f
-$ podman run --rm -it --cpus=8 --memory=8g -v $(pwd)/playwright-report:/app/playwright-report:Z -v $(pwd)/test-results:/app/test-results:Z multiplicationdrill-e2e yarn test:e2e
-yarn run v1.22.22
-$ playwright test
-
-Running 78 tests using 8 workers
-  78 passed (54.7s)
-
-To open last HTML report run:
-
-  yarn playwright show-report
-
-Done in 60.70s.
-Done in 71.41s.
-
-real	1m11.538s
-user	0m13.456s
-sys	0m6.472s
-
-real	0m0.025s
-user	0m0.003s
-sys	0m0.007s
-[master 008f0d1] add all files
- 1 file changed, 2177 insertions(+), 690 deletions(-)
-
-real	0m0.083s
+real	0m0.007s
 user	0m0.001s
-sys	0m0.009s
+sys	0m0.005s
 * remote origin
   Fetch URL: git@github.com:multiplicationdrill/multiplicationdrill.github.io.git
   Push  URL: git@github.com:multiplicationdrill/multiplicationdrill.github.io.git
@@ -6576,24 +6544,24 @@ sys	0m0.009s
   Local ref configured for 'git push':
     master pushes to master (fast-forwardable)
 
-real	0m0.584s
-user	0m0.011s
-sys	0m0.007s
-Enumerating objects: 70, done.
-Counting objects: 100% (70/70), done.
+real	0m0.553s
+user	0m0.007s
+sys	0m0.008s
+Enumerating objects: 19, done.
+Counting objects: 100% (19/19), done.
 Delta compression using up to 16 threads
-Compressing objects: 100% (42/42), done.
-Writing objects: 100% (46/46), 100.73 KiB | 9.16 MiB/s, done.
-Total 46 (delta 26), reused 0 (delta 0), pack-reused 0 (from 0)
-remote: Resolving deltas: 100% (26/26), completed with 13 local objects.
+Compressing objects: 100% (11/11), done.
+Writing objects: 100% (13/13), 30.75 KiB | 10.25 MiB/s, done.
+Total 13 (delta 6), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (6/6), completed with 3 local objects.
 remote: 
 remote: GitHub found 23 vulnerabilities on multiplicationdrill/multiplicationdrill.github.io's default branch (2 critical, 7 high, 10 moderate, 4 low). To find out more, visit:
 remote:      https://github.com/multiplicationdrill/multiplicationdrill.github.io/security/dependabot
 remote: 
 To github.com:multiplicationdrill/multiplicationdrill.github.io.git
-   cc0f208..008f0d1  master -> master
+   008f0d1..9559b92  master -> master
 
-real	0m1.391s
-user	0m0.027s
-sys	0m0.021s
+real	0m1.190s
+user	0m0.012s
+sys	0m0.013s
 kushal@fedora:~/src/ts/multiplicationdrill$ 
