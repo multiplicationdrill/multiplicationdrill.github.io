@@ -2298,3 +2298,118 @@ Claude is AI and can make mistakes. Please double-check responses.
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+00
+81
+100
+
+my long term thought for this project is to completely overhaul it and redefine what it means to be easy, medium, hard, and expert, expanding the scope from 00 x 00 all the way to 99 x 99 but 64 x 10 should be easy no questions asked while 7 x 8 should arguably be medium. this is very difficult for me to articulate though. what makes a multiplication question easy vs medium vs hard vs expert and how do I express this algorithmically? is this even possible? for example, we should entirely skip trivial questions such as multiplying by zero or multiplying by one for any of the difficulty levels. 
+also browsers now have lots of capabilities such as local storage. we should use this local storage to keep their preferences locally when they change things 
+I think we already do this to some extent but we should do more for example, should we show the same question again so soon after we displayed it recently? 
+actually this brings me to another feature request -- what if we could add two buttons a big button with a green checkmark and a big button with a red cross x both completely responsive of course but the idea is the user can optionally record whether they got the answer correct or incorrect 
+if the answer was correct, we don't show this question to them again for a long time
+if the answer was incorrect, we show this question to them again soon not immediately but soon 
+I don't know if doing all this is possible but at least plan it out. I believe computers are capable of doing this.
+please formulate a complete plan before you write any code and remember we have postponed typescript 7 migration until 7.1 api stabilization so we will continue with typescript 6 for now. 
+please remember to give me full files as well as full files for all files that change, add, or delete 
+the dump and output text files are up to date 
+also when making code changes make sure to update the documentation as well 
