@@ -3667,8 +3667,387 @@ Done
 Good first signal — anchors are close and 25×4 already dropped out of Hard. But the model leans on an ad-hoc "coordination" penalty, and I can make it both cleaner to document and more accurate by replacing it with a working-memory "hold" penalty (doubling reuses one running value, so it's naturally cheap — which is exactly why 25×4 should be easy). Let me refine and re-run, this time also reporting which strategy wins each problem.
 
 
+Calibrated difficulty thresholds and validated multiplication problem classifications
+Calibrated difficulty thresholds and validated multiplication problem classifications
+
 Refined difficulty engine with working-memory hold model + winning-strategy report
-Refined difficulty engine with working-memory hold model + winning-strategy report
+calib2.ts
+
+Run refined calibration with hold model
+
+Script
+Looking at the performance metrics for these multiplication problems—25×4 gives a cost of 2.40 which cleanly addresses the user's concern, while 7×8 at 3.10 is interesting since 8 being a power of 2 means doubling 7 repeatedly gets us to 56 with a cost that beats the recall threshold of 3.5, making it medium difficulty depending on where the threshold falls. The 64×10 problem is straightforward at 0.50, and I'm still evaluating 6×7 at 2.92 and 6×8.
+
+Now I'm working through the threshold strategy—if I set t1 at 2.5, then problems like 6×8 (2.60), 6×7 (2.92), and 7×8 (3.10) all fall into the medium range since they're above the threshold, which clusters the "hard facts" together nicely. Meanwhile, smaller squares and products like 7×7 (2.44) and 6×6 (1.88) drop into easy territory, and the nine-trick problems like 7×9 (1.30) and 9×8 (1.30) also stay easy, which makes sense for the overall difficulty distribution.
+
+But the distribution with thresholds at 2.5, 5, and 12 gives me roughly 18% easy, 11% medium, 42% hard, and 29% expert—which means hard problems dominate the dataset, and I'm wondering if that's the right balance since so many two-digit by two-digit multiplications land in that hard range. I need to settle on thresholds that balance having enough problems at each level with a realistic distribution. Medium should stay around 450-600 problems, Easy around 850-1100, and I want Expert substantial but not overwhelming. Let me try 2.5 / 5.5 / 13 and see what the counts look like. I need to verify the threshold counts for the 2.5/5.5/13 configuration and also check whether 7×8 can realistically be solved through a doubling strategy.
+
+The model estimates doubling (3.10) as slightly cheaper than recall (3.5) for 7×8, which is defensible since doubling-with-carries is a valid mental path, even if not how most people actually solve it. I'll note in the documentation that this represents an efficient strategy rather than claiming it's the typical approach. The ordering makes sense too—7×8 at 3.10 is harder than 6×7 at 2.92, confirming 7×8 is the hardest basic fact.
+
+Now I'm testing different threshold combinations (2.5/5.5/13, 2.75/5.5/13, 2.5/6/13) and spot-checking what lands in the Easy tier to make sure nothing weird is dominating it. I'll run a final calibration with the chosen thresholds and print out the full anchor tier breakdown.
+
+Show less
+Done
+Much better — 25×4 = 2.40 (Easy, via doubling), 7×8 = 3.10 (Medium), 64×10 = 0.50 (Easy), and the winning strategies are sensible enough to document. Now let me lock the thresholds, confirm the tier assignment for all the anchors, and verify the partition/monotonicity invariants I'll be asserting in tests.
+
+
+Architected comprehensive difficulty scoring system with SRS integration and mobile-first UI
+Architected comprehensive difficulty scoring system with SRS integration and mobile-first UI
+
+Lock thresholds and verify invariants (partition, commutativity, monotonicity)
+
+Script
+I'm spotting commutativity violations in the scoring function — there are 20 cases where score(a,b) doesn't equal score(b,a), which shouldn't happen. The issue is likely either floating point precision or an asymmetry in how the strategies evaluate pairs. I'm checking the logic: the distribute strategy uses Math.min/Math.max which should be symmetric, and the power-of-two check has an ordering problem where it checks if m is a power first, then n, so when both are powers (like 4×8 or 2×4), the result depends on which argument comes first. The fix is to make the doubling strategy symmetric by trying both possible assignments when both operands are powers of two, then selecting whichever gives the lower cost. For 4×8, doubling the larger operand twice costs less than doubling the smaller one three times, confirming that picking the minimum is correct and the approach is now symmetric. I should verify the test suite works cleanly and check that the tier assignments and pool distributions look reasonable—all the anchors seem well-placed and the partition between trivial and non-trivial cases is solid. Writing the production module... Writing the exports... For 0×7, the strip function returns 0 since 0 has no trailing zeros, giving a recall cost of 0.3—not obviously trivial by score alone. But since I gate trivial cases separately with isTrivial before calling scoreProblem, the score for edge cases like 0 and 1 never gets used. I'll document that scoreProblem assumes both operands are ≥2.
+
+Now I'm exposing the core API: classifyProblem returns the difficulty level or null for trivial inputs, getTierPool gives the memoized canonical problems for each level, and randomProblemForLevel picks one at random. I'll also export scoreProblem directly and add bestStrategyName for testing and potential UI debugging, though the winning strategy itself stays internal.
+
+For randomProblemForLevel, I'm pulling uniformly from the tier pool and randomizing the display orientation about half the time so users see both "7×8" and "8×7" — the problemKey still canonicalizes for spaced repetition tracking, so that works cleanly. I'll keep the scope focused and not worry about orientation randomization for now. The SRS selection will return canonical problems from the pool, and they'll display as-is. For the implementation, I'm setting up a memoized pool cache that builds on first access by scanning all canonical pairs from 2 to 99 and classifying them by difficulty. I'll export the public API along with the difficulty thresholds and helper functions like scoreProblem and classifyProblem, keeping the internal cost calculations private but well-documented. I should also think through the additionCarries function more carefully since it's doing some intricate logic.
+
+Simplifying the carry-counting logic...
+
+I'm verifying the termination condition—each iteration divides all columns by 10, and the carry eventually reaches zero, so the loop will end. The final carry (if less than 10) won't increment the counter again since we only count when a new carry is generated. I'll test this cleaner version against the calibration to make sure the anchor results match, then run the vitest suite to confirm everything still works.
+
+Now I'm locking in the SRS design and defining the core types for the store—Grade, SrsRecord with its box number and timing metadata, and the SrsStore interface.
+
+Writing SRS constants and functions... Defining the grading logic... sign priority based on whether anything's due: if there are due items, sort by box ascending then due date ascending to tackle struggling cards and overdue ones first, treating unseen cards as highest priority; otherwise sort by soonest due date then box to prepare for what's coming next. Then I'm selecting a top cohort and adding controlled randomness to the selection.
+
+Defining a comparator function that handles the priority logic—checking if a card has been reviewed, assigning unseen cards a box value of -1 for maximum urgency, and comparing by box first then due date to establish a total ordering. There's a trade-off here: when the random number is zero, we pick the best item from the cohort, which is stable and testable. But randomizing within the top few items means lower-priority items might still get selected, which is actually desirable. If the pool ends up empty, we return null and let the app handle it. I'm going to write comprehensive tests for this logic, and I'll keep the selectNext function importing problemKey directly from difficulty.ts rather than passing it as a parameter—simpler and both modules are pure anyway. Now I need to rewrite app.ts with the new structure.
+
+Setting up the imports from all the modules: effect and sign utilities, state management functions, type definitions, utility helpers for difficulty names and settings persistence, the SRS store creation and grading functions, and DOM element references for the display, progress bar, timer, sliders, and grade buttons.
+
+Now I'm defining the module-level state that tracks the animation frame ID, timestamp for the game loop, the SRS store instance, recently seen problem keys, and a flag for whether the current problem has been graded in this cycle. The game loop handles the countdown timer, transitioning from question to answer phase with the remaining time, and when the answer time expires it marks the problem as seen if it wasn't graded and moves to the next one.
+
+For starting the next problem, I'm selecting from the appropriate tier pool based on difficulty, using the SRS algorithm to pick the best candidate or falling back to a random problem if needed, then resetting the phase to question and setting the timer.
+
+The gradeAnswer function validates we're in the answer phase, applies the grade to update progress, increments the session counters, marks the problem as graded, saves progress, and triggers the next problem. But I'm noticing a potential issue — startNextProblem gets called both from gradeAnswer and from the game loop when the answer timer expires, which could cause problems if both fire simultaneously.
+
+When gradeAnswer calls startNextProblem, it resets the phase to 'question' and sets a fresh timeRemaining. The game loop continues running via requestAnimationFrame and will decrement from this new value on the next frame. The lastTimestamp isn't reset here, so there's a small delta between when the grade happened and the next frame, but that's fine since the countdown just starts fresh. The real question is whether the timing logic handles this edge case cleanly.
+
+For the answer expiry case in the game loop, when we're still in the answer phase and the answer hasn't been graded, we mark the problem as seen, save progress, and move to the next problem. This ensures ungraded answers don't just hang forever.
+
+When toggling the quiz on, I should reset the session counters (correct/incorrect counts) since each quiz run is a separate session. When stopping, I need to cancel the animation frame, set the phase to idle, clear the time remaining, and hide the grade buttons.
+
+Now I'm setting up the effects that handle the UI state — the progress bar, quiz button text, and slider states need to update based on whether a quiz is active. The grade buttons specifically need an effect that watches the grading phase and quiz active state to show or hide them appropriately.
+
+For the session counts, I'm binding the correct and incorrect counters to update whenever those values change. The difficulty label stays as is but I'm removing the seed update logic. The question and answer time labels keep their effects with debounced saves, and I'm removing the autoUpdate effect entirely.
+
+In the event listeners, I'm keeping the slider inputs for adjusting settings but removing the manual and autoUpdate listeners. The grade buttons get click handlers that trigger grading, and I'm adding keyboard support so arrow keys or letter keys can mark answers as correct or incorrect during the grading phase.
+
+For storage, I'm saving the settings object with the three time and difficulty values, plus a separate progress save function that's debounced to avoid too frequent writes. The initialization pulls everything together by loading elements, progress, and settings, then setting up effects and listeners. I'm exporting the main functions and state for testing purposes.
+
+Now I need to decide on the HTML structure—the grade buttons should go in the first section after the timer, and I'm keeping the theme toggle and quiz button as global onclick handlers since they're already in the HTML. The status panel should show quiz state, correct count, and incorrect count instead of the mode and last update info. Let me restructure the HTML accordingly. Writing component markup... ll remove them for cleanliness. Now I'm updating the types file—removing DifficultyRange and simplifying Settings to just questionTime, answerTime, and difficulty, while adding the new Grade, SrsRecord, and SrsStore types. I should also clean up AppState by removing the counter, seed, and autoUpdateEnabled fields, replacing them with sessionCorrect and sessionIncorrect, though I'll keep it as a documentation type even if it's not actively imported.
+
+For utils.ts, I'm stripping out the difficulty-related functions like DIFFICULTY_RANGES, DEFAULT_RANGE, getDifficultyRange, generateProblem, and generateSeed, but keeping getDifficultyName and randomInRange. The question is whether randomInRange stays useful once generateProblem is gone—difficulty.ts will handle random problem generation directly, so I need to decide if difficulty should depend on utils or be completely self-contained. Since randomInRange is tested, I'll keep it as a legitimate utility. For the test file, I'm removing the blocks that test generateProblem, generateSeed, and getDifficultyRange, then adding separate difficulty tests. I'll preserve randomInRange, getDifficultyName, debounce, settings, and theme utilities, plus add new progress tests. Now I'm implementing the progress storage with a PROGRESS_KEY constant, a loadProgress function that retrieves and validates the stored data (checking for version and proper structure), and a saveProgress function that persists it, with corrupted data handling.
+
+Writing progress storage functions... Writing type guard...
+
+Now I'm setting up the state module with Signal-based reactive properties for quiz configuration like timing, difficulty level, and phase tracking. Writing computed signals...
+
+I'm checking the logic for when the display shows "Press Start Quiz" versus the problem, and making sure the phase transitions work correctly between idle, question, and answer states.
+
+Now I'm setting up the main entry point to expose the quiz and theme toggle functions globally, then initialize the app when the DOM loads. After that, I need to write out the test suites for the difficulty and SRS modules.
+
+For verification, I'm going to create a sandbox environment with real TypeScript and Vitest that can handle the modern syntax I'm using—things like satisfies, readonly, and ES2022 features. The actual project keeps its ES2025 config, but the verify sandbox will use a more conservative setup to ensure compatibility.
+
+I'll configure Vitest to run with jsdom environment since the tests need access to window.localStorage, which the existing mocks handle via Object.defineProperty. The state tests import the signals module which is pure, so that works fine in jsdom. I just need to install TypeScript, Vitest, and jsdom, then set up a minimal package.json and Vitest config to run the test suite.
+
+Rather than installing everything globally, I'll work directly in the /home/claude/mdrill/ directory and write out all the production files first, then copy the testable subset to verify and run. Before doing that though, I should validate the entire app compiles correctly — running tsc --noEmit on the src directory with a proper tsconfig that includes the DOM library and ES2022 target will catch any type errors across app.ts, state.ts, and main.ts that use DOM APIs and signals together.
+
+I can also type-check the e2e specs if time allows by installing the @playwright/test package in the verify sandbox (the package itself doesn't download browsers unless you actually run the install command, so it's lightweight). Let me start writing out the src files now.
+
+Writing types.ts...
+
+Show more
+Done
+Thresholds locked at 2.5 / 5.5 / 13, and everything checks out: all anchors land in sensible tiers (7×8 Medium, 64×10 and 25×4 Easy), the four pools are well-populated (852 / 569 / 2350 / 1080), and the space partitions cleanly (199 trivial + 4851 classified = 5050). The only issue is 20 commutativity violations — a real bug where two power-of-two operands (like 4×8) pick different doubling paths depending on order. I'll fix that in the production module by trying both decompositions and taking the cheaper (which is also correct).
+
+Now writing the production files. Starting with the pure core, which I'll verify by running the real test suite.
+
+
+Orchestrated module development and verification workflow sequentially
+Orchestrated module development and verification workflow sequentially
+
+Production types.ts — remove DifficultyRange/autoUpdate, add Grade/SRS types
+types.ts
+Now I'm working on the production difficulty module, implementing the doubling symmetry fix with clear documentation.
+
+
+Production difficulty.ts — strategy-model cognitive-cost engine with pools
+difficulty.ts
+Now I'm moving on to write the srs.ts module to complete the pure utility files before testing them with vitest.
+
+Done
+Now the SRS module — kept pure (no localStorage) so it's trivially testable, with now and rng injected.
+
+
+Architected comprehensive test suite for difficulty and SRS modules
+Architected comprehensive test suite for difficulty and SRS modules
+
+Production srs.ts — pure spaced-repetition (Leitner) module
+srs.ts
+I'm setting up comprehensive tests for the difficulty and srs modules, configuring vitest with TypeScript to run them in a real sandbox environment. Starting with the difficulty test suite first.
+
+Done
+Now the comprehensive test suites for the two pure modules, then I'll stand up a real Vitest sandbox and actually run them.
+
+
+Orchestrated sandbox verification with TypeScript testing framework
+Orchestrated sandbox verification with TypeScript testing framework
+
+Comprehensive difficulty.test.ts
+difficulty.test.ts
+
+Comprehensive srs.test.ts
+srs.test.ts
+Setting up a verification sandbox with TypeScript, Vitest, and jsdom to run the difficulty and SRS tests—this is where I'll validate everything works correctly.
+
+Done
+Now the critical step — stand up a real Vitest + TypeScript sandbox and actually run these two suites (plus a full tsc type-check). Installing real, currently-shipping versions since the project's bleeding-edge versions aren't on npm.
+
+
+Verified TypeScript compilation and initiated testing phase
+Verified TypeScript compilation and initiated testing phase
+
+Install real toolchain in verify sandbox
+
+Script
+
+Type-check pure modules with real tsc
+
+Script
+TypeScript compilation is passing on the pure modules, so now I'm running the test suite with vitest.
+
+Done
+Type-check clean. Now run the actual tests:
+
+
+Verified test suite and validated commutativity fix thoroughly
+Verified test suite and validated commutativity fix thoroughly
+
+Run difficulty + srs test suites
+
+Script
+All 35 tests are passing, including the commutativity sweep across the full operand space, which confirms the doubling symmetry fix is working correctly. Now I'm setting up a test harness to re-run the calibration invariant check against the production difficulty configuration to get the exact distribution numbers and verify there are zero commutativity violations.
+
+Done
+All 35 pass — including the full-space commutativity sweep, confirming the doubling fix. Let me now generate the exact validation table and tier distribution straight from the production module, so the docs cite real numbers.
+
+
+Diagnosed floating-point commutativity bug and engineered canonical ordering fix
+Diagnosed floating-point commutativity bug and engineered canonical ordering fix
+
+Generate validation table and distribution from production module
+
+Script
+I'm noticing a discrepancy between the tsx run reporting 4 commutativity violations and the vitest test passing. The issue is that the report uses strict inequality checks while the vitest test allows for floating-point tolerance up to 10 decimal places, so there are likely tiny precision differences in those 4 cases that fail exact equality but pass the looser tolerance threshold.
+
+Looking at where these differences come from: the costGrid strategy computes a sum of four factCost terms plus additionCarries, and when operands are swapped, the order of addition changes. Since floating-point addition isn't associative, summing the same values in different orders can produce slightly different results in the least significant bits — like how 0.1+0.2+0.3 might differ from 0.3+0.2+0.1. The partials array used in additionCarries also gets reordered when operands swap, which could introduce similar precision variations.
+
+To make scoreProblem truly commutative at the bit level, I should canonicalize the operands at the entry point — always evaluate them in a consistent order like (min, max) — so the computation path is identical regardless of which operand comes first. This would guarantee exact equality rather than just numerical closeness. Implementing canonicalization at the scoreProblem entry point...
+
+Now scoreProblem(a,b) and scoreProblem(b,a) will produce identical results since both normalize to the same min/max order before computing scores. The key question is whether this changes any actual scores compared to the original approach—previously it used strip(a) and strip(b) in their given order, but now it's using strip(min) and strip(max) instead.
+
+Looking at specific examples: scoreProblem(7,8) still computes coreScore(7,8) the same way, and scoreProblem(64,10) still returns 0.5 as before. For 25×4, the canonicalization means I'm now computing coreScore(4,25) instead of coreScore(25,4), which matters for whether the order affects the result.
+
+Since coreScore uses min/max internally, both orderings produce identical scores (2.40), confirming that canonicalization enforces exact commutativity without changing the tier distribution. The pools remain at 852/569/2350/1080. Now I need to apply this fix to the production difficulty.ts file and re-run the verification to confirm commutativity is zero.
+
+Show less
+Done
+The suite passes (its tolerance is 10 decimal places), but my strict !== check caught 4 residual violations — floating-point summation order in the grid strategy makes score(a,b) differ from score(b,a) in the last bit. For a showcase I want exact commutativity, and the clean fix is to canonicalize operands at the entry point. Let me apply that.
+
+
+Verified core logic and orchestrated remaining file implementations
+Verified core logic and orchestrated remaining file implementations
+
+Canonicalize operands in scoreProblem for exact commutativity
+
+difficulty.ts
++12
+-7
+
+Verify exact commutativity and re-run full suite
+
+Script
+The core logic is solid with all tests passing and no type errors. Now I'm writing out the remaining implementation files—utilities with progress persistence, state management, the main application logic, HTML structure, styles, and test suites.
+
+I need to reconcile a documentation path issue: the code references docs/DIFFICULTY.md, but the plan calls for placing it at the repo root so it appears in dumps alongside README.md and other root-level documentation. I'll move it to the root and update the comment accordingly.
+
+Done
+Locked: exact commutativity, all 35 tests green, tsc clean, distribution unchanged. Let me fix two doc references (the design doc lives at repo root alongside the other .md files, matching your dump convention), then write the remaining source, UI, and test files.
+
+
+Hunted for original project files to preserve exact conventions
+Hunted for original project files to preserve exact conventions
+
+Point doc references at root-level DIFFICULTY.md
+
+Script
+I need to extract the original utils.ts file from the dump to match the exact conventions and style, so I'm checking what utilities are already defined like getDifficultyName, randomInRange, debounce, settings, and theme.
+
+Done
+Let me pull the current source of the files I'm modifying from your project dump, so I preserve the exact conventions rather than reconstructing from memory.
+
+
+Orchestrated comprehensive production file restructuring and state management refactoring
+Orchestrated comprehensive production file restructuring and state management refactoring
+
+Locate project dump and transcript files
+
+Script
+
+Find file delimiters in the dump
+
+Script
+
+List all files in the dump with line numbers
+
+Script
+I'm identifying the specific file ranges I need to work with across the project structure, including the HTML entry point, TypeScript source files, styles, tests, and end-to-end test configurations.
+
+
+Extract original file contents from dump for reference
+
+Script
+
+Read signals API to match conventions
+
+Script
+I'm reviewing the Signal API structure with its core methods like get() and set(), plus ComputedSignal for derived values and effect() for side effects. Now I need to examine the existing codebase files to understand the current conventions and structure before implementing.
+
+
+Read original state.ts and utils.ts
+
+Script
+
+Read original app.ts
+
+Script
+Now I'm reviewing the remaining source files—index.html, main.ts, and types.ts—along with the test and e2e test files to get the full picture of the application.
+
+
+Read index.html, main.ts, and original types.ts
+
+Script
+
+Read original style.css
+
+Script
+I've reviewed the CSS and noticed the .status-item:last-child rule handles the new status items properly. Now I'm moving on to check the test and e2e files.
+
+
+Read original unit tests
+
+Script
+
+Read original e2e POM
+
+Script
+
+Read original e2e spec and pages index
+
+Script
+I need to review the configuration and documentation files to get a complete picture of the project setup and testing approach.
+
+
+Read README and package.json
+
+Script
+Looking at the actual package.json scripts, I see there's a mismatch with what the README documents—several scripts listed in the docs don't actually exist (test:ui, test:coverage, test:e2e:ui, preview), while others have different names than documented (test:coverage:ci instead of test:coverage). The available scripts include lint, type-check, dev, build, test, test:run, test:e2e, and various e2e container commands.
+
+I need to update the README to reflect the real scripts, bump Vite from 7 to 8 with Rolldown, and refresh the features section. The Node.js versions mentioned in the deployment section (22.x and 24.x) align with what's in the CI workflow, so I'll leave those as-is. Now I'm moving on to check the MIGRATION.md and manual-testing-notes.md files to understand what else needs updating.
+
+
+Read MIGRATION.md
+
+Script
+
+Read manual-testing-notes.md
+
+Script
+Now I'm ready to write out all the production files. Let me start with the state management file, updating it to track quiz progress with session correct and incorrect counts, adding the grading phase logic, and changing the idle display text to "Press Start Quiz".
+
+Done
+I have everything I need. Now writing the remaining files, starting with the reactive state.
+
+
+Architected comprehensive app rewrite integrating spaced repetition and grading mechanics
+Architected comprehensive app rewrite integrating spaced repetition and grading mechanics
+
+Production state.ts — remove manual-mode signals, add session counters + grading phase
+state.ts
+I need to refactor the utils file by removing several problem generation functions and difficulty-related utilities, keeping only the core helpers like randomInRange, debounce, and theme management. I'm adding progress persistence functions with a progress key and importing the SRS store utilities to validate the stored data format.
+
+I'm checking the import dependencies to make sure there's no circular issue — utils can safely import from srs since srs imports difficulty which imports types, and utils also imports types directly, so the dependency chain flows cleanly without cycles.
+
+
+Production utils.ts — drop range/manual helpers, add SRS persistence
+utils.ts
+Now I'm rewriting the main app.ts file—removing all the manual mode logic like the counter and auto-update timer, then integrating the SRS system with grading functionality, session tracking, and keyboard shortcuts. I'm setting up the DOM elements I'll need for displaying the quiz state, progress, timing information, difficulty levels, and answer counts.
+
+Writing the imports and type definitions... Defining DOM element references... Setting up the game loop with delta time calculations and a debounced save function that triggers every 400 milliseconds to persist progress. Writing game loop logic... Updating the session counters based on whether the answer was correct, then moving to the next problem. When toggling the quiz on, I'm resetting the session stats and recent problem history, starting a fresh problem, and kicking off the animation loop if it's not already running.
+
+When toggling off, I'm canceling the animation frame and resetting the phase and timer. I'm also handling theme toggling by updating the body class and persisting the preference, then loading the saved settings with defaults for question and answer timing. Setting up reactive effects to update the display text, timer, and progress bar styling based on state changes, with the progress bar color shifting between green for question phases and amber for answer phases.
+
+Now I'm adding an effect that toggles the quiz button text and status display, while disabling the time and difficulty sliders when a quiz is running.
+
+The grade buttons are hidden when idle and only enabled during the grading phase of the quiz. I'm also setting up effects to update the session score displays for correct and incorrect answers, then handling the question time slider with debounced saving to storage.
+
+Still writing effects... Writing event listeners... Adding event listeners for grading...
+
+Now I'm setting up the initialization function that loads elements, restores progress from storage, and wires up all the effects and event handlers. There's a subtle closure concern here — the debounced save function captures the progress store variable, so it reads the current reference at call time rather than holding onto a stale value, which is what we want. I'm also noticing that handleGradingKey calls isGradingPhase.get() outside of a reactive context, which could be a potential issue with signal reactivity.
+
+The keyboard listener is attached once to the document and guards itself with the grading phase check, so there's no risk of duplicate handlers firing. Since this is a single-page app that lives for the session, keeping the listener around is fine. One last thing to consider — the original code uses parseInt without a radix parameter, which could trigger linting warnings, but I'll match the original approach for consistency.
+
+The elements object is exported but starts as undefined until initialize runs, which is the same pattern as the original. And the grade button effect uses the .hidden property on HTMLElement, which is straightforward.
+
+I've removed all the auto-update related code — updateLastTime, autoUpdateTimer, startAutoUpdate, stopAutoUpdate, increment, reset, toggleAutoUpdate — so that's cleaned up. Now I need to write app.ts.
+
+Actually, there's one timing issue I should think through: when grading happens via a click or keydown handler outside the RAF loop, startNextProblem resets the phase and timeRemaining, but lastTimestamp still holds the value from the last animation frame. The next RAF frame will compute the delta based on that stale timestamp.
+
+To keep things clean, I should reset lastTimestamp to 0 in startNextProblem so the next frame reinitializes it fresh with no phantom time deduction — though this matters less when called from within gameLoop itself, since lastTimestamp was just set that same frame. Resetting lastTimestamp=0 in startNextProblem is the right call for robustness—when gradeAnswer triggers it from a click handler, the RAF loop is still running, so the next frame will reinitialize cleanly without any phantom time deductions. This handles both the immediate grading path and the auto-advance path correctly. Now I'm ready to implement the app.ts file. The rememberRecent function using spread and slice for small arrays is efficient enough, so I'll proceed with writing it out.
+
+Show less
+Done
+Now the main application logic — a full rewrite that removes manual mode and wires in spaced repetition, self-grading, session counters, and keyboard shortcuts.
+
+
+Identified code refactoring task to eliminate global variables
+Identified code refactoring task to eliminate global variables
+
+Production app.ts — SRS-driven quiz with self-grading, session tally, keyboard shortcuts
+app.ts
+I need to clean up the main.ts file by removing the global variables for increment, reset, and toggleAutoUpdate.
+
+Done
+Now main.ts (only two globals remain), then the HTML and CSS.
+
+
+Restructured test suites, removing obsolete references and adding comprehensive coverage
+Restructured test suites, removing obsolete references and adding comprehensive coverage
+
+Production main.ts — expose only toggleQuiz and toggleTheme globally
+main.ts
+
+Production index.html — remove manual mode, add grade buttons + session tally
+index.html
+Updating the stylesheet to remove the old button-group and toggle styles, then adding the new grade button styling with responsive adjustments for smaller screens. I'm reconsidering whether I need a custom disabled rule for the grade buttons at all. The generic button:disabled already handles opacity and other disabled states, so I can simplify by dropping the .grade-btn:disabled override and letting the base button styles manage the dimmed appearance during the question phase.
+
+For mobile, I'll add a media query to increase the grade button font size and ensure the minimum height stays accessible at 56px.
+
+
+Production style.css — grade-button styles, remove unused manual-mode rules
+style.css
+I'm updating the test files to align with the new signal-based architecture. For state.test.ts, I need to remove the old counter and seed logic, update the displayText test cases to reflect the new states (idle showing "Press Start Quiz", question, and answer phases), and add tests for the grading phase along with the session signals. In utils.test.ts, I'm stripping out the imports and test blocks for the removed functions like getDifficultyRange and generateProblem, while keeping the tests for getDifficultyName, randomInRange, and debounce.
+
+For the settings test, I'll remove the autoUpdate reference. Then I'm adding comprehensive progress persistence tests that cover round-tripping data, handling missing values as null, treating corrupted data as null, and managing version mismatches. I'll import createStore and SRS_VERSION from the srs module to build a proper store for testing the load and save progress functions.
+
+Show less
+Done
+Now updating the two existing unit-test files to match the new behavior.
+
+
+Updated utils.test.ts — drop range/manual tests, add SRS-progress persistence
+Updated utils.test.ts — drop range/manual tests, add SRS-progress persistence
 
 Want to be notified when Claude responds?
 
