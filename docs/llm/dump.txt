@@ -7,7 +7,7 @@
 
 DUMP METADATA
 ═════════════════════════════════════════════════════════════════════════════════
-  Generated at   : 2026-07-16T03:54:44-04:00
+  Generated at   : 2026-07-16T04:07:18-04:00
   Generator      : export.sh
   Host           : fedora
   User           : kushal
@@ -17,10 +17,10 @@ REPOSITORY METADATA
 ═════════════════════════════════════════════════════════════════════════════════
   Repository root: /home/kushal/src/ts/multiplicationdrill
   Branch         : master
-  Commit (full)  : b8bba3256d1943ce40a4cfbb1c82b7107772be74
-  Commit (short) : b8bba32
-  Commit date    : 2026-07-16 03:53:54 -0400
-  Commit message : delete zip file
+  Commit (full)  : 8c7e1751f32d2e8f327856735f2c89424e491009
+  Commit (short) : 8c7e175
+  Commit date    : 2026-07-16 04:07:04 -0400
+  Commit message : update vite
   Remote origin  : git@github.com:multiplicationdrill/multiplicationdrill.github.io.git
   Files included : 36
   Excluded path  : docs/llm/
@@ -2778,14 +2778,14 @@ range. Existing saved difficulty values remain valid.
   Relative path:         package.json
   Absolute path:         /home/kushal/src/ts/multiplicationdrill/package.json
   Size:                  1.3 KiB (1353 bytes)
-  Last modified:         2026-07-14 20:01:19.147849528 -0400
+  Last modified:         2026-07-16 04:06:29.053963349 -0400
   Permissions:           -rw-r--r--
   Owner:                 kushal:kushal
   Inode:                 3382217
   Hard links:            1
   MIME type:             application/json
-  SHA-256:               a79e1ba72845908dc7a732b5ad423daa1c959d58f1ea6de4600dcc96bd1e660a
-  Last git commit:       6caee4f 2026-07-14 20:03:12 -0400 update packages
+  SHA-256:               2373c53fb0925328bd839c1d0148efc69e354b9d3a495094d6c0b7789e11f397
+  Last git commit:       8c7e175 2026-07-16 04:07:04 -0400 update vite
 
 --- CONTENT ---
 {
@@ -2818,7 +2818,7 @@ range. Existing saved difficulty values remain valid.
     "jsdom": "^29.1.1",
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.64.0",
-    "vite": "^8.1.4",
+    "vite": "^8.1.5",
     "vitest": "^4.1.10"
   }
 }
@@ -6423,7 +6423,7 @@ export default defineConfig({
   Files dumped   : 36
   Total size     : 173.8 KiB (178024 bytes)
   Output file    : /home/kushal/src/ts/multiplicationdrill/docs/llm/dump.txt
-  Completed at   : 2026-07-16T03:54:45-04:00
+  Completed at   : 2026-07-16T04:07:19-04:00
 ################################################################################
 # END OF DUMP
 ################################################################################
