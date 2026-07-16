@@ -3013,3 +3013,671 @@ Claude is AI and can make mistakes. Please double-check responses.
     add keyboard shortcuts for grading also yes 
     but please make sure mobile / touch works as well
     if it is not possible to do both, prefer mobile / touch over keyboard 
+
+
+/
+Claude is responding
+my long term thought for this project is to completely overhaul it and redefine what it means to be easy, medium, hard, and expert, expanding the scope from 00 x 00 all the way to 99 x 99 but 64 x 10 should be easy no questions asked while 7 x 8 should arguably be medium. this is very difficult for me to articulate though. what makes a multiplication question easy vs medium vs hard vs expert and how do I express this algorithmically? is this even possible? for example, we should entirely skip trivial questions such as multiplying by zero or multiplying by one for any of the difficulty levels. 
+also browsers now have lots of capabilities such as local storage. we should use this local storage to keep their preferences locally when they change things 
+I think we already do this to some extent but we should do more for example, should we show the same question again so soon after we displayed it recently? 
+actually this brings me to another feature request -- what if we could add two buttons a big button with a green checkmark and a big button with a red cross x both completely responsive of course but the idea is the user can optionally record whether they got the answer correct or incorrect 
+if the answer was correct, we don't show this question to them again for a long time
+if the answer was incorrect, we show this question to them again soon not immediately but soon 
+I don't know if doing all this is possible but at least plan it out. I believe computers are capable of doing this.
+please formulate a complete plan before you write any code and remember we have postponed typescript 7 migration until 7.1 api stabilization so we will continue with typescript 6 for now. 
+please remember to give me full files as well as full files for all files that change, add, or delete 
+the dump and output text files are up to date 
+also when making code changes make sure to update the documentation as well
+
+Show less
+
+Architected difficulty algorithm framework and planned comprehensive feature overhaul
+Architected difficulty algorithm framework and planned comprehensive feature overhaul
+I need to redesign the difficulty system for this multiplication drill app, expanding it from single-digit problems to the full 00×00 to 99×99 range with clearer definitions for each level. The key challenge is figuring out how to algorithmically express difficulty—things like 64×10 should feel easy while 7×8 lands in medium territory—and I'll need to skip the trivial cases like multiplying by 0 or 1. I also want to add local storage for saving user preferences and implement proper spaced repetition to improve how questions get repeated.
+
+The user wants me to add visual feedback with correct/incorrect buttons, implement spaced repetition logic where correct answers don't resurface for a while but incorrect ones come back soon, and most importantly, they've explicitly asked for a complete plan before any code gets written. I should also check the project files first to understand the current codebase structure before laying out the plan. I should keep the token completely out of my response. Now I need to read the dump.txt file to understand the current architecture — how questions are generated, how difficulty is calculated, state management, signals, localStorage, UI structure, and tests. Then I'll look at output.txt for the project structure. The difficulty algorithm is the intellectually challenging part here, so I'll think deeply about what actually makes a multiplication problem easy or hard once I understand the current system.
+
+The user's intuitions are revealing: 64 × 10 is trivial despite involving a two-digit number, while 7 × 8 is genuinely hard despite being single digits. This means difficulty isn't about operand magnitude — it's about the cognitive load of the actual mental computation. Multiplying by powers of 10 is just appending zeros, so that's always easy. Multiplying by 0 or 1 should be skipped entirely. Multiplying by 11 is another pattern worth considering. Single-digit multiplication facts vary in difficulty—squares like 7×7 are usually well-memorized, but combinations in the 6-9 range (especially 7×8) tend to be harder. Carrying during multiplication also increases difficulty, as does working with larger numbers like 2-digit × 2-digit problems.
+
+Round numbers like 25, 50, and 20 have useful shortcuts, though these tricks aren't always known to beginners. Now I'm thinking about how to formalize this into a difficulty scoring system based on the operands themselves, combining various features into an overall score that can categorize problems as easy, medium, hard, or expert level.
+
+I should start by identifying triviality gates—cases that should be excluded entirely, like when either operand is 0 or 1. Powers of 10 are strong signals for easy difficulty, particularly ×10 which is just appending a zero. Multiples of 10 like 20, 30, 40, 50 can be decomposed into a single-digit multiply combined with ×10, making them easier than arbitrary two-digit products.
+
+Beyond exclusions, I'm thinking about how to score each operand's intrinsic difficulty as a multiplier—×2 and ×5 are very easy, ×10 is trivial, while ×3, ×4, ×6, ×7, ×8 range from easy-medium to harder. Then there's the digit count factor: single-digit by single-digit is the baseline times table difficulty, but multiplying by a two-digit number requires distribution and becomes more complex.
+
+The real key is thinking about this in terms of actual mental-math steps—how many cognitive operations does someone need to perform to compute the product, using standard strategies they'd actually employ? That's what determines the difficulty.
+
+For single-digit facts, the research on problem-size effect shows that larger operands and products are harder to recall, but there are bonuses for special structure like ties, multiples of 2 or 5, and the ×9 pattern. I need to define a scoring system that captures both the base difficulty of recalling a fact and these structural advantages.
+
+Let me design a concrete difficulty-scoring algorithm with named, tunable features that maps to intuitions like 6×4 being easier than 7×8, and shows how to bucket scores into four tiers while handling the exclusions of ×0 and ×1.
+
+The key insight is that a person picks the easier operand as the multiplier and applies a mental strategy, so difficulty is driven by the easiest decomposition available. I'll build the score from interpretable components, starting with an operand cost function that captures how hard each individual number is to work with. think a weighted feature model might work better here — I'd combine several factors like the number of digits in the product itself, the digit counts of each operand, and the complexity from carries and regrouping during multiplication.
+
+Beyond the core arithmetic difficulty, I should also account for special cases that make problems easier: operands ending in zero are trivial (just append), multiplying by 5 or 2 has shortcuts, and squares or ties are usually well-memorized. There's also a small boost for single-digit facts in the 6–8 range that tend to be harder to recall.
+
+Let me test this against the actual examples to see if the model holds up.
+
+For 64 × 10, the presence of 10 makes it trivially easy—just append a zero, one step regardless of what 64 is. So the rule should be: if either operand is 10, the problem is always easy.
+
+For 7 × 8, both are single digits and the product is 56, which is a canonical hard fact with no easy decomposition or trick available.
+
+Now I'm mapping out the difficulty tiers: single-digit facts involving 2, 5, or squares are easy; 3× and 4× fall into easy or low-medium; 6×, 7×, 8× with each other land in medium; 9× has a trick that makes it easier, maybe low-medium. For multi-digit problems, a single digit times a two-digit non-round number is medium-hard, and two-digit by two-digit is hard or harder.
+
+At the extreme end, large two-digit numbers with carries like 78×89 push into expert territory, with 99×99 being the peak difficulty.
+
+I'm weighing whether a single continuous scoring function with thresholds is better than a rule-based classifier. A hybrid approach seems most explainable—hard gates for trivial cases like 0 and 1, forcing ×10 to easy, then a continuous score for everything else bucketed by thresholds. Actually, a pure continuous score with well-chosen features and monotonic bucketing is more elegant and directly answers how to express this algorithmically. I need to make sure special cases either fall out naturally or require only minor adjustments, then draft the actual scoring formula.
+
+I'm modeling difficulty as the number of elementary mental operations required. I'll define helper predicates to identify patterns: round tens like 10, 20, ..., 90 where you multiply the tens digit then append a zero; numbers ending in five like 5, 15, 25, ..., 95; and ties where both operands are equal. Then I'll work through examples to validate the scoring approach.
+
+Now I'm breaking down the decomposition cost by counting significant digits after stripping trailing zeros—for instance, 64 has two significant digits while 60 reduces to just one after removing the trailing zero. The number of partial products you need to compute and combine is roughly the product of these significant digit counts.
+
+But there's a wrinkle: when a significant digit is 1, that partial product becomes trivial (multiplying by 1 is free), which means numbers like 10 are deceptively simple despite having multiple digits. This suggests I should refine the model to account not just for how many significant digits exist, but also whether those digits are 1 or not.
+
+I'm moving toward a cleaner framework based on the "canonical mental strategy" people actually use—recognizing that humans don't apply the full grid algorithm uniformly but instead exploit shortcuts for easier cases, so difficulty should be defined as the minimum cost across all possible solution strategies. 64×2) then append zero. The doubling strategy works for ×2, ×4, ×8 with cost scaling based on the number of doublings and carries involved. Other efficient strategies include ×5 (multiply by 10 then halve), ×9 (multiply by 10 then subtract), distributing a 2-digit number across a 1-digit multiplier, using a grid for 2-digit × 2-digit multiplication, and pure recall for single-digit facts.
+
+Rather than implementing a complex "minimum over all strategies" approach, I think a feature-based scoring model makes more sense for a showcase project. I'll create transparent, tunable features where each one returns a numeric contribution, combine them with weighted sums, and bucket the results into difficulty tiers. This approach is testable, explainable, and lets the user adjust weights and thresholds as named constants to match their intuitions.
+
+Now I'm working out the concrete additive formula. The challenge is combining single-digit recall costs with multi-digit structural complexity in a way that produces defensible orderings. I'm thinking about defining difficulty along two orthogonal axes—structural complexity (driven by how many operations the standard mental decomposition requires) and something else—then combining them cleanly.
+
+I'm starting to enumerate the specific terms that should feed into the difficulty score, beginning with a digitLoad component that captures operand sizes. The tricky part is handling significant digits properly—I need to distinguish between meaningful digits and trivial ones like trailing zeros, but I'm realizing the definition needs refinement.
+
+I'm defining a strip function that removes trailing zeros from a number, treating the problem structurally as if we're multiplying the stripped versions and then appending zeros back as a "free" operation. So 64×10 becomes structurally equivalent to 64×1 (trivial), while 64×20 becomes 64×2 with a zero appended—the actual difficulty comes from the stripped multiplication.
+
+Once both operands are stripped of trailing zeros, if either becomes 1, the problem collapses to trivial (just appending zeros to the other number). This elegantly captures cases like 30×10, which strip down to 3×1 and are essentially just reading off the result. I'm realizing this also handles the ×10 case we already excluded at the gate—since strip(10)=1, any multiplication by 10 becomes a stripped ×1 scenario.
+
+But now I'm questioning whether ×10 should be excluded entirely or just marked as easy. The user said to skip ×0 and ×1 as trivial, but 64×10 feels like it should count as easy, not excluded. So the gate only filters out literal 0 or 1, and ×10 naturally falls into the easy tier through the stripping logic. That said, multiplying by 10 is barely harder than multiplying by 1—it's just appending a zero—so it lands in the same "trivially easy" category the user probably wants.
+
+Now I'm thinking about how to factor in problem size. The actual magnitude of the product matters—bigger products are harder to compute. I could use the digit count of the result or log10 of the product as a weight, so something like 7×8=56 (two digits, easier) versus 47×63=2961 (four digits, much harder).
+
+I also want to capture the computational difficulty through carry count—how many carries occur when doing standard long multiplication. That's a concrete measure: 43×2=86 has no carries and is easy, but 47×2=94 involves a carry and is slightly harder. For single-digit facts specifically, I can add a penalty based on how hard the fact is to recall, scaling with how far the operands are from 1 and whether they're ties or not.
+
+Let me test this with (a-1)*(b-1): 2×3 gives 2 (easy), 7×8 gives 42 (medium-hard), and 9×9 gives 64 (hardest by this metric, though 9× has some tricks). I should also subtract points when there's an easy strategy available—like when one operand is 2, 5, 9, 11, or ends in 5, or when it's a tie.
+
+I'm realizing this is getting complex for just a plan. The user wants to know if it's possible, what makes problems easy or hard, how to express it algorithmically, and the overall structure. I should focus on the core insight: difficulty comes from the decomposition strategy cost—how many mental steps the computation requires—rather than just the size of the operands.
+
+My approach should be to propose a concrete, tunable scoring model with named features and a validation table showing it produces sensible difficulty tiers across a range of examples. I won't over-specify every weight, but I'll give concrete starting values and note they're adjustable constants. Before I can say how this plugs into their system, I need to examine their codebase to understand the current difficulty representation, what signals they're tracking, and how questions are generated.
+
+I also need to check their current localStorage usage for preferences and think through the spaced repetition logic—correct answers get longer delays, incorrect ones get shorter delays to reinforce learning.
+
+Let me start by reading through the dump to understand the project structure and see what I'm working with.
+
+Show less
+Done
+I'll start by reading the actual codebase so my plan is grounded in how the app really works today, not assumptions.
+
+
+Mapping difficulty levels to operand ranges algorithmically
+Mapping difficulty levels to operand ranges algorithmically
+
+List the project directory to see the files and sizes
+I'm examining the structure of dump.txt to understand how the files are organized, starting with the beginning to get a sense of the layout.
+
+
+Preview the top of both project files to understand their format
+
+Script
+I'm looking at the repo dump file which contains source code organized with file markers, and the output file shows the build and test pipeline results. Let me extract the file list from the dump to identify the key source files.
+
+
+List all files included in the dump via FILE markers
+
+Script
+I'm reviewing the core source files to understand the structure—the types and utilities that handle difficulty logic, the state management and signals system, the main app and UI components, along with the styling and HTML structure.
+
+Done
+Now let me read the core source files. Starting with the type definitions and the question-generation/difficulty logic, since those are central to this request.
+
+
+Analyzed existing difficulty model and architecture to plan comprehensive overhaul
+Analyzed existing difficulty model and architecture to plan comprehensive overhaul
+
+Read types.ts and utils.ts (question generation + difficulty)
+I see the current difficulty model relies purely on operand magnitude—each level just assigns a range for both a and b to be picked from uniformly, so Easy uses [2,5], Expert uses [10,20], and so on. This is exactly the simplistic approach the user wants to move away from.
+
+There are overlaps in the ranges too (medium spans 4-8, hard spans 6-12). The app already persists settings like question time, answer time, difficulty level, and auto-update to localStorage, plus the theme preference, so some persistence infrastructure is in place. Now I need to examine the reactive architecture in state.ts and signals.ts to understand how problems flow through the system and where I can hook in the correct/incorrect tracking.
+
+Done
+Now the state and signals layer:
+
+
+Architecting signal-based reactive system with game loop integration
+Architecting signal-based reactive system with game loop integration
+
+Read signals.ts and state.ts
+Now I'm looking at the main application files to understand the UI logic and game loop.
+
+Done
+Now the main application logic and entry point:
+
+
+Examining DOM structure and parsing stylesheet variables
+Examining DOM structure and parsing stylesheet variables
+
+Read app.ts and main.ts
+I'm mapping out the architecture: there's a reactive signal system with custom Signal and ComputedSignal types plus effects, a state object managing the game's signals and computed values like display text and progress, and a game loop running through requestAnimationFrame that cycles between showing the question phase and answer phase.
+
+The UI includes sliders for timing and difficulty, start/stop controls, some legacy manual mode buttons with auto-update, and theme toggling. Settings and theme persist to localStorage. The core issue is that the quiz is entirely timer-driven and passive—it auto-advances through question → answer → next problem with no user interaction to record correctness, and problems are purely random with no tracking, so duplicates can appear immediately. To add correct/incorrect buttons, I need to figure out how they integrate into this timer-driven flow.
+
+The plan involves showing those buttons during the answer phase so users can optionally record whether they got it right, then either advance immediately or let the timer handle it. More importantly, the question generation needs a complete overhaul: instead of picking randomly from a difficulty range, I need to score the full problem space by difficulty, build a pool for the selected tier, and implement a selection policy that avoids recent repeats and uses spaced repetition scheduling. That scheduling state—tracking when each problem was last shown and whether it was correct—needs to persist in localStorage. I should also check the HTML structure to see what element IDs and layout I'm working with.
+
+Show less
+Done
+Now the DOM structure and styles, so I know the element IDs, layout, and CSS conventions:
+
+
+Examined CSS patterns and testing structure to plan feature implementation
+Examined CSS patterns and testing structure to plan feature implementation
+
+Read index.html
+I'm examining the DOM structure with its various class selectors for sections, quiz display, progress tracking, timer, controls, and theme toggle. Now I need to check the CSS file to understand the color variables and styling patterns so I can match the button design with the existing theme.
+
+
+Read style.css for CSS variables and styling patterns
+I've identified the color variables for the buttons—green for success and red for danger—and I can see the responsive breakpoint and existing hover states are already in place. Now I'm looking at the test files to understand the testing patterns before planning updates.
+
+Done
+Now the test files — unit and E2E — so I understand the testing patterns I'll need to extend:
+
+
+Examined test files to understand project structure
+Examined test files to understand project structure
+
+Read the three unit test files
+Now I'm looking at the E2E test files to understand the Page Object Model and test specifications.
+
+Done
+Now the E2E Page Object Model and spec, which show the Playwright conventions this project follows:
+
+
+Scrutinizing project configuration and documentation files
+Scrutinizing project configuration and documentation files
+
+Read the E2E page objects and spec
+I need to look at the rest of the helper methods in the quiz-page test file to understand what assertions are being made for the multiplier, display expectations, control states, and status checks.
+
+Done
+Let me see the truncated helper methods in the Page Object:
+
+
+Auditing configuration files for comprehensive project updates
+Auditing configuration files for comprehensive project updates
+
+Read the truncated portion of quiz-page.ts helper methods
+I'm reviewing the project documentation and configuration files to understand the E2E setup better—starting with package.json and the TypeScript/Vite configs, then moving through the README, migration guide, and manual testing notes.
+
+Done
+Now the docs and config. Let me read package.json, README, MIGRATION, and the manual testing notes so I know exactly what documentation must be updated:
+
+
+Surveyed configuration files to comprehensively implement requested features
+Surveyed configuration files to comprehensively implement requested features
+
+Read manual-testing-notes.md, MIGRATION.md, package.json, README.md
+Now I need to review the README and configuration files to make sure everything's consistent—checking the documentation, TypeScript settings, and both the Vite and Vitest configurations.
+
+Done
+Let me read the README and the config files to complete my picture:
+
+
+Examined configuration files to understand project setup and test infrastructure
+Examined configuration files to understand project setup and test infrastructure
+
+Read README.md
+I need to check the TypeScript and build configuration files to understand how the test and build setup works, which will tell me whether new files get picked up automatically.
+
+Done
+Finally, the config files, to confirm how new files and tests get picked up:
+
+
+Architected comprehensive difficulty algorithm and spaced-repetition system
+Architected comprehensive difficulty algorithm and spaced-repetition system
+
+Read tsconfig files, vite and vitest configs
+I'm reviewing the architecture: the signals module provides reactive primitives like Signal and ComputedSignal with effects, while the types module defines the quiz domain with Problem, QuizPhase, DifficultyLevel, and related configuration structures.
+
+The utilities handle difficulty mapping (level 1 maps to 2–5 range, level 2 to 4–8, etc.), problem generation with random operands, seed generation, and localStorage persistence for settings and theme preferences using a debounce mechanism.
+
+The state module ties everything together with individual signals for quiz data and computed properties that format the display text differently depending on the phase—showing the multiplication problem during questions, the answer during the answer phase, and a manual counter mode when idle—while the app module wires the DOM, runs the game loop with requestAnimationFrame, handles quiz progression, manual mode controls, and persists settings with debounced saves.
+
+The entry point exposes global functions for inline click handlers, the HTML provides the DOM structure with IDs and onclick attributes, and the stylesheet defines CSS variables for colors like success green and danger red with responsive breakpoints, while tests cover units and end-to-end scenarios with a page object model.
+
+The package.json includes various scripts for linting, type-checking, building, and testing with Vite 8 and TypeScript, though the README references a few scripts that don't actually exist. Manual mode and the counter feature are legacy code that I'm keeping since the user hasn't asked to remove them.
+
+localStorage currently stores settings like question timing, difficulty level, auto-update preference, and theme. So there's already some persistence in place.
+
+Looking at what the user is asking for: they want a complete difficulty overhaul that moves beyond simple operand ranges to assess the actual cognitive difficulty of each multiplication problem—with anchors like 64×10 being easy and 7×8 being medium, while skipping trivial cases like multiplying by 0 or 1. They also want preferences and spaced repetition data saved to localStorage, a mechanism to avoid showing the same question too soon, and larger buttons for marking answers correct or incorrect.
+
+The core request here is to build out a spaced repetition system where correct answers get hidden for a long time and incorrect ones resurface quickly, plus extend localStorage to track this SRS data alongside the existing preferences. They've explicitly asked for a plan before any code, so I should lay out the architecture and approach without implementing yet. I'll also need to keep TypeScript at version 6 and make sure to deliver full file contents when the implementation phase begins, with documentation updates alongside the code changes. is really the difficulty algorithm and SRS design—the user wants me to propose something concrete since they're finding it hard to articulate themselves. I should present an opinionated design that works against their anchors and highlight the key tunable decisions, then wrap up with the decision points they need to weigh in rather than blocking on a tool call. Given the detailed prompt and that this is an engineering-focused conversation, I think laying out the design in prose with clear decision points is better than using interactive elements.
+
+Some of those decisions are straightforward enough to be clickable—like whether to replace the difficulty slider with tier buttons or keep it as-is, or whether to auto-advance after grading—but mixing a rich technical plan with interactive pickers might splinter the discussion. I'll present this as a cohesive design document inline and pose the open questions as a clean list, letting the user respond in prose rather than reaching for the ask tool. That keeps it in the flow of an engineering design review.
+
+Now I'm weighing whether to present this as a file or inline. The guidance suggests plans and explanations belong in chat, and since this isn't a deliverable they'll publish but something they'll read and iterate on before implementation, I'll keep it inline as prose. I'll use moderate structure—headers and lists where they genuinely clarify the technical components—rather than over-formatting, which matches the project's own style.
+
+The core challenge is nailing down the difficulty algorithm. The key insight is that difficulty measures the cognitive load of computing the product mentally, not the magnitude of the numbers themselves. This explains why 64×10 feels easy despite the large result—there's a simple mental shortcut available.
+
+I'm building a numeric difficulty score using individual feature functions that each capture one aspect of cognitive load, with named constants for weights and thresholds so the user can tune them. This approach is testable and transparent. I'm also establishing preprocessing gates to exclude trivial cases like multiplying by 0 or 1 from the problem pools entirely.
+
+The effective operand domain is 2 through 99 after filtering out those edge cases, though the conceptual space spans 0 to 99. Now I'm introducing the idea of "stripped" operands to handle trailing zeros when computing difficulty features. cost. After stripping away trailing zeros, I have sa and sb both in the range [1,99] with no trailing zeros themselves. If either stripped operand is 1, the problem becomes trivial—just multiplying by 1 and appending zeros, which is cognitively cheap. For the main difficulty scoring on these stripped values, I'm looking at the magnitude of their product as a working-memory load factor, since larger products are harder to compute and retain.
+
+I'm considering using the digit count of sa * sb as a coarse scoring term—single-digit products have 1-2 digits, while two-digit products can reach 3-4 digits. Rather than just counting digits, I might layer in a logarithmic scaling to get finer gradation across the range, avoiding double-counting by choosing between a digit-count term and pure magnitude. Now I'm working through which combination of features will produce the right ordering and difficulty tiers.
+
+The core insight is to measure difficulty by counting the mental operations required in the standard schoolbook method—each digit-by-digit multiplication fact plus the additions needed to combine partial products. For single-digit multiplication, it's just one fact from memory. For 1-digit × 2-digit, that's two facts plus one addition. For 2-digit × 2-digit, roughly four facts and three additions. This operation-counting approach is defensible and easy to explain.
+
+Now I'm thinking about how to weight these operations—each multiplication fact has its own recall difficulty based on the hard-fact table, and carries in the addition steps add extra cost. I'm defining the structural complexity as a function of how many partial products get generated, which depends on the digit counts of both numbers. The jump from single-digit to double-digit multiplication creates a significant increase in structural complexity.
+
+For the actual fact-recall difficulty, I'm accounting for the problem-size effect—larger operands and products are harder to recall. I'm considering adjustments like making ties (squares) easier since they're well-memorized, and giving bonuses to facts involving 2, 5, or 9 since they have useful tricks or patterns. The trickier facts are those combining 3, 4, 6, 7, and 8 with each other.
+
+For multi-digit problems like 23×4, I'm summing the difficulty of each digit-pair product involved (2×4 and 3×4), so a problem like 67×48 naturally gets harder because it requires more facts and includes the difficult 7×8. Rather than over-engineering the weights, I want to land on a concrete, implementable formula that I can validate against the anchor problems.
+
+Defining the scoring function... Finishing the difficulty calculation...
+
+The formula completes by subtracting the bonus and ensuring the result stays non-negative. For the fact difficulty between two single digits, I'm accounting for the trivial case when either digit is 1, then scaling the base difficulty by the product of how far each digit is from 1, with special handling needed for 9 since it has computational shortcuts. ×6 = 36 completes that pattern. The difficulty formula captures the size effect well, with 7×8 landing in a reasonable middle range, but 8×9 and 9×9 scoring higher despite 9s having computational shortcuts. I need to apply bonuses that reduce 9-facts and squares to reflect their actual ease. I'm thinking about how to structure a shortcut bonus function that considers the friendlier operand, since if either number is easy to multiply by, the whole problem becomes easier.
+
+Actually, I'm realizing the key insight: the difficulty of a×b is really determined by whichever decomposition is easiest. If one operand is a friendly multiplier like 5 or 9, that single shortcut can make the entire problem tractable regardless of the other operand. So the bonus should reflect the maximum available shortcut, not sum them, and it needs to be substantial enough to actually shift the difficulty. Rather than keep layering bonuses on top of the structural cost, I should reframe this as finding the minimum difficulty across all possible strategies for solving that multiplication.
+
+I can implement this cleanly by defining a set of strategy functions that each return a cost (or infinity if they don't apply), then take the minimum. For instance, a recall strategy applies when both operands are single digits and uses the times-table difficulty, while a five strategy handles multiplying by 5 by converting it to division by 2 after multiplying by 10.
+
+I also need strategies for doubling (when one operand is 2, 4, or 8), nines (using the a×10 − a trick), and elevens (using the digit-shifting property).
+
+For any pair, I fall back to distribution—splitting the larger number into tens and units, multiplying each part by the smaller number, then adding the results. For two-digit by two-digit multiplication, the grid method (four partial products plus three additions) is the most expensive option. The overall difficulty is the minimum cost across all applicable strategies, so something like 64×10 becomes trivial by stripping the zero, while 7×8 relies purely on recall.
+
+Looking at specific examples: 5×8 triggers the five strategy for a low cost, making it easy despite a moderately high recall cost. 9×8 uses the nine strategy (multiply by 10 then subtract), which is cheaper than straight recall. And 6×7 falls back to recall since neither number has a built-in shortcut.
+
+For smaller numbers like 3×4, the doubling strategy kicks in since 4 is a power of 2, bringing the cost down to easy. Larger products like 47×63 require grid distribution across four partial products including the harder 7×6, pushing it into expert territory. The extreme case is 99×99—no shortcuts apply, the grid method generates many carries, and the four-digit result makes it the peak difficulty. Finally, 25×4 uses doubling to reach 100 efficiently. The distribute strategy for 12×12 breaks it into 12×10 plus 12×2, which is manageable since multiplying by 10 is straightforward and doubling is quick—so overall it lands at medium difficulty. I'm weighing whether the min-over-strategies approach is worth the implementation complexity: it's conceptually elegant and produces the right difficulty tiers, but coding up eight strategy cost functions with carry tracking and then tuning them so the minimum lands correctly is intricate work. For a showcase project this could be a polished highlight with good tests, though there's some risk in the calibration.
+
+I'm exploring a simpler hybrid instead: an additive scoring model where the base score combines structural cost, fact familiarity, carries, and zeros, then applies a single maximum shortcut discount if a very friendly operand like 2, 5, 9, or a round ten is present. This keeps the "friendly operand dominates" behavior without needing to evaluate all eight strategies, making it easier to reason about and tune.
+
+For the plan itself, I don't need to lock down the exact arithmetic yet—I need to show it's feasible, lay out the conceptual framework, provide a concrete algorithm with validation against their anchor examples, expose the tunable parameters, and acknowledge that final weights will be refined during implementation testing.
+
+Let me settle on the clearest presentable model. I want the user to immediately recognize it captures their intuition, so I'll define difficulty through a handful of intuitive components and show them in a validation table. The key pieces are: trivial cases like 0 or 1 get excluded, place-value handling strips trailing zeros so pure powers of ten like 10 become easy, base recall cost comes from the significant digits themselves, multi-digit penalties increase with each additional partial product, and carry operations add their own cost.
+
+Now I'm working out the actual scoring formula with concrete thresholds. I'm defining helper functions to strip trailing zeros and count significant digits, then building a scoring system where if either operand reduces to 1 it's trivial, otherwise I multiply the stripped operands and use the digit count of that product as a magnitude component.
+
+I'm realizing the magnitude approach is too coarse—single-digit multiplication facts cluster together (most products have 2 digits, scoring around 3), which doesn't distinguish between genuinely easy facts like 2×3 and harder ones like 7×8. I need to refine this to better separate difficulty levels across the times table.
+
+Let me try a smoother scaling approach using the logarithm of the product itself. I'll define a size term as the log of the product scaled by a constant factor, which gives me a continuous spectrum rather than discrete buckets. This way, 2×3=6 lands around 3, while 7×8=56 lands around 7, and 9×9=81 lands even higher—capturing the intuitive sense that larger products are harder to compute from scratch.
+
+On top of that, I'm adding a partial product penalty based on the digit structure of the factors. Single-digit facts get no penalty, single-digit times double-digit gets a +2 bump, and double-digit times double-digit gets a +5 bump. This structural adjustment ensures that something like 12×12 (which has a product of 144) ranks above smaller single-digit facts that happen to have similar product sizes, reflecting the real cognitive difficulty of multi-digit multiplication.
+
+I'm also tracking carries in the pencil-and-paper algorithm—each carry adds +1.5 to the difficulty score. For implementation, I'll count carries as the number of digit-pair products that exceed 9, plus any carries that propagate through the final addition step.
+
+Finally, there's a shortcut discount that applies the single best applicable discount: operands like 2 or 5 get a −4 reduction since they're easier to multiply by, and numbers ending in 5 (like 15 or 25) get a milder −2 discount. ry counts from digit-pair products that exceed 10. I'm working through specific examples: 64×10 is straightforward with minimal difficulty, 7×8 has a higher difficulty score of 8.5 due to size and carry penalties with no applicable shortcuts, 2×3 drops to 0 difficulty because the operand 2 qualifies for a significant discount, and I'm starting to evaluate 5×8. Continuing with the remaining multiplications: for 3×4, the difficulty is 3.5 after accounting for carry and shortcut adjustments. The 4×4 tie case yields 3.5 as well, with the power-of-2 bonus offset by the shortcut penalty. For 9×9, I'm getting 5.5 difficulty despite the tie adjustment reducing it from 8. Finally, 12×12 starts with a size of 144 giving base 9, plus a 5-point bonus for the two-digit multiplication.
+
+Now I'm reconsidering whether the partial products bonus is calibrated correctly—12×12 lands at 13.5, which seems high for a commonly memorized fact, so maybe the double-digit multiplier bonus should be 3 or 4 instead of 5.
+
+Looking at 11×11, the size gives 8, the partial products add 5, there's no carry, and the 11 shortcut minus the tie penalty brings it to 9 total. For 13×7, the size is 8, partial products contribute 2, and the carry from 3×7 and the addition step adds about 3, landing at 13. I'm partway through 47×63 where the size is 14 and partial products add 5, but the carry calculation is still in progress. y. ✓ For 50×6, I'm calculating the difficulty as around 3.5 with the zero-stripping advantage making it easy. For 90×9, it's similar to 9×9 with an appended zero, landing in the medium range.
+
+Now I'm looking at how these problems cluster by difficulty—the easy ones like 2×3 and 20×20 have D values near 0, medium problems like 9×8 and 6×7 fall between 5.5 and 8.5, while harder problems like 11×11 and 13×7 jump to 9 and above, with truly expert-level problems like 47×63 and 99×99 pushing well into the high teens or beyond. I'm realizing there might be plenty of Easy problems after all—multiplying by 2 or 5 covers a huge range, and even two-digit cases like 2×47 are genuinely easier than something like 6×7, even if the products are similar. But I need to think through whether doubling a two-digit number with a carry really counts as Easy, or if that pushes into Medium territory. The user can adjust that discount factor if they want all doublings to be Easy instead. I'll expose these as tunable knobs in the final design, validated against a test table showing how different problems map to difficulty tiers.
+
+Now I need to think about how to partition the ~9,800 possible problems across difficulty tiers—each tier should have a well-defined pool to sample from. I'll precompute the difficulty tier for every (a,b) pair so I can reliably draw problems from each tier.
+
+For the canonicalization question: 7×8 and 8×7 represent the same multiplication fact, so I should treat them as one item for spaced repetition scheduling, storing them in canonical form with the smaller factor first.
+
+Now I'm calculating the pool sizes across tiers. With the constraint 2≤a≤b≤99, there are roughly 4,851 canonical pairs total—plenty to distribute across the four difficulty tiers. The distribution will likely be skewed (Expert tier will contain most 2-digit products while Easy tier focuses on multiples of 2, 5, and round tens), but each tier should still have enough problems. I'll need to compute the actual distribution and potentially adjust the difficulty thresholds to ensure each tier is reasonably populated.
+
+Now let me design the spaced repetition system.
+
+I'll use a lightweight Leitner-style approach where each problem tracks its box level, when it was last seen, when it's due next, and streak information to determine how aggressively to space out repetitions based on correctness.
+
+The key design choice is between time-based scheduling (using wall-clock intervals like hours for correct answers and minutes for incorrect ones) versus count-based scheduling (showing a problem again after N other questions). Time-based feels more natural for an SRS system and ensures correct answers genuinely disappear for a while, while incorrect ones resurface within the same session—but count-based is simpler to implement in a rapid-fire drill context.
+
+I'm leaning toward a hybrid approach: use time-based intervals with localStorage persistence across sessions, but add a recency guard on top to prevent the same problem from appearing twice in quick succession. I'll implement this as a Leitner box system with tunable intervals, starting with Box 0 for new or lapsed items at around 30 seconds. ish) so it doesn't immediately repeat, but treat mastery as unchanged. I also need to always update lastSeen and add the item to the recency queue.
+
+For selecting the next problem within the tier, I'm building a candidate pool from all problems at that difficulty level, then filtering out anything in the recency queue to prevent immediate repeats. I partition what's left into due and not-due items, prioritizing due ones—especially those in lower boxes (struggling material) or with older due times (most overdue). I'll use weighted randomization among top candidates to keep things less predictable. If nothing's due yet, I'll pick from not-due items with a preference for those approaching their due time.
+
+This approach covers all the requirements: the recency guard prevents quick repeats, incorrect answers drop to box zero and reappear in about 45 seconds (but not immediately thanks to the guard), correct answers move to higher boxes with distant due dates, and new material gets introduced when nothing's currently due. For storage, I'm saving the SRS map to localStorage under a key like mathQuizProgress or mdrill.srs.v1.
+
+Since we're only storing records for problems users have actually seen, the data stays small even with up to ~4851 possible records — most users will only interact with a fraction. The SRS records are keyed by problem and persist independently of tier selection, so switching tiers keeps the history intact while filtering by the active tier's pool. I'll add a version field to the stored data for clean migration handling if the schema changes.
+
+Now I'm thinking about where to place the correct and incorrect buttons in the UI. Grading should happen during the answer phase only, with the buttons reserved in the layout to avoid shifting. I'll build a responsive flex layout with two large touch-friendly buttons—green for correct, red for incorrect—using the design tokens, and make them keyboard accessible with optional shortcuts. Tapping a grade will record it and advance to the next problem. I'm keeping the grading mechanism to self-report buttons only—no answer-entry box—since that wasn't requested, though I'll mention it as a future enhancement. The difficulty slider stays as-is since the 1–4 tiers and labels remain the same, just with adjusted scoring behind the scenes.
+
+But this means the E2E tests that check operand ranges are now broken—they'll need to validate tier membership through the difficulty function instead of numeric bounds. I also need to figure out what manual mode does now that the seed multiplier concept is tied to difficulty bands rather than fixed ranges.
+
+For manual mode, I have a few paths: I could keep it as a times-table explorer but decouple the seed from the difficulty system entirely, using a simple random multiplier in the 2–12 range. Or I could tie the seed to the current tier somehow. The safest approach is to keep manual mode but redefine how it generates the seed so it no longer depends on getDifficultyRange.
+
+I'm leaning toward keeping manual mode since it's already tested and documented, and the user hasn't asked to remove it. Ripping it out would expand scope unnecessarily. I'll adapt generateSeed to work independently of the tier system and flag this as a deliberate choice, while noting that removal is an option if they prefer.
+
+For the type changes, I'm retiring DifficultyRange since it won't be needed for problem generation anymore—I'll replace it with a smaller MANUAL_SEED_RANGE constant instead. I'm also introducing a new Grade type to represent correct/incorrect answers.
+
+I'm defining the SRS data structures: SrsRecord to track each problem's box level, due date, and performance metrics, and SrsStore to hold the version and all records. For settings, I'm considering whether to add a gradingEnabled toggle, but since the grading buttons are optional to use rather than hide, I'll keep them always visible during the answer phase and skip the setting to reduce scope.
+
+I'm also setting up the core modules: a difficulty.ts file that exports the scoring engine with functions to evaluate problem difficulty, classify them into tiers, identify trivial problems, and build pools of problems for each difficulty level, along with all the tunable constants. I'll add a problemKey helper to generate canonical string keys for problems, and possibly define a DifficultyTier type for the band definitions.
+
+Then there's srs.ts for the spaced-repetition logic—pure functions like gradeRecord to update records based on user performance, initialRecord to create new ones, and selectNext to pick the next problem from the pool using the SRS store and recency queue. Everything stays deterministic by injecting the current time and random number generator.
+
+For storage, I'm deciding whether to extend the existing utils.ts with SRS persistence functions or create a dedicated src/storage.ts module to keep things organized. I'm settling on keeping all persistence in utils.ts for consistency with the existing pattern (settings and theme already live there), which keeps srs.ts pure logic and trivially testable.
+
+Now I need to figure out what to do with generateProblem — the new flow uses selectNext() instead of random generation, but I still need random problem creation for manual mode and initial state, so I'll either refactor it to use tier pools or remove it entirely if it's no longer needed.
+
+For state.ts, I'm adding a few signals to track session stats like correct and incorrect counts, which will give users a nice progress indicator without bloating the core logic. The SRS store will handle the spaced repetition data separately.
+
+I'm keeping the SRS store as a plain object managed at the app level—loaded on startup and saved with debouncing when it changes—while exposing session stats through signals for the UI to react to. This mirrors how settings work. I might also add a computed signal for gradeButtonsVisible that combines the quiz active state and current phase, wiring it up through an effect in the app.
+
+For the app.ts changes, I need to refactor startNextProblem to build a memoized pool for the current difficulty tier, then use that pool with the SRS store and recency queue to select the next problem. I'll also add a gradeAnswer function that validates the quiz is active and we're in the answer phase, updates the SRS store with the grade result, refreshes session stats, saves progress with debouncing, and moves to the next problem. Still working through the ungraded answer handling...
+
+When the answer phase times out without a grade, I'll call a helper that marks the problem as seen without changing its SRS box, then advance to the next problem so the cooldown still applies. The recency queue is a module-level bounded array tracking canonical keys. For the UI, I'm replacing inline onclick globals with proper <button> elements that have IDs and event listeners wired up in a setup function—this aligns better with the testing approach of using getByRole and keeps the code cleaner. I'll wire up the event listeners in app.ts and control the grade buttons' visibility and state based on whether we're in the grading phase. For persistence, I'm adding a debounced save function and loading progress on init. The difficulty pool is cheap to compute but I'll memoize it per level anyway. In index.html, I'm adding a grade-buttons container with the two buttons positioned near the timer display, and possibly including a small session stats readout.
+
+Adding styling for the buttons... Checking that commutativity holds, that tier assignments follow a sensible progression from easier to harder problems, and that multiplications by 5 or 2 produce appropriately easier classifications than comparable problems without those factors. Also verifying that trailing zeros are handled correctly and that the tier pools partition the domain properly. Then moving on to test the spaced repetition system.
+
+Writing test suite... ateSeed should test the range [2,12] and verify that behavior. I'm also adding round-trip tests for loading and saving progress with handling for corrupted or versioned data, similar to the settings tests. The state tests will keep existing coverage for display text, progress, and timer while adding tests for any new computed properties like grading phase and session stats, resetting those signals in setup. For E2E, I'm updating the page object model and removing obsolete selectors. expectMultiplierInRange needs to be replaced with a simpler assertion that the multiplier is a valid positive integer, since manual mode no longer ties to difficulty ranges. I'm updating the test that checks difficulty changes to verify the tier name updates instead, and removing the coupling between difficulty and multiplier range—manual mode should still display a valid equation regardless of the selected difficulty tier.
+
+For the Grading specs, I need to add tests that verify grade buttons appear during the answer phase, remain hidden during the question phase, and that clicking either button advances to the next problem. I'll skip testing spaced-repetition behavior at the E2E level since it's timing-dependent and flaky; that belongs in unit tests. For mobile, I should check that grade buttons are visible and have adequate touch targets on smaller viewports.
+
+On persistence, session stats reset on reload while SRS mastery persists silently in the background, making it hard to assert via UI alone. I'll rely on unit tests for that and skip deep persistence E2E, though I could add a quick check that settings still persist across reload.
+
+For the test implementation, I'm using Unicode escapes and web-first assertions with getByRole for the grade buttons, avoiding waitForTimeout. Now I need to update the documentation, starting with the README features section.
+
+I'm rewriting the Difficulty section to drop numeric ranges and instead describe cognitive-difficulty bands across 0–99, skipping the ×0 and ×1 tiers, plus summarizing the scoring model. I'll add the self-assessment with spaced repetition feature and clarify that spaced repetition resurfaces missed problems while avoiding recent ones. Settings Persistence needs to mention SRS progress persistence too.
+
+I also need to fix outdated references: Vite 7 becomes Vite 8 with Rolldown, update the TypeScript version, and reconcile the scripts list in the README with what's actually in package.json—some scripts like preview, test:ui, test:coverage, and test:e2e:ui are documented but missing from the config, so I'll either align the docs or add those scripts.
+
+For the Project Structure section, I'm adding difficulty.ts and srs.ts to the file listing, then updating Recent Changes. On the MIGRATION.md side, I need to be careful: the claim about no breaking changes and unchanged LocalStorage keys is now slightly inaccurate since we're adding a new key for SRS data. I'll update MIGRATION.md's "Adding Features" section to document the new localStorage keys, and create a separate docs/DIFFICULTY_AND_SRS.md file for the detailed design and algorithm documentation instead of cluttering the migration guide.
+
+But I'm noticing something odd in the export metadata — it says *.md and docs/* are excluded, yet README.md, MIGRATION.md, and manual-testing-notes.md are clearly present in the dump, so I need to reconcile what's actually being exported versus what the exclusion list claims. I'll update the existing root-level markdown files that appear in the dump—README, MIGRATION, and manual-testing-notes—plus add algorithm documentation as comments in the TypeScript files where the logic lives. I could also create a dedicated DIFFICULTY.md at the root to document the scoring model and SRS system comprehensively.
+
+For manual-testing-notes.md specifically, I need to add test sections covering the grading buttons (their visibility in answer phase, checkmark/X behavior, keyboard and touch interactions), spaced repetition mechanics (how missed problems resurface while mastered ones stay hidden for a period, preventing immediate repeats), the new difficulty tier system (explaining what each tier means and which multipliers appear), progress persistence, and revise the Difficulty Slider test cases to reflect the tier descriptions instead of the old numeric ranges. I'll also update the post-change checklist to include grading and spaced repetition coverage.
+
+For the build and test infrastructure—export.sh, setup.sh, CI, Dockerfile, playwright.config—the new TypeScript source files for difficulty and spaced repetition logic will be picked up automatically by tsconfig's include pattern and vitest's test discovery, so no configuration changes are needed there. The coverage tool will also automatically track these new files, and since they're pure functions with full test coverage, the overall coverage percentage should stay above 95% as long as the new code is well-tested.
+
+The file changes boil down to adding the two new source modules and their test files, plus a DIFFICULTY.md documentation file at the root, while updating src/types.ts with the new type definitions.
+
+For the existing files, I'm modifying src/utils.ts to drop the range-based problem generation and add progress persistence logic, updating src/state.ts with session statistics signals and a computed grading phase flag, and reworking src/app.ts to wire up SRS-aware selection, answer grading, the recency queue, and progress loading/saving. The UI gets grade buttons and optional session stats in index.html with corresponding styles in src/style.css. All test files and e2e tests get updated to match the new behavior, and I'm adding both README.md and MIGRATION.md to document the changes. State.ts imports generateSeed, and app.ts pulls in generateProblem, generateSeed, and getDifficultyName. The test file and E2E page object model also reference these utilities, so changes to the difficulty model will ripple through utils, state, app, tests, and the E2E suite—but it's all manageable since I've already mapped out those dependencies. The user asked me to plan first without writing code, so I'll lay out the approach and flag any decisions that need their input. ing intervals (my recommendation: "soon" ≈ 45–60s, "long" ≈ days) vs count-based repetition. I want to confirm the "soon"/"long" timing feels right. Then there's the manual mode question—whether to keep it with a decoupled seed range or strip it out entirely since it's not really being used. I should also confirm the 1–4 difficulty slider stays as-is, and optionally ask about session stats, keyboard shortcuts, or a grade-button toggle. I know the tone guidance discourages multiple questions, but a design review naturally calls for a decisions list, and I think presenting a concise set of calls I need their input on is appropriate here.
+
+I'll frame each decision with my recommended default so they can either approve or override—that respects their time. Then I'll close by asking if they want me to proceed with the full implementation, since they explicitly asked for a complete plan first.
+
+For the difficulty algorithm, I'll include a compact validation table to make the logic crystal clear. I'm also deliberately not mentioning the GitHub PAT they shared—they said not to include it, so I'll just leave it out entirely. No web search needed here; the TypeScript version is locked, there are no new dependencies, and the difficulty model is my own design. So 7×8 lands in the Medium tier, which checks out. Now I'm locking in the exact thresholds—Easy from 0 to 4, Medium from 4 to 9, Hard from 9 to 16, and Expert above 16—and I'll validate these against the full distribution to make sure each tier has good coverage. I need to make sure the weights I present in the explanation match the numbers in the table exactly, so let me finalize the scoring model: trivial operands get filtered out, trailing zeros are stripped, and if either operand becomes 1 after stripping, it's automatically Easy.
+
+For the remaining cases, I'm computing a base size using logarithms of the operand product, then applying penalties for partial products based on digit counts and a carry penalty proportional to how many sub-products exceed 10, followed by discounts for special patterns like multiples of 2, 5, 9, 11, or numbers ending in 5. Continuing through the remaining products: 3×4 gives a difficulty of 3.5, 5×8 also lands at 3.5, while 6×7 and 9×8 both come out to medium difficulty around 5.5 to 7.5, and I'm still working through 6×6. The carry proxy approach misses addition carries in the final result, so 12×12 actually lands at difficulty 12 (Hard) rather than my calculated 5.5—which makes sense since it's beyond the standard multiplication table. Moving on to 11×11, I'm computing its size and checking the double-digit penalty and carry contributions. ×6=24, 4×3=12, 7×6=42, 7×3=21 → 4 carries → +6; S=0. D=14+5+6=25 → Expert. For 99×99: size=16; PP +5; all four sub-products have carries → 4 → +6; S: 99 isn't friendly so tie→2. D=16+5+6−2=25 → Expert. Both land around 25, so both Expert, though I'd expect 99×99 slightly harder given its higher size term despite the tie discount.
+
+For 20×20: strips to 2×2, size=2; no carries; S=5. D=0 → Easy. For 25×4: size=8; PP +2 for single×double; carries from 2×4 and 5×4 → +1.5; S=2 (both ×4 and ends-in-5 give 2). D=9.5 → Hard, though 25×4=100 feels like it should be easier intuitively.
+
+The issue is that my size term heavily penalizes products like 100 even though they're cognitively "round" and memorable. I need to either add a discount for round results or rethink how the size penalty works for products that are powers of 10 or other special values.
+
+I'm weighing two approaches: tuning the additive model with larger discounts for strategies like ×4 doubling, or switching to a min-over-strategies approach that would naturally capture how easy repeated doubling is. The additive model is simpler and more practical, but it has real blind spots with round large products, so I should acknowledge that limitation rather than pretend it's perfect. I could refine the additive model by factoring in whether operands are powers of two or if the result is a round number—these become tuning knobs that adjust the difficulty score. For instance, 25×4 yielding 100 might warrant a small discount, bringing it from Hard down to Medium. The key insight is being transparent that these edge cases are genuinely debatable and exactly the kind of thing that needs iterative, test-driven calibration rather than pretending the model is perfectly rigid.
+
+I should also clarify the implementation scope: no new dependencies, staying within TypeScript strict mode, keeping everything as pure modules for testability, preserving E2E conventions, and delivering full files for every change along with updated documentation. The user emphasized wanting complete files, so I'll make sure to provide that in the implementation.
+
+Now I'll structure the plan into clear sections: first a brief intro confirming feasibility and the core reframe, then the difficulty model (covering gates, scoring, validation anchors, tiers, edge cases, and the alternative approach), followed by spaced repetition mechanics with the record shape, interval scheduling, and selection logic.
+
+Then I'll cover the UI elements for correct/incorrect buttons, localStorage persistence and versioning, the full architecture with file changes, testing strategy, and documentation updates. I'll wrap with the decisions I need from them before implementation.
+
+I'm aiming for thoroughness without excess—using tables and lists strategically where they clarify, keeping the prose lean, and being explicit about the technical constraints and tradeoffs. Continuing with the remaining validation rows across the medium and harder difficulty tiers, tracking how the difficulty score accumulates as problem size and carry complexity increase. I'm settling on how to present carry complexity—counting digit-products that exceed 10 as a proxy metric I'll refine later to include addition carries. The 25×4 edge case (which yields 100) is interesting: it lands at the Hard boundary under my current model, but I can note how tweaking the power-of-two discount or adding a result-based discount would shift it down to Medium or Easy, which illustrates the tuning knobs available. Now I'm ready to write up the full plan, starting with a crisp intro that answers the core question.
+
+I'm thinking about structure—I want this to read like a senior engineer's design review: confident, concrete, honest about tradeoffs. I'll use headers and tables where they genuinely help, keep bullet lists minimal, and consolidate the decision points into a single compact list with defaults. Rather than asking multiple questions, I'll present the defaults and ask one closing question: proceed with these, or adjust something?
+
+Show less
+Done
+I've now read the whole codebase — the signal system, state.ts, app.ts's requestAnimationFrame loop, the range-based difficulty in utils.ts, the existing localStorage (settings + theme), the DOM/CSS, and both the Vitest and Playwright suites. Here is the complete plan. No code yet — this is the design for your review, and I'll hand you full files for every changed/added file once you're happy with it.
+
+The short answer to your hardest question
+Yes, this is expressible algorithmically, and the reason your intuition feels hard to articulate is that difficulty isn't about the size of the numbers — it's about the cognitive cost of the mental computation. That single reframe explains both of your anchors:
+
+64 × 10 is easy because "append a zero" is nearly free, even though 64 is a two-digit number.
+7 × 8 is hard-ish because no shortcut applies and it's the single worst-recalled fact in the times table (the well-documented "problem-size effect"), even though both operands are single digits.
+So the model scores how much mental work the easiest available strategy takes, and buckets that score into four tiers. Everything else (skipping ×0/×1, spaced repetition, the ✓/✗ buttons) hangs off that.
+
+Part 1 — The difficulty engine (src/difficulty.ts, new)
+This replaces the current min/max range model entirely. It's a pure, fully-unit-tested module — no DOM, no storage — which makes it the natural showcase centerpiece.
+
+Step 1 — Trivial gate. If either operand is 0 or 1, the problem is excluded from every tier (never generated). Effective operand domain is therefore 2..99.
+
+Step 2 — Place value is free. Strip trailing zeros from each operand: strip(64)=64, strip(60)=6, strip(10)=1, strip(20)=2. Compute difficulty on the stripped operands and add a tiny per-zero cost. If either stripped operand becomes 1 (i.e. it was a power of ten like 10), the whole thing collapses to "append zeros" → Easy. This is exactly why 64 × 10 and 20 × 20 are easy.
+
+Step 3 — Additive score on the stripped operands sa, sb:
+
+Component	Definition	Purpose
+size	round(4 × log₁₀(sa × sb))	The problem-size effect — bigger products are harder to compute and hold
+partialProducts	digits(sa) × digits(sb): single×single +0, single×double +2, double×double +5	The leap from recalling a fact to computing one
+carry	1.5 × (number of digit-sub-products ≥ 10)	Regrouping load (a simple proxy I'll refine to include addition carries in code)
+discount	best single shortcut: ×2 → 4, ×5 → 4, ×9 → 3, ×11 → 3, ×4/×8 → 2, ends-in-5 → 2, tie/square → 2 (+1 if the best is also a tie)	A friendly multiplier rescues an otherwise-large problem
+D = max(0, size + partialProducts + carry − discount)
+
+Step 4 — Tiers (starting thresholds, tuned against the full distribution during implementation; boundary ties fall to the lower tier):
+
+Easy ≤ 4 · Medium 4–9 · Hard 9–16 · Expert > 16
+
+Validation against a spread (this is the part to sanity-check)
+Problem	on	size	PP	carry	disc	D	Tier
+2 × 3	2×3	3	0	0	4 (×2)	0	Easy
+64 × 10	→×1 rule	—	—	—	—	—	Easy
+20 × 20	2×2	2	0	0	5	0	Easy
+3 × 4	3×4	4	0	1.5	2 (×4)	3.5	Easy
+5 × 8	5×8	6	0	1.5	4 (×5)	3.5	Easy
+9 × 8	9×8	7	0	1.5	3 (×9)	5.5	Medium
+6 × 6	6×6	6	0	1.5	2 (tie)	5.5	Medium
+6 × 7	6×7	6	0	1.5	0	7.5	Medium
+7 × 8	7×8	7	0	1.5	0	8.5	Medium ✓
+13 × 7	13×7	8	2	1.5	0	11.5	Hard
+12 × 12	12×12	9	5	0	2 (tie)	12	Hard
+47 × 63	47×63	14	5	6	0	25	Expert
+99 × 99	99×99	16	5	6	2 (tie)	25	Expert
+Both your anchors land where you wanted. Note the nice emergent behavior: 5 × 8 (=40) is Easy but 6 × 7 (=42) is Medium — nearly identical products, but ×5 is genuinely easier than ×6/×7, and the discount captures that.
+
+Honest caveat (worth your attention before I build it)
+The additive model has one known soft spot: round products from friendly multipliers. For example 25 × 4 = 100 scores D ≈ 9.5 (Hard) under the starting weights, even though most people find it easy (double-double, or "quarter of 100"). This is exactly what the tunable weights and the validation test exist for — bumping the power-of-two discount or adding a "round result" discount moves it to Medium/Easy.
+
+If you want maximal fidelity instead of tuning knobs, there's a more faithful alternative: minimum cost over a set of named strategies (recall, doubling, ×5-via-halving, ×9-via-subtraction, distribute, grid). Difficulty = the cheapest applicable strategy, which is why one friendly operand can rescue a big problem. It's more code and fiddlier to calibrate, but it handles 25×4 correctly with no special-casing. My recommendation: start with the additive model (simpler, easier to test and explain), keep the strategy model in our back pocket. I'll note both in DIFFICULTY.md.
+
+Pool building & commutativity
+7×8 and 8×7 are the same fact, so I'll canonicalize to a ≤ b for both pooling and spaced-repetition keys (key = "7x8"), optionally randomizing display order. Each tier's pool is every canonical pair whose D falls in its band — roughly 4,851 total canonical problems across the four tiers, computed once and memoized per tier. I'll verify during implementation that Easy stays well-populated (it will: all ×2, ×5, round-tens, small products, and small squares qualify).
+
+Part 2 — Spaced repetition + no-immediate-repeat
+A lightweight Leitner scheduler in a pure src/srs.ts module. Per canonical problem, a small record persisted to localStorage:
+
+{ box, dueAt, lastSeen, seen, correct, incorrect }
+Box intervals (tunable): Box 0 ≈ 45 s ("soon"), 1 ≈ 5 min, 2 ≈ 30 min, 3 ≈ 4 h, 4 ≈ 1 day, 5 ≈ 4 days ("a long time"). Only problems the user actually sees get a record, so the store stays tiny.
+
+Correct → box goes up one, dueAt = now + interval[newBox] → parked for a long time. ✓ your requirement
+Incorrect → box resets to 0, dueAt = now + ~45 s → resurfaces soon but not instantly. ✓
+Shown but not graded (timer auto-advanced, user didn't tap) → no box change, small cooldown so it doesn't repeat immediately.
+Selection algorithm (given the active tier's pool):
+
+Drop anything in a recency queue of the last ~8 shown problems → hard "no soon repeat" guard.
+Prefer due items (dueAt ≤ now), weighting toward lower boxes (struggling) and most-overdue, with weighted-random so it's not predictable.
+If nothing is due, introduce never-seen items, then lowest-box not-due items.
+Relax the recency window only if the tier pool is smaller than the window.
+selectNext, gradeRecord, and initialRecord all take injected now and rng → deterministic and trivially unit-testable, no clock/mocking gymnastics.
+
+Part 3 — The ✓ / ✗ buttons
+They live in the quiz display area and are active only during the answer phase (once the user has seen a × b = product and can self-report). Green ✓ uses your existing --success; red ✗ uses --danger. During the question phase they're disabled (space reserved, so no layout shift).
+
+Interaction (my recommended default): tapping a grade records it and advances straight to the next problem — snappy, lets a confident user rip through. If they never tap, the answer timer expires and it advances ungraded. Fully optional, exactly as you described.
+
+Responsive & accessible: two real <button> elements in a flex row, flex: 1, min-height ~56 px (comfortably past the 44×44 touch-target rule), stacking cleanly under your existing @media (max-width: 600px). Real accessible names ("I answered correctly" / "I answered incorrectly") so Playwright can target them with getByRole per your conventions. I'll wire them with addEventListener rather than the legacy inline onclick globals — slightly cleaner and keeps main.ts untouched.
+
+One honesty note: self-reported correctness is unverified (no answer-entry box — you didn't ask for one). Mastery reflects what the user claims. A real answer-input mode is a clean future extension but is out of scope here.
+
+Part 4 — Preferences in localStorage
+You already persist settings (mathQuizSettings) and theme (theme). I'll add one key for progress — mathQuizProgress — holding the SRS store wrapped with a version field, validated on load and safely reset on shape mismatch (mirroring your existing corrupted-settings handling). Debounced writes, same as settings. No behavior change to the existing keys.
+
+Part 5 — Architecture & file manifest
+Stays TypeScript 6, strict, no any, no new dependencies (this is all pure TS + DOM). The difficulty slider stays 1–4 with the same Easy/Medium/Hard/Expert names — only their meaning changes — so ARIA and most of the UI are untouched.
+
+Add: src/difficulty.ts, src/srs.ts, src/__tests__/difficulty.test.ts, src/__tests__/srs.test.ts, DIFFICULTY.md
+Change: src/types.ts (new Grade/SrsRecord/SrsStore types; retire DifficultyRange), src/utils.ts (drop range-based generation; add loadProgress/saveProgress; repoint generateProblem/generateSeed), src/state.ts (session-stat signals + isGradingPhase), src/app.ts (SRS-aware startNextProblem, gradeAnswer, recency queue, grade-button wiring, progress load/save), index.html (grade buttons + small session-stats readout), src/style.css (grade-button styles), src/__tests__/utils.test.ts, src/__tests__/state.test.ts, e2e/pages/quiz-page.ts, e2e/quiz.spec.ts, README.md, MIGRATION.md, manual-testing-notes.md
+Delete: none. (main.ts, CI, Dockerfile, playwright/vite/vitest configs, export.sh, setup.sh all untouched — new source and test files are picked up automatically.)
+Manual mode (counter × seed) currently derives seed from the difficulty range, which is going away. I'll decouple it — seed becomes a random 2..12 multiplier independent of tier — so the feature keeps working with minimal churn. (It's a bit vestigial; say the word and I'll remove it instead.)
+
+Part 6 — Testing
+Unit: new difficulty.test.ts (trivial gate; the two anchors; commutativity score(a,b)==score(b,a); monotonic sanity 2×3 ≤ 7×8 ≤ 47×63; tiers non-empty and disjoint; strip/power-of-ten cases). New srs.test.ts (grading transitions; incorrect → due soon but > now; correct → parked; recency exclusion; due-first selection; never-seen introduction — all deterministic via injected now/rng). Updated utils.test.ts (replace range assertions with classifyProblem tier checks; add progress round-trip + versioned/corrupted handling) and state.test.ts (cover isGradingPhase and session signals). Coverage stays high because the new logic is pure.
+
+E2E: update the POM (drop DIFFICULTY_MAP ranges / expectMultiplierInRange; add grade-button locators and gradeCorrect/gradeIncorrect/expectGradingButtonsVisible), rewrite the "difficulty updates multiplier range" test to assert the tier name, and add a Grading block (buttons appear in answer phase, hidden in question phase, each advances to a new problem) plus a mobile touch-target check. SRS timing/rng is covered at the unit level rather than E2E to avoid flakiness. All new specs keep your conventions: getByRole, web-first assertions, \u00D7 escapes, evaluate()+dispatchEvent for the slider, no waitForTimeout.
+
+Part 7 — Documentation
+DIFFICULTY.md (new): the scoring model, the tier bands, the validation table, and the strategy-model alternative. README.md: rewrite the Difficulty section (tiers, not ranges; ×0/×1 skipped), add self-assessment + spaced-repetition features and progress persistence, and fix the stale bits I noticed (it says "Vite 7" and lists preview/test:ui/test:coverage/test:e2e:ui scripts that aren't in package.json). MIGRATION.md: note the new modules and the new localStorage key. manual-testing-notes.md: new sections for grading, spaced repetition, the new difficulty tiers, and progress persistence, plus an updated post-change checklist.
+
+Decisions before I build (defaults in bold — "go with defaults" is a fine answer)
+Difficulty tuning: ship the additive model with the thresholds above (default), or invest in the richer strategy-model for cases like 25×4?
+Grading tap: advance immediately on ✓/✗ (default), or record and let the answer timer finish?
+SRS feel: time-based intervals, "soon" ≈ 45 s / "long" ≈ days (default), or count-based ("resurface after N questions")?
+Manual mode: keep it with a decoupled 2–12 seed (default), or remove it?
+Extras: include a small session ✓/✗ counter (default: yes); add keyboard shortcuts for grading (default: no)?
+Tell me to proceed with the defaults or adjust any, and I'll deliver the complete set of full files — code, tests, and docs — in one pass.
+
+Invest in the richer strategy-model for cases like 25x4 do the best you can and make it the best it can be remember to document and add unit tests for everything though please make sure we cover all the scenarios
+Advance immediately on grading tap
+SRS feel - default
+Remove manual mode
+Include a small session counter yes, add keyboard shortcuts for grading also yes but please make sure mobile / touch works as well if it is not possible to do both, prefer mobile / touch over keyboard
+
+Architected comprehensive feature overhaul with rigorous testing strategy
+Architected comprehensive feature overhaul with rigorous testing strategy
+I'm locking in the key decisions: implementing a richer strategy-based difficulty model with comprehensive testing, advancing immediately when grading, using time-based SRS defaults with specific intervals, removing manual mode entirely, and setting up a session counter.
+
+Now I'm moving into the implementation phase—I need to deliver complete, fully-typed files for everything that changes, plus updated documentation. I'll run the full toolchain (lint, type-check, unit tests) to verify everything works, though I can't run the full e2e container build here due to environment constraints.
+
+The challenge is that I only have the dump.txt export, not the actual checked-out repo, so I'll need to reconstruct the project structure, install dependencies (the network allowlist includes npm and yarn registries), and work with what appear to be future-dated or hypothetical package versions like TypeScript 6, Vite 8, and ESLint 10.
+
+Since these versions likely don't exist on the real npm registry yet, I can't actually run the full toolchain. Instead, I'll focus on validating the TypeScript logic itself—either by writing the pure functions in a way I can test with a real available TypeScript compiler, or by porting the logic to a runnable form to verify the difficulty scores and SRS calculations work correctly.
+
+The key is to actually run the difficulty algorithm and confirm that the tier assignments match my claims—like checking whether 64×10 scores as Easy and 7×8 as Medium. I can reconstruct the source files and write the algorithm in plain JavaScript or TypeScript, then execute it in Node to generate a verification table showing the actual outputs. I'll set up a separate verification sandbox with real TypeScript and Vitest to type-check and run unit tests against my pure logic modules in isolation, which will confirm correctness without needing the full project stack. Let me first check what's available in the environment—Node version, npm, and network access to install the necessary tools.
+
+Real TypeScript 5.x supports all the features I'm using (satisfies operator, readonly, Map, for...of), so type-checking will work fine. For the sandbox tsconfig, I'll use ES2022/ESNext as the lib target since real TS 5.x may not recognize "ES2025" as a lib string, though the actual project tsconfig will keep ES2025 as specified.
+
+My plan is to reconstruct the project into a writable directory and author all new and changed files there.
+
+Then I'll set up a sandbox with real TypeScript, Vitest, and jsdom to verify the pure modules by running type-checking and tests, including a quick script to validate the difficulty tier calculations and confirm the anchor values. I'm mapping out which files need changes across the codebase—state management, UI components, tests, and documentation all have manual mode references that need to be removed. Before diving into implementation, I should design the difficulty engine architecture precisely to ensure consistency across all the new and modified files.
+
+Now I'm thinking through the cost-based strategy model for calculating problem difficulty. I'll define elementary operation costs as building blocks—single-digit multiplication recall gets a base cost depending on the operands and product size, with trivial cases like multiplying by 0 or 1 costing nothing. Then I'll layer strategies on top of these primitives and assign total costs based on how many steps each strategy requires, using thresholds to tier problems into difficulty levels. I'm realizing that easing for facts like ×2, ×5, and ×9 should happen at the strategy level when choosing between decomposition methods, not within the factCost function itself. So I'll keep factCost simple as a problem-size proxy: (x-1)*(y-1) with a discount for squares, then verify this produces reasonable cost values.
+
+Now I'm thinking through the costs for other operations—addition needs to account for carries when combining partial products, and doubling a number similarly has a cost based on how many carries occur during the doubling operation.
+
+I'm laying out the different strategies for multiplication, where each one can consider both operand orders and pick whichever is more efficient. The core problem is multiplying two stripped operands (after removing trailing zeros, which each add a small fixed cost). If either operand is 1, the cost is nearly trivial, and I'm handling trailing zeros as a preprocessing step before the strategies kick in. The distribute strategy breaks down m×n into (m÷10)×n×10 + (m mod 10)×n, where the ×10 is free; the cost is the sum of factoring costs for the two sub-multiplications plus the addition cost. Now I'm laying out the different strategies for computing m×n when both operands are stripped and at least 2: recall (for single-digit pairs, costing a base amount plus the product itself), and I need to think through how to weight recall against other approaches like distribution or direct computation. The issue is that my cost function weights single-digit hard facts too heavily compared to multi-digit computations—7×8 shouldn't be easier than 13×7. I need to recalibrate factCost to a logarithmic scale so that recall difficulty and computational difficulty sit on the same footing, placing genuinely complex multi-step problems higher than isolated hard facts. Now I'm working through how to calculate the cost of a two-digit multiplication like 13×7 by breaking it into parts: 10×7 (which is free since multiplying by 10 is just shifting) plus 3×7, where the 3×7 part costs 1 point. Then I need to add the partial products 70 and 21, which gives 91 with no carry in the units place.
+
+But this decomposition approach is giving me a total cost of only 2, which seems too low compared to 7×8 at cost 4. The real issue is that my atomic cost model isn't capturing the cognitive load of holding intermediate results and coordinating multiple steps—that's where the actual difficulty lies, not just in the individual facts themselves. I need to add a penalty for the coordination and working memory demands of multi-step computation.
+
+So the cost formula becomes: the base atomic costs plus a coordination penalty that grows with the number of sub-operations involved. A single recall has no coordination overhead, but something like distributing 13×7 into partial products, holding them, and adding them together creates real working memory load that scales with how many steps you're juggling. I need to stop hand-tuning and actually run the model against real data to see if the ordering makes sense—that's the only way to validate whether my constants are working. Let me implement the cost model cleanly and then iterate the parameters by testing it across a range of problems until the tiers settle into something sensible.
+
+Defining the cost model implementation... Adding cost functions for addition and doubling strategies... Adding more cost functions...
+
+Now I'm defining the core recursive function that picks the best strategy for any pair, then wrapping it to handle leading zeros. I'll need to tune the coordination penalties and various cost parameters empirically across the test domain to make sure multi-digit multiplication stays appropriately expensive compared to single-digit cases.
+
+Let me verify the 25×4 case under the doubling strategy: with a power of 4, that's two doublings. The first doubles 25 to 50 with one carry, then doubles 50 to 100 with another carry. Both steps incur the doubling cost plus carry penalties, which should keep the total low enough to classify it as easy or medium—exactly the behavior the user wanted. So the distribute strategy for 25×4 costs around 5.25, which is slightly higher than the doubling approach at 5—putting it right at the Easy/Medium boundary, much better than the additive model's 9.5. I need to actually implement and run this to validate the calibration. I'm also wondering whether the factCost calculation should recursively apply the best sub-strategy available, like using doubling when multiplying by 2. Distribute requires at least a 2-digit operand, so for pure single-digit multiplication it returns infinity and recall becomes the only option (along with the special strategies for doubling, five, and nine). I'm checking edge cases around stripped operands — they never end in zero after stripping, so they're either single digits 2–9, the value 1, or multi-digit numbers like 47, 13, 99, etc.
+
+—all within the 2-digit range since the original max is 99. Now I'm setting up the tier thresholds by computing difficulty across all canonical pairs, aiming to anchor the easy tier around small facts like ×2, ×5, ×10, the medium tier for harder single-digit facts plus easier 2-digit products, and the hard tier for the most challenging multiplications.
+
+For the SRS system, I'm defining the data structures to track each card's box level, due date, and performance history, along with constants for the spaced repetition intervals—starting at 45 seconds and doubling roughly each step up to 4 days for the final box.
+
+Defining the core functions... Refining the selection logic so that unseen problems are treated as due by default, then filtering candidates into a due list based on their record's dueAt timestamp. If there are due items, I'm weighting them by priority (lower box gets higher weight), how overdue they are, and whether they're unseen, then picking one randomly. Otherwise I'm selecting the soonest-due candidate, breaking ties randomly and favoring lower boxes. I'm also making the weighting deterministic for testing by using a stubbed random number generator.
+
+For the priority calculation, I'm sorting candidates by lowest box first, then by how overdue they are, then applying an unseen bonus. The recency queue will live at the module level in app.ts and get passed into selectNext. Now I need to rewrite app.ts to remove the manual mode logic.
+
+I'm stripping out the counter, seed, and auto-update timer, keeping just the theme toggle and quiz functionality. The new game loop flows from question to answer, then auto-advances unless it needs grading. I'm updating the signals in state.ts to track session correct and incorrect counts instead of the manual mode variables, and rethinking what displayText shows when the app is idle.
+
+For the idle state, I'm replacing the manual branch logic with a simple check: if the quiz isn't active, show "Press Start Quiz" to match the initial HTML. The displayText computed signal will now handle three cases—idle prompt, the question itself, and the answer with the product. I'll need to rewrite the state tests that were checking the old manual mode behavior.
+
+The SRS store is still managed at the module level in app.ts...
+
+Now for the grade buttons, I'm wiring up the HTML elements with IDs and aria-labels, then adding event listeners in app.ts to call gradeAnswer with true or false. For keyboard support, I need to pick intuitive shortcuts—I'm considering ArrowRight or "j" for correct, and something like ArrowLeft or "k" for incorrect, though I want to make sure the keys are discoverable and well-documented. Settling on "c" and "x" for correct and incorrect respectively, with arrow keys as alternatives—right arrow for correct, left arrow for incorrect. I'll make sure to prevent default scrolling behavior and only activate these shortcuts during the grading phase. Since sliders are disabled during the quiz anyway, there shouldn't be any conflict with arrow key navigation, but I'll add a guard to be safe. Now thinking through how to handle this on mobile and touch devices. Adding grade buttons... I'm settling on placing the incorrect button on the left and correct on the right, with arrow keys mapped spatially to match (left arrow for incorrect, right arrow for correct) plus letter shortcuts. For visibility, I'll keep the buttons hidden during the idle state, visible but disabled and dimmed while a question is being answered, then fully enabled once an answer is submitted to avoid layout shifts.
+
+Adding styles for the button container with flexbox layout, proper spacing, and gradient backgrounds for each button state...
+
+For the utils file, I'm removing the difficulty range helpers and seed generation since those won't be needed anymore. I'll keep getDifficultyName for the slider label and randomInRange since it's used by problem generation. Now I'm deciding whether generateProblem should stay in utils or move to the difficulty module where the tier pools live — it makes more sense to keep it with the pool logic in difficulty.ts and update the test imports accordingly. I'll keep randomInRange in utils and use it within difficulty for sampling from the problem pool. Now I'm adding storage functions for progress with versioning and corruption handling using a PROGRESS_KEY constant, and I need to update the Settings type by removing the autoUpdate field since that was for manual mode.
+
+Looking at the types, I should remove DifficultyRange since it's unused, strip autoUpdate from Settings, and update AppState to track sessionCorrect and sessionIncorrect instead of counter, seed, and autoUpdateEnabled. I'm checking whether AppState is actually imported anywhere since state.ts uses individual signals rather than treating it as a single object. Updating the state object to remove the counter and seed fields while adding session tracking for correct and incorrect answers, and changing the display text to show "Press Start Quiz" when idle, the question as "a×b", and the answer as "a×b=product". I'm also adding a computed property for the grading phase and removing the increment, reset, and autoUpdate functions from the main exports, keeping only toggleQuiz and toggleTheme.
+
+For the HTML and tests, I need to remove the onclick handlers for the deleted functions and update the test suite to remove tests for difficulty ranges and seed generation, while adding tests for progress persistence with version mismatch handling.
+
+Now I'm setting up the new difficulty.test.ts file with comprehensive tests for the isTrivial function and classification logic, checking various operand pairs to ensure they're categorized correctly and that the tier assertions match the model's output. I also need to verify powers of ten work correctly, ensure all difficulty tiers have non-empty pools that partition the domain properly, and test that randomProblemForLevel generates appropriate problems for each level. I'll export the core helpers like strip, digitCount, problemKey, scoreProblem, classifyProblem, and the tier utilities so I can thoroughly test them, including verifying that problemKey treats commutative pairs like 7×8 and 8×7 as identical.
+
+For the state tests, I'm updating displayText to show "Press Start Quiz" when idle, the current question, and the answer, while removing the manual counter and seed logic but keeping progress and timer tracking. I'll add an isGradingPhase signal and reset the session in beforeEach.
+
+For the E2E tests, I'm stripping out the DIFFICULTY_MAP ranges, getMultiplier, expectMultiplierInRange, and the manual control methods like increment and reset, while keeping the display, progressBar, timerDisplay, and quiz control methods.
+
+Adding grade button locators and methods... Quiz mode handles start/stop with sliders disabled during questions, then re-enabled after answering. The grading system keeps buttons hidden initially, shows them disabled during the question phase, then enables them after the answer appears—clicking either button advances to the next problem and updates the session score. Settings now decouple difficulty from range, add time sliders for questions and answers, and improve accessibility with ARIA labels. Mobile layout keeps the display and start button visible with grade buttons accessible on tap.
+
+For documentation, I'm creating a comprehensive DIFFICULTY.md file that covers the cognitive cost philosophy, gate mechanics, stripping strategies with their cost formulas, calibrated constants and thresholds, a validation table with computed values, tier distribution counts, examples, and the spaced repetition system overview—combining both difficulty and SRS design in one place.
+
+I'll also update README.md to rewrite the Difficulty section, add the new features (self-assessment checkmarks, spaced repetition, session stats, keyboard shortcuts), remove the Manual Mode feature, and fix the Vite version, scripts list, and project structure to reflect the new difficulty.ts and srs.ts modules. Then I'll update MIGRATION.md with a brief section noting the Manual Mode removal, the new modules, the new localStorage key for progress tracking, and the settings key changes.
+
+For manual-testing-notes.md, I need to remove or replace the Manual Mode testing section, update the Difficulty Slider test cases to reflect tiers instead of ranges, and add a new Grading section covering answer-phase visibility, tap advancement, keyboard controls, touch targets, and the session counter.
+
+I also need to add sections for Spaced Repetition testing (checking that missed items resurface soon, correct answers stay parked, and no immediate repeats), Progress persistence, and update the status panel section since Mode and Last Update are gone but Correct/Incorrect counts are now there. The automated coverage section needs difficulty and SRS added, and I'll update the post-change checklist.
+
+Given how much content needs updating, I should focus on getting the logic right first—especially the difficulty and SRS mechanics—then write all the files carefully and run type-checking and unit tests in a sandbox with real TypeScript and vitest before delivering.
+
+Let me start by checking what Node and npm versions are available, then write the difficulty and SRS modules with a test harness to validate the constants and thresholds, capture the validation table and distribution numbers for documentation, write the remaining files with type-checking, and deliver everything. leaner than dumping 18 code blocks into chat. I'll create all the files in the outputs directory and use present_files to make them downloadable and viewable, then provide a summary with the manifest and key design decisions in the chat response. This satisfies the requirement for complete files while keeping the chat readable. I need to figure out the best way to present all 18 files—I'll list them all in a single present_files call, ordering by importance (difficulty.ts and srs.ts first), and note that the nested directory structure will be preserved when they're copied to the output folder. I'll create all the files under /mnt/user-data/outputs with their relative paths preserved, then present them all via present_files ordered by importance. The user gets downloadable files with correct structure, and I'll trust the system preserves the nested paths.
+
+Given the scope—18 complete, mutually-consistent files including a novel algorithm, comprehensive tests, full documentation, and a rewritten app.ts without manual mode—I need to prioritize correctness over speed. I'll verify the pure logic by running it, ensure all the app files (app.ts, index.html, state.ts, main.ts) have matching element IDs and signal names, confirm tests align with the code, and validate that docs reflect the implementation. Let me work through this methodically.
+
+I'm going to start by checking the environment and setting up the pure files for verification. I'll write the difficulty.ts logic and test it quickly—either as a Node script with experimental type stripping or by running it through tsc—to calibrate the algorithm before finalizing everything. I should also be transparent that while I can verify the unit tests and type-checking here, I won't be able to actually run the Podman E2E tests in this sandbox, but I'll write them carefully and note what I've verified versus what I couldn't execute.
+
+Show less
+Done
+Decisions locked in. Since you want the strategy-model done properly, the first thing I'm going to do is actually build and run the difficulty engine so the tiers are empirically calibrated (not hand-waved), confirm your anchors plus the 25×4 case, then write everything against verified numbers. Let me set up.
+
+
+Architected difficulty engine calibration strategy using TypeScript and iterative testing
+Architected difficulty engine calibration strategy using TypeScript and iterative testing
+
+Check Node/npm versions and available TS runners for verification
+
+Script
+I've got Node 22.22.2 with tsx available, which means I can run TypeScript directly. I'm going to set up the project directory and start building out the difficulty engine, using tsx to test and iterate on the calibration across the domain.
+
+I'll write the initial difficulty.ts file that implements the strategy model, then create a calibration script that computes D values for all canonical pairs where 2 ≤ a ≤ b ≤ 99, outputs the anchor values and spread, and shows tier distributions for different threshold candidates so I can iterate on the constants.
+
+Done
+Node 22 with tsx available — I can run the TypeScript directly. Let me scaffold and write the first version of the difficulty engine, then calibrate it empirically.
+
+
+Refined multiplication cost model with strategy-specific penalties and thresholds
+Refined multiplication cost model with strategy-specific penalties and thresholds
+
+Create working project structure
+
+Script
+I'll start by writing out the difficulty engine's calibration logic as a standalone TypeScript script to nail down the constants, then integrate it into the final implementation. After that, I need to carefully design the strategy model.
+
+
+First-pass strategy-model difficulty engine for calibration
+calib.ts
+
+Run first calibration pass
+
+Script
+Looking at these anchor problems, most of the easy multiplication problems are performing well with scores around 0.80 to 1.48, which is solid. The 25×4 problem stands out as underperforming at 5.30, suggesting there might be something about that particular calculation that's causing difficulty. The distribution approach costs 5.65, so doubling at 5.3 is cheaper. The issue is that the coordination penalty treats two doublings like independent partial products, but doubling twice should intuitively be lighter than that. Let me step back and look at how the anchors are actually distributed across the difficulty tiers. With thresholds at 3.5 and 6.5, I'm seeing that most of my test cases cluster in the Easy range, with 7×8 landing at 4.0 in Medium. I should verify whether this distribution makes sense or if I need to adjust the thresholds themselves. The issue is that 6×7 and 7×8 are both considered "hard facts" but my threshold is splitting them—6×7 comes in at 3.13 while 7×8 is 4.0, right around the 3.5 cutoff. If I want them grouped together as Medium, I'd need to lower the threshold to around 3.0, but that risks keeping easier facts like 6×6 in the Easy category when they might belong elsewhere.
+
+Given the user's explicit anchors are satisfied, I have some flexibility on where 6×7 lands. Pedagogically, it makes sense to cluster the "hard single-digit facts"—6×7, 6×8, 7×7, 7×8, 7×9, 8×8, 8×9—together in Medium since those are the ones students typically struggle with. Let me check their scores to see if that's feasible. 7×7 is actually easier than 6×7 because it's a perfect square with a built-in discount, giving 2.64. Then for 7×9, the ×9 trick makes it surprisingly efficient at just 1.6 cost, beating the recall cost of 4.44.
+
+Looking at the broader pattern, the ×9 facts and perfect squares become easier due to their tricks and memorization shortcuts, while the "pure" multiplications without tricks—like 6×7, 6×8, and 7×8—cluster around the 3-4 difficulty range where recall and calculation are roughly equivalent.
+
+This actually validates the model: 7×8 emerges as the hardest single-digit fact precisely because it lacks both a trick and square structure. The thresholds seem sound, but there's a bigger problem—the distribution skews heavily toward Expert (65-67%), making the difficulty categories unbalanced when most two-digit multiplications fall into that top tier. Looking at the score distribution, I see the percentiles cluster around 11–28, so I'm reconsidering where to draw the tier boundaries. Rather than keeping Expert at 64% of the space, I want to rebalance by pushing the Hard threshold higher and reserving Expert for the truly brutal problems. I'm also thinking through what each tier should conceptually represent — Easy as straightforward mental math tricks and small products, Medium as the harder single-digit facts plus accessible two-digit multiplication. I'm setting difficulty thresholds to calibrate the problem distribution—aiming for Easy around 3.5 or below to capture genuinely simple facts, Medium from 3.5 to 7, Hard from 7 to 15, and Expert above 15. I want to refine the scoring to handle cases like 25×4 as Easy and adjust how doubling chains are weighted so they don't inflate difficulty artificially. I'm testing whether lowering the doubling cost parameters works—setting DOUBLE_COORD to 0.8 and DOUBLE_STEP to 0.5 brings 25×4 down to 2.8, which lands it in Easy territory. Now I need to check if this breaks the difficulty scaling for larger doublings like 8×47, where tripling the doublings with carries should feel harder.
+
+Actually, I'm overcomplicating this. Let me step back and focus on what matters: I need a calibration that keeps both anchor points solid (64×10 stays Easy, 7×8 stays Medium) while making sure 25×4 doesn't land in Hard territory, since that's what the user flagged as wrong.
+
+I don't need perfect precision on whether 25×4 ends up Easy or low-Medium—either is a win. But let me try to push it toward Easy without breaking the rest of the tier distribution. I'll simplify the coordination mechanism and reconsider how single-digit facts scale across the tiers, then test a few different threshold configurations to find something clean and defensible.
+
+The core idea is to break down each strategy's cost into atomic pieces: recalling a hard fact, adding or subtracting partial products (with a carry cost), doubling a value (with its own carry cost), and a working-memory penalty for holding intermediate results. The coordination penalty is just proportional to how many partial products you're juggling at once—it's simpler to explain and more principled than my earlier approach.
+
+For doubling specifically, you only hold one running value at a time, so the hold penalty stays minimal, which naturally makes strategies like 25×4 cheaper without needing special rules. In contrast, distributing across two partials requires holding one while computing the other, and a grid method with four partials means juggling three simultaneously—both incur higher working-memory costs that explain why they're more effortful. be easier than 3.11 suggests, so maybe my cost model needs tweaking or the base values are off.
+
+Now I'm working through 47×8 using doubling instead of distribution—since 8 is a power of 2, repeated doubling should be cheaper. I'm tracking the carries as I double 47 three times to reach 376, estimating the cost of each doubling operation.
+
+For the grid method with 47×63, I'm calculating the cost of each partial product by looking up the factor costs for the digit pairs involved. For a 99×99 grid, each quadrant costs around 3.54, totaling about 14.16 before adjustments. Adding the combination penalty of 1.8, carry costs around 2, and the hold penalty of 3.6 gives roughly 21.56 total—higher than the 47×63 case, confirming the model works well across different scales.
+
+Now I'm setting up the calibration with the hold-penalty model, parameterizing the constants and printing out anchors, distributions, and candidate thresholds to lock in the final values. I'm keeping factCost as is (with the 0.7 square multiplier), setting RECALL_BASE to 0.3 so even trivial 2×2 grids have a small baseline cost rather than rounding to zero.
+
+For the rule-specific costs, I'm assigning DOUBLE_BASE at 0.7 with a carry penalty of 0.5, FIVE_BASE at 1.0 plus an extra 0.5 if the operand is odd, NINE_BASE at 1.3, and ELEVEN_BASE at 1.0 with a combine adjustment. The distribute method sums factCosts plus ADD_BASE (0.6) for each addition, carries weighted at 0.5, and a hold penalty of 1.2. The grid method similarly sums factCosts but with three additions and three holds, plus ZERO_COST at 0.3 and EASY_TRIVIAL at 0.2 for edge cases.
+
+Now I'm going to implement this in code and run it to see which strategy performs best for each anchor point, then update the calibration file accordingly.
+
+Show less
+Done
+Good first signal — anchors are close and 25×4 already dropped out of Hard. But the model leans on an ad-hoc "coordination" penalty, and I can make it both cleaner to document and more accurate by replacing it with a working-memory "hold" penalty (doubling reuses one running value, so it's naturally cheap — which is exactly why 25×4 should be easy). Let me refine and re-run, this time also reporting which strategy wins each problem.
+
+
+Refined difficulty engine with working-memory hold model + winning-strategy report
+Refined difficulty engine with working-memory hold model + winning-strategy report
+
+Want to be notified when Claude responds?
+
+
+
+
+
+Claude is AI and can make mistakes. Please double-check responses.
+
+
+
+
