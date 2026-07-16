@@ -1,26 +1,23 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { state, displayText, progressPercent, timerDisplayText } from '../state';
+import { state, displayText, progressPercent, timerDisplayText, isGradingPhase } from '../state';
 
 describe('State', () => {
   beforeEach(() => {
     // Reset state to defaults
-    state.counter.set(0);
     state.isQuizActive.set(false);
     state.currentPhase.set('idle');
     state.timeRemaining.set(0);
     state.currentProblem.set({ a: 0, b: 0 });
     state.questionTime.set(5);
     state.answerTime.set(3);
+    state.sessionCorrect.set(0);
+    state.sessionIncorrect.set(0);
   });
 
   describe('displayText computed signal', () => {
-    it('should show manual mode display when quiz is inactive', () => {
-      state.counter.set(5);
-      state.seed.set(10);
-      expect(displayText.get()).toBe('5 × 10 = 50');
-      
-      state.seed.set(7);
-      expect(displayText.get()).toBe('5 × 7 = 35');
+    it('should prompt to start the quiz when inactive', () => {
+      state.isQuizActive.set(false);
+      expect(displayText.get()).toBe('Press Start Quiz');
     });
 
     it('should show question during quiz question phase', () => {
@@ -83,6 +80,31 @@ describe('State', () => {
       state.currentPhase.set('answer');
       state.timeRemaining.set(1.2);
       expect(timerDisplayText.get()).toBe('Answer: 1.2s');
+    });
+  });
+
+  describe('isGradingPhase computed signal', () => {
+    it('is true only while the answer is showing in an active quiz', () => {
+      state.isQuizActive.set(false);
+      state.currentPhase.set('answer');
+      expect(isGradingPhase.get()).toBe(false);
+
+      state.isQuizActive.set(true);
+      state.currentPhase.set('question');
+      expect(isGradingPhase.get()).toBe(false);
+
+      state.currentPhase.set('answer');
+      expect(isGradingPhase.get()).toBe(true);
+    });
+  });
+
+  describe('session tally signals', () => {
+    it('track correct and incorrect counts independently', () => {
+      state.sessionCorrect.set(state.sessionCorrect.get() + 1);
+      state.sessionCorrect.set(state.sessionCorrect.get() + 1);
+      state.sessionIncorrect.set(state.sessionIncorrect.get() + 1);
+      expect(state.sessionCorrect.get()).toBe(2);
+      expect(state.sessionIncorrect.get()).toBe(1);
     });
   });
 });

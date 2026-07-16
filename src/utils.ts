@@ -1,25 +1,13 @@
-import { DifficultyLevel, DifficultyRange, Problem, Settings } from './types';
+import { DifficultyLevel, Settings, SrsStore } from './types';
+import { isSrsStore } from './srs';
 
 // ES2025: Use Map for O(1) lookup instead of switch statements
-const DIFFICULTY_RANGES = new Map<DifficultyLevel, DifficultyRange>([
-  [1, { min: 2, max: 5 }],   // Easy
-  [2, { min: 4, max: 8 }],   // Medium
-  [3, { min: 6, max: 12 }],  // Hard
-  [4, { min: 10, max: 20 }], // Expert
-]);
-
 const DIFFICULTY_NAMES = new Map<DifficultyLevel, string>([
   [1, 'Easy'],
   [2, 'Medium'],
   [3, 'Hard'],
   [4, 'Expert'],
 ]);
-
-const DEFAULT_RANGE: DifficultyRange = { min: 6, max: 12 };
-
-export function getDifficultyRange(level: DifficultyLevel): DifficultyRange {
-  return DIFFICULTY_RANGES.get(level) ?? DEFAULT_RANGE;
-}
 
 export function getDifficultyName(level: DifficultyLevel): string {
   return DIFFICULTY_NAMES.get(level) ?? 'Hard';
@@ -29,22 +17,9 @@ export function randomInRange(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-export function generateProblem(difficulty: DifficultyLevel): Problem {
-  const { min, max } = getDifficultyRange(difficulty);
-
-  return {
-    a: randomInRange(min, max),
-    b: randomInRange(min, max),
-  };
-}
-
-export function generateSeed(difficulty: DifficultyLevel): number {
-  const { min, max } = getDifficultyRange(difficulty);
-  return randomInRange(min, max);
-}
-
 const SETTINGS_KEY = 'mathQuizSettings';
 const THEME_KEY = 'theme';
+const PROGRESS_KEY = 'mathQuizProgress';
 
 export function loadSettings(): Settings | null {
   try {
@@ -69,6 +44,42 @@ export function saveSettings(settings: Settings): void {
   } catch (e) {
     // Silently fail if localStorage is disabled (e.g., private mode)
     console.warn('Failed to save settings:', e);
+  }
+}
+
+/**
+ * Load the spaced-repetition store. Returns null when there is nothing saved,
+ * the data is corrupt, or it was written by an incompatible version — in the
+ * last two cases the stale entry is cleared so a fresh store can take over.
+ */
+export function loadProgress(): SrsStore | null {
+  try {
+    const saved = localStorage.getItem(PROGRESS_KEY);
+    if (!saved) return null;
+
+    const parsed: unknown = JSON.parse(saved);
+    if (isSrsStore(parsed)) return parsed;
+
+    // Unrecognised or outdated shape — discard it.
+    localStorage.removeItem(PROGRESS_KEY);
+    return null;
+  } catch (e) {
+    console.error('Failed to load progress - resetting', e);
+    try {
+      localStorage.removeItem(PROGRESS_KEY);
+    } catch {
+      // Ignore if we can't remove
+    }
+    return null;
+  }
+}
+
+export function saveProgress(store: SrsStore): void {
+  try {
+    localStorage.setItem(PROGRESS_KEY, JSON.stringify(store));
+  } catch (e) {
+    // Silently fail if localStorage is disabled (e.g., private mode)
+    console.warn('Failed to save progress:', e);
   }
 }
 

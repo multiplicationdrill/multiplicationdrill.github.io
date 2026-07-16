@@ -5025,3 +5025,12 @@ Claude is AI and can make mistakes. Please double-check responses.
 00
 
 (reset?)
+
+Part 5 — Architecture & file manifest
+Stays TypeScript 6, strict, no any, no new dependencies (this is all pure TS + DOM). The difficulty slider stays 1–4 with the same Easy/Medium/Hard/Expert names — only their meaning changes — so ARIA and most of the UI are untouched.
+
+Add: src/difficulty.ts, src/srs.ts, src/__tests__/difficulty.test.ts, src/__tests__/srs.test.ts, DIFFICULTY.md
+Change: src/types.ts (new Grade/SrsRecord/SrsStore types; retire DifficultyRange), src/utils.ts (drop range-based generation; add loadProgress/saveProgress; repoint generateProblem/generateSeed), src/state.ts (session-stat signals + isGradingPhase), src/app.ts (SRS-aware startNextProblem, gradeAnswer, recency queue, grade-button wiring, progress load/save), index.html (grade buttons + small session-stats readout), src/style.css (grade-button styles), src/__tests__/utils.test.ts, src/__tests__/state.test.ts, e2e/pages/quiz-page.ts, e2e/quiz.spec.ts, README.md, MIGRATION.md, manual-testing-notes.md
+Delete: none. (main.ts, CI, Dockerfile, playwright/vite/vitest configs, export.sh, setup.sh all untouched — new source and test files are picked up automatically.)
+
+Manual mode (counter × seed) currently derives seed from the difficulty range, which is going away. I'll decouple it — seed becomes a random 2..12 multiplier independent of tier — so the feature keeps working with minimal churn. (It's a bit vestigial; say the word and I'll remove it instead.)

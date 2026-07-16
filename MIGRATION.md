@@ -53,13 +53,17 @@ This guide documents the migration from the original single HTML file to a TypeS
    - Theme switching preserved
    - Animations and styling intact
 
-## No Breaking Changes
+## No Breaking Changes (initial migration)
 
-The application behaves exactly the same as before:
-- All features work identically
-- LocalStorage keys are unchanged
-- UI/UX is preserved
+The initial HTML-to-TypeScript migration behaved exactly the same as before:
+- All features worked identically
+- LocalStorage keys were unchanged
+- UI/UX was preserved
 - No user-facing changes
+
+> **Note:** This "no breaking changes" statement applies to the original
+> migration only. The later feature overhaul described below **does** change
+> behaviour and the settings shape. See the next section.
 
 ## For Developers
 
@@ -67,10 +71,10 @@ The application behaves exactly the same as before:
 
 ```bash
 # Install dependencies
-npm install
+yarn install
 
 # Start dev server (replaces opening HTML file)
-npm run dev
+yarn dev
 ```
 
 ### Making Changes
@@ -95,3 +99,71 @@ The modular structure makes it easy to:
 3. **Collaboration**: TypeScript and tests make it easier for others to contribute
 4. **Performance**: Optimized builds and code splitting
 5. **Modern Tooling**: Latest development tools and practices
+
+---
+
+# Later Changes: Feature Overhaul
+
+A subsequent overhaul reworked how difficulty is defined, added spaced
+repetition and self-assessment, and **removed manual mode entirely**. Unlike the
+original migration, this round includes intentional breaking changes.
+
+## New Modules
+
+- **`src/difficulty.ts`** — a cognitive-cost difficulty model covering the full
+  `0–99 × 0–99` table. Difficulty is now the cost of the cheapest mental strategy
+  for a problem rather than a fixed operand range, and trivial `×0`/`×1` problems
+  are excluded. See [DIFFICULTY.md](DIFFICULTY.md).
+- **`src/srs.ts`** — a pure Leitner-box spaced-repetition scheduler that chooses
+  the next problem: no immediate repeats, correct answers parked longer, missed
+  problems resurfaced soon.
+
+## Removed: Manual Mode
+
+The entire manual mode was removed: the Increment and Reset buttons, the
+auto-update checkbox and its 3-second interval, the visibility-change handling,
+the `counter` and `seed` signals, and the `increment` / `reset` /
+`toggleAutoUpdate` global handlers. The app is now purely a timed, self-graded
+drill.
+
+## New UI
+
+- ✓ / ✗ self-assessment buttons shown during the answer phase; tapping advances
+  immediately.
+- A session tally of correct and incorrect answers.
+- Keyboard shortcuts for grading (→ / `C` for correct, ← / `X` for incorrect),
+  layered on top of touch/click.
+- The status panel now shows **Quiz State**, **Correct**, and **Incorrect**
+  (the old **Mode** and **Last Update** rows were removed).
+
+## Breaking Changes
+
+### Settings shape (`mathQuizSettings`)
+
+The `autoUpdate` field was dropped from the persisted `Settings` object. The
+current shape is:
+
+```ts
+interface Settings {
+  readonly questionTime: number;
+  readonly answerTime: number;
+  readonly difficulty: DifficultyLevel; // 1..4
+}
+```
+
+Old settings that still contain `autoUpdate` load without error — the extra
+field is simply ignored — so no manual migration is required.
+
+### New localStorage key (`mathQuizProgress`)
+
+Spaced-repetition progress is stored under a new key, `mathQuizProgress`. It is
+versioned; anything corrupt or written by an incompatible version is discarded
+and cleared on load so a fresh store can take over. This key is additive and does
+not affect existing settings or theme keys.
+
+### Difficulty semantics
+
+The difficulty slider still ranges 1–4 with the same Easy/Medium/Hard/Expert
+labels, but the problems each tier produces are entirely different: they are now
+selected by cognitive cost across the full table rather than by a small operand
+range. Existing saved difficulty values remain valid.

@@ -166,6 +166,33 @@ h1 {
     color: var(--accent-primary);
 }
 
+/* Self-assessment buttons shown during the answer phase */
+.grade-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.grade-buttons[hidden] {
+    display: none;
+}
+
+.grade-btn {
+    flex: 1;
+    min-height: 64px;
+    padding: 12px;
+    font-size: 2em;
+    line-height: 1;
+}
+
+.grade-btn.correct {
+    background: linear-gradient(135deg, var(--success), #34d399);
+}
+
+.grade-btn.incorrect {
+    background: linear-gradient(135deg, var(--danger), #f87171);
+}
+
 .controls {
     display: flex;
     flex-direction: column;
@@ -281,29 +308,6 @@ button:disabled:hover::before {
     height: 0;
 }
 
-.button-group {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-.button-group button {
-    flex: 1;
-    min-width: 120px;
-}
-
-.toggle {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.toggle input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-}
-
 .status {
     background: var(--bg-primary);
     border-radius: 8px;
@@ -357,5 +361,10 @@ button:disabled:hover::before {
     
     h1 {
         font-size: 2em;
+    }
+
+    .grade-btn {
+        font-size: 1.6em;
+        min-height: 56px;
     }
 }

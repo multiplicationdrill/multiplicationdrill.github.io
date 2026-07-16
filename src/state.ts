@@ -1,36 +1,31 @@
 import { Signal, ComputedSignal } from './signals';
 import { Problem, QuizPhase, DifficultyLevel } from './types';
-import { generateSeed } from './utils';
 
 // Application State
 export const state = {
-  counter: new Signal(0),
-  seed: new Signal(generateSeed(3)), // Initialize with default difficulty
   questionTime: new Signal(5),
   answerTime: new Signal(3),
   difficulty: new Signal<DifficultyLevel>(3),
   isQuizActive: new Signal(false),
   currentPhase: new Signal<QuizPhase>('idle'),
   timeRemaining: new Signal(0),
-  autoUpdateEnabled: new Signal(false),
   currentProblem: new Signal<Problem>({ a: 0, b: 0 }),
+  // Per-session self-assessment tally, reset each time a quiz starts.
+  sessionCorrect: new Signal(0),
+  sessionIncorrect: new Signal(0),
 } as const;
 
 // Computed Values (Derived State)
 export const displayText = new ComputedSignal(() => {
-  if (state.isQuizActive.get()) {
-    const phase = state.currentPhase.get();
-    const p = state.currentProblem.get();
-    if (phase === 'question') {
-      return `${p.a} \u00D7 ${p.b}`;
-    } else if (phase === 'answer') {
-      return `${p.a} \u00D7 ${p.b} = ${p.a * p.b}`;
-    }
+  if (!state.isQuizActive.get()) {
+    return 'Press Start Quiz';
   }
-  // Manual mode display
-  const count = state.counter.get();
-  const seed = state.seed.get();
-  return `${count} \u00D7 ${seed} = ${count * seed}`;
+
+  const p = state.currentProblem.get();
+  if (state.currentPhase.get() === 'answer') {
+    return `${p.a} \u00D7 ${p.b} = ${p.a * p.b}`;
+  }
+  return `${p.a} \u00D7 ${p.b}`;
 });
 
 export const progressPercent = new ComputedSignal(() => {
@@ -54,3 +49,9 @@ export const timerDisplayText = new ComputedSignal(() => {
   const phaseText = phase.charAt(0).toUpperCase() + phase.slice(1);
   return `${phaseText}: ${remaining.toFixed(1)}s`;
 });
+
+// True only while the answer is on screen — the window in which the learner may
+// grade themselves. Drives enabling/disabling of the grade buttons.
+export const isGradingPhase = new ComputedSignal(
+  () => state.isQuizActive.get() && state.currentPhase.get() === 'answer',
+);

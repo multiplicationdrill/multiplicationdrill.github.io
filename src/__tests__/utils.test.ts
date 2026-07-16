@@ -1,16 +1,16 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import {
-  getDifficultyRange,
   getDifficultyName,
   randomInRange,
-  generateProblem,
-  generateSeed,
   loadSettings,
   saveSettings,
+  loadProgress,
+  saveProgress,
   loadTheme,
   saveTheme,
   debounce,
 } from '../utils';
+import { applyGrade, createStore, SRS_VERSION } from '../srs';
 
 // Mock localStorage
 const localStorageMock = (() => {
@@ -26,15 +26,6 @@ const localStorageMock = (() => {
 
 Object.defineProperty(window, 'localStorage', {
   value: localStorageMock,
-});
-
-describe('getDifficultyRange', () => {
-  it('should return correct ranges for each difficulty level', () => {
-    expect(getDifficultyRange(1)).toEqual({ min: 2, max: 5 });
-    expect(getDifficultyRange(2)).toEqual({ min: 4, max: 8 });
-    expect(getDifficultyRange(3)).toEqual({ min: 6, max: 12 });
-    expect(getDifficultyRange(4)).toEqual({ min: 10, max: 20 });
-  });
 });
 
 describe('getDifficultyName', () => {
@@ -61,46 +52,6 @@ describe('randomInRange', () => {
   });
 });
 
-describe('generateProblem', () => {
-  it('should generate problems within difficulty range', () => {
-    // Test Easy difficulty
-    for (let i = 0; i < 20; i++) {
-      const problem = generateProblem(1);
-      expect(problem.a).toBeGreaterThanOrEqual(2);
-      expect(problem.a).toBeLessThanOrEqual(5);
-      expect(problem.b).toBeGreaterThanOrEqual(2);
-      expect(problem.b).toBeLessThanOrEqual(5);
-    }
-
-    // Test Expert difficulty
-    for (let i = 0; i < 20; i++) {
-      const problem = generateProblem(4);
-      expect(problem.a).toBeGreaterThanOrEqual(10);
-      expect(problem.a).toBeLessThanOrEqual(20);
-      expect(problem.b).toBeGreaterThanOrEqual(10);
-      expect(problem.b).toBeLessThanOrEqual(20);
-    }
-  });
-});
-
-describe('generateSeed', () => {
-  it('should generate seed within difficulty range', () => {
-    // Test Easy difficulty
-    for (let i = 0; i < 20; i++) {
-      const seed = generateSeed(1);
-      expect(seed).toBeGreaterThanOrEqual(2);
-      expect(seed).toBeLessThanOrEqual(5);
-    }
-
-    // Test Expert difficulty
-    for (let i = 0; i < 20; i++) {
-      const seed = generateSeed(4);
-      expect(seed).toBeGreaterThanOrEqual(10);
-      expect(seed).toBeLessThanOrEqual(20);
-    }
-  });
-});
-
 describe('Settings persistence', () => {
   beforeEach(() => {
     localStorageMock.clear();
@@ -111,7 +62,6 @@ describe('Settings persistence', () => {
       questionTime: 10,
       answerTime: 5,
       difficulty: 2 as const,
-      autoUpdate: true,
     };
 
     saveSettings(settings);
@@ -131,6 +81,47 @@ describe('Settings persistence', () => {
     expect(consoleSpy).toHaveBeenCalled();
 
     consoleSpy.mockRestore();
+  });
+});
+
+describe('Progress (spaced-repetition) persistence', () => {
+  beforeEach(() => {
+    localStorageMock.clear();
+  });
+
+  it('should round-trip a store', () => {
+    const store = applyGrade(createStore(), '7x8', 'correct', 1_000);
+    saveProgress(store);
+    expect(loadProgress()).toEqual(store);
+  });
+
+  it('should return null when nothing is saved', () => {
+    expect(loadProgress()).toBeNull();
+  });
+
+  it('should discard corrupted data and clear it', () => {
+    localStorageMock.setItem('mathQuizProgress', '{not valid json');
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    expect(loadProgress()).toBeNull();
+    expect(consoleSpy).toHaveBeenCalled();
+    expect(localStorageMock.getItem('mathQuizProgress')).toBeNull();
+
+    consoleSpy.mockRestore();
+  });
+
+  it('should reject a store written by an incompatible version', () => {
+    const stale = JSON.stringify({ version: SRS_VERSION + 1, records: {} });
+    localStorageMock.setItem('mathQuizProgress', stale);
+
+    expect(loadProgress()).toBeNull();
+    // stale entry should be cleared so a fresh store can take over
+    expect(localStorageMock.getItem('mathQuizProgress')).toBeNull();
+  });
+
+  it('should reject structurally invalid data (missing records)', () => {
+    localStorageMock.setItem('mathQuizProgress', JSON.stringify({ version: SRS_VERSION }));
+    expect(loadProgress()).toBeNull();
   });
 });
 

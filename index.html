@@ -9,13 +9,21 @@
     <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
     <div class="container">
         <h1>Reactive Math Quiz</h1>
-        
+
         <div class="section">
             <div class="quiz-display" id="display">Press Start Quiz</div>
             <div class="progress-container">
                 <div class="progress-bar" id="progressBar"></div>
             </div>
             <div class="timer-display" id="timerDisplay">Ready</div>
+            <div class="grade-buttons" id="gradeButtons" hidden>
+                <button id="gradeIncorrect" class="grade-btn incorrect"
+                        aria-label="I answered incorrectly"
+                        title="Incorrect (Left Arrow or X)">✗</button>
+                <button id="gradeCorrect" class="grade-btn correct"
+                        aria-label="I answered correctly"
+                        title="Correct (Right Arrow or C)">✓</button>
+            </div>
         </div>
 
         <div class="section">
@@ -47,30 +55,18 @@
             </div>
         </div>
 
-        <div class="section">
-            <h3 style="margin-bottom: 15px;">Manual Mode</h3>
-            <div class="button-group">
-                <button id="incrementBtn" onclick="increment()">Increment</button>
-                <button id="resetBtn" onclick="reset()">Reset</button>
-            </div>
-            <div class="toggle" style="margin-top: 15px;">
-                <input type="checkbox" id="autoUpdate" onchange="toggleAutoUpdate(this.checked)">
-                <label for="autoUpdate">Auto-update (3s intervals)</label>
-            </div>
-        </div>
-
         <div class="status">
-            <div class="status-item">
-                <span>Mode:</span>
-                <span class="status-value" id="modeStatus">Manual</span>
-            </div>
             <div class="status-item">
                 <span>Quiz State:</span>
                 <span class="status-value" id="quizStatus">Stopped</span>
             </div>
             <div class="status-item">
-                <span>Last Update:</span>
-                <span class="status-value" id="updateTime">Never</span>
+                <span>Correct:</span>
+                <span class="status-value" id="correctCount">0</span>
+            </div>
+            <div class="status-item">
+                <span>Incorrect:</span>
+                <span class="status-value" id="incorrectCount">0</span>
             </div>
         </div>
     </div>
