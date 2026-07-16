@@ -1,41 +1,35 @@
 kushal@fedora:~/src/ts/multiplicationdrill$ cd ~/src/ts/multiplicationdrill/; time yarn outdated; time yarn install; time yarn lint; time bash export.sh; time yarn; time yarn build; time yarn test:all; time git add .; time git commit --message "add all files"; time git remote show origin; time git push origin --all;
 yarn outdated v1.22.22
-error No lockfile in this directory. Run `yarn install` to generate one.
-info Visit https://yarnpkg.com/en/docs/cli/outdated for documentation about this command.
-
-real	0m0.146s
-user	0m0.103s
-sys	0m0.051s
-yarn install v1.22.22
-info No lockfile found.
-[1/4] Resolving packages...
-⠁ (node:88081) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(node:99878) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
 (Use `node --trace-deprecation ...` to show where the warning was created)
-[2/4] Fetching packages...
-[3/4] Linking dependencies...
-warning Workspaces can only be enabled in private projects.
-warning Workspaces can only be enabled in private projects.
-warning Workspaces can only be enabled in private projects.
-warning Workspaces can only be enabled in private projects.
-warning Workspaces can only be enabled in private projects.
-warning Workspaces can only be enabled in private projects.
-warning Workspaces can only be enabled in private projects.
-warning Workspaces can only be enabled in private projects.
-[4/4] Building fresh packages...
+info Color legend : 
+ "<red>"    : Major Update backward-incompatible updates 
+ "<yellow>" : Minor Update backward-compatible features 
+ "<green>"  : Patch Update backward-compatible bug fixes
+Package    Current Wanted Latest Package Type    URL                            
+typescript 6.0.3   6.0.3  7.0.2  devDependencies https://www.typescriptlang.org/
+Done in 1.48s.
 
-success Saved lockfile.
-Done in 4.62s.
+real	0m1.642s
+user	0m0.895s
+sys	0m0.265s
+yarn install v1.22.22
+[1/4] Resolving packages...
+(node:99890) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+success Already up-to-date.
+Done in 0.07s.
 
-real	0m4.769s
-user	0m1.812s
-sys	0m0.454s
+real	0m0.198s
+user	0m0.167s
+sys	0m0.071s
 yarn run v1.22.22
 $ eslint src --max-warnings 0
-Done in 1.12s.
+Done in 1.09s.
 
-real	0m1.245s
-user	0m1.871s
-sys	0m0.285s
+real	0m1.213s
+user	0m1.895s
+sys	0m0.276s
 ################################################################################
 #                                                                              #
 #   REPOSITORY CONTEXT DUMP                                                    #
@@ -45,7 +39,7 @@ sys	0m0.285s
 
 DUMP METADATA
 ═════════════════════════════════════════════════════════════════════════════════
-  Generated at   : 2026-07-16T04:09:29-04:00
+  Generated at   : 2026-07-16T04:24:52-04:00
   Generator      : export.sh
   Host           : fedora
   User           : kushal
@@ -55,18 +49,18 @@ REPOSITORY METADATA
 ═════════════════════════════════════════════════════════════════════════════════
   Repository root: /home/kushal/src/ts/multiplicationdrill
   Branch         : master
-  Commit (full)  : 77f2e192a82afcd273f25ee61026e5d39c2252d4
-  Commit (short) : 77f2e19
-  Commit date    : 2026-07-16 04:09:14 -0400
-  Commit message : delete lockfile
+  Commit (full)  : 6a15f9ec43fe49a9316ae49383791c4b0ba9b7ef
+  Commit (short) : 6a15f9e
+  Commit date    : 2026-07-16 04:24:41 -0400
+  Commit message : include more files
   Remote origin  : git@github.com:multiplicationdrill/multiplicationdrill.github.io.git
-  Files included : 36
+  Files included : 39
   Excluded path  : docs/llm/
-  Excluded files : yarn.lock, package-lock.json, pnpm-lock.yaml, *.svg, *.png, *.ico, *.md, docs/*, scripts/*, .gitignore, .eslintrc.cjs, eslint.config.js, src/vite-env.d.ts
+  Excluded files : yarn.lock, package-lock.json, pnpm-lock.yaml, *.svg, *.png, *.ico, *.md, docs/*, scripts/*
 
 GIT WORKING TREE STATUS (first 20 lines)
 ═════════════════════════════════════════════════════════════════════════════════
-?? yarn.lock
+  (clean — no uncommitted changes)
 
 ################################################################################
 # FILE: export.sh  [THIS SCRIPT — included for full context]
@@ -75,10 +69,10 @@ GIT WORKING TREE STATUS (first 20 lines)
 --- METADATA ---
   File name:             export.sh
   Relative path:         export.sh
-  Size:                  17.1 KiB (17554 bytes)
-  Last modified:         2026-07-14 19:29:59.936545352 -0400
+  Size:                  17.0 KiB (17470 bytes)
+  Last modified:         2026-07-16 04:24:01.972104869 -0400
   Permissions:           -rwxr-xr-x
-  SHA-256:               eb0253320a7aac96a7ba66c2d53ae4697a869051ffccb1f164a6e5b6900169b1
+  SHA-256:               eba49c7b7d64d8274f11139531a8da7f9604b925ce2c5ee7f0baaf5aa1a15238
   MIME type:             text/x-shellscript
 
 --- CONTENT ---
@@ -149,10 +143,6 @@ EXCLUDE_FILES=(
     "*.md"
     "docs/*"
     "scripts/*"
-    ".gitignore"
-    ".eslintrc.cjs"
-    "eslint.config.js"
-    "src/vite-env.d.ts"
 )
 
 EXCLUDE_FILES_DISPLAY="$(printf '%s, ' "${EXCLUDE_FILES[@]}")"
@@ -483,7 +473,7 @@ FOOTER
 mv -f "$TMP_FILE" "$OUTPUT_FILE"
 
 ################################################################################
-# FILE TREE  (all 36 included files)
+# FILE TREE  (all 39 included files)
 ################################################################################
 .
 .
@@ -494,11 +484,13 @@ mv -f "$TMP_FILE" "$OUTPUT_FILE"
 │   │   ├── index.ts
 │   │   └── quiz-page.ts
 │   └── quiz.spec.ts
+├── eslint.config.js
 ├── export.sh
 ├── .github
 │   └── workflows
 │       ├── ci-cd.yml
 │       └── coverage-comment.yml
+├── .gitignore
 ├── index.html
 ├── manual-testing-notes.md
 ├── MIGRATION.md
@@ -526,7 +518,8 @@ mv -f "$TMP_FILE" "$OUTPUT_FILE"
 │   │   └── utils.test.ts
 │   ├── typescript.svg
 │   ├── types.ts
-│   └── utils.ts
+│   ├── utils.ts
+│   └── vite-env.d.ts
 ├── tsconfig.e2e.json
 ├── tsconfig.json
 ├── vite.config.ts
@@ -1399,6 +1392,150 @@ test.describe('Mobile Viewport', () => {
 
 
 ################################################################################
+# FILE: eslint.config.js
+################################################################################
+
+--- METADATA ---
+  File name:             eslint.config.js
+  Relative path:         eslint.config.js
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/eslint.config.js
+  Size:                  4.2 KiB (4308 bytes)
+  Last modified:         2026-01-07 12:58:46.080365678 -0500
+  Permissions:           -rw-r--r--
+  Owner:                 kushal:kushal
+  Inode:                 3382213
+  Hard links:            1
+  MIME type:             application/javascript
+  SHA-256:               a5e627bfb67d989a9ce14fc432eacce4905d2275aa892cb90706464b363c28bd
+  Last git commit:       a3c0d73 2026-01-07 11:59:20 -0600 run claude script
+
+--- CONTENT ---
+/**
+ * ESLint Configuration
+ * 
+ * Follows Playwright best practices:
+ * - Includes @typescript-eslint/no-floating-promises to catch missing awaits
+ * - This is CRITICAL for Playwright tests where async operations MUST be awaited
+ * 
+ * @see https://playwright.dev/docs/best-practices#lint-your-tests
+ */
+
+import js from '@eslint/js';
+import typescript from '@typescript-eslint/eslint-plugin';
+import tsParser from '@typescript-eslint/parser';
+
+export default [
+  js.configs.recommended,
+  {
+    // ==========================================================================
+    // MAIN SOURCE FILES CONFIGURATION
+    // ==========================================================================
+    files: ['src/**/*.ts', 'src/**/*.tsx'],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        ecmaVersion: 2020,
+        sourceType: 'module',
+        // Enable project for type-aware linting
+        // Required for no-floating-promises rule
+        project: './tsconfig.json',
+      },
+      globals: {
+        // Browser globals
+        window: 'readonly',
+        document: 'readonly',
+        console: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
+        setInterval: 'readonly',
+        clearInterval: 'readonly',
+        requestAnimationFrame: 'readonly',
+        cancelAnimationFrame: 'readonly',
+        localStorage: 'readonly',
+        HTMLElement: 'readonly',
+        HTMLButtonElement: 'readonly',
+        HTMLInputElement: 'readonly',
+      },
+    },
+    plugins: {
+      '@typescript-eslint': typescript,
+    },
+    rules: {
+      ...typescript.configs.recommended.rules,
+      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-non-null-assertion': 'off',
+      '@typescript-eslint/no-unused-vars': ['error', {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+      }],
+    },
+  },
+  {
+    // ==========================================================================
+    // E2E TEST FILES CONFIGURATION
+    // ==========================================================================
+    // PLAYWRIGHT BEST PRACTICE: Lint your tests with no-floating-promises
+    // This catches missing await statements which cause flaky tests
+    // ==========================================================================
+    files: ['e2e/**/*.ts'],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        ecmaVersion: 2020,
+        sourceType: 'module',
+        // CRITICAL: Must enable project for no-floating-promises
+        project: './tsconfig.e2e.json',
+      },
+      globals: {
+        // Node.js globals for E2E tests
+        console: 'readonly',
+        process: 'readonly',
+      },
+    },
+    plugins: {
+      '@typescript-eslint': typescript,
+    },
+    rules: {
+      ...typescript.configs.recommended.rules,
+      '@typescript-eslint/no-explicit-any': 'off', // More lenient in tests
+      '@typescript-eslint/no-non-null-assertion': 'off',
+      '@typescript-eslint/no-unused-vars': ['error', {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+      }],
+      // ========================================================================
+      // CRITICAL RULE FOR PLAYWRIGHT
+      // ========================================================================
+      // This rule ensures all async calls are awaited
+      // Without this, you might write:
+      //   page.click('button')  // WRONG - not awaited!
+      // When you should write:
+      //   await page.click('button')  // CORRECT
+      //
+      // This prevents a HUGE class of flaky tests
+      // ========================================================================
+      '@typescript-eslint/no-floating-promises': 'error',
+      
+      // Also enable this to catch void returns being ignored
+      '@typescript-eslint/require-await': 'warn',
+    },
+  },
+  {
+    // ==========================================================================
+    // UNIT TEST FILES CONFIGURATION
+    // ==========================================================================
+    files: ['src/**/*.test.ts', 'src/**/*.spec.ts'],
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
+    },
+  },
+  {
+    ignores: ['dist/**', 'coverage/**', 'node_modules/**', '*.cjs', 'scripts/**'],
+  },
+];
+
+
+################################################################################
 # FILE: export.sh
 ################################################################################
 
@@ -1406,15 +1543,15 @@ test.describe('Mobile Viewport', () => {
   File name:             export.sh
   Relative path:         export.sh
   Absolute path:         /home/kushal/src/ts/multiplicationdrill/export.sh
-  Size:                  17.1 KiB (17554 bytes)
-  Last modified:         2026-07-14 19:29:59.936545352 -0400
+  Size:                  17.0 KiB (17470 bytes)
+  Last modified:         2026-07-16 04:24:01.972104869 -0400
   Permissions:           -rwxr-xr-x
   Owner:                 kushal:kushal
   Inode:                 20898100
   Hard links:            1
   MIME type:             text/x-shellscript
-  SHA-256:               eb0253320a7aac96a7ba66c2d53ae4697a869051ffccb1f164a6e5b6900169b1
-  Last git commit:       2e82b3b 2026-07-14 19:30:16 -0400 update exclude list
+  SHA-256:               eba49c7b7d64d8274f11139531a8da7f9604b925ce2c5ee7f0baaf5aa1a15238
+  Last git commit:       6a15f9e 2026-07-16 04:24:41 -0400 include more files
 
 --- CONTENT ---
 #!/usr/bin/env bash
@@ -1484,10 +1621,6 @@ EXCLUDE_FILES=(
     "*.md"
     "docs/*"
     "scripts/*"
-    ".gitignore"
-    ".eslintrc.cjs"
-    "eslint.config.js"
-    "src/vite-env.d.ts"
 )
 
 EXCLUDE_FILES_DISPLAY="$(printf '%s, ' "${EXCLUDE_FILES[@]}")"
@@ -2140,6 +2273,64 @@ jobs:
     - name: Write to Job Summary
       run: cat code-coverage-results.md >> $GITHUB_STEP_SUMMARY
 
+
+################################################################################
+# FILE: .gitignore
+################################################################################
+
+--- METADATA ---
+  File name:             .gitignore
+  Relative path:         .gitignore
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/.gitignore
+  Size:                  409 B (409 bytes)
+  Last modified:         2026-01-07 12:17:53.437517049 -0500
+  Permissions:           -rw-r--r--
+  Owner:                 kushal:kushal
+  Inode:                 3382207
+  Hard links:            1
+  MIME type:             text/plain
+  SHA-256:               691cf7e5f4cad5046ede3c6743ad313addb381390fdbdad69c5cc7caa5c64465
+  Last git commit:       52f2f08 2025-08-03 09:16:00 -0700 add playwright tests
+
+--- CONTENT ---
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Test coverage
+coverage
+.nyc_output
+
+# Playwright
+/test-results/
+/playwright-report/
+/playwright/.cache/
+
+# Environment files
+.env
+.env.local
+.env.*.local
 
 ################################################################################
 # FILE: index.html
@@ -6269,6 +6460,28 @@ export function debounce<T extends (...args: unknown[]) => void>(
 
 
 ################################################################################
+# FILE: src/vite-env.d.ts
+################################################################################
+
+--- METADATA ---
+  File name:             vite-env.d.ts
+  Relative path:         src/vite-env.d.ts
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/src/vite-env.d.ts
+  Size:                  38 B (38 bytes)
+  Last modified:         2026-01-07 12:17:53.438710884 -0500
+  Permissions:           -rw-r--r--
+  Owner:                 kushal:kushal
+  Inode:                 3382238
+  Hard links:            1
+  MIME type:             text/plain
+  SHA-256:               65996936fbb042915f7b74a200fcdde7e410f32a669b1ab9597cfaa4b0faddb5
+  Last git commit:       44a1ead 2025-08-03 04:49:26 -0700 add boilerplate code
+
+--- CONTENT ---
+/// <reference types="vite/client" />
+
+
+################################################################################
 # FILE: tsconfig.e2e.json
 ################################################################################
 
@@ -6458,27 +6671,27 @@ export default defineConfig({
 ################################################################################
 # DUMP SUMMARY
 ################################################################################
-  Files dumped   : 36
-  Total size     : 173.8 KiB (178024 bytes)
+  Files dumped   : 39
+  Total size     : 178.4 KiB (182695 bytes)
   Output file    : /home/kushal/src/ts/multiplicationdrill/docs/llm/dump.txt
-  Completed at   : 2026-07-16T04:09:30-04:00
+  Completed at   : 2026-07-16T04:24:53-04:00
 ################################################################################
 # END OF DUMP
 ################################################################################
 
-real	0m1.055s
-user	0m0.516s
-sys	0m0.690s
+real	0m1.197s
+user	0m0.544s
+sys	0m0.786s
 yarn install v1.22.22
 [1/4] Resolving packages...
-(node:89274) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(node:101166) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
 (Use `node --trace-deprecation ...` to show where the warning was created)
 success Already up-to-date.
 Done in 0.06s.
 
 real	0m0.185s
-user	0m0.171s
-sys	0m0.058s
+user	0m0.174s
+sys	0m0.053s
 yarn run v1.22.22
 $ tsc && vite build
 vite v8.1.5 building client environment for production...
@@ -6488,12 +6701,12 @@ dist/index.html                 3.48 kB │ gzip: 0.93 kB
 dist/assets/main-BoX5X9DY.css   5.54 kB │ gzip: 1.66 kB
 dist/assets/main-SXnVGiX8.js   11.95 kB │ gzip: 4.08 kB │ map: 54.24 kB
 
-✓ built in 83ms
-Done in 1.26s.
+✓ built in 33ms
+Done in 1.17s.
 
-real	0m1.380s
-user	0m2.152s
-sys	0m0.257s
+real	0m1.293s
+user	0m2.125s
+sys	0m0.266s
 yarn run v1.22.22
 $ yarn lint && yarn type-check && yarn test:run && yarn e2e:container:build && yarn e2e:containernoci
 $ eslint src --max-warnings 0
@@ -6502,16 +6715,16 @@ $ vitest run
 
  RUN  v4.1.10 /home/kushal/src/ts/multiplicationdrill
 
- ✓ src/__tests__/signals.test.ts (9 tests) 4ms
- ✓ src/__tests__/state.test.ts (11 tests) 4ms
- ✓ src/__tests__/srs.test.ts (16 tests) 5ms
- ✓ src/__tests__/utils.test.ts (16 tests) 11ms
- ✓ src/__tests__/difficulty.test.ts (19 tests) 183ms
+ ✓ src/__tests__/signals.test.ts (9 tests) 6ms
+ ✓ src/__tests__/srs.test.ts (16 tests) 7ms
+ ✓ src/__tests__/state.test.ts (11 tests) 5ms
+ ✓ src/__tests__/utils.test.ts (16 tests) 14ms
+ ✓ src/__tests__/difficulty.test.ts (19 tests) 192ms
 
  Test Files  5 passed (5)
       Tests  71 passed (71)
-   Start at  04:09:35
-   Duration  873ms (transform 205ms, setup 0ms, import 261ms, tests 208ms, environment 2.72s)
+   Start at  04:24:57
+   Duration  810ms (transform 198ms, setup 0ms, import 267ms, tests 222ms, environment 2.36s)
 
 $ podman build -f Dockerfile.e2e -t multiplicationdrill-e2e .
 STEP 1/6: FROM mcr.microsoft.com/playwright:v1.61.1-noble
@@ -6519,25 +6732,13 @@ STEP 2/6: WORKDIR /app
 --> Using cache b4a5137e7730fe43a0c02f2a9b2910964f9cf2876531530d5d51c192475f9795
 --> b4a5137e7730
 STEP 3/6: COPY package.json yarn.lock ./
+--> Using cache ee717e83bf1ba961b4f38cb72ba26891c66f6725ec0357de6b4ce5b1d75ceb32
 --> ee717e83bf1b
 STEP 4/6: RUN yarn install --frozen-lockfile
-yarn install v1.22.22
-[1/4] Resolving packages...
-[2/4] Fetching packages...
-[3/4] Linking dependencies...
-warning Workspaces can only be enabled in private projects.
-warning Workspaces can only be enabled in private projects.
-warning Workspaces can only be enabled in private projects.
-warning Workspaces can only be enabled in private projects.
-warning Workspaces can only be enabled in private projects.
-warning Workspaces can only be enabled in private projects.
-warning Workspaces can only be enabled in private projects.
-warning Workspaces can only be enabled in private projects.
-[4/4] Building fresh packages...
-Done in 7.14s.
+--> Using cache 7999f3e80fbf0e572787c45509f0f1f591a86c9cf747477e5422ac680e5fcd12
 --> 7999f3e80fbf
 STEP 5/6: COPY . .
---> 4b9639ccf9ff
+--> 17fd7da12573
 STEP 6/6: RUN yarn build
 yarn run v1.22.22
 $ tsc && vite build
@@ -6549,40 +6750,39 @@ dist/index.html                 3.48 kB │ gzip: 0.93 kB
 dist/assets/main-BoX5X9DY.css   5.54 kB │ gzip: 1.66 kB
 dist/assets/main-SXnVGiX8.js   11.95 kB │ gzip: 4.08 kB │ map: 54.24 kB
 
-✓ built in 98ms
-Done in 1.41s.
+✓ built in 37ms
+Done in 1.32s.
 COMMIT multiplicationdrill-e2e
---> b51d781db8cf
+--> f9d604fb24c5
 Successfully tagged localhost/multiplicationdrill-e2e:latest
-b51d781db8cf3dd5a701500763fe00cdcf5eebabf0e69d6ceee5197bd4f915ef
+f9d604fb24c5db5d2b6d376f017e280881b20fdbf5d13695974438638d3db6c6
 $ podman run --rm -it --cpus=8 --memory=8g -v $(pwd)/playwright-report:/app/playwright-report:Z -v $(pwd)/test-results:/app/test-results:Z multiplicationdrill-e2e yarn test:e2e
 yarn run v1.22.22
 $ playwright test
 
 Running 78 tests using 8 workers
-  78 passed (37.4s)
+  78 passed (48.3s)
 
 To open last HTML report run:
 
   yarn playwright show-report
 
-Done in 43.38s.
-Done in 68.53s.
+Done in 54.32s.
+Done in 64.63s.
 
-real	1m8.650s
-user	0m23.260s
-sys	0m15.002s
+real	1m4.769s
+user	0m13.699s
+sys	0m5.916s
 
-real	0m0.013s
-user	0m0.005s
-sys	0m0.003s
-[master 715630a] add all files
- 2 files changed, 1554 insertions(+), 7 deletions(-)
- create mode 100644 yarn.lock
-
-real	0m0.009s
+real	0m0.023s
 user	0m0.004s
-sys	0m0.004s
+sys	0m0.006s
+[master b5d30a1] add all files
+ 1 file changed, 247 insertions(+), 28 deletions(-)
+
+real	0m0.014s
+user	0m0.001s
+sys	0m0.008s
 * remote origin
   Fetch URL: git@github.com:multiplicationdrill/multiplicationdrill.github.io.git
   Push  URL: git@github.com:multiplicationdrill/multiplicationdrill.github.io.git
@@ -6594,14 +6794,14 @@ sys	0m0.004s
   Local ref configured for 'git push':
     master pushes to master (fast-forwardable)
 
-real	0m0.547s
+real	0m0.600s
 user	0m0.007s
 sys	0m0.011s
 Enumerating objects: 19, done.
 Counting objects: 100% (19/19), done.
 Delta compression using up to 16 threads
 Compressing objects: 100% (11/11), done.
-Writing objects: 100% (13/13), 2.63 KiB | 2.63 MiB/s, done.
+Writing objects: 100% (13/13), 6.06 KiB | 2.02 MiB/s, done.
 Total 13 (delta 6), reused 0 (delta 0), pack-reused 0 (from 0)
 remote: Resolving deltas: 100% (6/6), completed with 4 local objects.
 remote: 
@@ -6609,9 +6809,9 @@ remote: GitHub found 23 vulnerabilities on multiplicationdrill/multiplicationdri
 remote:      https://github.com/multiplicationdrill/multiplicationdrill.github.io/security/dependabot
 remote: 
 To github.com:multiplicationdrill/multiplicationdrill.github.io.git
-   9559b92..715630a  master -> master
+   715630a..b5d30a1  master -> master
 
-real	0m1.088s
-user	0m0.013s
+real	0m1.571s
+user	0m0.015s
 sys	0m0.012s
 kushal@fedora:~/src/ts/multiplicationdrill$ 
