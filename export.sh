@@ -65,10 +65,6 @@ EXCLUDE_FILES=(
     "*.md"
     "docs/*"
     "scripts/*"
-    ".gitignore"
-    ".eslintrc.cjs"
-    "eslint.config.js"
-    "src/vite-env.d.ts"
 )
 
 EXCLUDE_FILES_DISPLAY="$(printf '%s, ' "${EXCLUDE_FILES[@]}")"
