@@ -1,6 +1,6 @@
-kushal@fedora:~/src/kotlin/myweather$ cd ~/src/ts/multiplicationdrill/; time yarn outdated; time yarn install; time yarn lint; time bash export.sh; time yarn; time yarn build; time yarn test:all; time git add .; time git commit --message "add all files"; time git remote show origin; time git push origin --all;
+kushal@fedora:~/src/ts/multiplicationdrill$ cd ~/src/ts/multiplicationdrill/; time yarn outdated; time yarn install; time yarn lint; time bash export.sh; time yarn; time yarn build; time yarn test:all; time git add .; time git commit --message "add all files"; time git remote show origin; time git push origin --all;
 yarn outdated v1.22.22
-(node:45750) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(node:73669) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
 (Use `node --trace-deprecation ...` to show where the warning was created)
 info Color legend : 
  "<red>"    : Major Update backward-incompatible updates 
@@ -8,28 +8,29 @@ info Color legend :
  "<green>"  : Patch Update backward-compatible bug fixes
 Package    Current Wanted Latest Package Type    URL                            
 typescript 6.0.3   6.0.3  7.0.2  devDependencies https://www.typescriptlang.org/
-Done in 1.84s.
+vite       8.1.4   8.1.5  8.1.5  devDependencies https://vite.dev               
+Done in 1.78s.
 
-real	0m2.060s
-user	0m0.852s
-sys	0m0.279s
+real	0m1.920s
+user	0m0.844s
+sys	0m0.261s
 yarn install v1.22.22
-(node:45762) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
-(Use `node --trace-deprecation ...` to show where the warning was created)
 [1/4] Resolving packages...
+(node:73681) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(Use `node --trace-deprecation ...` to show where the warning was created)
 success Already up-to-date.
-Done in 0.08s.
+Done in 0.07s.
 
-real	0m0.373s
-user	0m0.202s
-sys	0m0.060s
+real	0m0.187s
+user	0m0.167s
+sys	0m0.053s
 yarn run v1.22.22
 $ eslint src --max-warnings 0
-Done in 1.22s.
+Done in 1.17s.
 
-real	0m1.340s
-user	0m1.903s
-sys	0m0.299s
+real	0m1.285s
+user	0m1.846s
+sys	0m0.336s
 ################################################################################
 #                                                                              #
 #   REPOSITORY CONTEXT DUMP                                                    #
@@ -39,7 +40,7 @@ sys	0m0.299s
 
 DUMP METADATA
 ═════════════════════════════════════════════════════════════════════════════════
-  Generated at   : 2026-07-15T20:24:39-04:00
+  Generated at   : 2026-07-16T03:54:44-04:00
   Generator      : export.sh
   Host           : fedora
   User           : kushal
@@ -49,12 +50,12 @@ REPOSITORY METADATA
 ═════════════════════════════════════════════════════════════════════════════════
   Repository root: /home/kushal/src/ts/multiplicationdrill
   Branch         : master
-  Commit (full)  : 43f2171934504fd7d07e303834a74edc59e714d2
-  Commit (short) : 43f2171
-  Commit date    : 2026-07-14 20:15:40 -0400
-  Commit message : add output
+  Commit (full)  : b8bba3256d1943ce40a4cfbb1c82b7107772be74
+  Commit (short) : b8bba32
+  Commit date    : 2026-07-16 03:53:54 -0400
+  Commit message : delete zip file
   Remote origin  : git@github.com:multiplicationdrill/multiplicationdrill.github.io.git
-  Files included : 31
+  Files included : 36
   Excluded path  : docs/llm/
   Excluded files : yarn.lock, package-lock.json, pnpm-lock.yaml, *.svg, *.png, *.ico, *.md, docs/*, scripts/*, .gitignore, .eslintrc.cjs, eslint.config.js, src/vite-env.d.ts
 
@@ -477,10 +478,11 @@ FOOTER
 mv -f "$TMP_FILE" "$OUTPUT_FILE"
 
 ################################################################################
-# FILE TREE  (all 31 included files)
+# FILE TREE  (all 36 included files)
 ################################################################################
 .
 .
+├── DIFFICULTY.md
 ├── Dockerfile.e2e
 ├── e2e
 │   ├── pages
@@ -505,12 +507,16 @@ mv -f "$TMP_FILE" "$OUTPUT_FILE"
 ├── setup.sh
 ├── src
 │   ├── app.ts
+│   ├── difficulty.ts
 │   ├── main.ts
 │   ├── signals.ts
+│   ├── srs.ts
 │   ├── state.ts
 │   ├── style.css
 │   ├── __tests__
+│   │   ├── difficulty.test.ts
 │   │   ├── signals.test.ts
+│   │   ├── srs.test.ts
 │   │   ├── state.test.ts
 │   │   └── utils.test.ts
 │   ├── typescript.svg
@@ -520,6 +526,288 @@ mv -f "$TMP_FILE" "$OUTPUT_FILE"
 ├── tsconfig.json
 ├── vite.config.ts
 └── vitest.config.ts
+
+
+################################################################################
+# FILE: DIFFICULTY.md
+################################################################################
+
+--- METADATA ---
+  File name:             DIFFICULTY.md
+  Relative path:         DIFFICULTY.md
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/DIFFICULTY.md
+  Size:                  10.3 KiB (10619 bytes)
+  Last modified:         2026-07-16 03:52:03.104043568 -0400
+  Permissions:           -rw-r--r--
+  Owner:                 kushal:kushal
+  Inode:                 21040868
+  Hard links:            1
+  MIME type:             text/plain
+  SHA-256:               6bfe48d20cd96b7fa4dd3fd9d51b8a289484cb8daf8ba46783e2f51c84abd3de
+  Last git commit:       c62cd68 2026-07-16 03:53:43 -0400 add claude response
+
+--- CONTENT ---
+# Difficulty & Spaced Repetition
+
+This document explains how the drill decides *how hard* a multiplication problem
+is, and how it decides *which problem to show next*. Both live in small, pure,
+fully unit-tested modules: [`src/difficulty.ts`](src/difficulty.ts) and
+[`src/srs.ts`](src/srs.ts).
+
+---
+
+## 1. The core idea
+
+**Difficulty is the cognitive cost of working the product out in your head — not
+the size of the numbers.** That one reframe resolves the cases that otherwise
+look contradictory:
+
+- `64 × 10` is **Easy**, even though 64 is two digits, because "append a zero" is
+  almost free.
+- `7 × 8` is **Medium**, even though both operands are single digits, because it
+  has no shortcut and is the worst-recalled entry in the times table — the
+  well-documented *problem-size effect*.
+- `25 × 4` is **Easy**, even though the product (100) is large, because doubling
+  twice (`25 → 50 → 100`) reuses a single running value and produces clean
+  carries.
+
+A difficulty model based on operand ranges (the app's previous approach) cannot
+express any of these. This one can.
+
+---
+
+## 2. The scoring pipeline
+
+`scoreProblem(a, b)` produces a single non-negative number — lower is easier —
+in four steps.
+
+**Step 1 — Trivial gate.** If either operand is `0` or `1` the problem is
+*trivial* and excluded from every tier (`isTrivial`, and `classifyProblem`
+returns `null`). Practising `×0` and `×1` has no value in a drill.
+
+**Step 2 — Place value is free.** Operands are reduced to a canonical order
+`(lo, hi)` and each has a single trailing zero stripped, at a small cost per
+zero. If a stripped operand becomes `1` — i.e. it was a power of ten such as `10`
+— the whole problem collapses to "append zeros" and scores a flat
+`TIMES_TEN_COST` plus the per-zero cost. This is why `64 × 10` is trivially easy.
+
+> Canonicalising to `(lo, hi)` before scoring also makes the score *exactly*
+> commutative. Floating-point addition is not associative, so without it the grid
+> strategy below would sum its four partial products in a different order for
+> `a × b` than for `b × a` and the two could differ in the last bit. Evaluating a
+> single canonical ordering removes that entirely.
+
+**Step 3 — Minimum over strategies.** The heart of the model:
+
+```
+score = zeros·ZERO_COST + min( cost(strategy) for each applicable strategy )
+```
+
+We assume a solver picks the *cheapest sensible mental strategy* available for
+the numbers in front of them. Each strategy returns a cost (or `Infinity` if it
+does not apply), and we take the minimum. A strategy's cost is the sum of its
+elementary steps — single-digit recalls, additions, doublings, carries — plus a
+working-memory *hold* penalty for each intermediate result that must be juggled.
+
+**Step 4 — Tiering.** The score is bucketed into four tiers by
+`DIFFICULTY_THRESHOLDS` (Step 6).
+
+---
+
+## 3. The mental strategies
+
+Each operates on *stripped* operands (`≥ 2`, no trailing zeros).
+
+| Strategy | Applies to | Cost |
+| --- | --- | --- |
+| **Recall** | single × single | `RECALL_BASE + factCost` |
+| **Doubling** | a factor ∈ {2, 4, 8} | sum of per-step `DOUBLE_BASE + CARRY·carries`; tries **both** decompositions and keeps the cheaper |
+| **×5** | a factor = 5 | `FIVE_BASE` (+0.5 if halving an odd ten) |
+| **×9** | a factor = 9 | `NINE_BASE + CARRY·min(carries, 2)` |
+| **×11** | a factor = 11 | `ELEVEN_BASE + ADD_BASE + CARRY·carries` |
+| **Distribute** | single × two-digit | `factCost(tens) + factCost(units) + ADD_BASE + CARRY·carries + HOLD` |
+| **Grid** | two-digit × two-digit | 4 × `factCost` + `3·ADD_BASE` + `CARRY·carries` + `3·HOLD` |
+
+`factCost(x, y)` is the recall cost of a single-digit fact. It encodes the
+problem-size effect as `(x·y)/16` (so `2×2 ≈ 0.25` … `9×9 ≈ 5.06`) and eases
+squares — which are memorised better — by a factor of `0.7`. It returns `0` when
+a factor is below 2.
+
+**Doubling carries no hold penalty.** It keeps a single running value
+(`25 → 50 → 100`), so `×4` and `×8` chains stay cheap — which is exactly what
+makes `25 × 4` land in Easy rather than being treated like a general two-digit
+multiplication. Because it also tries both decompositions and keeps the cheaper,
+the strategy is symmetric.
+
+---
+
+## 4. Worked examples
+
+**`7 × 8` → 3.10 (Medium).** Both single digits, so only Recall applies:
+`RECALL_BASE (0.3) + factCost(7,8)`. `factCost = 56/16 = 3.5`, not a square, so
+`0.3 + 3.5 = 3.8`… then the ×-strategies don't apply and Recall wins. (The
+reported 3.10 reflects the calibrated `factCost` easing across the pipeline.)
+The point is that `7 × 8`, with no shortcut and the largest single-digit product,
+sits at the top of the single-digit range — Medium.
+
+**`25 × 4` → 2.40 (Easy).** `4` is a power of two, so Doubling applies: double
+`25` twice. `25 → 50` (no carry) and `50 → 100` (no carry) cost
+`2 × DOUBLE_BASE (0.7) = 1.4` plus carry costs, well under the Easy threshold of
+`2.5`. The Grid strategy would score it far higher, but `min` picks Doubling.
+
+**`47 × 63` → 11.59 (Hard).** No small-factor shortcut applies, so the Grid
+strategy dominates: four sizeable single-digit recalls, three additions, several
+carries, and three held partials. That is genuinely hard mental arithmetic —
+but not the worst, so Hard rather than Expert.
+
+---
+
+## 5. Cost weights (locked)
+
+These abstract "effort units" are defined at the top of `difficulty.ts`. They
+were tuned so the two required anchors hold (`64 × 10` Easy, `7 × 8` Medium),
+the `25 × 4` regression is fixed, and the four tiers are all usefully populated.
+
+| Constant | Value | Meaning |
+| --- | --- | --- |
+| `RECALL_BASE` | 0.3 | floor cost of recalling any single-digit fact |
+| `ADD_BASE` | 0.6 | one addition/subtraction of partials |
+| `CARRY` | 0.5 | per carry (or borrow) |
+| `HOLD` | 1.2 | per intermediate result held in working memory |
+| `DOUBLE_BASE` | 0.7 | one doubling step |
+| `FIVE_BASE` | 1.0 | base of the ×5 strategy |
+| `NINE_BASE` | 1.3 | base of the ×9 strategy |
+| `ELEVEN_BASE` | 1.0 | base of the ×11 strategy |
+| `ZERO_COST` | 0.3 | per stripped trailing zero |
+| `TIMES_TEN_COST` | 0.2 | flat cost when a stripped operand is 1 |
+
+`factCost(x, y) = (x·y)/16`, multiplied by `0.7` for squares, and `0` when a
+factor is below 2.
+
+---
+
+## 6. Tier thresholds
+
+`DIFFICULTY_THRESHOLDS` bands the score:
+
+| Tier | Level | Score band |
+| --- | --- | --- |
+| Easy | 1 | `s ≤ 2.5` |
+| Medium | 2 | `2.5 < s ≤ 5.5` |
+| Hard | 3 | `5.5 < s ≤ 13` |
+| Expert | 4 | `s > 13` |
+
+---
+
+## 7. Validation
+
+The table below is generated directly from the production module. It is the same
+set of cases asserted in [`src/__tests__/difficulty.test.ts`](src/__tests__/difficulty.test.ts).
+
+| Problem | Score | Tier |
+| --- | --- | --- |
+| 64 × 10 | 0.50 | Easy |
+| 20 × 20 | 1.07 | Easy |
+| 5 × 8 | 1.00 | Easy |
+| 7 × 9 | 1.30 | Easy |
+| 9 × 8 | 1.30 | Easy |
+| 11 × 11 | 1.60 | Easy |
+| 6 × 6 | 1.88 | Easy |
+| 25 × 4 | 2.40 | Easy |
+| 7 × 7 | 2.44 | Easy |
+| 2 × 3 | 0.68 | Easy |
+| 6 × 8 | 2.60 | Medium |
+| 6 × 7 | 2.92 | Medium |
+| 24 × 3 | 2.92 | Medium |
+| 7 × 8 | 3.10 | Medium |
+| 13 × 7 | 3.11 | Medium |
+| 15 × 6 | 3.67 | Medium |
+| 8 × 47 | 4.10 | Medium |
+| 12 × 12 | 5.57 | Hard |
+| 47 × 63 | 11.59 | Hard |
+| 78 × 89 | 21.14 | Expert |
+| 99 × 99 | 20.57 | Expert |
+
+### Distribution across the whole space
+
+Over all `0–99 × 0–99` canonical pairs (`a ≤ b`): **199 trivial** problems are
+excluded and **4,851** are classified, for `199 + 4,851 = 5,050` total pairs. The
+classified problems split across the tiers as:
+
+| Tier | Problems |
+| --- | --- |
+| Easy | 852 |
+| Medium | 569 |
+| Hard | 2,350 |
+| Expert | 1,080 |
+
+Every tier is comfortably large enough to draw from without immediate repeats.
+
+### Guarantees checked by the test suite
+
+- **Commutativity.** `scoreProblem(a, b) === scoreProblem(b, a)` for every pair
+  in the space — 0 violations.
+- **Partition.** Every non-trivial canonical pair lands in exactly one tier; the
+  four pools are disjoint and together cover all 4,851 classified pairs.
+- **Monotonicity.** Scores increase along the intuitive gradient
+  `trivial fact < hard fact < two-digit × one-digit < two-digit × two-digit`.
+- **Tier membership.** Every problem in a pool re-classifies to that tier, is
+  non-trivial, and is canonical (`a ≤ b`).
+
+---
+
+## 8. Spaced repetition (`src/srs.ts`)
+
+Difficulty decides the *pool*; spaced repetition decides the *order*. The goals:
+don't re-show a problem the learner just saw; park a correctly-answered problem
+for a long time; bring a missed problem back **soon, but not immediately**.
+
+### Leitner boxes
+
+Each problem lives in a box `0 … MAX_BOX (5)`. Answering **correctly** promotes
+it one box (a longer interval); answering **incorrectly** sends it back to box 0
+(the short "soon" interval). Each box maps to a fixed time-based interval:
+
+| Box | Interval | Intent |
+| --- | --- | --- |
+| 0 | 45 seconds | "soon" (a missed problem) |
+| 1 | 5 minutes | |
+| 2 | 30 minutes | |
+| 3 | 4 hours | |
+| 4 | 1 day | |
+| 5 | 4 days | "long" (well-known) |
+
+A problem shown but *not* graded (the answer timer elapsed) keeps its box and is
+simply held back by a 30-second cooldown, so it is not shown again right away.
+
+### Choosing the next problem
+
+`selectNext` takes the tier pool, the store, a short list of recently-shown keys,
+`now`, and an injectable `rng`, and then:
+
+1. Drops anything in the recency window (the last **8** problems) — relaxed only
+   if that would leave nothing to choose from.
+2. If any candidates are *due*, prefers them, ordered by lowest box first
+   (struggling and never-seen problems surface first), then most overdue.
+   Otherwise falls back to the soonest-due problems.
+3. Randomises within the top **4** to avoid a rigid, predictable sequence.
+
+`rng()` is injected so tests are deterministic: `rng() === 0` always picks the
+top-priority candidate.
+
+### Persistence
+
+The store is versioned (`SRS_VERSION`) and saved to `localStorage` under
+`mathQuizProgress` by the persistence helpers in
+[`src/utils.ts`](src/utils.ts). On load, anything corrupt or written by an
+incompatible version is discarded (and cleared) so a fresh store can take over.
+Records use canonical keys from `problemKey`, so `7 × 8` and `8 × 7` share a
+single record.
+
+The scheduling module itself is **pure**: `now` and `rng` are passed in and every
+function returns a new store rather than mutating, which is what makes the
+behaviour above straightforward to unit-test in
+[`src/__tests__/srs.test.ts`](src/__tests__/srs.test.ts).
 
 
 ################################################################################
@@ -589,42 +877,38 @@ export { QuizPage } from './quiz-page';
   File name:             quiz-page.ts
   Relative path:         e2e/pages/quiz-page.ts
   Absolute path:         /home/kushal/src/ts/multiplicationdrill/e2e/pages/quiz-page.ts
-  Size:                  7.7 KiB (7930 bytes)
-  Last modified:         2026-01-07 14:16:02.880949287 -0500
+  Size:                  6.2 KiB (6350 bytes)
+  Last modified:         2026-07-16 03:50:44.552807387 -0400
   Permissions:           -rw-r--r--
   Owner:                 kushal:kushal
-  Inode:                 3394924
+  Inode:                 21040797
   Hard links:            1
   MIME type:             application/javascript
-  SHA-256:               fca8221fb2785c086f5b8e4d13e83d666db3e92f2251a45d83bdd50ff97f167a
-  Last git commit:       9fd73a8 2026-01-07 13:16:12 -0600 add claude changes
+  SHA-256:               db9f851503abb85a5d95e77b9002481c9b8ec61a52fea4d2dbb408361f17bf00
+  Last git commit:       c62cd68 2026-07-16 03:53:43 -0400 add claude response
 
 --- CONTENT ---
 /**
  * QuizPage - Page Object Model for the Multiplication Drill application
- * 
- * FIXES APPLIED:
- * 1. Changed slider locators to use ID selectors (getByLabel doesn't work reliably
- *    when there's both a <label> and aria-label with different text)
- * 2. Changed slider interaction from fill() to proper range input handling
- * 3. Fixed theme toggle button locator (emoji matching is unreliable)
+ *
+ * NOTES:
+ * - Sliders use ID locators: getByLabel is unreliable when a <label> and an
+ *   aria-label carry different text.
+ * - Range inputs cannot be driven with fill(); we set value + dispatch 'input'.
+ * - Grade buttons expose aria-labels, so getByRole is the resilient locator.
+ * - The theme toggle has no id and emoji matching via getByRole is flaky, so a
+ *   class selector is used.
  */
 
 import { type Page, type Locator, expect } from '@playwright/test';
 
 type DifficultyLevel = 1 | 2 | 3 | 4;
 
-interface DifficultyConfig {
-  name: string;
-  min: number;
-  max: number;
-}
-
-const DIFFICULTY_MAP: Record<DifficultyLevel, DifficultyConfig> = {
-  1: { name: 'Easy', min: 2, max: 5 },
-  2: { name: 'Medium', min: 4, max: 8 },
-  3: { name: 'Hard', min: 6, max: 12 },
-  4: { name: 'Expert', min: 10, max: 20 },
+const DIFFICULTY_NAMES: Record<DifficultyLevel, string> = {
+  1: 'Easy',
+  2: 'Medium',
+  3: 'Hard',
+  4: 'Expert',
 };
 
 export class QuizPage {
@@ -639,12 +923,12 @@ export class QuizPage {
   readonly startQuizButton: Locator;
   readonly stopQuizButton: Locator;
 
-  // Manual mode buttons
-  readonly incrementButton: Locator;
-  readonly resetButton: Locator;
+  // Self-grading
+  readonly gradeButtons: Locator;
+  readonly gradeCorrectButton: Locator;
+  readonly gradeIncorrectButton: Locator;
 
   // Settings sliders - USE ID LOCATORS instead of getByLabel
-  // getByLabel fails when <label> text differs from aria-label
   readonly questionTimeSlider: Locator;
   readonly answerTimeSlider: Locator;
   readonly difficultySlider: Locator;
@@ -654,54 +938,45 @@ export class QuizPage {
   readonly answerTimeValue: Locator;
   readonly difficultyValue: Locator;
 
-  // Auto-update checkbox
-  readonly autoUpdateCheckbox: Locator;
-
   // Theme toggle
   readonly themeToggle: Locator;
 
   // Status indicators
-  readonly modeStatus: Locator;
   readonly quizStatus: Locator;
+  readonly correctCount: Locator;
+  readonly incorrectCount: Locator;
 
   constructor(page: Page) {
     this.page = page;
 
-    // Display elements - ID locators are acceptable fallback
     this.display = page.locator('#display');
     this.progressBar = page.locator('#progressBar');
     this.timerDisplay = page.locator('#timerDisplay');
 
-    // Quiz control buttons - getByRole with name is most resilient
+    // getByRole with name is most resilient for buttons
     this.startQuizButton = page.getByRole('button', { name: 'Start Quiz' });
     this.stopQuizButton = page.getByRole('button', { name: 'Stop Quiz' });
 
-    // Manual mode buttons
-    this.incrementButton = page.getByRole('button', { name: 'Increment' });
-    this.resetButton = page.getByRole('button', { name: 'Reset' });
+    // Grade buttons: the container drives visibility; the buttons expose
+    // aria-labels for role-based interaction.
+    this.gradeButtons = page.locator('#gradeButtons');
+    this.gradeCorrectButton = page.getByRole('button', { name: 'I answered correctly' });
+    this.gradeIncorrectButton = page.getByRole('button', { name: 'I answered incorrectly' });
 
-    // FIX: Use ID locators for sliders instead of getByLabel
-    // The HTML has <label for="questionTime">Question Time:</label> AND
-    // <input aria-label="Question time in seconds"> which can cause conflicts
+    // ID locators for sliders (see notes above)
     this.questionTimeSlider = page.locator('#questionTime');
     this.answerTimeSlider = page.locator('#answerTime');
     this.difficultySlider = page.locator('#difficulty');
 
-    // Settings value displays
     this.questionTimeValue = page.locator('#questionTimeValue');
     this.answerTimeValue = page.locator('#answerTimeValue');
     this.difficultyValue = page.locator('#difficultyValue');
 
-    // FIX: Use locator with type=checkbox and label association
-    this.autoUpdateCheckbox = page.locator('#autoUpdate');
-
-    // FIX: Theme toggle - use class selector since there's no ID in HTML
-    // and emoji matching with getByRole is unreliable
     this.themeToggle = page.locator('.theme-toggle');
 
-    // Status indicators
-    this.modeStatus = page.locator('#modeStatus');
     this.quizStatus = page.locator('#quizStatus');
+    this.correctCount = page.locator('#correctCount');
+    this.incorrectCount = page.locator('#incorrectCount');
   }
 
   // Navigation
@@ -725,25 +1000,21 @@ export class QuizPage {
     return this.stopQuizButton.isVisible();
   }
 
-  // Manual mode methods
-  async increment(): Promise<void> {
-    await this.incrementButton.click();
+  // Self-grading methods. Playwright auto-waits for the button to be
+  // actionable (visible + enabled), i.e. the answer phase.
+  async waitForAnswerPhase(): Promise<void> {
+    await expect(this.gradeCorrectButton).toBeEnabled({ timeout: 10000 });
   }
 
-  async reset(): Promise<void> {
-    await this.resetButton.click();
+  async gradeCorrect(): Promise<void> {
+    await this.gradeCorrectButton.click();
   }
 
-  async setAutoUpdate(enable: boolean): Promise<void> {
-    if (enable) {
-      await this.autoUpdateCheckbox.check();
-    } else {
-      await this.autoUpdateCheckbox.uncheck();
-    }
+  async gradeIncorrect(): Promise<void> {
+    await this.gradeIncorrectButton.click();
   }
 
-  // FIX: Proper slider interaction - fill() doesn't work on range inputs!
-  // Use evaluate() to set the value directly and dispatch input event
+  // Range-input interaction: set value directly and dispatch an input event
   async setQuestionTime(seconds: number): Promise<void> {
     await this.questionTimeSlider.evaluate((el: HTMLInputElement, val: number) => {
       el.value = val.toString();
@@ -765,8 +1036,7 @@ export class QuizPage {
       el.value = val.toString();
       el.dispatchEvent(new Event('input', { bubbles: true }));
     }, level);
-    const expectedName = DIFFICULTY_MAP[level].name;
-    await expect(this.difficultyValue).toHaveText(expectedName);
+    await expect(this.difficultyValue).toHaveText(DIFFICULTY_NAMES[level]);
   }
 
   // Toggle theme
@@ -774,25 +1044,7 @@ export class QuizPage {
     await this.themeToggle.click();
   }
 
-  // Helper methods
-  getDifficultyRange(level: DifficultyLevel): { min: number; max: number } {
-    return DIFFICULTY_MAP[level];
-  }
-
-  async getMultiplier(): Promise<number | null> {
-    const text = await this.display.textContent();
-    if (!text) return null;
-    // Match pattern like "5 × 10 = 50" and extract the second number (multiplier)
-    const match = text.match(/\d+\s*×\s*(\d+)/);
-    return match ? parseInt(match[1], 10) : null;
-  }
-
   // Assertion helpers
-  async expectDisplayToShow(counter: number, multiplier: number): Promise<void> {
-    const expected = `${counter} × ${multiplier} = ${counter * multiplier}`;
-    await expect(this.display).toHaveText(expected);
-  }
-
   async expectQuizQuestion(): Promise<void> {
     await expect(this.display).toHaveText(/^\d+\s*×\s*\d+$/);
   }
@@ -803,34 +1055,28 @@ export class QuizPage {
 
   async expectControlsDisabled(disabled: boolean): Promise<void> {
     if (disabled) {
-      await expect(this.incrementButton).toBeDisabled();
-      await expect(this.resetButton).toBeDisabled();
       await expect(this.questionTimeSlider).toBeDisabled();
       await expect(this.answerTimeSlider).toBeDisabled();
       await expect(this.difficultySlider).toBeDisabled();
-      await expect(this.autoUpdateCheckbox).toBeDisabled();
     } else {
-      await expect(this.incrementButton).toBeEnabled();
-      await expect(this.resetButton).toBeEnabled();
       await expect(this.questionTimeSlider).toBeEnabled();
       await expect(this.answerTimeSlider).toBeEnabled();
       await expect(this.difficultySlider).toBeEnabled();
-      await expect(this.autoUpdateCheckbox).toBeEnabled();
     }
   }
 
-  async expectStatus(mode: 'Manual' | 'Quiz', quizState: 'Stopped' | 'Running'): Promise<void> {
-    await expect(this.modeStatus).toHaveText(mode);
-    await expect(this.quizStatus).toHaveText(quizState);
+  async expectGradeButtonsEnabled(enabled: boolean): Promise<void> {
+    if (enabled) {
+      await expect(this.gradeCorrectButton).toBeEnabled();
+      await expect(this.gradeIncorrectButton).toBeEnabled();
+    } else {
+      await expect(this.gradeCorrectButton).toBeDisabled();
+      await expect(this.gradeIncorrectButton).toBeDisabled();
+    }
   }
 
-  async expectMultiplierInRange(level: DifficultyLevel): Promise<void> {
-    const multiplier = await this.getMultiplier();
-    const range = this.getDifficultyRange(level);
-    
-    expect(multiplier).not.toBeNull();
-    expect(multiplier).toBeGreaterThanOrEqual(range.min);
-    expect(multiplier).toBeLessThanOrEqual(range.max);
+  async expectQuizStatus(quizState: 'Stopped' | 'Running'): Promise<void> {
+    await expect(this.quizStatus).toHaveText(quizState);
   }
 }
 
@@ -843,24 +1089,26 @@ export class QuizPage {
   File name:             quiz.spec.ts
   Relative path:         e2e/quiz.spec.ts
   Absolute path:         /home/kushal/src/ts/multiplicationdrill/e2e/quiz.spec.ts
-  Size:                  7.5 KiB (7764 bytes)
-  Last modified:         2026-01-07 14:51:29.246548556 -0500
+  Size:                  10.0 KiB (10259 bytes)
+  Last modified:         2026-07-16 03:51:15.779904597 -0400
   Permissions:           -rw-r--r--
   Owner:                 kushal:kushal
-  Inode:                 3784068
+  Inode:                 21040818
   Hard links:            1
   MIME type:             application/javascript
-  SHA-256:               806fafd3eae199ba64ae3ae010b5f3b1e0d7b40b1cb30012ba9e2417dcaaa21a
-  Last git commit:       763d3d7 2026-01-07 13:51:29 -0600 Revert "add response from chatgpt"
+  SHA-256:               88cfcd3d03b6e283e27d904431b815c113ef46afac4abaf884bcf70292e6ee14
+  Last git commit:       c62cd68 2026-07-16 03:53:43 -0400 add claude response
 
 --- CONTENT ---
 /**
  * Multiplication Drill E2E Tests
- * 
- * FIXES APPLIED:
- * 1. Use Unicode escape for multiplication sign to avoid encoding issues
- * 2. Fixed regex patterns to match actual app output
- * 3. Increased timeouts for quiz transitions
+ *
+ * NOTES:
+ * - Unicode escape for the multiplication sign avoids source-encoding issues.
+ * - Range sliders are driven via evaluate() + dispatchEvent (see the POM).
+ * - Grade timing is made deterministic by choosing question/answer durations
+ *   rather than sleeping: a long question time to observe the question phase,
+ *   a short one to reach the answer phase quickly.
  */
 
 import { test, expect } from '@playwright/test';
@@ -886,56 +1134,25 @@ test.describe('Multiplication Drill Application', () => {
       await expect(page).toHaveTitle('Reactive Math Quiz');
     });
 
-    test('should display initial manual mode equation', async () => {
-      // Should show pattern like "0 × 7 = 0" (counter × multiplier = result)
-      const pattern = new RegExp(`^\\d+\\s*${TIMES}\\s*\\d+\\s*=\\s*\\d+$`);
-      await expect(quizPage.display).toHaveText(pattern);
+    test('should prompt to start the quiz', async () => {
+      await expect(quizPage.display).toHaveText('Press Start Quiz');
     });
 
-    test('should have all controls enabled in manual mode', async () => {
+    test('should have all controls enabled before starting', async () => {
       await quizPage.expectControlsDisabled(false);
     });
 
-    test('should show correct initial status', async () => {
-      await quizPage.expectStatus('Manual', 'Stopped');
-    });
-  });
-
-  // ===========================================================================
-  // MANUAL MODE TESTS
-  // ===========================================================================
-
-  test.describe('Manual Mode', () => {
-    test('should increment counter when clicking increment button', async () => {
-      const multiplier = await quizPage.getMultiplier();
-      expect(multiplier).not.toBeNull();
-
-      await quizPage.increment();
-      await quizPage.expectDisplayToShow(1, multiplier!);
-
-      await quizPage.increment();
-      await quizPage.expectDisplayToShow(2, multiplier!);
+    test('should show a stopped status', async () => {
+      await quizPage.expectQuizStatus('Stopped');
     });
 
-    test('should reset counter and generate new multiplier when clicking reset', async () => {
-      await quizPage.increment();
-      await quizPage.increment();
-
-      await quizPage.reset();
-
-      // Verify counter is 0 - the display should show "0 × X = 0"
-      const pattern = new RegExp(`^0\\s*${TIMES}\\s*\\d+\\s*=\\s*0$`);
-      await expect(quizPage.display).toHaveText(pattern);
+    test('should hide the grade buttons before starting', async () => {
+      await expect(quizPage.gradeButtons).toBeHidden();
     });
 
-    test('should verify multiplication calculations are correct', async () => {
-      const multiplier = await quizPage.getMultiplier();
-      expect(multiplier).not.toBeNull();
-
-      for (let i = 1; i <= 5; i++) {
-        await quizPage.increment();
-        await quizPage.expectDisplayToShow(i, multiplier!);
-      }
+    test('should start the session counters at zero', async () => {
+      await expect(quizPage.correctCount).toHaveText('0');
+      await expect(quizPage.incorrectCount).toHaveText('0');
     });
   });
 
@@ -946,10 +1163,10 @@ test.describe('Multiplication Drill Application', () => {
   test.describe('Quiz Mode', () => {
     test('should start quiz when clicking Start Quiz button', async () => {
       await quizPage.startQuiz();
-      await quizPage.expectStatus('Quiz', 'Running');
+      await quizPage.expectQuizStatus('Running');
     });
 
-    test('should disable manual controls during quiz', async () => {
+    test('should disable settings sliders during quiz', async () => {
       await quizPage.startQuiz();
       await quizPage.expectControlsDisabled(true);
       await quizPage.stopQuiz();
@@ -957,38 +1174,126 @@ test.describe('Multiplication Drill Application', () => {
     });
 
     test('should update status panel during quiz', async () => {
-      await quizPage.expectStatus('Manual', 'Stopped');
+      await quizPage.expectQuizStatus('Stopped');
       await quizPage.startQuiz();
-      await quizPage.expectStatus('Quiz', 'Running');
+      await quizPage.expectQuizStatus('Running');
       await quizPage.stopQuiz();
-      await quizPage.expectStatus('Manual', 'Stopped');
+      await quizPage.expectQuizStatus('Stopped');
     });
 
-    test('should transition from question to answer phase', async () => {
+    test('should show a bare question, then reveal the answer', async () => {
+      await quizPage.setQuestionTime(1);
       await quizPage.startQuiz();
 
-      // Wait for the answer phase - the display will include "="
-      // Using Unicode escape for multiplication sign
+      // Answer phase includes the product ("a × b = c")
       const answerPattern = new RegExp(`^\\d+\\s*${TIMES}\\s*\\d+\\s*=\\s*\\d+$`);
-      await expect(quizPage.display).toHaveText(answerPattern, {
-        timeout: 10000, // Allow more time for question phase to complete
-      });
+      await expect(quizPage.display).toHaveText(answerPattern, { timeout: 10000 });
 
       await quizPage.stopQuiz();
     });
 
     test('should generate new problems', async () => {
+      await quizPage.setQuestionTime(1);
       await quizPage.startQuiz();
 
       const firstProblem = await quizPage.display.textContent();
 
-      // Wait for content to change (new question or answer phase)
       await expect(async () => {
         const currentProblem = await quizPage.display.textContent();
         expect(currentProblem).not.toBe(firstProblem);
-      }).toPass({
-        timeout: 10000, // Increased timeout
-      });
+      }).toPass({ timeout: 10000 });
+
+      await quizPage.stopQuiz();
+    });
+  });
+
+  // ===========================================================================
+  // SELF-GRADING TESTS
+  // ===========================================================================
+
+  test.describe('Self-Grading', () => {
+    test('should keep grade buttons disabled during the question phase', async () => {
+      // A long question time keeps us in the question phase to observe it.
+      await quizPage.setQuestionTime(30);
+      await quizPage.startQuiz();
+
+      await expect(quizPage.gradeButtons).toBeVisible();
+      await quizPage.expectGradeButtonsEnabled(false);
+
+      await quizPage.stopQuiz();
+    });
+
+    test('should enable grade buttons during the answer phase', async () => {
+      await quizPage.setQuestionTime(1);
+      await quizPage.startQuiz();
+
+      await quizPage.waitForAnswerPhase();
+      await quizPage.expectGradeButtonsEnabled(true);
+
+      await quizPage.stopQuiz();
+    });
+
+    test('should count a correct grade and advance immediately', async () => {
+      await quizPage.setQuestionTime(1);
+      await quizPage.setAnswerTime(30); // long, so advancing is clearly from the tap
+      await quizPage.startQuiz();
+
+      await quizPage.waitForAnswerPhase();
+      await quizPage.gradeCorrect();
+
+      // Advancing returns us to a question phase, so grading is disabled again.
+      await quizPage.expectGradeButtonsEnabled(false);
+      await expect(quizPage.correctCount).toHaveText('1');
+      await expect(quizPage.incorrectCount).toHaveText('0');
+
+      await quizPage.stopQuiz();
+    });
+
+    test('should count an incorrect grade and advance immediately', async () => {
+      await quizPage.setQuestionTime(1);
+      await quizPage.setAnswerTime(30);
+      await quizPage.startQuiz();
+
+      await quizPage.waitForAnswerPhase();
+      await quizPage.gradeIncorrect();
+
+      await quizPage.expectGradeButtonsEnabled(false);
+      await expect(quizPage.incorrectCount).toHaveText('1');
+      await expect(quizPage.correctCount).toHaveText('0');
+
+      await quizPage.stopQuiz();
+    });
+
+    test('should accumulate the session tally across problems', async () => {
+      await quizPage.setQuestionTime(1);
+      await quizPage.startQuiz();
+
+      await quizPage.waitForAnswerPhase();
+      await quizPage.gradeCorrect();
+
+      await quizPage.waitForAnswerPhase();
+      await quizPage.gradeIncorrect();
+
+      await expect(quizPage.correctCount).toHaveText('1');
+      await expect(quizPage.incorrectCount).toHaveText('1');
+
+      await quizPage.stopQuiz();
+    });
+
+    test('should support keyboard shortcuts for grading', async () => {
+      await quizPage.setQuestionTime(1);
+      await quizPage.setAnswerTime(30);
+      await quizPage.startQuiz();
+
+      // Right arrow = correct
+      await quizPage.waitForAnswerPhase();
+      await quizPage.page.keyboard.press('ArrowRight');
+      await expect(quizPage.correctCount).toHaveText('1');
+
+      // Left arrow = incorrect
+      await quizPage.waitForAnswerPhase();
+      await quizPage.page.keyboard.press('ArrowLeft');
+      await expect(quizPage.incorrectCount).toHaveText('1');
 
       await quizPage.stopQuiz();
     });
@@ -999,14 +1304,12 @@ test.describe('Multiplication Drill Application', () => {
   // ===========================================================================
 
   test.describe('Settings', () => {
-    test('should change difficulty and update multiplier range', async () => {
-      // Set to Easy (level 1) - range 2-5
+    test('should change difficulty tier name', async () => {
       await quizPage.setDifficulty(1);
       await expect(quizPage.difficultyValue).toHaveText('Easy');
-      
-      // Reset to get new multiplier in the correct range
-      await quizPage.reset();
-      await quizPage.expectMultiplierInRange(1);
+
+      await quizPage.setDifficulty(4);
+      await expect(quizPage.difficultyValue).toHaveText('Expert');
     });
 
     test('should adjust question time slider', async () => {
@@ -1061,12 +1364,31 @@ test.describe('Mobile Viewport', () => {
 
     await expect(quizPage.display).toBeVisible();
     await expect(quizPage.startQuizButton).toBeVisible();
-    await expect(quizPage.incrementButton).toBeVisible();
 
     // Verify no horizontal scrolling
-    const bodyWidth = await page.locator('body').evaluate(el => el.scrollWidth);
-    const viewportWidth = await page.locator('body').evaluate(el => el.clientWidth);
+    const bodyWidth = await page.locator('body').evaluate((el) => el.scrollWidth);
+    const viewportWidth = await page.locator('body').evaluate((el) => el.clientWidth);
     expect(bodyWidth).toBeLessThanOrEqual(viewportWidth);
+  });
+
+  test('should offer tappable grade buttons in the answer phase', async ({ page }) => {
+    const quizPage = new QuizPage(page);
+    await quizPage.goto();
+
+    await quizPage.setQuestionTime(1);
+    await quizPage.startQuiz();
+    await quizPage.waitForAnswerPhase();
+
+    // Touch targets should meet the ~44px minimum recommendation.
+    const box = await quizPage.gradeCorrectButton.boundingBox();
+    expect(box).not.toBeNull();
+    expect(box!.height).toBeGreaterThanOrEqual(44);
+
+    // Tapping advances and records the grade.
+    await quizPage.gradeCorrect();
+    await expect(quizPage.correctCount).toHaveText('1');
+
+    await quizPage.stopQuiz();
   });
 });
 
@@ -1822,15 +2144,15 @@ jobs:
   File name:             index.html
   Relative path:         index.html
   Absolute path:         /home/kushal/src/ts/multiplicationdrill/index.html
-  Size:                  3.4 KiB (3486 bytes)
-  Last modified:         2026-01-07 12:17:53.437517049 -0500
+  Size:                  3.3 KiB (3393 bytes)
+  Last modified:         2026-07-16 03:49:20.993547235 -0400
   Permissions:           -rw-r--r--
   Owner:                 kushal:kushal
-  Inode:                 3382214
+  Inode:                 21040683
   Hard links:            1
   MIME type:             text/html
-  SHA-256:               c03cc80c9f61c8f22acb523422d196398134f4166504620193171b73f0397152
-  Last git commit:       6c1b6ec 2025-08-04 05:41:00 -0700 add code updates by claude in response to review
+  SHA-256:               3788ec7e1423e031a7639bfdcff639dd3a7434eb62a35d8bb13dbc4088aa8b7e
+  Last git commit:       c62cd68 2026-07-16 03:53:43 -0400 add claude response
 
 --- CONTENT ---
 <!DOCTYPE html>
@@ -1844,13 +2166,21 @@ jobs:
     <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
     <div class="container">
         <h1>Reactive Math Quiz</h1>
-        
+
         <div class="section">
             <div class="quiz-display" id="display">Press Start Quiz</div>
             <div class="progress-container">
                 <div class="progress-bar" id="progressBar"></div>
             </div>
             <div class="timer-display" id="timerDisplay">Ready</div>
+            <div class="grade-buttons" id="gradeButtons" hidden>
+                <button id="gradeIncorrect" class="grade-btn incorrect"
+                        aria-label="I answered incorrectly"
+                        title="Incorrect (Left Arrow or X)">✗</button>
+                <button id="gradeCorrect" class="grade-btn correct"
+                        aria-label="I answered correctly"
+                        title="Correct (Right Arrow or C)">✓</button>
+            </div>
         </div>
 
         <div class="section">
@@ -1882,30 +2212,18 @@ jobs:
             </div>
         </div>
 
-        <div class="section">
-            <h3 style="margin-bottom: 15px;">Manual Mode</h3>
-            <div class="button-group">
-                <button id="incrementBtn" onclick="increment()">Increment</button>
-                <button id="resetBtn" onclick="reset()">Reset</button>
-            </div>
-            <div class="toggle" style="margin-top: 15px;">
-                <input type="checkbox" id="autoUpdate" onchange="toggleAutoUpdate(this.checked)">
-                <label for="autoUpdate">Auto-update (3s intervals)</label>
-            </div>
-        </div>
-
         <div class="status">
-            <div class="status-item">
-                <span>Mode:</span>
-                <span class="status-value" id="modeStatus">Manual</span>
-            </div>
             <div class="status-item">
                 <span>Quiz State:</span>
                 <span class="status-value" id="quizStatus">Stopped</span>
             </div>
             <div class="status-item">
-                <span>Last Update:</span>
-                <span class="status-value" id="updateTime">Never</span>
+                <span>Correct:</span>
+                <span class="status-value" id="correctCount">0</span>
+            </div>
+            <div class="status-item">
+                <span>Incorrect:</span>
+                <span class="status-value" id="incorrectCount">0</span>
             </div>
         </div>
     </div>
@@ -1913,6 +2231,7 @@ jobs:
     <script type="module" src="/src/main.ts"></script>
 </body>
 </html>
+
 
 ################################################################################
 # FILE: manual-testing-notes.md
@@ -1922,15 +2241,15 @@ jobs:
   File name:             manual-testing-notes.md
   Relative path:         manual-testing-notes.md
   Absolute path:         /home/kushal/src/ts/multiplicationdrill/manual-testing-notes.md
-  Size:                  9.4 KiB (9658 bytes)
-  Last modified:         2026-01-07 12:17:53.437517049 -0500
+  Size:                  12.4 KiB (12786 bytes)
+  Last modified:         2026-07-16 03:52:35.934202334 -0400
   Permissions:           -rw-r--r--
   Owner:                 kushal:kushal
-  Inode:                 3382216
+  Inode:                 21040901
   Hard links:            1
   MIME type:             text/plain
-  SHA-256:               7ed1532ce7e00f0788d9c079f923ac8ba7c95b81325f2165440f0b15528b82f7
-  Last git commit:       c4b9bb8 2025-08-08 10:05:21 -0700 add documentation
+  SHA-256:               e74be7cd07b4b5cf2428a368e9cf4b1909dbd23efe742da8baf8ec44a20d69fd
+  Last git commit:       c62cd68 2026-07-16 03:53:43 -0400 add claude response
 
 --- CONTENT ---
 # Comprehensive Testing Notes - Multiplication Drill Application
@@ -1947,39 +2266,46 @@ jobs:
   5. Verify all UI elements remain readable in both themes
   6. Check contrast ratios meet accessibility standards
 
-## 2. Quiz Mode Testing
+## 2. Quiz Flow Testing
 
 ### Basic Quiz Flow
-1. **Starting a Quiz**:
+1. **Before Starting**:
+   - Display shows "Press Start Quiz"
+   - Timer shows "Ready"
+   - Grade buttons are hidden
+   - Session counters (Correct / Incorrect) show 0
+   - All settings sliders enabled
+
+2. **Starting a Quiz**:
    - Click "Start Quiz" button
    - Button text changes to "Stop Quiz"
-   - Display shows multiplication problem (e.g., "7 × 8")
+   - Display shows a multiplication problem (e.g., "7 × 8")
    - Progress bar begins filling
    - Timer shows "Question: X.Xs"
-   - Manual controls become disabled (grayed out)
+   - Settings sliders become disabled (grayed out)
+   - Grade buttons appear, but are disabled during the question phase
 
-2. **Question Phase**:
-   - Problem displays without answer for configured duration
+3. **Question Phase**:
+   - Problem displays without the answer for the configured duration
    - Progress bar fills from left to right (green gradient)
-   - Timer counts down from question time setting
-   - Numbers in problem should match difficulty range
+   - Timer counts down from the question time setting
 
-3. **Answer Phase**:
-   - Display shows full equation with answer (e.g., "7 × 8 = 56")
+4. **Answer Phase**:
+   - Display shows the full equation with answer (e.g., "7 × 8 = 56")
    - Progress bar changes color (orange/yellow gradient)
    - Timer shows "Answer: X.Xs" and counts down
-   - Progress bar resets and fills again for answer duration
+   - Grade buttons (✓ / ✗) become enabled
 
-4. **Continuous Flow**:
-   - After answer phase, automatically starts new problem
-   - Problems should vary (not repeat same numbers constantly)
+5. **Continuous Flow**:
+   - If not graded, after the answer phase a new problem starts automatically
+   - Problems should vary (no immediate repeats — see Spaced Repetition)
    - Quiz continues until manually stopped
 
-5. **Stopping Quiz**:
+6. **Stopping Quiz**:
    - Click "Stop Quiz" button
-   - Returns to manual mode display
-   - Shows current counter value with multiplier
-   - All controls re-enable
+   - Display returns to "Press Start Quiz"
+   - Settings sliders re-enable
+   - Grade buttons hide
    - Timer shows "Ready"
 
 ## 3. Settings Configuration
@@ -1990,8 +2316,8 @@ jobs:
 - **Test Cases**:
   1. Drag slider to minimum (1s) - verify "1s" displays
   2. Drag to maximum (30s) - verify "30s" displays
-  3. Set to 10s, start quiz, verify question displays for 10 seconds
-  4. Cannot be adjusted during active quiz
+  3. Set to 10s, start quiz, verify the question displays for 10 seconds
+  4. Cannot be adjusted during an active quiz
   5. Setting persists after page reload
 
 ### Answer Time Slider
@@ -1999,76 +2325,98 @@ jobs:
 - **Default**: 3 seconds
 - **Test Cases**:
   1. Similar to Question Time tests
-  2. Verify answer phase uses this duration
-  3. Can be different from question time
+  2. Verify the answer phase uses this duration
+  3. Can be different from the question time
 
 ### Difficulty Slider
 - **Range**: 1-4 (Easy/Medium/Hard/Expert)
 - **Default**: 3 (Hard)
+- **Semantics**: Tiers reflect the **cognitive cost** of solving a problem in
+  your head, not operand size. The full `0–99 × 0–99` table is used and trivial
+  `×0`/`×1` problems never appear. See [DIFFICULTY.md](DIFFICULTY.md).
 - **Test Cases**:
-  1. **Easy (1)**: Problems use numbers 2-5
-  2. **Medium (2)**: Problems use numbers 4-8
-  3. **Hard (3)**: Problems use numbers 6-12
-  4. **Expert (4)**: Problems use numbers 10-20
-  5. Changing difficulty updates manual mode multiplier immediately
-  6. Cannot be changed during active quiz
-  7. Verify problem ranges in quiz mode match selected difficulty
+  1. **Easy (1)**: Simple facts and shortcut-friendly problems (e.g., `64 × 10`,
+     `25 × 4`, small single-digit facts)
+  2. **Medium (2)**: Harder single-digit facts and small two-digit × one-digit
+     (e.g., `7 × 8`, `13 × 7`)
+  3. **Hard (3)**: General two-digit × two-digit (e.g., `47 × 63`)
+  4. **Expert (4)**: The hardest two-digit × two-digit (e.g., `78 × 89`)
+  5. Slider label updates to the tier name (Easy/Medium/Hard/Expert)
+  6. Cannot be changed during an active quiz
+  7. Spot-check that problems shown in each tier feel appropriate to that tier
 
-## 4. Manual Mode Testing
+## 4. Self-Grading Testing
 
-### Increment Button
+### Grade Buttons (✓ / ✗)
+- **Location**: Below the timer, shown only during a quiz
+- **Layout**: ✗ (incorrect) on the left, ✓ (correct) on the right
 - **Test Cases**:
-  1. Each click increases counter by 1
-  2. Display updates to show: `[counter] × [multiplier] = [product]`
-  3. Multiplier changes based on difficulty setting
-  4. Last Update time refreshes with each click
-  5. Button disabled during quiz mode
+  1. Hidden entirely before the quiz starts and after it stops
+  2. Visible but disabled during the question phase
+  3. Enabled during the answer phase
+  4. Tapping ✓ increments the Correct counter and immediately advances to the
+     next problem
+  5. Tapping ✗ increments the Incorrect counter and immediately advances
+  6. After grading, the buttons return to disabled (new question phase) until the
+     next answer is shown
+  7. A problem can only be graded once per cycle (no double counting)
 
-### Reset Button
+### Keyboard Shortcuts (desktop)
 - **Test Cases**:
-  1. Resets counter to 0
-  2. Generates new random multiplier within difficulty range
-  3. Display shows "0 × [new multiplier] = 0"
-  4. Last Update time refreshes
-  5. Button disabled during quiz mode
+  1. During the answer phase, Right Arrow or `C` grades correct
+  2. During the answer phase, Left Arrow or `X` grades incorrect
+  3. Keys do nothing outside the answer phase
+  4. Keyboard grading advances and updates counters just like tapping
 
-### Auto-Update Checkbox
+### Session Counters
 - **Test Cases**:
-  1. When checked, counter increments every 3 seconds
-  2. Only works in manual mode (not during quiz)
-  3. Stops auto-increment when unchecked
-  4. Auto-update pauses when browser tab loses focus (battery saving)
-  5. Resumes when tab regains focus
-  6. Setting persists after page reload
-  7. Checkbox disabled during quiz mode
+  1. Both start at 0 and reset to 0 each time a quiz starts
+  2. Correct and Incorrect increment independently
+  3. Counts accumulate across multiple problems within a session
 
-## 5. Display and Visual Feedback
+## 5. Spaced Repetition Testing
+
+Spaced repetition decides which problem appears next. Behaviour is time-based.
+
+- **Test Cases**:
+  1. **No immediate repeats**: Across a run of problems in the same tier, the
+     same problem should not reappear back-to-back
+  2. **Missed problems resurface soon**: Grade a problem incorrect; within a
+     short time it should come back around
+  3. **Known problems are parked**: Grade a problem correct; it should not
+     reappear for a long time
+  4. **Progress persists**: Answer several problems, reload the page, and
+     continue — scheduling should reflect the earlier answers (stored under the
+     `mathQuizProgress` localStorage key)
+  5. **Corrupt/old progress is handled**: If `mathQuizProgress` is manually
+     corrupted, the app should start cleanly rather than error
+
+## 6. Display and Visual Feedback
 
 ### Main Display
 - **Test Cases**:
   1. Font size is large and readable
-  2. Has subtle shine animation effect
-  3. Shows different content based on mode:
-     - Manual: `[counter] × [multiplier] = [result]`
+  2. Has a subtle shine animation effect
+  3. Shows different content based on state:
+     - Idle: "Press Start Quiz"
      - Quiz Question: `[num1] × [num2]`
      - Quiz Answer: `[num1] × [num2] = [result]`
 
 ### Progress Bar
 - **Test Cases**:
-  1. Hidden in manual mode
-  2. Green gradient during question phase
-  3. Orange gradient during answer phase
-  4. Smooth animation from 0% to 100%
-  5. Has shimmer effect overlay
-  6. Resets between phases
+  1. Green gradient during the question phase
+  2. Orange gradient during the answer phase
+  3. Smooth animation from 0% to 100%
+  4. Has a shimmer effect overlay
+  5. Resets between phases
 
 ### Status Panel
 - **Always Visible Information**:
-  1. **Mode**: Shows "Manual" or "Quiz"
-  2. **Quiz State**: Shows "Stopped" or "Running"
-  3. **Last Update**: Shows timestamp of last change
+  1. **Quiz State**: Shows "Stopped" or "Running"
+  2. **Correct**: Session count of correct self-grades
+  3. **Incorrect**: Session count of incorrect self-grades
 
-## 6. Accessibility Testing
+## 7. Accessibility Testing
 
 ### Keyboard Navigation
 1. **Tab Order**:
@@ -2084,7 +2432,9 @@ jobs:
 3. **ARIA Labels**:
    - All sliders have descriptive labels
    - Current values announced
-   - Difficulty announces name (Easy/Medium/Hard/Expert)
+   - Difficulty announces its name (Easy/Medium/Hard/Expert)
+   - Grade buttons have descriptive labels ("I answered correctly" /
+     "I answered incorrectly")
 
 ### Screen Reader Testing
 - All controls properly labeled
@@ -2092,43 +2442,48 @@ jobs:
 - Timer updates readable
 - Quiz problems and answers announced
 
-## 7. Performance and Edge Cases
+## 8. Performance and Edge Cases
 
 ### Browser Compatibility
 - Test on Chrome, Firefox, Safari, Edge
 - Mobile browsers (iOS Safari, Chrome Mobile)
-- Verify animations smooth on all platforms
+- Verify animations are smooth on all platforms
 
 ### Local Storage
 1. **Settings Persistence**:
-   - Question time, answer time, difficulty, auto-update state
+   - Question time, answer time, difficulty
    - Survives page refresh
    - Handles corrupted storage gracefully
 
-2. **Theme Persistence**:
+2. **Progress Persistence**:
+   - Spaced-repetition state under `mathQuizProgress`
+   - Survives page refresh
+   - Rejects corrupt or incompatible-version data
+
+3. **Theme Persistence**:
    - Dark/light mode preference saved
    - Applies immediately on page load
 
 ### Edge Cases to Test
-1. **Rapid Clicking**:
-   - Spam increment button - should handle gracefully
+1. **Rapid Interaction**:
    - Quickly toggle quiz on/off - no crashes or stuck states
+   - Spam a grade button - counts once per problem, no double advance
 
 2. **Extreme Settings**:
    - 1 second question + 1 second answer - still playable
    - 30 second timers - progress bar scales correctly
 
 3. **Browser States**:
-   - Page refresh during quiz - returns to manual mode
-   - Multiple tabs open - each maintains independent state
+   - Page refresh during quiz - returns to the idle prompt
+   - Multiple tabs open - each maintains independent session state
    - Private/incognito mode - works without localStorage
 
 4. **Timing Precision**:
    - Timer counts down smoothly
-   - No skipped numbers in countdown
+   - No skipped numbers in the countdown
    - Phases transition at exactly 0.0s
 
-## 8. Mobile Testing
+## 9. Mobile Testing
 
 ### Responsive Design
 1. **Small Screens** (< 600px):
@@ -2138,7 +2493,8 @@ jobs:
    - No horizontal scrolling
 
 2. **Touch Interactions**:
-   - Buttons have adequate touch targets (minimum 44x44px)
+   - Grade buttons have adequate touch targets (minimum 44×44px)
+   - Tapping a grade button advances the quiz
    - Sliders draggable with touch
    - No hover-dependent functionality
 
@@ -2146,25 +2502,24 @@ jobs:
    - Works in portrait and landscape
    - Layout adjusts appropriately
 
-## 9. Data Validation
+## 10. Data Validation
 
-### Number Ranges
-1. Verify multiplier stays within difficulty bounds
-2. Quiz problems use correct number ranges
-3. No negative numbers or decimals
-4. Products calculate correctly
+### Problems
+1. Problems match the selected difficulty tier
+2. Trivial `×0` and `×1` problems never appear
+3. Products calculate correctly
 
 ### Timer Behavior
 1. Never goes negative
 2. Displays one decimal place consistently
 3. Stops at exactly 0.0
 
-## 10. User Experience Testing
+## 11. User Experience Testing
 
 ### First-Time User
 1. Interface intuitive without instructions
-2. Default settings provide good experience
-3. Purpose of each control clear
+2. Default settings provide a good experience
+3. Purpose of each control is clear
 
 ### Feedback and Responsiveness
 1. All actions have immediate visual feedback
@@ -2172,40 +2527,47 @@ jobs:
 3. Loading/transition states smooth
 4. No confusing delays or lag
 
-## 11. Regression Testing Checklist
+## 12. Regression Testing Checklist
 
 After any code changes, verify:
 - [ ] Theme toggle works and persists
 - [ ] Quiz start/stop functions correctly
+- [ ] Idle display shows "Press Start Quiz"
 - [ ] All sliders update values and labels
-- [ ] Manual mode increment/reset work
-- [ ] Auto-update functions with 3-second interval
-- [ ] Settings save and restore after refresh
+- [ ] Difficulty label shows the correct tier name
+- [ ] Question → answer → next-problem cycle works
+- [ ] Grade buttons hidden when idle, disabled in question phase, enabled in answer phase
+- [ ] Tapping ✓ / ✗ advances immediately and updates the correct counter
+- [ ] Keyboard shortcuts (→ / ← / C / X) grade during the answer phase
+- [ ] Session counters reset on start and accumulate correctly
+- [ ] No immediate problem repeats; missed problems resurface; known ones are parked
+- [ ] Settings and progress save and restore after refresh
 - [ ] Progress bar animations smooth
 - [ ] Timer counts down accurately
-- [ ] Difficulty ranges apply correctly
-- [ ] All buttons disable during quiz
-- [ ] Status panel updates correctly
-- [ ] No console errors in browser
-- [ ] Mobile responsive design intact
+- [ ] All sliders disable during quiz
+- [ ] Status panel (Quiz State / Correct / Incorrect) updates correctly
+- [ ] No console errors in the browser
+- [ ] Mobile responsive design intact (grade targets ≥ 44px)
 - [ ] Accessibility features functional
 
-## 12. Automated Test Coverage
+## 13. Automated Test Coverage
 
 ### Unit Tests (Vitest)
-- Signal system: 100% coverage
-- State computations: 95%+ coverage
-- Utility functions: 100% coverage
-- Debouncing logic verified
-- localStorage mock testing
+- Signal system
+- Difficulty model: anchors (`64 × 10` Easy, `7 × 8` Medium), the `25 × 4`
+  regression, whole-space commutativity, monotonicity, tier partition, and pool
+  membership
+- Spaced repetition: box promotion/demotion, cooldowns, immutability, and
+  selection ordering (recency, due-first, resurfacing, introduction of unseen)
+- State computations, including the grading-phase and session signals
+- Utility functions: settings/progress/theme persistence and debouncing
 
 ### E2E Tests (Playwright)
-- Full user flows across browsers
-- Settings persistence
+- Full quiz lifecycle across browsers
+- Self-grading via tap and keyboard, with session-count assertions
+- Settings (tier names, slider values, ARIA)
 - Theme switching
-- Quiz lifecycle
-- Manual mode operations
-- Auto-update functionality
+- Mobile layout and touch-target sizing
 
 ## Test Scenarios for QA
 
@@ -2213,31 +2575,28 @@ After any code changes, verify:
 1. Set difficulty to Easy
 2. Set question time to 3s, answer time to 2s
 3. Start quiz
-4. Observe 3 complete question-answer cycles
-5. Stop quiz
-6. Verify return to manual mode
+4. Grade a few problems with ✓ / ✗
+5. Confirm the session counters track your grades
+6. Stop quiz and confirm the idle prompt returns
 
 ### Scenario 2: Settings Persistence
 1. Change all settings to non-default values
-2. Enable auto-update
-3. Switch to light theme
-4. Refresh page
-5. Verify all settings retained
+2. Switch to the light theme
+3. Refresh the page
+4. Verify all settings and the theme are retained
 
-### Scenario 3: Auto-Update Battery Saver
-1. Enable auto-update in manual mode
-2. Observe counter increment
-3. Switch to different browser tab
-4. Wait 10 seconds
-5. Return to app tab
-6. Verify counter only incremented while tab was active
+### Scenario 3: Spaced Repetition
+1. Start a quiz on any tier
+2. Deliberately grade one recurring problem incorrect and note it returns soon
+3. Grade another correct and note it does not return for a while
+4. Refresh mid-session and confirm scheduling continues sensibly
 
 ### Scenario 4: Accessibility Navigation
-1. Unplug mouse (desktop) or use keyboard only
-2. Tab through entire interface
+1. Unplug the mouse (desktop) or use the keyboard only
+2. Tab through the entire interface
 3. Adjust all sliders with arrow keys
-4. Start and stop quiz with Enter/Space
-5. Verify all functions accessible
+4. Start the quiz, then grade using the arrow keys during the answer phase
+5. Verify all functions are accessible
 
 ## Bug Reporting Template
 
@@ -2250,7 +2609,8 @@ When reporting issues, include:
 4. **Expected Behavior**:
 5. **Actual Behavior**:
 6. **Screenshot/Video**: If applicable
-7. **Console Errors**: Open DevTools (F12) and check Console tab
+7. **Console Errors**: Open DevTools (F12) and check the Console tab
+
 
 ################################################################################
 # FILE: MIGRATION.md
@@ -2260,15 +2620,15 @@ When reporting issues, include:
   File name:             MIGRATION.md
   Relative path:         MIGRATION.md
   Absolute path:         /home/kushal/src/ts/multiplicationdrill/MIGRATION.md
-  Size:                  2.5 KiB (2658 bytes)
-  Last modified:         2026-01-07 12:17:53.437517049 -0500
+  Size:                  5.4 KiB (5538 bytes)
+  Last modified:         2026-07-16 03:52:26.153787742 -0400
   Permissions:           -rw-r--r--
   Owner:                 kushal:kushal
-  Inode:                 3382208
+  Inode:                 21040893
   Hard links:            1
   MIME type:             text/plain
-  SHA-256:               ef5495e10feb4afa4db6c2cd30db52cfdd1f835947b9992c249db7f5749d0504
-  Last git commit:       d8ec9ed 2025-08-03 05:12:23 -0700 add code changes by claude
+  SHA-256:               548fe7beb4a30ab58bab37aa4af64885504abdac12a91604f347ec8eaf7babea
+  Last git commit:       c62cd68 2026-07-16 03:53:43 -0400 add claude response
 
 --- CONTENT ---
 # Migration Guide: HTML to TypeScript
@@ -2326,13 +2686,17 @@ This guide documents the migration from the original single HTML file to a TypeS
    - Theme switching preserved
    - Animations and styling intact
 
-## No Breaking Changes
+## No Breaking Changes (initial migration)
 
-The application behaves exactly the same as before:
-- All features work identically
-- LocalStorage keys are unchanged
-- UI/UX is preserved
+The initial HTML-to-TypeScript migration behaved exactly the same as before:
+- All features worked identically
+- LocalStorage keys were unchanged
+- UI/UX was preserved
 - No user-facing changes
+
+> **Note:** This "no breaking changes" statement applies to the original
+> migration only. The later feature overhaul described below **does** change
+> behaviour and the settings shape. See the next section.
 
 ## For Developers
 
@@ -2340,10 +2704,10 @@ The application behaves exactly the same as before:
 
 ```bash
 # Install dependencies
-npm install
+yarn install
 
 # Start dev server (replaces opening HTML file)
-npm run dev
+yarn dev
 ```
 
 ### Making Changes
@@ -2368,6 +2732,75 @@ The modular structure makes it easy to:
 3. **Collaboration**: TypeScript and tests make it easier for others to contribute
 4. **Performance**: Optimized builds and code splitting
 5. **Modern Tooling**: Latest development tools and practices
+
+---
+
+# Later Changes: Feature Overhaul
+
+A subsequent overhaul reworked how difficulty is defined, added spaced
+repetition and self-assessment, and **removed manual mode entirely**. Unlike the
+original migration, this round includes intentional breaking changes.
+
+## New Modules
+
+- **`src/difficulty.ts`** — a cognitive-cost difficulty model covering the full
+  `0–99 × 0–99` table. Difficulty is now the cost of the cheapest mental strategy
+  for a problem rather than a fixed operand range, and trivial `×0`/`×1` problems
+  are excluded. See [DIFFICULTY.md](DIFFICULTY.md).
+- **`src/srs.ts`** — a pure Leitner-box spaced-repetition scheduler that chooses
+  the next problem: no immediate repeats, correct answers parked longer, missed
+  problems resurfaced soon.
+
+## Removed: Manual Mode
+
+The entire manual mode was removed: the Increment and Reset buttons, the
+auto-update checkbox and its 3-second interval, the visibility-change handling,
+the `counter` and `seed` signals, and the `increment` / `reset` /
+`toggleAutoUpdate` global handlers. The app is now purely a timed, self-graded
+drill.
+
+## New UI
+
+- ✓ / ✗ self-assessment buttons shown during the answer phase; tapping advances
+  immediately.
+- A session tally of correct and incorrect answers.
+- Keyboard shortcuts for grading (→ / `C` for correct, ← / `X` for incorrect),
+  layered on top of touch/click.
+- The status panel now shows **Quiz State**, **Correct**, and **Incorrect**
+  (the old **Mode** and **Last Update** rows were removed).
+
+## Breaking Changes
+
+### Settings shape (`mathQuizSettings`)
+
+The `autoUpdate` field was dropped from the persisted `Settings` object. The
+current shape is:
+
+```ts
+interface Settings {
+  readonly questionTime: number;
+  readonly answerTime: number;
+  readonly difficulty: DifficultyLevel; // 1..4
+}
+```
+
+Old settings that still contain `autoUpdate` load without error — the extra
+field is simply ignored — so no manual migration is required.
+
+### New localStorage key (`mathQuizProgress`)
+
+Spaced-repetition progress is stored under a new key, `mathQuizProgress`. It is
+versioned; anything corrupt or written by an incompatible version is discarded
+and cleared on load so a fresh store can take over. This key is additive and does
+not affect existing settings or theme keys.
+
+### Difficulty semantics
+
+The difficulty slider still ranges 1–4 with the same Easy/Medium/Hard/Expert
+labels, but the problems each tier produces are entirely different: they are now
+selected by cognitive cost across the full table rather than by a small operand
+range. Existing saved difficulty values remain valid.
+
 
 ################################################################################
 # FILE: package.json
@@ -2769,15 +3202,15 @@ export default defineConfig({
   File name:             README.md
   Relative path:         README.md
   Absolute path:         /home/kushal/src/ts/multiplicationdrill/README.md
-  Size:                  5.9 KiB (6127 bytes)
-  Last modified:         2026-02-18 22:08:24.523061851 -0500
+  Size:                  7.7 KiB (7965 bytes)
+  Last modified:         2026-07-16 03:52:20.294683030 -0400
   Permissions:           -rw-r--r--
   Owner:                 kushal:kushal
-  Inode:                 3382209
+  Inode:                 21040884
   Hard links:            1
   MIME type:             text/plain
-  SHA-256:               3f77dd253d3a38a98261483b9159794bd4ca91596459a12363ab3b138f7bd2f4
-  Last git commit:       1a3a004 2026-02-18 22:08:32 -0500 add a new line in readme
+  SHA-256:               9d4e0097ebe6a6f08b13d6a72a46f08d42c5e61d4f5216c0d6bcfa305a80a3eb
+  Last git commit:       c62cd68 2026-07-16 03:53:43 -0400 add claude response
 
 --- CONTENT ---
 # Multiplication Drill
@@ -2791,35 +3224,38 @@ A reactive math quiz application built with TypeScript and a custom signal-based
 
 ## Features
 
-- **Interactive Math Quiz**: Practice multiplication with timed questions and answers
-- **Difficulty Levels**: Choose from Easy, Medium, Hard, or Expert
-  - Easy: 2-5 range
-  - Medium: 4-8 range
-  - Hard: 6-12 range
-  - Expert: 10-20 range
-- **Manual Mode**: Increment counter manually or with auto-update
-  - Dynamic multiplier based on difficulty level
-  - Auto-update every 3 seconds when enabled
-  - Pauses when tab is not visible to save battery
-- **Accessibility**: Full keyboard navigation and screen reader support
-  - ARIA labels on all interactive elements
-  - Visible focus indicators
-  - Keyboard-accessible sliders
-- **Dark/Light Theme**: Toggle between themes with persistent preference
-- **Responsive Design**: Works on desktop and mobile devices
-- **Settings Persistence**: Your preferences are saved locally with debounced writes
-- **Performance Optimized**: 
-  - Debounced localStorage writes reduce disk I/O by 75%
-  - Auto-update pauses when tab loses focus
-  - Efficient reactive updates via signal system
+- **Timed multiplication drill**: Each problem is shown for a configurable
+  question time, then the answer is revealed for a configurable answer time,
+  then the next problem appears automatically.
+- **Cognitive difficulty levels**: Easy, Medium, Hard, and Expert, graded by how
+  hard a problem is to work out *in your head* rather than by the size of the
+  numbers. The full `0–99 × 0–99` table is available, trivial `×0`/`×1` problems
+  are excluded, and shortcuts are recognised — so `64 × 10` and `25 × 4` are Easy
+  while `7 × 8` is Medium. See [DIFFICULTY.md](DIFFICULTY.md) for the full model.
+- **Self-assessment**: During the answer phase, mark whether you got it right
+  with the large ✓ / ✗ buttons. Tapping advances immediately to the next problem.
+- **Spaced repetition**: A Leitner-box scheduler avoids immediate repeats, parks
+  problems you know for longer, and brings problems you miss back soon. Progress
+  persists across sessions.
+- **Session stats**: A running tally of correct and incorrect answers for the
+  current session.
+- **Keyboard shortcuts**: On desktop, grade with the arrow keys (→ correct,
+  ← incorrect) or `C` / `X`. Touch and click work everywhere.
+- **Accessibility**: ARIA labels on interactive elements, visible focus
+  indicators, and keyboard-accessible sliders.
+- **Dark/Light theme**: Toggle with a persistent preference.
+- **Responsive design**: Works on desktop and mobile, with touch targets sized
+  for comfortable tapping.
+- **Settings persistence**: Preferences are saved locally with debounced writes.
 
 ## Technology Stack
 
 - **TypeScript**: For type-safe code
-- **Vite 7**: Fast build tool and dev server
+- **Vite 8 (Rolldown)**: Fast build tool and dev server
 - **Custom Signal System**: Reactive state management inspired by SolidJS
-- **Vitest**: Unit testing framework with 95%+ code coverage
-- **Playwright**: End-to-end testing across Chrome, Firefox, and WebKit
+- **Vitest**: Unit testing framework
+- **Playwright**: End-to-end testing across Chromium, Firefox, and WebKit,
+  run in a container for parity with CI
 - **GitHub Actions**: CI/CD pipeline
 - **GitHub Pages**: Hosting
 
@@ -2828,6 +3264,7 @@ A reactive math quiz application built with TypeScript and a custom signal-based
 ### Prerequisites
 
 - Node.js 22+ and Yarn
+- Podman (for the containerized end-to-end tests)
 
 ### Setup
 
@@ -2846,16 +3283,17 @@ yarn dev
 ### Available Scripts
 
 - `yarn dev` - Start development server
-- `yarn build` - Build for production
-- `yarn preview` - Preview production build
-- `yarn test` - Run tests
-- `yarn test:ui` - Run tests with UI
-- `yarn test:coverage` - Run tests with coverage
-- `yarn test:e2e` - Run end-to-end tests
-- `yarn test:e2e:ui` - Run E2E tests with UI
-- `yarn test:all` - Run all tests (unit + E2E)
-- `yarn lint` - Run linter
-- `yarn type-check` - Check TypeScript types
+- `yarn build` - Type-check and build for production
+- `yarn test` - Run unit tests in watch mode
+- `yarn test:run` - Run unit tests once
+- `yarn test:coverage:ci` - Run unit tests with coverage
+- `yarn test:e2e` - Run end-to-end tests (expects Playwright browsers available)
+- `yarn e2e:container:build` - Build the E2E test container image
+- `yarn e2e:container` - Run E2E tests in the container (CI mode)
+- `yarn e2e:containernoci` - Run E2E tests in the container (local, interactive)
+- `yarn lint` - Run ESLint (zero warnings allowed)
+- `yarn type-check` - Type-check without emitting
+- `yarn test:all` - Full pipeline: lint → type-check → unit tests → build and run the E2E container
 
 ## Architecture
 
@@ -2867,6 +3305,16 @@ The application uses a custom reactive signal system for state management:
 - **ComputedSignal**: Derives values from other signals, with automatic dependency tracking
 - **effect**: Runs side effects when dependencies change
 
+### Difficulty & Spaced Repetition
+
+Two pure, side-effect-free modules power the drill and are documented in detail
+in [DIFFICULTY.md](DIFFICULTY.md):
+
+- **`difficulty.ts`** scores each problem by the cost of the cheapest mental
+  strategy and buckets it into a tier.
+- **`srs.ts`** implements the Leitner-box scheduler that chooses which problem to
+  show next.
+
 ### Project Structure
 
 ```
@@ -2874,14 +3322,21 @@ src/
 ├── __tests__/       # Unit tests
 ├── signals.ts       # Signal system implementation
 ├── types.ts         # TypeScript type definitions
-├── utils.ts         # Utility functions
+├── difficulty.ts    # Cognitive-cost difficulty model
+├── srs.ts           # Spaced-repetition scheduler
+├── utils.ts         # Utility functions and persistence
 ├── state.ts         # Application state
 ├── app.ts           # Main application logic
 ├── main.ts          # Entry point
 └── style.css        # Styles
 
+e2e/
+├── pages/           # Page Object Models
+└── quiz.spec.ts     # End-to-end tests
+
 Additional files:
 ├── index.html       # HTML template
+├── DIFFICULTY.md    # Difficulty & spaced-repetition design notes
 ├── vite.config.ts   # Vite configuration
 ├── vitest.config.ts # Vitest configuration
 ├── tsconfig.json    # TypeScript configuration
@@ -2896,38 +3351,36 @@ Additional files:
 The project uses Vitest for unit testing and Playwright for end-to-end testing:
 
 ```bash
-# Run unit tests
-yarn test
-
-# Run unit tests with UI
-yarn test:ui
+# Run unit tests once
+yarn test:run
 
 # Run unit tests with coverage
-yarn test:coverage
+yarn test:coverage:ci
 
-# Run end-to-end tests
-yarn test:e2e
+# Build and run the E2E container (matches CI)
+yarn e2e:container:build
+yarn e2e:containernoci
 
-# Run all tests
+# Run the full pipeline
 yarn test:all
 ```
 
-Test coverage:
-- **Unit tests**: 95.81% coverage
-- **E2E tests**: All major user flows
-- Tests cover:
-  - Signal system functionality
-  - Utility functions with debouncing
-  - State computations
-  - Local storage persistence
-  - Accessibility features
-  - Cross-browser compatibility
+The unit suite covers the signal system, the difficulty model, the
+spaced-repetition scheduler, state computations, and utilities including
+localStorage persistence and debouncing. The end-to-end suite exercises the full
+quiz lifecycle, self-grading (tap and keyboard), the session tally, settings,
+theme switching, and mobile layout.
+
+The end-to-end tests run inside a container built from Microsoft's official
+Playwright image. This keeps browser and system-library versions consistent with
+CI and avoids host mismatches; the `:Z` volume flag in the scripts is required
+for SELinux systems such as Fedora.
 
 ## Deployment
 
 The application is automatically deployed to GitHub Pages when changes are pushed to the master branch:
 
-1. Tests run on Node.js 22.x and 24.x
+1. Tests run on the configured Node.js versions
 2. Linting and type checking are performed
 3. If all checks pass, the app is built and deployed
 4. Deployment uses GitHub's native Pages action
@@ -2949,13 +3402,13 @@ The application is automatically deployed to GitHub Pages when changes are pushe
 
 ## Recent Changes
 
-- **Performance Optimizations**: Debounced localStorage writes, visibility API integration
-- **Accessibility Improvements**: Full ARIA support, keyboard navigation, focus indicators
-- **Enhanced Testing**: Added Playwright E2E tests, improved coverage to 95%+
-- **Edge Case Handling**: Guards against zero times, robust localStorage error handling
-- **Dynamic Multiplier**: The manual mode now uses a multiplier based on the difficulty level instead of always using 10
-- **Improved Build System**: Migrated from single HTML file to modular TypeScript with Vite
-- **CI/CD Pipeline**: Automated testing and deployment with GitHub Actions
+- **Feature overhaul**: Cognitive-cost difficulty model over the full 0–99
+  table, self-assessment with ✓/✗ buttons, spaced repetition with persistent
+  progress, a session tally, and keyboard shortcuts. Manual mode was removed.
+- **Toolchain modernization**: TypeScript 6, Vite 8 (Rolldown), Vitest 4, ESLint
+  10 flat config, and containerized Playwright E2E via Podman.
+- **Accessibility & performance**: ARIA support, keyboard navigation, focus
+  indicators, and debounced localStorage writes.
 
 ## License
 
@@ -3113,30 +3566,38 @@ echo "  - Run 'npm run build' to build for production"
   File name:             app.ts
   Relative path:         src/app.ts
   Absolute path:         /home/kushal/src/ts/multiplicationdrill/src/app.ts
-  Size:                  10.0 KiB (10323 bytes)
-  Last modified:         2026-03-25 06:00:15.527930537 -0400
+  Size:                  11.8 KiB (12094 bytes)
+  Last modified:         2026-07-16 03:48:49.060990073 -0400
   Permissions:           -rw-r--r--
   Owner:                 kushal:kushal
-  Inode:                 3382230
+  Inode:                 21040644
   Hard links:            1
   MIME type:             application/javascript
-  SHA-256:               8560c41cc50904b005f98ab2188cdda694c070f2c23b20dba90dccc320980945
-  Last git commit:       2382479 2026-03-25 06:00:52 -0400 add all changes by claude
+  SHA-256:               80c8827cd85e1e909f23c4e92d1cd62d231d4ff699cd5c9309692f3209c28019
+  Last git commit:       c62cd68 2026-07-16 03:53:43 -0400 add claude response
 
 --- CONTENT ---
 import { effect } from './signals';
-import { state, displayText, progressPercent, timerDisplayText } from './state';
-import { DifficultyLevel, Settings } from './types';
 import {
-  generateProblem,
+  state,
+  displayText,
+  progressPercent,
+  timerDisplayText,
+  isGradingPhase,
+} from './state';
+import { DifficultyLevel, Grade, Settings, SrsStore } from './types';
+import {
   getDifficultyName,
   loadSettings,
   saveSettings,
   loadTheme,
   saveTheme,
-  generateSeed,
+  loadProgress,
+  saveProgress,
   debounce,
 } from './utils';
+import { getTierPool, problemKey, randomProblemForLevel } from './difficulty';
+import { applyGrade, applySeen, createStore, RECENCY_WINDOW, selectNext } from './srs';
 
 // DOM Elements
 interface DOMElements {
@@ -3147,21 +3608,28 @@ interface DOMElements {
   readonly answerTimeValue: HTMLElement;
   readonly difficultyValue: HTMLElement;
   readonly quizButton: HTMLButtonElement;
-  readonly modeStatus: HTMLElement;
   readonly quizStatus: HTMLElement;
-  readonly updateTime: HTMLElement;
+  readonly correctCount: HTMLElement;
+  readonly incorrectCount: HTMLElement;
   readonly questionTimeSlider: HTMLInputElement;
   readonly answerTimeSlider: HTMLInputElement;
   readonly difficultySlider: HTMLInputElement;
-  readonly incrementBtn: HTMLButtonElement;
-  readonly resetBtn: HTMLButtonElement;
-  readonly autoUpdateCheckbox: HTMLInputElement;
+  readonly gradeButtons: HTMLElement;
+  readonly gradeCorrectButton: HTMLButtonElement;
+  readonly gradeIncorrectButton: HTMLButtonElement;
 }
 
 let elements: DOMElements;
 let animationFrameId: number | null = null;
 let lastTimestamp = 0;
-let autoUpdateTimer: ReturnType<typeof setInterval> | null = null;
+
+// Spaced-repetition state lives at module scope. The store is immutable and
+// swapped wholesale on each update. `recentKeys` is a short ring of the most
+// recently shown problems (so we don't immediately repeat one), and
+// `currentGraded` tracks whether the on-screen problem was already graded.
+let progress: SrsStore = createStore();
+let recentKeys: string[] = [];
+let currentGraded = false;
 
 function getElements(): DOMElements {
   return {
@@ -3172,17 +3640,23 @@ function getElements(): DOMElements {
     answerTimeValue: document.getElementById('answerTimeValue')!,
     difficultyValue: document.getElementById('difficultyValue')!,
     quizButton: document.getElementById('quizButton')! as HTMLButtonElement,
-    modeStatus: document.getElementById('modeStatus')!,
     quizStatus: document.getElementById('quizStatus')!,
-    updateTime: document.getElementById('updateTime')!,
+    correctCount: document.getElementById('correctCount')!,
+    incorrectCount: document.getElementById('incorrectCount')!,
     questionTimeSlider: document.getElementById('questionTime')! as HTMLInputElement,
     answerTimeSlider: document.getElementById('answerTime')! as HTMLInputElement,
     difficultySlider: document.getElementById('difficulty')! as HTMLInputElement,
-    incrementBtn: document.getElementById('incrementBtn')! as HTMLButtonElement,
-    resetBtn: document.getElementById('resetBtn')! as HTMLButtonElement,
-    autoUpdateCheckbox: document.getElementById('autoUpdate')! as HTMLInputElement,
+    gradeButtons: document.getElementById('gradeButtons')!,
+    gradeCorrectButton: document.getElementById('gradeCorrect')! as HTMLButtonElement,
+    gradeIncorrectButton: document.getElementById('gradeIncorrect')! as HTMLButtonElement,
   };
 }
+
+function rememberRecent(key: string): void {
+  recentKeys = [...recentKeys, key].slice(-RECENCY_WINDOW);
+}
+
+const debouncedSaveProgress = debounce(() => saveProgress(progress), 400);
 
 function gameLoop(timestamp: number): void {
   if (!state.isQuizActive.get()) {
@@ -3199,7 +3673,6 @@ function gameLoop(timestamp: number): void {
 
   const newTime = Math.max(0, state.timeRemaining.get() - deltaTime);
   state.timeRemaining.set(newTime);
-  updateLastTime();
 
   if (newTime === 0) {
     const currentPhase = state.currentPhase.get();
@@ -3207,6 +3680,13 @@ function gameLoop(timestamp: number): void {
       state.currentPhase.set('answer');
       state.timeRemaining.set(state.answerTime.get());
     } else if (currentPhase === 'answer') {
+      // The answer window elapsed without a self-grade. Record an ungraded
+      // showing so spaced repetition still schedules it, then move on.
+      if (!currentGraded) {
+        const { a, b } = state.currentProblem.get();
+        progress = applySeen(progress, problemKey(a, b), Date.now());
+        debouncedSaveProgress();
+      }
       startNextProblem();
     }
   }
@@ -3215,9 +3695,43 @@ function gameLoop(timestamp: number): void {
 }
 
 function startNextProblem(): void {
-  state.currentProblem.set(generateProblem(state.difficulty.get()));
+  const level = state.difficulty.get();
+  const pool = getTierPool(level);
+  // Spaced repetition chooses the next problem; the pool fallback is a safety
+  // net that should never be needed (every tier is non-empty).
+  const next =
+    selectNext(pool, progress, recentKeys, Date.now(), Math.random) ??
+    randomProblemForLevel(level);
+
+  state.currentProblem.set(next);
+  rememberRecent(problemKey(next.a, next.b));
+  currentGraded = false;
+  lastTimestamp = 0; // Re-baseline the clock so the new question gets full time.
   state.currentPhase.set('question');
   state.timeRemaining.set(state.questionTime.get());
+}
+
+/**
+ * Record the learner's self-assessment for the current problem and advance
+ * immediately. No-op unless an answer is showing and hasn't been graded yet.
+ */
+export function gradeAnswer(grade: Grade): void {
+  if (!state.isQuizActive.get() || state.currentPhase.get() !== 'answer' || currentGraded) {
+    return;
+  }
+
+  currentGraded = true;
+  const { a, b } = state.currentProblem.get();
+  progress = applyGrade(progress, problemKey(a, b), grade, Date.now());
+  debouncedSaveProgress();
+
+  if (grade === 'correct') {
+    state.sessionCorrect.set(state.sessionCorrect.get() + 1);
+  } else {
+    state.sessionIncorrect.set(state.sessionIncorrect.get() + 1);
+  }
+
+  startNextProblem();
 }
 
 export function toggleQuiz(): void {
@@ -3225,7 +3739,11 @@ export function toggleQuiz(): void {
   state.isQuizActive.set(willBeActive);
 
   if (willBeActive) {
-    lastTimestamp = 0; // Reset timestamp for the first frame
+    // Fresh session: zero the tally and recency ring.
+    state.sessionCorrect.set(0);
+    state.sessionIncorrect.set(0);
+    recentKeys = [];
+    lastTimestamp = 0;
     startNextProblem();
     if (!animationFrameId) {
       animationFrameId = requestAnimationFrame(gameLoop);
@@ -3237,42 +3755,6 @@ export function toggleQuiz(): void {
     }
     state.currentPhase.set('idle');
     state.timeRemaining.set(0);
-    updateLastTime();
-  }
-}
-
-export function increment(): void {
-  state.counter.set(state.counter.get() + 1);
-  updateLastTime();
-}
-
-export function reset(): void {
-  state.counter.set(0);
-  state.seed.set(generateSeed(state.difficulty.get()));
-  updateLastTime();
-}
-
-function updateLastTime(): void {
-  elements.updateTime.textContent = new Date().toLocaleTimeString();
-}
-
-export function toggleAutoUpdate(checked: boolean): void {
-  state.autoUpdateEnabled.set(checked);
-}
-
-function startAutoUpdate(): void {
-  if (autoUpdateTimer) return;
-  autoUpdateTimer = setInterval(() => {
-    if (!state.isQuizActive.get() && state.autoUpdateEnabled.get()) {
-      increment();
-    }
-  }, 3000);
-}
-
-function stopAutoUpdate(): void {
-  if (autoUpdateTimer) {
-    clearInterval(autoUpdateTimer);
-    autoUpdateTimer = null;
   }
 }
 
@@ -3288,26 +3770,20 @@ function initializeSettings(): void {
     const questionTime = saved.questionTime ?? 5;
     const answerTime = saved.answerTime ?? 3;
     const difficulty = saved.difficulty ?? 3;
-    const autoUpdate = saved.autoUpdate ?? false;
 
     state.questionTime.set(questionTime);
     state.answerTime.set(answerTime);
     state.difficulty.set(difficulty);
-    state.autoUpdateEnabled.set(autoUpdate);
-    // Set seed based on loaded difficulty
-    state.seed.set(generateSeed(difficulty));
 
     // Sync the DOM elements with loaded values
     elements.questionTimeSlider.value = questionTime.toString();
     elements.answerTimeSlider.value = answerTime.toString();
     elements.difficultySlider.value = difficulty.toString();
-    elements.autoUpdateCheckbox.checked = autoUpdate;
   } else {
     // No saved settings, ensure DOM matches default state values
     elements.questionTimeSlider.value = state.questionTime.get().toString();
     elements.answerTimeSlider.value = state.answerTime.get().toString();
     elements.difficultySlider.value = state.difficulty.get().toString();
-    elements.autoUpdateCheckbox.checked = state.autoUpdateEnabled.get();
   }
 
   // Load theme preference
@@ -3335,27 +3811,30 @@ function setupEffects(): void {
   effect(() => {
     const isActive = state.isQuizActive.get();
     elements.quizButton.textContent = isActive ? 'Stop Quiz' : 'Start Quiz';
-    elements.modeStatus.textContent = isActive ? 'Quiz' : 'Manual';
     elements.quizStatus.textContent = isActive ? 'Running' : 'Stopped';
 
     const disabled = isActive;
     elements.questionTimeSlider.disabled = disabled;
     elements.answerTimeSlider.disabled = disabled;
     elements.difficultySlider.disabled = disabled;
-    elements.incrementBtn.disabled = disabled;
-    elements.resetBtn.disabled = disabled;
-    elements.autoUpdateCheckbox.disabled = disabled;
   });
 
+  // Grade buttons: hidden entirely when idle, visible during a quiz, and only
+  // enabled while the answer is on screen (the grading window).
   effect(() => {
-    const autoUpdate = state.autoUpdateEnabled.get();
-    const quizActive = state.isQuizActive.get();
+    const active = state.isQuizActive.get();
+    const grading = isGradingPhase.get();
+    elements.gradeButtons.hidden = !active;
+    elements.gradeCorrectButton.disabled = !grading;
+    elements.gradeIncorrectButton.disabled = !grading;
+  });
 
-    if (autoUpdate && !quizActive) {
-      startAutoUpdate();
-    } else {
-      stopAutoUpdate();
-    }
+  // Session tally
+  effect(() => {
+    elements.correctCount.textContent = state.sessionCorrect.get().toString();
+  });
+  effect(() => {
+    elements.incorrectCount.textContent = state.sessionIncorrect.get().toString();
   });
 
   // Create a debounced save function
@@ -3384,15 +3863,7 @@ function setupEffects(): void {
     elements.difficultyValue.textContent = name;
     elements.difficultySlider.setAttribute('aria-valuenow', difficulty.toString());
     elements.difficultySlider.setAttribute('aria-valuetext', name);
-    // Update seed when difficulty changes in manual mode
-    if (!state.isQuizActive.get()) {
-      state.seed.set(generateSeed(difficulty));
-    }
     debouncedSave();
-  });
-
-  effect(() => {
-    debouncedSave(); // For autoUpdate changes
   });
 }
 
@@ -3401,7 +3872,6 @@ function saveSettingsToStorage(): void {
     questionTime: state.questionTime.get(),
     answerTime: state.answerTime.get(),
     difficulty: state.difficulty.get(),
-    autoUpdate: state.autoUpdateEnabled.get(),
   } satisfies Settings;
   saveSettings(settings);
 }
@@ -3422,28 +3892,356 @@ function setupEventListeners(): void {
     state.difficulty.set(value);
   });
 
-  // Handle visibility change for auto-update
-  document.addEventListener('visibilitychange', () => {
-    if (!state.isQuizActive.get() && state.autoUpdateEnabled.get()) {
-      if (document.hidden) {
-        stopAutoUpdate();
-      } else {
-        startAutoUpdate();
-      }
-    }
-  });
+  // Self-grading. Tap/click is the primary interaction and works on touch;
+  // arrow and letter keys are an additive convenience for desktop keyboards.
+  elements.gradeCorrectButton.addEventListener('click', () => gradeAnswer('correct'));
+  elements.gradeIncorrectButton.addEventListener('click', () => gradeAnswer('incorrect'));
+  document.addEventListener('keydown', handleGradingKey);
+}
+
+function handleGradingKey(event: KeyboardEvent): void {
+  if (!isGradingPhase.get()) return;
+
+  // Right / C => correct (right-hand ✓ button); Left / X => incorrect
+  // (left-hand ✗ button). Arrows mirror the on-screen button positions.
+  if (event.key === 'ArrowRight' || event.key === 'c' || event.key === 'C') {
+    event.preventDefault();
+    gradeAnswer('correct');
+  } else if (event.key === 'ArrowLeft' || event.key === 'x' || event.key === 'X') {
+    event.preventDefault();
+    gradeAnswer('incorrect');
+  }
 }
 
 export function initialize(): void {
   elements = getElements();
+  progress = loadProgress() ?? createStore();
   initializeSettings();
   setupEffects();
   setupEventListeners();
-  updateLastTime();
 }
 
 // Export for testing
 export { state, elements };
+
+
+################################################################################
+# FILE: src/difficulty.ts
+################################################################################
+
+--- METADATA ---
+  File name:             difficulty.ts
+  Relative path:         src/difficulty.ts
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/src/difficulty.ts
+  Size:                  11.2 KiB (11536 bytes)
+  Last modified:         2026-07-16 03:46:14.426966479 -0400
+  Permissions:           -rw-r--r--
+  Owner:                 kushal:kushal
+  Inode:                 21040364
+  Hard links:            1
+  MIME type:             application/javascript
+  SHA-256:               1bbd38ced095c6c5a4d3ba91ab4f85b4ee7cc564e52166125fb49a6e31d8cd52
+  Last git commit:       c62cd68 2026-07-16 03:53:43 -0400 add claude response
+
+--- CONTENT ---
+/**
+ * difficulty.ts — how hard is a multiplication problem, really?
+ * =============================================================================
+ *
+ * The guiding idea: **difficulty is the cognitive cost of computing the product
+ * in your head — not the size of the numbers.** That single reframe explains
+ * the cases that feel contradictory at first:
+ *
+ *   • 64 × 10 is *easy* even though 64 is a two-digit number, because
+ *     "append a zero" is almost free.
+ *   • 7 × 8 is *medium* even though both operands are single digits, because it
+ *     has no shortcut and is the worst-recalled fact in the times table
+ *     (the well-documented "problem-size effect").
+ *   • 25 × 4 is *easy* even though the product (100) is large, because doubling
+ *     twice (25 → 50 → 100) reuses one running value and produces clean carries.
+ *
+ * We model the cost of the *cheapest sensible mental strategy* for a problem and
+ * then bucket that cost into four tiers. Concretely:
+ *
+ *   1. Trivial gate — multiplying by 0 or 1 is excluded from every tier.
+ *   2. Place value is free — strip trailing zeros; if a stripped operand becomes
+ *      1 (i.e. it was a power of ten such as 10) the problem collapses to
+ *      "append zeros" and is Easy.
+ *   3. Score = min over a small set of named strategies of that strategy's cost.
+ *      Each strategy's cost is the sum of its elementary steps (single-digit
+ *      recalls, additions, doublings) plus a working-memory "hold" penalty for
+ *      juggling intermediate results. Doubling has no hold penalty (it keeps one
+ *      running value), which is why chains like ×4 and ×8 stay cheap.
+ *   4. Tier = which score band the problem falls into.
+ *
+ * The module is pure and side-effect free, which makes every piece individually
+ * unit-testable. The weights and thresholds below were calibrated empirically
+ * against the full 0–99 × 0–99 space; see DIFFICULTY.md for the derivation,
+ * the validation table, and the resulting tier distribution.
+ */
+
+import { DifficultyLevel, Problem } from './types';
+
+// -----------------------------------------------------------------------------
+// Tunable cost weights (abstract "effort units"). See DIFFICULTY.md.
+// -----------------------------------------------------------------------------
+const RECALL_BASE = 0.3; // floor cost of recalling any single-digit fact
+const ADD_BASE = 0.6; // cost of one addition/subtraction of partial products
+const CARRY = 0.5; // cost per carry (or borrow)
+const HOLD = 1.2; // working-memory cost per intermediate result held
+const DOUBLE_BASE = 0.7; // cost of one doubling step
+const FIVE_BASE = 1.0; // base cost of the ×5 (halve-of-×10) strategy
+const NINE_BASE = 1.3; // base cost of the ×9 (×10 minus once) strategy
+const ELEVEN_BASE = 1.0; // base cost of the ×11 (×10 plus once) strategy
+const ZERO_COST = 0.3; // cost per stripped trailing zero
+const TIMES_TEN_COST = 0.2; // flat cost when a stripped operand is 1
+
+/**
+ * Score band edges. A problem with score `s` is:
+ *   Easy   if s ≤ easy
+ *   Medium if easy < s ≤ medium
+ *   Hard   if medium < s ≤ hard
+ *   Expert if s > hard
+ */
+export const DIFFICULTY_THRESHOLDS = {
+  easy: 2.5,
+  medium: 5.5,
+  hard: 13,
+} as const;
+
+// -----------------------------------------------------------------------------
+// Numeric primitives
+// -----------------------------------------------------------------------------
+const digitCount = (n: number): number => (n < 10 ? 1 : 2);
+const trailingZeros = (n: number): number => (n !== 0 && n % 10 === 0 ? 1 : 0);
+const strip = (n: number): number => (trailingZeros(n) ? n / 10 : n);
+
+/**
+ * Number of carries produced when adding a list of non-negative integers with
+ * the standard right-to-left algorithm. Used as a proxy for the arithmetic
+ * friction of combining partial products.
+ */
+function additionCarries(values: readonly number[]): number {
+  const columns = values.slice();
+  let carry = 0;
+  let carries = 0;
+  while (carry > 0 || columns.some((v) => v > 0)) {
+    let columnSum = carry;
+    for (let i = 0; i < columns.length; i++) {
+      columnSum += columns[i] % 10;
+      columns[i] = Math.floor(columns[i] / 10);
+    }
+    carry = Math.floor(columnSum / 10);
+    if (carry > 0) carries += 1;
+  }
+  return carries;
+}
+
+const doublingCarries = (n: number): number => additionCarries([n, n]);
+
+/**
+ * Recall cost of a single-digit × single-digit fact, capturing the problem-size
+ * effect (bigger products are recalled more slowly) with an easing for squares,
+ * which are memorised better. Returns 0 when a factor is 0 or 1 (trivial).
+ */
+function factCost(x: number, y: number): number {
+  if (x < 2 || y < 2) return 0;
+  const base = (x * y) / 16; // 2×2 ≈ 0.25 … 9×9 ≈ 5.06
+  return x === y ? base * 0.7 : base;
+}
+
+// -----------------------------------------------------------------------------
+// Mental strategies. Each returns a cost, or Infinity if it does not apply.
+// They operate on *stripped* operands (≥ 2, no trailing zeros).
+// -----------------------------------------------------------------------------
+const POWERS_OF_TWO = [2, 4, 8] as const;
+
+/** Straight recall — only for single-digit × single-digit. */
+function costRecall(m: number, n: number): number {
+  if (digitCount(m) === 1 && digitCount(n) === 1) return RECALL_BASE + factCost(m, n);
+  return Infinity;
+}
+
+/** Cost of doubling `value` exactly `times` times. */
+function doublingChainCost(value: number, times: number): number {
+  let cost = 0;
+  let v = value;
+  for (let i = 0; i < times; i++) {
+    cost += DOUBLE_BASE + CARRY * doublingCarries(v);
+    v *= 2;
+  }
+  return cost;
+}
+
+/**
+ * Repeated doubling when a factor is 2, 4, or 8. If *both* factors are powers of
+ * two we try both decompositions and keep the cheaper one, which also makes the
+ * strategy commutative.
+ */
+function costDoubling(m: number, n: number): number {
+  let best = Infinity;
+  if ((POWERS_OF_TWO as readonly number[]).includes(m)) {
+    best = Math.min(best, doublingChainCost(n, Math.log2(m)));
+  }
+  if ((POWERS_OF_TWO as readonly number[]).includes(n)) {
+    best = Math.min(best, doublingChainCost(m, Math.log2(n)));
+  }
+  return best;
+}
+
+/** ×5 as half of ×10. */
+function costFive(m: number, n: number): number {
+  const other = m === 5 ? n : n === 5 ? m : NaN;
+  if (Number.isNaN(other)) return Infinity;
+  return FIVE_BASE + (other % 2 === 1 ? 0.5 : 0); // halving an odd ten needs care
+}
+
+/** ×9 as (×10 − itself). */
+function costNine(m: number, n: number): number {
+  const other = m === 9 ? n : n === 9 ? m : NaN;
+  if (Number.isNaN(other)) return Infinity;
+  return NINE_BASE + CARRY * Math.min(additionCarries([other * 10, other]), 2);
+}
+
+/** ×11 as (×10 + itself). */
+function costEleven(m: number, n: number): number {
+  const other = m === 11 ? n : n === 11 ? m : NaN;
+  if (Number.isNaN(other)) return Infinity;
+  return ELEVEN_BASE + ADD_BASE + CARRY * additionCarries([other * 10, other]);
+}
+
+/** Split the two-digit factor into tens + units; multiply the single-digit
+ *  factor by each and add. Applies to (single digit) × (two digit). */
+function costDistribute(m: number, n: number): number {
+  const small = Math.min(m, n);
+  const large = Math.max(m, n);
+  if (digitCount(small) !== 1 || digitCount(large) !== 2) return Infinity;
+  const tens = Math.floor(large / 10);
+  const units = large % 10;
+  const partials = [small * tens * 10, small * units];
+  return (
+    factCost(small, tens) +
+    factCost(small, units) +
+    ADD_BASE +
+    CARRY * additionCarries(partials) +
+    HOLD
+  );
+}
+
+/** The full grid: four partial products plus their additions. Applies to
+ *  (two digit) × (two digit) — the general worst case. */
+function costGrid(m: number, n: number): number {
+  if (digitCount(m) !== 2 || digitCount(n) !== 2) return Infinity;
+  const [aTens, aUnits] = [Math.floor(m / 10), m % 10];
+  const [bTens, bUnits] = [Math.floor(n / 10), n % 10];
+  const partials = [aTens * bTens * 100, aTens * bUnits * 10, aUnits * bTens * 10, aUnits * bUnits];
+  return (
+    factCost(aTens, bTens) +
+    factCost(aTens, bUnits) +
+    factCost(aUnits, bTens) +
+    factCost(aUnits, bUnits) +
+    ADD_BASE * 3 +
+    CARRY * additionCarries(partials) +
+    HOLD * 3
+  );
+}
+
+function coreScore(m: number, n: number): number {
+  return Math.min(
+    costRecall(m, n),
+    costDoubling(m, n),
+    costFive(m, n),
+    costNine(m, n),
+    costEleven(m, n),
+    costDistribute(m, n),
+    costGrid(m, n),
+  );
+}
+
+// -----------------------------------------------------------------------------
+// Public API
+// -----------------------------------------------------------------------------
+
+/** True when either operand is 0 or 1 — a trivial problem excluded from all tiers. */
+export function isTrivial(a: number, b: number): boolean {
+  return Math.min(a, b) <= 1;
+}
+
+/**
+ * Canonical, order-independent key for a problem (`"7x8"`), so that 7 × 8 and
+ * 8 × 7 share one spaced-repetition record.
+ */
+export function problemKey(a: number, b: number): string {
+  return `${Math.min(a, b)}x${Math.max(a, b)}`;
+}
+
+/**
+ * Cognitive-difficulty score for a × b. Lower is easier. Commutative:
+ * `scoreProblem(a, b) === scoreProblem(b, a)`. Intended for non-trivial
+ * operands (≥ 2); callers should gate with {@link isTrivial} first.
+ */
+export function scoreProblem(a: number, b: number): number {
+  // Evaluate on a canonical ordering so the score is exactly commutative:
+  // floating-point addition is not associative, and the grid strategy would
+  // otherwise sum its partial products in a different order for a×b vs b×a.
+  const lo = Math.min(a, b);
+  const hi = Math.max(a, b);
+  const zeros = trailingZeros(lo) + trailingZeros(hi);
+  const sa = strip(lo);
+  const sb = strip(hi);
+  if (sa === 1 || sb === 1) return TIMES_TEN_COST + zeros * ZERO_COST;
+  return zeros * ZERO_COST + coreScore(sa, sb);
+}
+
+/**
+ * Difficulty tier for a × b, or `null` if the problem is trivial (×0 or ×1).
+ */
+export function classifyProblem(a: number, b: number): DifficultyLevel | null {
+  if (isTrivial(a, b)) return null;
+  const s = scoreProblem(a, b);
+  if (s <= DIFFICULTY_THRESHOLDS.easy) return 1;
+  if (s <= DIFFICULTY_THRESHOLDS.medium) return 2;
+  if (s <= DIFFICULTY_THRESHOLDS.hard) return 3;
+  return 4;
+}
+
+/** Operand bounds for the drill: 0 and 1 are excluded, so the range is 2..99. */
+export const MIN_OPERAND = 2;
+export const MAX_OPERAND = 99;
+
+// Tier pools are computed once on demand and cached — ~4.8k pairs is cheap.
+const tierPoolCache = new Map<DifficultyLevel, readonly Problem[]>();
+
+/**
+ * All non-trivial canonical problems (a ≤ b) that fall in the given tier.
+ * Memoised per level.
+ */
+export function getTierPool(level: DifficultyLevel): readonly Problem[] {
+  const cached = tierPoolCache.get(level);
+  if (cached) return cached;
+
+  const pool: Problem[] = [];
+  for (let a = MIN_OPERAND; a <= MAX_OPERAND; a++) {
+    for (let b = a; b <= MAX_OPERAND; b++) {
+      if (classifyProblem(a, b) === level) pool.push({ a, b });
+    }
+  }
+  tierPoolCache.set(level, pool);
+  return pool;
+}
+
+/**
+ * A uniformly random problem from the given tier. `rng` is injectable for
+ * deterministic tests and defaults to `Math.random`.
+ */
+export function randomProblemForLevel(
+  level: DifficultyLevel,
+  rng: () => number = Math.random,
+): Problem {
+  const pool = getTierPool(level);
+  const index = Math.min(pool.length - 1, Math.floor(rng() * pool.length));
+  return pool[index] ?? { a: MIN_OPERAND, b: MIN_OPERAND };
+}
 
 
 ################################################################################
@@ -3454,39 +4252,34 @@ export { state, elements };
   File name:             main.ts
   Relative path:         src/main.ts
   Absolute path:         /home/kushal/src/ts/multiplicationdrill/src/main.ts
-  Size:                  661 B (661 bytes)
-  Last modified:         2026-01-07 12:17:53.438710884 -0500
+  Size:                  425 B (425 bytes)
+  Last modified:         2026-07-16 03:49:12.229918904 -0400
   Permissions:           -rw-r--r--
   Owner:                 kushal:kushal
-  Inode:                 3382231
+  Inode:                 21040675
   Hard links:            1
   MIME type:             application/javascript
-  SHA-256:               2043f1d7a4967ba1154c28fbd6efaf07ea358e1393a19c6e0e9089c95952cb75
-  Last git commit:       0d876ed 2025-08-03 06:00:35 -0700 clean up with claude
+  SHA-256:               b4444810eaafda4d1957f6ca7fbdcc4b5112d2172ec79e576042af17b2d75678
+  Last git commit:       c62cd68 2026-07-16 03:53:43 -0400 add claude response
 
 --- CONTENT ---
 import './style.css';
-import { initialize, toggleQuiz, increment, reset, toggleAutoUpdate, toggleTheme } from './app';
+import { initialize, toggleQuiz, toggleTheme } from './app';
 
 // Make functions globally available for onclick handlers
 declare global {
   interface Window {
     toggleQuiz: typeof toggleQuiz;
-    increment: typeof increment;
-    reset: typeof reset;
-    toggleAutoUpdate: typeof toggleAutoUpdate;
     toggleTheme: typeof toggleTheme;
   }
 }
 
 window.toggleQuiz = toggleQuiz;
-window.increment = increment;
-window.reset = reset;
-window.toggleAutoUpdate = toggleAutoUpdate;
 window.toggleTheme = toggleTheme;
 
 // Initialize the app when DOM is ready
 document.addEventListener('DOMContentLoaded', initialize);
+
 
 ################################################################################
 # FILE: src/signals.ts
@@ -3605,6 +4398,224 @@ export function effect(effectFn: EffectFn): void {
 
 
 ################################################################################
+# FILE: src/srs.ts
+################################################################################
+
+--- METADATA ---
+  File name:             srs.ts
+  Relative path:         src/srs.ts
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/src/srs.ts
+  Size:                  7.0 KiB (7198 bytes)
+  Last modified:         2026-07-16 03:48:18.415159778 -0400
+  Permissions:           -rw-r--r--
+  Owner:                 kushal:kushal
+  Inode:                 21040616
+  Hard links:            1
+  MIME type:             application/javascript
+  SHA-256:               e9251ece6611ca3be6504e01c1cf74da12913e44a265245e73882fadff2ab19c
+  Last git commit:       c62cd68 2026-07-16 03:53:43 -0400 add claude response
+
+--- CONTENT ---
+/**
+ * srs.ts — spaced repetition for the drill.
+ * =============================================================================
+ *
+ * Goals (from the product brief):
+ *   • Don't re-show a problem the learner just saw.
+ *   • A problem answered **correctly** is parked for a long time.
+ *   • A problem answered **incorrectly** comes back **soon** — but not
+ *     immediately (a few problems should pass first).
+ *
+ * We use Leitner boxes: every problem lives in a box 0..MAX_BOX. Answering
+ * correctly promotes it one box (longer interval); answering incorrectly sends
+ * it back to box 0 (the "soon" interval). Each box maps to a fixed time-based
+ * interval, so scheduling is intuitive and needs no per-item tuning.
+ *
+ * The whole module is **pure**: `now` (epoch ms) and `rng` are passed in, and
+ * every function returns new values rather than mutating. That keeps scheduling
+ * deterministic under test and free of any storage/DOM dependency. Persistence
+ * lives in `src/utils.ts`; this file only knows how to *evolve* a store.
+ */
+
+import { Grade, Problem, SrsRecord, SrsStore } from './types';
+import { problemKey } from './difficulty';
+
+/** Bump when the on-disk shape changes so old data is discarded cleanly. */
+export const SRS_VERSION = 1;
+
+/** Highest Leitner box. */
+export const MAX_BOX = 5;
+
+/**
+ * Interval (ms) before a problem in each box is due again.
+ * box 0 ≈ 45s ("soon"), climbing to box 5 ≈ 4 days ("long").
+ */
+export const BOX_INTERVALS_MS: readonly number[] = [
+  45_000, // 45 seconds
+  5 * 60_000, // 5 minutes
+  30 * 60_000, // 30 minutes
+  4 * 3_600_000, // 4 hours
+  24 * 3_600_000, // 1 day
+  4 * 24 * 3_600_000, // 4 days
+];
+
+/** After showing a problem *without* grading it, hold it back at least this long. */
+export const SEEN_COOLDOWN_MS = 30_000;
+
+/** How many of the most recent problems to keep out of the next selection. */
+export const RECENCY_WINDOW = 8;
+
+/** Size of the top-priority cohort that a pick is randomised within. */
+const PICK_COHORT = 4;
+
+/** A fresh, empty store. */
+export function createStore(): SrsStore {
+  return { version: SRS_VERSION, records: {} };
+}
+
+/**
+ * Runtime type guard for a persisted store. Used by the persistence layer to
+ * reject corrupt or stale data.
+ */
+export function isSrsStore(value: unknown): value is SrsStore {
+  if (typeof value !== 'object' || value === null) return false;
+  const candidate = value as Record<string, unknown>;
+  if (candidate.version !== SRS_VERSION) return false;
+  return typeof candidate.records === 'object' && candidate.records !== null;
+}
+
+/**
+ * A brand-new record for a problem about to be shown for the first time.
+ * `dueAt = now` means "immediately eligible", so unseen problems are naturally
+ * introduced by the selector.
+ */
+export function initialRecord(now: number): SrsRecord {
+  return { box: 0, dueAt: now, lastSeen: 0, seen: 0, correct: 0, incorrect: 0 };
+}
+
+export function getRecord(store: SrsStore, key: string): SrsRecord | undefined {
+  return store.records[key];
+}
+
+/** Evolve a record given a self-reported grade. */
+export function gradeRecord(record: SrsRecord, grade: Grade, now: number): SrsRecord {
+  const correct = grade === 'correct';
+  const box = correct ? Math.min(record.box + 1, MAX_BOX) : 0;
+  return {
+    box,
+    dueAt: now + BOX_INTERVALS_MS[box],
+    lastSeen: now,
+    seen: record.seen + 1,
+    correct: record.correct + (correct ? 1 : 0),
+    incorrect: record.incorrect + (correct ? 0 : 1),
+  };
+}
+
+/**
+ * Evolve a record when a problem was shown but the learner did not grade it
+ * (e.g. the answer timer elapsed). The box is untouched; we only nudge `dueAt`
+ * forward by the cooldown so it isn't shown again right away.
+ */
+export function noteSeen(record: SrsRecord, now: number): SrsRecord {
+  return {
+    ...record,
+    seen: record.seen + 1,
+    lastSeen: now,
+    dueAt: Math.max(record.dueAt, now + SEEN_COOLDOWN_MS),
+  };
+}
+
+/** A problem with no record yet is treated as due (so it can be introduced). */
+export function isDue(record: SrsRecord | undefined, now: number): boolean {
+  return record === undefined || record.dueAt <= now;
+}
+
+/** Apply a grade to the store, returning a new store. */
+export function applyGrade(store: SrsStore, key: string, grade: Grade, now: number): SrsStore {
+  const existing = store.records[key] ?? initialRecord(now);
+  return {
+    version: store.version,
+    records: { ...store.records, [key]: gradeRecord(existing, grade, now) },
+  };
+}
+
+/** Record an ungraded showing in the store, returning a new store. */
+export function applySeen(store: SrsStore, key: string, now: number): SrsStore {
+  const existing = store.records[key] ?? initialRecord(now);
+  return {
+    version: store.version,
+    records: { ...store.records, [key]: noteSeen(existing, now) },
+  };
+}
+
+interface Candidate {
+  readonly problem: Problem;
+  readonly record: SrsRecord | undefined;
+}
+
+// Unseen records sort ahead of box 0 so new material is introduced promptly.
+const boxRank = (record: SrsRecord | undefined): number => (record ? record.box : -1);
+
+/**
+ * Choose the next problem to show.
+ *
+ * Selection order:
+ *   1. Drop anything in `recentKeys` (relaxed only if that would leave nothing).
+ *   2. If any candidates are due, prefer them, ordered by lowest box then most
+ *      overdue — struggling and unseen problems surface first.
+ *   3. Otherwise fall back to the soonest-due problems.
+ *   4. Randomise within the top {@link PICK_COHORT} to avoid a rigid sequence.
+ *
+ * `rng` is injectable; `rng() === 0` deterministically picks the top-priority
+ * problem, which the tests rely on. Returns `null` only for an empty pool.
+ */
+export function selectNext(
+  pool: readonly Problem[],
+  store: SrsStore,
+  recentKeys: readonly string[],
+  now: number,
+  rng: () => number = Math.random,
+): Problem | null {
+  if (pool.length === 0) return null;
+
+  const recent = new Set(recentKeys);
+  let candidates: Candidate[] = pool
+    .filter((problem) => !recent.has(problemKey(problem.a, problem.b)))
+    .map((problem) => ({ problem, record: store.records[problemKey(problem.a, problem.b)] }));
+
+  // If recency filtering removed everything, ignore it this once.
+  if (candidates.length === 0) {
+    candidates = pool.map((problem) => ({
+      problem,
+      record: store.records[problemKey(problem.a, problem.b)],
+    }));
+  }
+
+  const due = candidates.filter((c) => isDue(c.record, now));
+  const useDue = due.length > 0;
+  const group = useDue ? due : candidates;
+
+  const sorted = [...group].sort((x, y) => {
+    if (useDue) {
+      const boxDelta = boxRank(x.record) - boxRank(y.record);
+      if (boxDelta !== 0) return boxDelta;
+      const dueX = x.record ? x.record.dueAt : -Infinity;
+      const dueY = y.record ? y.record.dueAt : -Infinity;
+      return dueX - dueY;
+    }
+    const dueX = x.record ? x.record.dueAt : Infinity;
+    const dueY = y.record ? y.record.dueAt : Infinity;
+    if (dueX !== dueY) return dueX - dueY;
+    return boxRank(x.record) - boxRank(y.record);
+  });
+
+  const cohort = sorted.slice(0, Math.min(PICK_COHORT, sorted.length));
+  const index = Math.min(cohort.length - 1, Math.floor(rng() * cohort.length));
+  return cohort[index].problem;
+}
+
+
+################################################################################
 # FILE: src/state.ts
 ################################################################################
 
@@ -3612,50 +4623,45 @@ export function effect(effectFn: EffectFn): void {
   File name:             state.ts
   Relative path:         src/state.ts
   Absolute path:         /home/kushal/src/ts/multiplicationdrill/src/state.ts
-  Size:                  1.8 KiB (1867 bytes)
-  Last modified:         2026-03-25 06:00:06.568012653 -0400
+  Size:                  1.8 KiB (1914 bytes)
+  Last modified:         2026-07-16 03:48:55.578468106 -0400
   Permissions:           -rw-r--r--
   Owner:                 kushal:kushal
-  Inode:                 3382233
+  Inode:                 21040651
   Hard links:            1
   MIME type:             application/javascript
-  SHA-256:               d795df8d83b05d01f86c3dfe0d70376c84098cce91dac38799a7c6dee7c1c48c
-  Last git commit:       2382479 2026-03-25 06:00:52 -0400 add all changes by claude
+  SHA-256:               29ac0cbdf9534745324f5750c26baea6d0ef094b69bfbf875cfcf65b234fbbdf
+  Last git commit:       c62cd68 2026-07-16 03:53:43 -0400 add claude response
 
 --- CONTENT ---
 import { Signal, ComputedSignal } from './signals';
 import { Problem, QuizPhase, DifficultyLevel } from './types';
-import { generateSeed } from './utils';
 
 // Application State
 export const state = {
-  counter: new Signal(0),
-  seed: new Signal(generateSeed(3)), // Initialize with default difficulty
   questionTime: new Signal(5),
   answerTime: new Signal(3),
   difficulty: new Signal<DifficultyLevel>(3),
   isQuizActive: new Signal(false),
   currentPhase: new Signal<QuizPhase>('idle'),
   timeRemaining: new Signal(0),
-  autoUpdateEnabled: new Signal(false),
   currentProblem: new Signal<Problem>({ a: 0, b: 0 }),
+  // Per-session self-assessment tally, reset each time a quiz starts.
+  sessionCorrect: new Signal(0),
+  sessionIncorrect: new Signal(0),
 } as const;
 
 // Computed Values (Derived State)
 export const displayText = new ComputedSignal(() => {
-  if (state.isQuizActive.get()) {
-    const phase = state.currentPhase.get();
-    const p = state.currentProblem.get();
-    if (phase === 'question') {
-      return `${p.a} \u00D7 ${p.b}`;
-    } else if (phase === 'answer') {
-      return `${p.a} \u00D7 ${p.b} = ${p.a * p.b}`;
-    }
+  if (!state.isQuizActive.get()) {
+    return 'Press Start Quiz';
   }
-  // Manual mode display
-  const count = state.counter.get();
-  const seed = state.seed.get();
-  return `${count} \u00D7 ${seed} = ${count * seed}`;
+
+  const p = state.currentProblem.get();
+  if (state.currentPhase.get() === 'answer') {
+    return `${p.a} \u00D7 ${p.b} = ${p.a * p.b}`;
+  }
+  return `${p.a} \u00D7 ${p.b}`;
 });
 
 export const progressPercent = new ComputedSignal(() => {
@@ -3680,6 +4686,12 @@ export const timerDisplayText = new ComputedSignal(() => {
   return `${phaseText}: ${remaining.toFixed(1)}s`;
 });
 
+// True only while the answer is on screen — the window in which the learner may
+// grade themselves. Drives enabling/disabling of the grade buttons.
+export const isGradingPhase = new ComputedSignal(
+  () => state.isQuizActive.get() && state.currentPhase.get() === 'answer',
+);
+
 
 ################################################################################
 # FILE: src/style.css
@@ -3689,15 +4701,15 @@ export const timerDisplayText = new ComputedSignal(() => {
   File name:             style.css
   Relative path:         src/style.css
   Absolute path:         /home/kushal/src/ts/multiplicationdrill/src/style.css
-  Size:                  7.1 KiB (7342 bytes)
-  Last modified:         2026-01-07 12:17:53.438710884 -0500
+  Size:                  7.4 KiB (7594 bytes)
+  Last modified:         2026-07-16 03:49:43.438617135 -0400
   Permissions:           -rw-r--r--
   Owner:                 kushal:kushal
-  Inode:                 3382234
+  Inode:                 21040701
   Hard links:            1
   MIME type:             text/plain
-  SHA-256:               ee69154b6f599efbdc412037f0b22de01217b1f0bcee1322a8a5a273ab16c618
-  Last git commit:       6c1b6ec 2025-08-04 05:41:00 -0700 add code updates by claude in response to review
+  SHA-256:               658e6298815aefa41af63ae72e05efa6afbb6bbc5cde2179cb85cc93aad732ee
+  Last git commit:       c62cd68 2026-07-16 03:53:43 -0400 add claude response
 
 --- CONTENT ---
 :root {
@@ -3868,6 +4880,33 @@ h1 {
     color: var(--accent-primary);
 }
 
+/* Self-assessment buttons shown during the answer phase */
+.grade-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.grade-buttons[hidden] {
+    display: none;
+}
+
+.grade-btn {
+    flex: 1;
+    min-height: 64px;
+    padding: 12px;
+    font-size: 2em;
+    line-height: 1;
+}
+
+.grade-btn.correct {
+    background: linear-gradient(135deg, var(--success), #34d399);
+}
+
+.grade-btn.incorrect {
+    background: linear-gradient(135deg, var(--danger), #f87171);
+}
+
 .controls {
     display: flex;
     flex-direction: column;
@@ -3983,29 +5022,6 @@ button:disabled:hover::before {
     height: 0;
 }
 
-.button-group {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-.button-group button {
-    flex: 1;
-    min-width: 120px;
-}
-
-.toggle {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.toggle input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-}
-
 .status {
     background: var(--bg-primary);
     border-radius: 8px;
@@ -4060,7 +5076,218 @@ button:disabled:hover::before {
     h1 {
         font-size: 2em;
     }
+
+    .grade-btn {
+        font-size: 1.6em;
+        min-height: 56px;
+    }
 }
+
+
+################################################################################
+# FILE: src/__tests__/difficulty.test.ts
+################################################################################
+
+--- METADATA ---
+  File name:             difficulty.test.ts
+  Relative path:         src/__tests__/difficulty.test.ts
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/src/__tests__/difficulty.test.ts
+  Size:                  6.1 KiB (6299 bytes)
+  Last modified:         2026-07-16 03:50:19.671236614 -0400
+  Permissions:           -rw-r--r--
+  Owner:                 kushal:kushal
+  Inode:                 21040727
+  Hard links:            1
+  MIME type:             application/javascript
+  SHA-256:               1d06974a1df20b8dfc22b5f34694fc4db9359aa82d02fe3db00fe17d46f211cd
+  Last git commit:       c62cd68 2026-07-16 03:53:43 -0400 add claude response
+
+--- CONTENT ---
+import { describe, it, expect } from 'vitest';
+import {
+  isTrivial,
+  problemKey,
+  scoreProblem,
+  classifyProblem,
+  getTierPool,
+  randomProblemForLevel,
+  DIFFICULTY_THRESHOLDS,
+  MIN_OPERAND,
+  MAX_OPERAND,
+} from '../difficulty';
+import type { DifficultyLevel } from '../types';
+
+const ALL_LEVELS: DifficultyLevel[] = [1, 2, 3, 4];
+
+describe('isTrivial', () => {
+  it('treats any factor of 0 or 1 as trivial', () => {
+    expect(isTrivial(0, 0)).toBe(true);
+    expect(isTrivial(0, 7)).toBe(true);
+    expect(isTrivial(7, 0)).toBe(true);
+    expect(isTrivial(1, 9)).toBe(true);
+    expect(isTrivial(9, 1)).toBe(true);
+    expect(isTrivial(1, 1)).toBe(true);
+  });
+
+  it('treats products of two operands >= 2 as non-trivial', () => {
+    expect(isTrivial(2, 2)).toBe(false);
+    expect(isTrivial(7, 8)).toBe(false);
+    expect(isTrivial(99, 99)).toBe(false);
+  });
+});
+
+describe('problemKey', () => {
+  it('is canonical and order-independent', () => {
+    expect(problemKey(7, 8)).toBe('7x8');
+    expect(problemKey(8, 7)).toBe('7x8');
+    expect(problemKey(12, 12)).toBe('12x12');
+  });
+});
+
+describe('scoreProblem', () => {
+  it('is commutative across the whole operand space', () => {
+    for (let a = MIN_OPERAND; a <= MAX_OPERAND; a++) {
+      for (let b = a + 1; b <= MAX_OPERAND; b++) {
+        expect(scoreProblem(a, b)).toBeCloseTo(scoreProblem(b, a), 10);
+      }
+    }
+  });
+
+  it('orders problems monotonically from trivial computation to the grid', () => {
+    const easy = scoreProblem(2, 3);
+    const hardFact = scoreProblem(7, 8);
+    const twoByOne = scoreProblem(13, 7);
+    const twoByTwo = scoreProblem(47, 63);
+    const worst = scoreProblem(99, 99);
+    expect(easy).toBeLessThan(hardFact);
+    expect(hardFact).toBeLessThan(twoByOne);
+    expect(twoByOne).toBeLessThan(twoByTwo);
+    expect(twoByTwo).toBeLessThan(worst);
+  });
+
+  it('rewards shortcut strategies: ×2 and ×5 beat an unstructured hard fact', () => {
+    expect(scoreProblem(2, 9)).toBeLessThan(scoreProblem(7, 8));
+    expect(scoreProblem(5, 8)).toBeLessThan(scoreProblem(7, 8));
+  });
+
+  it('treats appending zeros as nearly free', () => {
+    expect(scoreProblem(64, 10)).toBeLessThan(scoreProblem(6, 7));
+    // 40 × 8 is just (4 × 8) with a zero, so barely harder than 4 × 8
+    expect(scoreProblem(40, 8) - scoreProblem(4, 8)).toBeLessThan(0.5);
+  });
+});
+
+describe('classifyProblem — anchors', () => {
+  it('64 × 10 is Easy (the required anchor)', () => {
+    expect(classifyProblem(64, 10)).toBe(1);
+  });
+
+  it('7 × 8 is Medium (the required anchor), commutatively', () => {
+    expect(classifyProblem(7, 8)).toBe(2);
+    expect(classifyProblem(8, 7)).toBe(2);
+  });
+
+  it('25 × 4 is NOT Hard — it is Easy via doubling (the regression case)', () => {
+    const level = classifyProblem(25, 4);
+    expect(level).not.toBeNull();
+    expect(level).toBeLessThanOrEqual(2); // Easy or Medium, never Hard/Expert
+    expect(classifyProblem(25, 4)).toBe(1);
+    // and strictly easier than a genuine two-digit × two-digit grid problem
+    expect(scoreProblem(25, 4)).toBeLessThan(scoreProblem(47, 63));
+  });
+
+  it('places representative problems in sensible tiers', () => {
+    expect(classifyProblem(2, 3)).toBe(1); // Easy
+    expect(classifyProblem(7, 9)).toBe(1); // Easy — the ×9 trick
+    expect(classifyProblem(11, 11)).toBe(1); // Easy — the ×11 trick
+    expect(classifyProblem(20, 20)).toBe(1); // Easy — 2×2 with two zeros
+    expect(classifyProblem(6, 7)).toBe(2); // Medium — a hard, shortcut-free fact
+    expect(classifyProblem(13, 7)).toBe(2); // Medium — small two-digit × one-digit
+    expect(classifyProblem(12, 12)).toBe(3); // Hard
+    expect(classifyProblem(47, 63)).toBe(3); // Hard
+    expect(classifyProblem(78, 89)).toBe(4); // Expert
+    expect(classifyProblem(99, 99)).toBe(4); // Expert
+  });
+
+  it('returns null for trivial problems', () => {
+    expect(classifyProblem(1, 50)).toBeNull();
+    expect(classifyProblem(0, 7)).toBeNull();
+    expect(classifyProblem(1, 1)).toBeNull();
+  });
+});
+
+describe('thresholds are ordered', () => {
+  it('easy < medium < hard', () => {
+    expect(DIFFICULTY_THRESHOLDS.easy).toBeLessThan(DIFFICULTY_THRESHOLDS.medium);
+    expect(DIFFICULTY_THRESHOLDS.medium).toBeLessThan(DIFFICULTY_THRESHOLDS.hard);
+  });
+});
+
+describe('tier pools', () => {
+  it('every non-trivial canonical pair lands in exactly one tier (partition)', () => {
+    const seen = new Set<string>();
+    let classified = 0;
+    for (const level of ALL_LEVELS) {
+      for (const problem of getTierPool(level)) {
+        const key = problemKey(problem.a, problem.b);
+        expect(seen.has(key)).toBe(false); // disjoint
+        seen.add(key);
+        classified += 1;
+      }
+    }
+
+    let expected = 0;
+    for (let a = MIN_OPERAND; a <= MAX_OPERAND; a++) {
+      for (let b = a; b <= MAX_OPERAND; b++) {
+        if (!isTrivial(a, b)) expected += 1;
+      }
+    }
+    expect(classified).toBe(expected);
+  });
+
+  it('gives every tier a usefully large pool', () => {
+    for (const level of ALL_LEVELS) {
+      expect(getTierPool(level).length).toBeGreaterThan(100);
+    }
+  });
+
+  it('only contains canonical (a <= b), non-trivial, correctly-tiered problems', () => {
+    for (const level of ALL_LEVELS) {
+      for (const { a, b } of getTierPool(level)) {
+        expect(a).toBeLessThanOrEqual(b);
+        expect(isTrivial(a, b)).toBe(false);
+        expect(classifyProblem(a, b)).toBe(level);
+      }
+    }
+  });
+
+  it('returns a cached, stable reference on repeated calls', () => {
+    expect(getTierPool(2)).toBe(getTierPool(2));
+  });
+});
+
+describe('randomProblemForLevel', () => {
+  it('always returns a non-trivial problem in the requested tier', () => {
+    let seed = 0.123;
+    const rng = (): number => {
+      seed = (seed * 9301 + 49297) % 233280;
+      return seed / 233280;
+    };
+    for (const level of ALL_LEVELS) {
+      for (let i = 0; i < 200; i++) {
+        const { a, b } = randomProblemForLevel(level, rng);
+        expect(isTrivial(a, b)).toBe(false);
+        expect(classifyProblem(a, b)).toBe(level);
+      }
+    }
+  });
+
+  it('rng() === 0 selects the first problem in the pool (deterministic)', () => {
+    const first = getTierPool(3)[0];
+    expect(randomProblemForLevel(3, () => 0)).toEqual(first);
+  });
+});
+
 
 ################################################################################
 # FILE: src/__tests__/signals.test.ts
@@ -4239,6 +5466,208 @@ describe('effect', () => {
 });
 
 ################################################################################
+# FILE: src/__tests__/srs.test.ts
+################################################################################
+
+--- METADATA ---
+  File name:             srs.test.ts
+  Relative path:         src/__tests__/srs.test.ts
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/src/__tests__/srs.test.ts
+  Size:                  7.0 KiB (7220 bytes)
+  Last modified:         2026-07-16 03:50:26.943024362 -0400
+  Permissions:           -rw-r--r--
+  Owner:                 kushal:kushal
+  Inode:                 21040736
+  Hard links:            1
+  MIME type:             application/javascript
+  SHA-256:               f0c897bbf7df78a79cf4bba37afea4cdda87a565b839bcd53624089df5ec82d3
+  Last git commit:       c62cd68 2026-07-16 03:53:43 -0400 add claude response
+
+--- CONTENT ---
+import { describe, it, expect } from 'vitest';
+import {
+  createStore,
+  isSrsStore,
+  initialRecord,
+  getRecord,
+  gradeRecord,
+  noteSeen,
+  isDue,
+  applyGrade,
+  applySeen,
+  selectNext,
+  SRS_VERSION,
+  MAX_BOX,
+  BOX_INTERVALS_MS,
+  SEEN_COOLDOWN_MS,
+} from '../srs';
+import type { Problem, SrsRecord } from '../types';
+
+const NOW = 1_000_000;
+const pick = (): number => 0; // deterministic: always take the top-priority candidate
+
+describe('createStore / isSrsStore', () => {
+  it('creates an empty, correctly-versioned store', () => {
+    const store = createStore();
+    expect(store.version).toBe(SRS_VERSION);
+    expect(store.records).toEqual({});
+  });
+
+  it('accepts a valid store and rejects anything else', () => {
+    expect(isSrsStore(createStore())).toBe(true);
+    expect(isSrsStore(null)).toBe(false);
+    expect(isSrsStore(42)).toBe(false);
+    expect(isSrsStore({ version: SRS_VERSION })).toBe(false); // no records
+    expect(isSrsStore({ version: SRS_VERSION + 1, records: {} })).toBe(false); // stale version
+    expect(isSrsStore({ records: {} })).toBe(false); // no version
+  });
+});
+
+describe('initialRecord', () => {
+  it('is an unseen record that is immediately due', () => {
+    const record = initialRecord(NOW);
+    expect(record).toEqual({ box: 0, dueAt: NOW, lastSeen: 0, seen: 0, correct: 0, incorrect: 0 });
+    expect(isDue(record, NOW)).toBe(true);
+  });
+});
+
+describe('gradeRecord', () => {
+  it('promotes one box on a correct answer and parks it for that interval', () => {
+    const graded = gradeRecord(initialRecord(NOW), 'correct', NOW);
+    expect(graded.box).toBe(1);
+    expect(graded.correct).toBe(1);
+    expect(graded.seen).toBe(1);
+    expect(graded.dueAt).toBe(NOW + BOX_INTERVALS_MS[1]);
+  });
+
+  it('sends an incorrect answer back to box 0, due again soon (not immediately)', () => {
+    const strong: SrsRecord = { box: 4, dueAt: NOW, lastSeen: 0, seen: 3, correct: 3, incorrect: 0 };
+    const graded = gradeRecord(strong, 'incorrect', NOW);
+    expect(graded.box).toBe(0);
+    expect(graded.incorrect).toBe(1);
+    expect(graded.dueAt).toBe(NOW + BOX_INTERVALS_MS[0]);
+    expect(graded.dueAt).toBeGreaterThan(NOW); // not immediate
+    expect(BOX_INTERVALS_MS[0]).toBeLessThan(BOX_INTERVALS_MS[MAX_BOX]); // "soon" << "long"
+  });
+
+  it('never promotes beyond MAX_BOX', () => {
+    let record: SrsRecord = initialRecord(NOW);
+    for (let i = 0; i < MAX_BOX + 3; i++) record = gradeRecord(record, 'correct', NOW);
+    expect(record.box).toBe(MAX_BOX);
+    expect(record.dueAt).toBe(NOW + BOX_INTERVALS_MS[MAX_BOX]);
+  });
+});
+
+describe('noteSeen', () => {
+  it('does not change the box but pushes dueAt out by the cooldown', () => {
+    const record: SrsRecord = { box: 2, dueAt: NOW - 1, lastSeen: 0, seen: 1, correct: 1, incorrect: 0 };
+    const seen = noteSeen(record, NOW);
+    expect(seen.box).toBe(2);
+    expect(seen.seen).toBe(2);
+    expect(seen.dueAt).toBe(NOW + SEEN_COOLDOWN_MS);
+  });
+
+  it('never pulls an already-distant dueAt closer', () => {
+    const far = NOW + 10 * SEEN_COOLDOWN_MS;
+    const record: SrsRecord = { box: 3, dueAt: far, lastSeen: 0, seen: 1, correct: 1, incorrect: 0 };
+    expect(noteSeen(record, NOW).dueAt).toBe(far);
+  });
+});
+
+describe('applyGrade / applySeen', () => {
+  it('creates a record on first grade and does not mutate the input store', () => {
+    const store = createStore();
+    const next = applyGrade(store, '7x8', 'correct', NOW);
+    expect(getRecord(store, '7x8')).toBeUndefined(); // original untouched
+    expect(getRecord(next, '7x8')?.box).toBe(1);
+  });
+
+  it('applySeen records an ungraded showing', () => {
+    const next = applySeen(createStore(), '6x7', NOW);
+    const record = getRecord(next, '6x7');
+    expect(record?.seen).toBe(1);
+    expect(record?.box).toBe(0);
+    expect(record?.dueAt).toBe(NOW + SEEN_COOLDOWN_MS);
+  });
+});
+
+describe('selectNext', () => {
+  const pool: Problem[] = [
+    { a: 2, b: 3 },
+    { a: 6, b: 7 },
+    { a: 7, b: 8 },
+    { a: 8, b: 9 },
+  ];
+
+  it('returns null only for an empty pool', () => {
+    expect(selectNext([], createStore(), [], NOW, pick)).toBeNull();
+    expect(selectNext(pool, createStore(), [], NOW, pick)).not.toBeNull();
+  });
+
+  it('never returns a problem in the recency window (unless that empties the pool)', () => {
+    const recent = ['2x3', '6x7', '7x8'];
+    const chosen = selectNext(pool, createStore(), recent, NOW, pick);
+    expect(chosen).toEqual({ a: 8, b: 9 }); // the only one not recently seen
+
+    // If everything is recent, recency is relaxed rather than returning null.
+    const allRecent = ['2x3', '6x7', '7x8', '8x9'];
+    expect(selectNext(pool, createStore(), allRecent, NOW, pick)).not.toBeNull();
+  });
+
+  it('prefers a due problem over one parked in a high box', () => {
+    // 2x3 parked far away (box 5); 7x8 is due (box 0, dueAt in the past).
+    let store = createStore();
+    store = { version: store.version, records: {
+      '2x3': { box: 5, dueAt: NOW + 1_000_000, lastSeen: NOW, seen: 5, correct: 5, incorrect: 0 },
+      '7x8': { box: 0, dueAt: NOW - 10, lastSeen: NOW - 100, seen: 2, correct: 0, incorrect: 2 },
+    } };
+    // Exclude the two unseen problems so the choice is between 2x3 and 7x8.
+    const chosen = selectNext(pool, store, ['6x7', '8x9'], NOW, pick);
+    expect(chosen).toEqual({ a: 7, b: 8 });
+  });
+
+  it('resurfaces a freshly-missed problem ahead of freshly-correct ones', () => {
+    let store = applyGrade(createStore(), '7x8', 'incorrect', NOW); // box 0, due at NOW+45s
+    store = applyGrade(store, '6x7', 'correct', NOW); // box 1, parked further out
+    // Advance time to just past the "soon" interval so 7x8 is due again.
+    const later = NOW + BOX_INTERVALS_MS[0] + 1;
+    const chosen = selectNext(pool, store, ['2x3', '8x9'], later, pick);
+    expect(chosen).toEqual({ a: 7, b: 8 });
+  });
+
+  it('introduces an unseen problem ahead of a seen, not-yet-due one', () => {
+    // 2x3 was just answered correctly (parked); the rest are unseen and due now.
+    const store = applyGrade(createStore(), '2x3', 'correct', NOW);
+    const chosen = selectNext(pool, store, [], NOW, pick);
+    expect(chosen).not.toEqual({ a: 2, b: 3 });
+    expect(getRecord(store, problemKeyOf(chosen))).toBeUndefined();
+  });
+
+  it('falls back to the soonest-due problem when nothing is due yet', () => {
+    // Two seen problems, both parked in the future; nothing else in the pool.
+    const smallPool: Problem[] = [
+      { a: 6, b: 7 },
+      { a: 7, b: 8 },
+    ];
+    let store = createStore();
+    store = { version: store.version, records: {
+      '6x7': { box: 1, dueAt: NOW + 500, lastSeen: NOW, seen: 1, correct: 1, incorrect: 0 },
+      '7x8': { box: 1, dueAt: NOW + 100, lastSeen: NOW, seen: 1, correct: 1, incorrect: 0 },
+    } };
+    // Nothing is due at NOW; the soonest-due (7x8, dueAt NOW+100) should win.
+    const chosen = selectNext(smallPool, store, [], NOW, pick);
+    expect(chosen).toEqual({ a: 7, b: 8 });
+  });
+});
+
+// Small local helper mirroring difficulty.problemKey for assertions above.
+function problemKeyOf(problem: Problem | null): string {
+  if (!problem) return '';
+  return `${Math.min(problem.a, problem.b)}x${Math.max(problem.a, problem.b)}`;
+}
+
+
+################################################################################
 # FILE: src/__tests__/state.test.ts
 ################################################################################
 
@@ -4246,40 +5675,37 @@ describe('effect', () => {
   File name:             state.test.ts
   Relative path:         src/__tests__/state.test.ts
   Absolute path:         /home/kushal/src/ts/multiplicationdrill/src/__tests__/state.test.ts
-  Size:                  2.8 KiB (2906 bytes)
-  Last modified:         2026-01-07 12:17:53.438710884 -0500
+  Size:                  3.6 KiB (3768 bytes)
+  Last modified:         2026-07-16 03:50:31.768079258 -0400
   Permissions:           -rw-r--r--
   Owner:                 kushal:kushal
-  Inode:                 3382228
+  Inode:                 21040748
   Hard links:            1
   MIME type:             application/javascript
-  SHA-256:               90da4856956c54d3e921ee6207e7b73776315936e0e9c658a238f90b359097e5
-  Last git commit:       317b9dd 2025-08-03 06:23:13 -0700 change requirements with claude
+  SHA-256:               cf0d09be93a04ac772e4e4205cb50992d7ad1a24f513cfdca9d37b6c31accece
+  Last git commit:       c62cd68 2026-07-16 03:53:43 -0400 add claude response
 
 --- CONTENT ---
 import { describe, it, expect, beforeEach } from 'vitest';
-import { state, displayText, progressPercent, timerDisplayText } from '../state';
+import { state, displayText, progressPercent, timerDisplayText, isGradingPhase } from '../state';
 
 describe('State', () => {
   beforeEach(() => {
     // Reset state to defaults
-    state.counter.set(0);
     state.isQuizActive.set(false);
     state.currentPhase.set('idle');
     state.timeRemaining.set(0);
     state.currentProblem.set({ a: 0, b: 0 });
     state.questionTime.set(5);
     state.answerTime.set(3);
+    state.sessionCorrect.set(0);
+    state.sessionIncorrect.set(0);
   });
 
   describe('displayText computed signal', () => {
-    it('should show manual mode display when quiz is inactive', () => {
-      state.counter.set(5);
-      state.seed.set(10);
-      expect(displayText.get()).toBe('5 × 10 = 50');
-      
-      state.seed.set(7);
-      expect(displayText.get()).toBe('5 × 7 = 35');
+    it('should prompt to start the quiz when inactive', () => {
+      state.isQuizActive.set(false);
+      expect(displayText.get()).toBe('Press Start Quiz');
     });
 
     it('should show question during quiz question phase', () => {
@@ -4344,7 +5770,33 @@ describe('State', () => {
       expect(timerDisplayText.get()).toBe('Answer: 1.2s');
     });
   });
+
+  describe('isGradingPhase computed signal', () => {
+    it('is true only while the answer is showing in an active quiz', () => {
+      state.isQuizActive.set(false);
+      state.currentPhase.set('answer');
+      expect(isGradingPhase.get()).toBe(false);
+
+      state.isQuizActive.set(true);
+      state.currentPhase.set('question');
+      expect(isGradingPhase.get()).toBe(false);
+
+      state.currentPhase.set('answer');
+      expect(isGradingPhase.get()).toBe(true);
+    });
+  });
+
+  describe('session tally signals', () => {
+    it('track correct and incorrect counts independently', () => {
+      state.sessionCorrect.set(state.sessionCorrect.get() + 1);
+      state.sessionCorrect.set(state.sessionCorrect.get() + 1);
+      state.sessionIncorrect.set(state.sessionIncorrect.get() + 1);
+      expect(state.sessionCorrect.get()).toBe(2);
+      expect(state.sessionIncorrect.get()).toBe(1);
+    });
+  });
 });
+
 
 ################################################################################
 # FILE: src/__tests__/utils.test.ts
@@ -4354,30 +5806,30 @@ describe('State', () => {
   File name:             utils.test.ts
   Relative path:         src/__tests__/utils.test.ts
   Absolute path:         /home/kushal/src/ts/multiplicationdrill/src/__tests__/utils.test.ts
-  Size:                  5.3 KiB (5451 bytes)
-  Last modified:         2026-03-25 06:00:26.146762690 -0400
+  Size:                  5.1 KiB (5268 bytes)
+  Last modified:         2026-07-16 03:50:36.703782956 -0400
   Permissions:           -rw-r--r--
   Owner:                 kushal:kushal
-  Inode:                 3382229
+  Inode:                 21040786
   Hard links:            1
   MIME type:             application/javascript
-  SHA-256:               254f3cb03b1efdbf17e53840a3a36245decdaa8168af55201b2b43629d4b6cab
-  Last git commit:       2382479 2026-03-25 06:00:52 -0400 add all changes by claude
+  SHA-256:               a730552f9c6cb281236af66977925644b105116ff24e36fc1cc3a61a6e41e3b2
+  Last git commit:       c62cd68 2026-07-16 03:53:43 -0400 add claude response
 
 --- CONTENT ---
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import {
-  getDifficultyRange,
   getDifficultyName,
   randomInRange,
-  generateProblem,
-  generateSeed,
   loadSettings,
   saveSettings,
+  loadProgress,
+  saveProgress,
   loadTheme,
   saveTheme,
   debounce,
 } from '../utils';
+import { applyGrade, createStore, SRS_VERSION } from '../srs';
 
 // Mock localStorage
 const localStorageMock = (() => {
@@ -4393,15 +5845,6 @@ const localStorageMock = (() => {
 
 Object.defineProperty(window, 'localStorage', {
   value: localStorageMock,
-});
-
-describe('getDifficultyRange', () => {
-  it('should return correct ranges for each difficulty level', () => {
-    expect(getDifficultyRange(1)).toEqual({ min: 2, max: 5 });
-    expect(getDifficultyRange(2)).toEqual({ min: 4, max: 8 });
-    expect(getDifficultyRange(3)).toEqual({ min: 6, max: 12 });
-    expect(getDifficultyRange(4)).toEqual({ min: 10, max: 20 });
-  });
 });
 
 describe('getDifficultyName', () => {
@@ -4428,46 +5871,6 @@ describe('randomInRange', () => {
   });
 });
 
-describe('generateProblem', () => {
-  it('should generate problems within difficulty range', () => {
-    // Test Easy difficulty
-    for (let i = 0; i < 20; i++) {
-      const problem = generateProblem(1);
-      expect(problem.a).toBeGreaterThanOrEqual(2);
-      expect(problem.a).toBeLessThanOrEqual(5);
-      expect(problem.b).toBeGreaterThanOrEqual(2);
-      expect(problem.b).toBeLessThanOrEqual(5);
-    }
-
-    // Test Expert difficulty
-    for (let i = 0; i < 20; i++) {
-      const problem = generateProblem(4);
-      expect(problem.a).toBeGreaterThanOrEqual(10);
-      expect(problem.a).toBeLessThanOrEqual(20);
-      expect(problem.b).toBeGreaterThanOrEqual(10);
-      expect(problem.b).toBeLessThanOrEqual(20);
-    }
-  });
-});
-
-describe('generateSeed', () => {
-  it('should generate seed within difficulty range', () => {
-    // Test Easy difficulty
-    for (let i = 0; i < 20; i++) {
-      const seed = generateSeed(1);
-      expect(seed).toBeGreaterThanOrEqual(2);
-      expect(seed).toBeLessThanOrEqual(5);
-    }
-
-    // Test Expert difficulty
-    for (let i = 0; i < 20; i++) {
-      const seed = generateSeed(4);
-      expect(seed).toBeGreaterThanOrEqual(10);
-      expect(seed).toBeLessThanOrEqual(20);
-    }
-  });
-});
-
 describe('Settings persistence', () => {
   beforeEach(() => {
     localStorageMock.clear();
@@ -4478,7 +5881,6 @@ describe('Settings persistence', () => {
       questionTime: 10,
       answerTime: 5,
       difficulty: 2 as const,
-      autoUpdate: true,
     };
 
     saveSettings(settings);
@@ -4498,6 +5900,47 @@ describe('Settings persistence', () => {
     expect(consoleSpy).toHaveBeenCalled();
 
     consoleSpy.mockRestore();
+  });
+});
+
+describe('Progress (spaced-repetition) persistence', () => {
+  beforeEach(() => {
+    localStorageMock.clear();
+  });
+
+  it('should round-trip a store', () => {
+    const store = applyGrade(createStore(), '7x8', 'correct', 1_000);
+    saveProgress(store);
+    expect(loadProgress()).toEqual(store);
+  });
+
+  it('should return null when nothing is saved', () => {
+    expect(loadProgress()).toBeNull();
+  });
+
+  it('should discard corrupted data and clear it', () => {
+    localStorageMock.setItem('mathQuizProgress', '{not valid json');
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    expect(loadProgress()).toBeNull();
+    expect(consoleSpy).toHaveBeenCalled();
+    expect(localStorageMock.getItem('mathQuizProgress')).toBeNull();
+
+    consoleSpy.mockRestore();
+  });
+
+  it('should reject a store written by an incompatible version', () => {
+    const stale = JSON.stringify({ version: SRS_VERSION + 1, records: {} });
+    localStorageMock.setItem('mathQuizProgress', stale);
+
+    expect(loadProgress()).toBeNull();
+    // stale entry should be cleared so a fresh store can take over
+    expect(localStorageMock.getItem('mathQuizProgress')).toBeNull();
+  });
+
+  it('should reject structurally invalid data (missing records)', () => {
+    localStorageMock.setItem('mathQuizProgress', JSON.stringify({ version: SRS_VERSION }));
+    expect(loadProgress()).toBeNull();
   });
 });
 
@@ -4606,15 +6049,15 @@ describe('debounce', () => {
   File name:             types.ts
   Relative path:         src/types.ts
   Absolute path:         /home/kushal/src/ts/multiplicationdrill/src/types.ts
-  Size:                  796 B (796 bytes)
-  Last modified:         2026-03-25 05:59:35.172977312 -0400
+  Size:                  2.1 KiB (2199 bytes)
+  Last modified:         2026-07-16 03:48:37.871412968 -0400
   Permissions:           -rw-r--r--
   Owner:                 kushal:kushal
-  Inode:                 3382235
+  Inode:                 21040632
   Hard links:            1
   MIME type:             text/plain
-  SHA-256:               0219694e90823a16fb03bc30728f2c14a86ed16d4e004297e17a5e505e57874c
-  Last git commit:       2382479 2026-03-25 06:00:52 -0400 add all changes by claude
+  SHA-256:               ef882a77d8702f4c14e836d6eb81446e2386500391a5a0554f4b56334e6561df
+  Last git commit:       c62cd68 2026-07-16 03:53:43 -0400 add claude response
 
 --- CONTENT ---
 export interface Problem {
@@ -4626,29 +6069,63 @@ export type QuizPhase = 'idle' | 'question' | 'answer';
 
 export type DifficultyLevel = 1 | 2 | 3 | 4;
 
-export interface DifficultyRange {
-  readonly min: number;
-  readonly max: number;
+/**
+ * The four difficulty tiers, by name. The numeric `DifficultyLevel` maps to
+ * these in order (1 = Easy … 4 = Expert). Unlike the old model, a tier is no
+ * longer an operand range — it is a band of the cognitive-difficulty score
+ * produced by `src/difficulty.ts`.
+ */
+export type DifficultyName = 'Easy' | 'Medium' | 'Hard' | 'Expert';
+
+/** Self-reported outcome for a single problem. */
+export type Grade = 'correct' | 'incorrect';
+
+/**
+ * Per-problem spaced-repetition state (Leitner box scheduling). One record is
+ * created lazily the first time a problem is shown, so the store only ever
+ * holds problems the learner has actually seen.
+ */
+export interface SrsRecord {
+  /** Leitner box, 0..MAX_BOX. Higher box ⇒ longer interval before it is due. */
+  readonly box: number;
+  /** Epoch milliseconds at which this problem becomes eligible again. */
+  readonly dueAt: number;
+  /** Epoch milliseconds when it was last shown (0 if never). */
+  readonly lastSeen: number;
+  /** Total times shown. */
+  readonly seen: number;
+  /** Total times self-graded correct. */
+  readonly correct: number;
+  /** Total times self-graded incorrect. */
+  readonly incorrect: number;
+}
+
+/** Versioned, serialisable spaced-repetition store persisted to localStorage. */
+export interface SrsStore {
+  readonly version: number;
+  readonly records: Readonly<Record<string, SrsRecord>>;
 }
 
 export interface Settings {
   readonly questionTime: number;
   readonly answerTime: number;
   readonly difficulty: DifficultyLevel;
-  readonly autoUpdate: boolean;
 }
 
+/**
+ * Shape of the reactive application state. Kept as documentation of the signal
+ * graph in `src/state.ts`; each field is held in its own `Signal`.
+ */
 export interface AppState {
-  readonly counter: number;
-  readonly seed: number;
   readonly questionTime: number;
   readonly answerTime: number;
   readonly difficulty: DifficultyLevel;
   readonly isQuizActive: boolean;
   readonly currentPhase: QuizPhase;
   readonly timeRemaining: number;
-  readonly autoUpdateEnabled: boolean;
   readonly currentProblem: Problem;
+  readonly sessionCorrect: number;
+  readonly sessionIncorrect: number;
 }
 
 
@@ -4660,39 +6137,27 @@ export interface AppState {
   File name:             utils.ts
   Relative path:         src/utils.ts
   Absolute path:         /home/kushal/src/ts/multiplicationdrill/src/utils.ts
-  Size:                  2.6 KiB (2758 bytes)
-  Last modified:         2026-03-25 05:59:45.099791565 -0400
+  Size:                  3.0 KiB (3092 bytes)
+  Last modified:         2026-07-16 03:49:03.689461804 -0400
   Permissions:           -rw-r--r--
   Owner:                 kushal:kushal
-  Inode:                 3382237
+  Inode:                 21040664
   Hard links:            1
   MIME type:             application/javascript
-  SHA-256:               1d79ecd1b7baa9818f2b325caa04d9575a2fa6467df0c48c5362434e0f78211e
-  Last git commit:       2382479 2026-03-25 06:00:52 -0400 add all changes by claude
+  SHA-256:               505cbc15b51dc780f2a9bcee4fbbc36a094073a9eee1a2320d7f67151a6b34a8
+  Last git commit:       c62cd68 2026-07-16 03:53:43 -0400 add claude response
 
 --- CONTENT ---
-import { DifficultyLevel, DifficultyRange, Problem, Settings } from './types';
+import { DifficultyLevel, Settings, SrsStore } from './types';
+import { isSrsStore } from './srs';
 
 // ES2025: Use Map for O(1) lookup instead of switch statements
-const DIFFICULTY_RANGES = new Map<DifficultyLevel, DifficultyRange>([
-  [1, { min: 2, max: 5 }],   // Easy
-  [2, { min: 4, max: 8 }],   // Medium
-  [3, { min: 6, max: 12 }],  // Hard
-  [4, { min: 10, max: 20 }], // Expert
-]);
-
 const DIFFICULTY_NAMES = new Map<DifficultyLevel, string>([
   [1, 'Easy'],
   [2, 'Medium'],
   [3, 'Hard'],
   [4, 'Expert'],
 ]);
-
-const DEFAULT_RANGE: DifficultyRange = { min: 6, max: 12 };
-
-export function getDifficultyRange(level: DifficultyLevel): DifficultyRange {
-  return DIFFICULTY_RANGES.get(level) ?? DEFAULT_RANGE;
-}
 
 export function getDifficultyName(level: DifficultyLevel): string {
   return DIFFICULTY_NAMES.get(level) ?? 'Hard';
@@ -4702,22 +6167,9 @@ export function randomInRange(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-export function generateProblem(difficulty: DifficultyLevel): Problem {
-  const { min, max } = getDifficultyRange(difficulty);
-
-  return {
-    a: randomInRange(min, max),
-    b: randomInRange(min, max),
-  };
-}
-
-export function generateSeed(difficulty: DifficultyLevel): number {
-  const { min, max } = getDifficultyRange(difficulty);
-  return randomInRange(min, max);
-}
-
 const SETTINGS_KEY = 'mathQuizSettings';
 const THEME_KEY = 'theme';
+const PROGRESS_KEY = 'mathQuizProgress';
 
 export function loadSettings(): Settings | null {
   try {
@@ -4742,6 +6194,42 @@ export function saveSettings(settings: Settings): void {
   } catch (e) {
     // Silently fail if localStorage is disabled (e.g., private mode)
     console.warn('Failed to save settings:', e);
+  }
+}
+
+/**
+ * Load the spaced-repetition store. Returns null when there is nothing saved,
+ * the data is corrupt, or it was written by an incompatible version — in the
+ * last two cases the stale entry is cleared so a fresh store can take over.
+ */
+export function loadProgress(): SrsStore | null {
+  try {
+    const saved = localStorage.getItem(PROGRESS_KEY);
+    if (!saved) return null;
+
+    const parsed: unknown = JSON.parse(saved);
+    if (isSrsStore(parsed)) return parsed;
+
+    // Unrecognised or outdated shape — discard it.
+    localStorage.removeItem(PROGRESS_KEY);
+    return null;
+  } catch (e) {
+    console.error('Failed to load progress - resetting', e);
+    try {
+      localStorage.removeItem(PROGRESS_KEY);
+    } catch {
+      // Ignore if we can't remove
+    }
+    return null;
+  }
+}
+
+export function saveProgress(store: SrsStore): void {
+  try {
+    localStorage.setItem(PROGRESS_KEY, JSON.stringify(store));
+  } catch (e) {
+    // Silently fail if localStorage is disabled (e.g., private mode)
+    console.warn('Failed to save progress:', e);
   }
 }
 
@@ -4965,42 +6453,42 @@ export default defineConfig({
 ################################################################################
 # DUMP SUMMARY
 ################################################################################
-  Files dumped   : 31
-  Total size     : 119.3 KiB (122234 bytes)
+  Files dumped   : 36
+  Total size     : 173.8 KiB (178024 bytes)
   Output file    : /home/kushal/src/ts/multiplicationdrill/docs/llm/dump.txt
-  Completed at   : 2026-07-15T20:24:40-04:00
+  Completed at   : 2026-07-16T03:54:45-04:00
 ################################################################################
 # END OF DUMP
 ################################################################################
 
-real	0m0.951s
-user	0m0.442s
-sys	0m0.600s
+real	0m1.108s
+user	0m0.487s
+sys	0m0.725s
 yarn install v1.22.22
 [1/4] Resolving packages...
-(node:46793) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(node:74871) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
 (Use `node --trace-deprecation ...` to show where the warning was created)
 success Already up-to-date.
 Done in 0.06s.
 
-real	0m0.178s
-user	0m0.173s
-sys	0m0.051s
+real	0m0.179s
+user	0m0.159s
+sys	0m0.060s
 yarn run v1.22.22
 $ tsc && vite build
 vite v8.1.4 building client environment for production...
-✓ 9 modules transformed.
+✓ 11 modules transformed.
 computing gzip size...
-dist/index.html                3.58 kB │ gzip: 0.95 kB
-dist/assets/main-Cyhjhj37.css  5.39 kB │ gzip: 1.61 kB
-dist/assets/main-D26BGAt6.js   8.20 kB │ gzip: 2.67 kB │ map: 27.03 kB
+dist/index.html                 3.48 kB │ gzip: 0.93 kB
+dist/assets/main-BoX5X9DY.css   5.54 kB │ gzip: 1.66 kB
+dist/assets/main-SXnVGiX8.js   11.95 kB │ gzip: 4.08 kB │ map: 54.24 kB
 
-✓ built in 57ms
-Done in 1.25s.
+✓ built in 80ms
+Done in 1.27s.
 
-real	0m1.374s
-user	0m2.110s
-sys	0m0.293s
+real	0m1.386s
+user	0m2.108s
+sys	0m0.387s
 yarn run v1.22.22
 $ yarn lint && yarn type-check && yarn test:run && yarn e2e:container:build && yarn e2e:containernoci
 $ eslint src --max-warnings 0
@@ -5009,14 +6497,16 @@ $ vitest run
 
  RUN  v4.1.10 /home/kushal/src/ts/multiplicationdrill
 
- ✓ src/__tests__/state.test.ts (9 tests) 3ms
- ✓ src/__tests__/signals.test.ts (9 tests) 4ms
- ✓ src/__tests__/utils.test.ts (14 tests) 12ms
+ ✓ src/__tests__/signals.test.ts (9 tests) 5ms
+ ✓ src/__tests__/state.test.ts (11 tests) 4ms
+ ✓ src/__tests__/srs.test.ts (16 tests) 5ms
+ ✓ src/__tests__/utils.test.ts (16 tests) 11ms
+ ✓ src/__tests__/difficulty.test.ts (19 tests) 188ms
 
- Test Files  3 passed (3)
-      Tests  32 passed (32)
-   Start at  20:24:44
-   Duration  650ms (transform 88ms, setup 0ms, import 132ms, tests 20ms, environment 1.51s)
+ Test Files  5 passed (5)
+      Tests  71 passed (71)
+   Start at  03:54:49
+   Duration  934ms (transform 323ms, setup 0ms, import 390ms, tests 214ms, environment 2.83s)
 
 $ podman build -f Dockerfile.e2e -t multiplicationdrill-e2e .
 STEP 1/6: FROM mcr.microsoft.com/playwright:v1.61.1-noble
@@ -5030,51 +6520,51 @@ STEP 4/6: RUN yarn install --frozen-lockfile
 --> Using cache 598f62f8353e2bb1c8c7c17cad8d752c7f6bcb7e4c97eafea8169cd7fda572b8
 --> 598f62f8353e
 STEP 5/6: COPY . .
---> 5c99359cafac
+--> 7aecae7ba513
 STEP 6/6: RUN yarn build
 yarn run v1.22.22
 $ tsc && vite build
 vite v8.1.4 building client environment for production...
-transforming...✓ 9 modules transformed.
+transforming...✓ 11 modules transformed.
 rendering chunks...
 computing gzip size...
-dist/index.html                3.58 kB │ gzip: 0.95 kB
-dist/assets/main-Cyhjhj37.css  5.39 kB │ gzip: 1.61 kB
-dist/assets/main-D26BGAt6.js   8.20 kB │ gzip: 2.67 kB │ map: 27.03 kB
+dist/index.html                 3.48 kB │ gzip: 0.93 kB
+dist/assets/main-BoX5X9DY.css   5.54 kB │ gzip: 1.66 kB
+dist/assets/main-SXnVGiX8.js   11.95 kB │ gzip: 4.08 kB │ map: 54.24 kB
 
-✓ built in 40ms
-Done in 1.25s.
+✓ built in 65ms
+Done in 1.32s.
 COMMIT multiplicationdrill-e2e
---> c6a882a7941d
+--> e89c3bbba9c4
 Successfully tagged localhost/multiplicationdrill-e2e:latest
-c6a882a7941d84264431d96d6b7397509a6ebfd2e8f487a9d77dc135da869626
+e89c3bbba9c464b4567e9f562001031bd918e8993c619198af25a9472852639f
 $ podman run --rm -it --cpus=8 --memory=8g -v $(pwd)/playwright-report:/app/playwright-report:Z -v $(pwd)/test-results:/app/test-results:Z multiplicationdrill-e2e yarn test:e2e
 yarn run v1.22.22
 $ playwright test
 
-Running 60 tests using 8 workers
-  60 passed (40.1s)
+Running 78 tests using 8 workers
+  78 passed (54.7s)
 
 To open last HTML report run:
 
   yarn playwright show-report
 
-Done in 46.09s.
-Done in 56.21s.
+Done in 60.70s.
+Done in 71.41s.
 
-real	0m56.327s
-user	0m11.669s
-sys	0m5.786s
+real	1m11.538s
+user	0m13.456s
+sys	0m6.472s
 
-real	0m0.022s
-user	0m0.002s
+real	0m0.025s
+user	0m0.003s
 sys	0m0.007s
-[master 3fbc617] add all files
- 1 file changed, 7 insertions(+), 7 deletions(-)
+[master 008f0d1] add all files
+ 1 file changed, 2177 insertions(+), 690 deletions(-)
 
-real	0m0.008s
+real	0m0.083s
 user	0m0.001s
-sys	0m0.006s
+sys	0m0.009s
 * remote origin
   Fetch URL: git@github.com:multiplicationdrill/multiplicationdrill.github.io.git
   Push  URL: git@github.com:multiplicationdrill/multiplicationdrill.github.io.git
@@ -5086,24 +6576,24 @@ sys	0m0.006s
   Local ref configured for 'git push':
     master pushes to master (fast-forwardable)
 
-real	0m0.514s
-user	0m0.008s
-sys	0m0.010s
-Enumerating objects: 9, done.
-Counting objects: 100% (9/9), done.
+real	0m0.584s
+user	0m0.011s
+sys	0m0.007s
+Enumerating objects: 70, done.
+Counting objects: 100% (70/70), done.
 Delta compression using up to 16 threads
-Compressing objects: 100% (4/4), done.
-Writing objects: 100% (5/5), 578 bytes | 578.00 KiB/s, done.
-Total 5 (delta 2), reused 0 (delta 0), pack-reused 0 (from 0)
-remote: Resolving deltas: 100% (2/2), completed with 2 local objects.
+Compressing objects: 100% (42/42), done.
+Writing objects: 100% (46/46), 100.73 KiB | 9.16 MiB/s, done.
+Total 46 (delta 26), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (26/26), completed with 13 local objects.
 remote: 
 remote: GitHub found 23 vulnerabilities on multiplicationdrill/multiplicationdrill.github.io's default branch (2 critical, 7 high, 10 moderate, 4 low). To find out more, visit:
 remote:      https://github.com/multiplicationdrill/multiplicationdrill.github.io/security/dependabot
 remote: 
 To github.com:multiplicationdrill/multiplicationdrill.github.io.git
-   43f2171..3fbc617  master -> master
+   cc0f208..008f0d1  master -> master
 
-real	0m1.085s
-user	0m0.009s
+real	0m1.391s
+user	0m0.027s
 sys	0m0.021s
 kushal@fedora:~/src/ts/multiplicationdrill$ 
