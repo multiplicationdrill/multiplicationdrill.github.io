@@ -7,7 +7,7 @@
 
 DUMP METADATA
 ═════════════════════════════════════════════════════════════════════════════════
-  Generated at   : 2026-07-16T04:09:29-04:00
+  Generated at   : 2026-07-16T04:24:52-04:00
   Generator      : export.sh
   Host           : fedora
   User           : kushal
@@ -17,18 +17,18 @@ REPOSITORY METADATA
 ═════════════════════════════════════════════════════════════════════════════════
   Repository root: /home/kushal/src/ts/multiplicationdrill
   Branch         : master
-  Commit (full)  : 77f2e192a82afcd273f25ee61026e5d39c2252d4
-  Commit (short) : 77f2e19
-  Commit date    : 2026-07-16 04:09:14 -0400
-  Commit message : delete lockfile
+  Commit (full)  : 6a15f9ec43fe49a9316ae49383791c4b0ba9b7ef
+  Commit (short) : 6a15f9e
+  Commit date    : 2026-07-16 04:24:41 -0400
+  Commit message : include more files
   Remote origin  : git@github.com:multiplicationdrill/multiplicationdrill.github.io.git
-  Files included : 36
+  Files included : 39
   Excluded path  : docs/llm/
-  Excluded files : yarn.lock, package-lock.json, pnpm-lock.yaml, *.svg, *.png, *.ico, *.md, docs/*, scripts/*, .gitignore, .eslintrc.cjs, eslint.config.js, src/vite-env.d.ts
+  Excluded files : yarn.lock, package-lock.json, pnpm-lock.yaml, *.svg, *.png, *.ico, *.md, docs/*, scripts/*
 
 GIT WORKING TREE STATUS (first 20 lines)
 ═════════════════════════════════════════════════════════════════════════════════
-?? yarn.lock
+  (clean — no uncommitted changes)
 
 ################################################################################
 # FILE: export.sh  [THIS SCRIPT — included for full context]
@@ -37,10 +37,10 @@ GIT WORKING TREE STATUS (first 20 lines)
 --- METADATA ---
   File name:             export.sh
   Relative path:         export.sh
-  Size:                  17.1 KiB (17554 bytes)
-  Last modified:         2026-07-14 19:29:59.936545352 -0400
+  Size:                  17.0 KiB (17470 bytes)
+  Last modified:         2026-07-16 04:24:01.972104869 -0400
   Permissions:           -rwxr-xr-x
-  SHA-256:               eb0253320a7aac96a7ba66c2d53ae4697a869051ffccb1f164a6e5b6900169b1
+  SHA-256:               eba49c7b7d64d8274f11139531a8da7f9604b925ce2c5ee7f0baaf5aa1a15238
   MIME type:             text/x-shellscript
 
 --- CONTENT ---
@@ -111,10 +111,6 @@ EXCLUDE_FILES=(
     "*.md"
     "docs/*"
     "scripts/*"
-    ".gitignore"
-    ".eslintrc.cjs"
-    "eslint.config.js"
-    "src/vite-env.d.ts"
 )
 
 EXCLUDE_FILES_DISPLAY="$(printf '%s, ' "${EXCLUDE_FILES[@]}")"
@@ -445,7 +441,7 @@ FOOTER
 mv -f "$TMP_FILE" "$OUTPUT_FILE"
 
 ################################################################################
-# FILE TREE  (all 36 included files)
+# FILE TREE  (all 39 included files)
 ################################################################################
 .
 .
@@ -456,11 +452,13 @@ mv -f "$TMP_FILE" "$OUTPUT_FILE"
 │   │   ├── index.ts
 │   │   └── quiz-page.ts
 │   └── quiz.spec.ts
+├── eslint.config.js
 ├── export.sh
 ├── .github
 │   └── workflows
 │       ├── ci-cd.yml
 │       └── coverage-comment.yml
+├── .gitignore
 ├── index.html
 ├── manual-testing-notes.md
 ├── MIGRATION.md
@@ -488,7 +486,8 @@ mv -f "$TMP_FILE" "$OUTPUT_FILE"
 │   │   └── utils.test.ts
 │   ├── typescript.svg
 │   ├── types.ts
-│   └── utils.ts
+│   ├── utils.ts
+│   └── vite-env.d.ts
 ├── tsconfig.e2e.json
 ├── tsconfig.json
 ├── vite.config.ts
@@ -1361,6 +1360,150 @@ test.describe('Mobile Viewport', () => {
 
 
 ################################################################################
+# FILE: eslint.config.js
+################################################################################
+
+--- METADATA ---
+  File name:             eslint.config.js
+  Relative path:         eslint.config.js
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/eslint.config.js
+  Size:                  4.2 KiB (4308 bytes)
+  Last modified:         2026-01-07 12:58:46.080365678 -0500
+  Permissions:           -rw-r--r--
+  Owner:                 kushal:kushal
+  Inode:                 3382213
+  Hard links:            1
+  MIME type:             application/javascript
+  SHA-256:               a5e627bfb67d989a9ce14fc432eacce4905d2275aa892cb90706464b363c28bd
+  Last git commit:       a3c0d73 2026-01-07 11:59:20 -0600 run claude script
+
+--- CONTENT ---
+/**
+ * ESLint Configuration
+ * 
+ * Follows Playwright best practices:
+ * - Includes @typescript-eslint/no-floating-promises to catch missing awaits
+ * - This is CRITICAL for Playwright tests where async operations MUST be awaited
+ * 
+ * @see https://playwright.dev/docs/best-practices#lint-your-tests
+ */
+
+import js from '@eslint/js';
+import typescript from '@typescript-eslint/eslint-plugin';
+import tsParser from '@typescript-eslint/parser';
+
+export default [
+  js.configs.recommended,
+  {
+    // ==========================================================================
+    // MAIN SOURCE FILES CONFIGURATION
+    // ==========================================================================
+    files: ['src/**/*.ts', 'src/**/*.tsx'],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        ecmaVersion: 2020,
+        sourceType: 'module',
+        // Enable project for type-aware linting
+        // Required for no-floating-promises rule
+        project: './tsconfig.json',
+      },
+      globals: {
+        // Browser globals
+        window: 'readonly',
+        document: 'readonly',
+        console: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
+        setInterval: 'readonly',
+        clearInterval: 'readonly',
+        requestAnimationFrame: 'readonly',
+        cancelAnimationFrame: 'readonly',
+        localStorage: 'readonly',
+        HTMLElement: 'readonly',
+        HTMLButtonElement: 'readonly',
+        HTMLInputElement: 'readonly',
+      },
+    },
+    plugins: {
+      '@typescript-eslint': typescript,
+    },
+    rules: {
+      ...typescript.configs.recommended.rules,
+      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-non-null-assertion': 'off',
+      '@typescript-eslint/no-unused-vars': ['error', {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+      }],
+    },
+  },
+  {
+    // ==========================================================================
+    // E2E TEST FILES CONFIGURATION
+    // ==========================================================================
+    // PLAYWRIGHT BEST PRACTICE: Lint your tests with no-floating-promises
+    // This catches missing await statements which cause flaky tests
+    // ==========================================================================
+    files: ['e2e/**/*.ts'],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        ecmaVersion: 2020,
+        sourceType: 'module',
+        // CRITICAL: Must enable project for no-floating-promises
+        project: './tsconfig.e2e.json',
+      },
+      globals: {
+        // Node.js globals for E2E tests
+        console: 'readonly',
+        process: 'readonly',
+      },
+    },
+    plugins: {
+      '@typescript-eslint': typescript,
+    },
+    rules: {
+      ...typescript.configs.recommended.rules,
+      '@typescript-eslint/no-explicit-any': 'off', // More lenient in tests
+      '@typescript-eslint/no-non-null-assertion': 'off',
+      '@typescript-eslint/no-unused-vars': ['error', {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+      }],
+      // ========================================================================
+      // CRITICAL RULE FOR PLAYWRIGHT
+      // ========================================================================
+      // This rule ensures all async calls are awaited
+      // Without this, you might write:
+      //   page.click('button')  // WRONG - not awaited!
+      // When you should write:
+      //   await page.click('button')  // CORRECT
+      //
+      // This prevents a HUGE class of flaky tests
+      // ========================================================================
+      '@typescript-eslint/no-floating-promises': 'error',
+      
+      // Also enable this to catch void returns being ignored
+      '@typescript-eslint/require-await': 'warn',
+    },
+  },
+  {
+    // ==========================================================================
+    // UNIT TEST FILES CONFIGURATION
+    // ==========================================================================
+    files: ['src/**/*.test.ts', 'src/**/*.spec.ts'],
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
+    },
+  },
+  {
+    ignores: ['dist/**', 'coverage/**', 'node_modules/**', '*.cjs', 'scripts/**'],
+  },
+];
+
+
+################################################################################
 # FILE: export.sh
 ################################################################################
 
@@ -1368,15 +1511,15 @@ test.describe('Mobile Viewport', () => {
   File name:             export.sh
   Relative path:         export.sh
   Absolute path:         /home/kushal/src/ts/multiplicationdrill/export.sh
-  Size:                  17.1 KiB (17554 bytes)
-  Last modified:         2026-07-14 19:29:59.936545352 -0400
+  Size:                  17.0 KiB (17470 bytes)
+  Last modified:         2026-07-16 04:24:01.972104869 -0400
   Permissions:           -rwxr-xr-x
   Owner:                 kushal:kushal
   Inode:                 20898100
   Hard links:            1
   MIME type:             text/x-shellscript
-  SHA-256:               eb0253320a7aac96a7ba66c2d53ae4697a869051ffccb1f164a6e5b6900169b1
-  Last git commit:       2e82b3b 2026-07-14 19:30:16 -0400 update exclude list
+  SHA-256:               eba49c7b7d64d8274f11139531a8da7f9604b925ce2c5ee7f0baaf5aa1a15238
+  Last git commit:       6a15f9e 2026-07-16 04:24:41 -0400 include more files
 
 --- CONTENT ---
 #!/usr/bin/env bash
@@ -1446,10 +1589,6 @@ EXCLUDE_FILES=(
     "*.md"
     "docs/*"
     "scripts/*"
-    ".gitignore"
-    ".eslintrc.cjs"
-    "eslint.config.js"
-    "src/vite-env.d.ts"
 )
 
 EXCLUDE_FILES_DISPLAY="$(printf '%s, ' "${EXCLUDE_FILES[@]}")"
@@ -2102,6 +2241,64 @@ jobs:
     - name: Write to Job Summary
       run: cat code-coverage-results.md >> $GITHUB_STEP_SUMMARY
 
+
+################################################################################
+# FILE: .gitignore
+################################################################################
+
+--- METADATA ---
+  File name:             .gitignore
+  Relative path:         .gitignore
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/.gitignore
+  Size:                  409 B (409 bytes)
+  Last modified:         2026-01-07 12:17:53.437517049 -0500
+  Permissions:           -rw-r--r--
+  Owner:                 kushal:kushal
+  Inode:                 3382207
+  Hard links:            1
+  MIME type:             text/plain
+  SHA-256:               691cf7e5f4cad5046ede3c6743ad313addb381390fdbdad69c5cc7caa5c64465
+  Last git commit:       52f2f08 2025-08-03 09:16:00 -0700 add playwright tests
+
+--- CONTENT ---
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Test coverage
+coverage
+.nyc_output
+
+# Playwright
+/test-results/
+/playwright-report/
+/playwright/.cache/
+
+# Environment files
+.env
+.env.local
+.env.*.local
 
 ################################################################################
 # FILE: index.html
@@ -6231,6 +6428,28 @@ export function debounce<T extends (...args: unknown[]) => void>(
 
 
 ################################################################################
+# FILE: src/vite-env.d.ts
+################################################################################
+
+--- METADATA ---
+  File name:             vite-env.d.ts
+  Relative path:         src/vite-env.d.ts
+  Absolute path:         /home/kushal/src/ts/multiplicationdrill/src/vite-env.d.ts
+  Size:                  38 B (38 bytes)
+  Last modified:         2026-01-07 12:17:53.438710884 -0500
+  Permissions:           -rw-r--r--
+  Owner:                 kushal:kushal
+  Inode:                 3382238
+  Hard links:            1
+  MIME type:             text/plain
+  SHA-256:               65996936fbb042915f7b74a200fcdde7e410f32a669b1ab9597cfaa4b0faddb5
+  Last git commit:       44a1ead 2025-08-03 04:49:26 -0700 add boilerplate code
+
+--- CONTENT ---
+/// <reference types="vite/client" />
+
+
+################################################################################
 # FILE: tsconfig.e2e.json
 ################################################################################
 
@@ -6420,10 +6639,10 @@ export default defineConfig({
 ################################################################################
 # DUMP SUMMARY
 ################################################################################
-  Files dumped   : 36
-  Total size     : 173.8 KiB (178024 bytes)
+  Files dumped   : 39
+  Total size     : 178.4 KiB (182695 bytes)
   Output file    : /home/kushal/src/ts/multiplicationdrill/docs/llm/dump.txt
-  Completed at   : 2026-07-16T04:09:30-04:00
+  Completed at   : 2026-07-16T04:24:53-04:00
 ################################################################################
 # END OF DUMP
 ################################################################################
