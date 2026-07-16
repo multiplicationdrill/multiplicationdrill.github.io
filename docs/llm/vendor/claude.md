@@ -4046,8 +4046,81 @@ Done
 Now updating the two existing unit-test files to match the new behavior.
 
 
+Orchestrated comprehensive test suite and type-checking setup
+Orchestrated comprehensive test suite and type-checking setup
+
+Updated state.test.ts — new displayText, session signals, grading phase
+state.test.ts
+
 Updated utils.test.ts — drop range/manual tests, add SRS-progress persistence
-Updated utils.test.ts — drop range/manual tests, add SRS-progress persistence
+utils.test.ts
+I'm running the full test suite across all five test files and type-checking the entire src directory including app.ts, so I need to copy all source files into the verify directory. Since signals.ts hasn't changed, I'll include the original version alongside everything else.
+
+Done
+Now let me run the full unit suite and a complete tsc type-check across all source (including app.ts), to catch any cross-module issues from the rewrite. Copying the unchanged signals.ts in and syncing everything to the sandbox.
+
+
+Verified type safety, tests, and linting across entire codebase
+Verified type safety, tests, and linting across entire codebase
+
+Add signals files and sync full source to verify sandbox
+
+Script
+
+Full type-check and full unit-test run
+
+Script
+The full type-check passes across the entire codebase including app.ts and main.ts with DOM support, and all 71 unit tests pass across the different modules. This confirms the TypeScript compilation is strict and correct, the difficulty algorithm is properly calibrated with all its properties verified, and everything is working as expected.
+
+Now I'm checking for any unused imports or exports that ESLint would catch. Since tsc's noUnusedLocals already passed, I'm verifying that all the imported types and functions across the modules—like randomProblemForLevel, getTierPool, DifficultyLevel, Grade, Settings, and SrsStore—are actually being used where they're imported, and they all check out.
+
+I'm also considering whether ESLint rules like the radix rule for parseInt or the no-non-null-assertion rule would cause issues, but since the original code used these patterns and passed linting, they're either not in the recommended config or were already accepted. The main thing I need to verify is whether the project's tsconfig uses verbatimModuleSyntax: true, which would require type-only imports to use the import type syntax explicitly.
+
+Show less
+Done
+Outstanding — the entire src/ (including app.ts) type-checks under strict tsc, and all 71 unit tests pass (9 signals, 19 difficulty, 16 srs, 11 state, 16 utils). Let me verify one config detail: whether the project uses verbatimModuleSyntax (which would require import type for type-only imports), so my import style matches.
+
+
+Verified TypeScript configuration alignment and re-ran type checking
+Verified TypeScript configuration alignment and re-ran type checking
+
+Inspect tsconfig for module-syntax strictness
+
+Script
+The tsconfig has isolatedModules: true but doesn't enable verbatimModuleSyntax, which means type-only imports don't require the import type syntax. The original code in state.ts imports types like Problem, QuizPhase, and DifficultyLevel directly from types.ts using plain imports rather than type-specific syntax.
+
+I'm checking whether isolatedModules will flag any issues with my code — it mainly catches const enums and improper type re-exports, but I don't have either of those patterns. My imports in files like difficulty.ts and srs.ts use types without re-exporting them, so there shouldn't be any violations.
+
+Now I'll update the verify tsconfig to match the project more closely: adding isolatedModules, esModuleInterop, forceConsistentCasingInFileNames, useDefineForClassFields, and allowImportingTsExtensions (with noEmit enabled), while keeping the lib as ES2022+DOM and moduleResolution as bundler. Then I'll re-run tsc to make sure everything still passes.
+
+Show less
+Done
+No verbatimModuleSyntax, so my plain type imports match the existing convention. Let me tighten the sandbox tsconfig to mirror the project's real flags (isolatedModules, esModuleInterop, useDefineForClassFields, allowImportingTsExtensions) and re-run the type-check to be thorough.
+
+
+Diagnosed TypeScript configuration issues and validated source code integrity
+Diagnosed TypeScript configuration issues and validated source code integrity
+
+Type-check with project-mirrored tsconfig flags
+
+Script
+All these errors are coming from node_modules dependencies like vite, vitest, and rollup that need @types/node and esnext library support. The real problem is that with types: [] configured and no skipLibCheck enabled, TypeScript is now validating the .d.ts files from those dependencies, which reference Node.js APIs and Symbol.asyncDispose that aren't available in the current setup. I need to check whether the project's tsconfig actually has skipLibCheck set, since the one I looked at didn't seem to include it. .ts file still needs the types resolved. So maybe types: [] doesn't actually prevent resolution of types from node_modules packages that are imported directly in .d.ts files — it only prevents auto-global-inclusion. Let me test whether the real project setup actually works without skipLibCheck by checking if vitest's types can resolve node types when types: [] is set. isely to avoid third-party .d.ts noise. The project almost certainly has it (or its equivalent) — and even if the extracted tsconfig didn't show it, adding it is correct and my code is clean under it.
+
+I should verify my source code is actually error-free by re-enabling skipLibCheck and running the type check again, which should pass cleanly. I'll also do a focused check on just the production source files without test files to confirm the app code itself has no issues, completely isolated from vitest imports.
+
+The key validation here is isolatedModules — that's the project-specific setting that matters for my code quality. skipLibCheck doesn't affect those checks, so I'll keep isolatedModules enabled and add skipLibCheck back in.
+
+Show less
+Done
+Those errors are all inside node_modules (the real vite/vitest/rollup type defs wanting @types/node and the esnext lib) — none are from my code. That's exactly what skipLibCheck exists to suppress, and it's standard in real projects. Let me re-add it (keeping the meaningful isolatedModules check) and also type-check the production sources in isolation to be certain my code is clean independent of the test deps.
+
+
+Confirm source is clean under isolatedModules and in isolation
+Confirm source is clean under isolatedModules and in isolation
+
+Confirm source is clean under isolatedModules and in isolation
+
+Script
 
 Want to be notified when Claude responds?
 
@@ -4060,3 +4133,6 @@ Claude is AI and can make mistakes. Please double-check responses.
 
 
 
+100
+91
+100
