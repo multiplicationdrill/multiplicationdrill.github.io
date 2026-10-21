@@ -7,7 +7,7 @@
 
 DUMP METADATA
 ═════════════════════════════════════════════════════════════════════════════════
-  Generated at   : 2026-10-21T16:04:00-04:00
+  Generated at   : 2026-10-21T16:09:17-04:00
   Generator      : export.sh
   Host           : fedora
   User           : kushal
@@ -17,10 +17,10 @@ REPOSITORY METADATA
 ═════════════════════════════════════════════════════════════════════════════════
   Repository root: /home/kushal/src/ts/multiplicationdrill
   Branch         : master
-  Commit (full)  : ee6302929768d5d54d305e80e5e19ad95f7a7fe4
-  Commit (short) : ee63029
-  Commit date    : 2026-10-21 16:03:32 -0400
-  Commit message : update packages
+  Commit (full)  : ebaec6298fe266cb530a7b6323e292027ba3e3c4
+  Commit (short) : ebaec62
+  Commit date    : 2026-10-21 16:09:04 -0400
+  Commit message : run scripts
   Remote origin  : git@github.com:multiplicationdrill/multiplicationdrill.github.io.git
   Files included : 39
   Excluded path  : docs/llm/
@@ -28,7 +28,7 @@ REPOSITORY METADATA
 
 GIT WORKING TREE STATUS (first 20 lines)
 ═════════════════════════════════════════════════════════════════════════════════
- M yarn.lock
+  (clean — no uncommitted changes)
 
 ################################################################################
 # FILE: export.sh  [THIS SCRIPT — included for full context]
@@ -6642,7 +6642,7 @@ export default defineConfig({
   Files dumped   : 39
   Total size     : 178.4 KiB (182694 bytes)
   Output file    : /home/kushal/src/ts/multiplicationdrill/docs/llm/dump.txt
-  Completed at   : 2026-10-21T16:04:01-04:00
+  Completed at   : 2026-10-21T16:09:18-04:00
 ################################################################################
 # END OF DUMP
 ################################################################################
