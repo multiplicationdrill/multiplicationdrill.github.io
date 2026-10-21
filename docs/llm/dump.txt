@@ -7,7 +7,7 @@
 
 DUMP METADATA
 ═════════════════════════════════════════════════════════════════════════════════
-  Generated at   : 2026-10-21T15:57:33-04:00
+  Generated at   : 2026-10-21T16:04:00-04:00
   Generator      : export.sh
   Host           : fedora
   User           : kushal
@@ -17,10 +17,10 @@ REPOSITORY METADATA
 ═════════════════════════════════════════════════════════════════════════════════
   Repository root: /home/kushal/src/ts/multiplicationdrill
   Branch         : master
-  Commit (full)  : 40c7cabf11c2e318fee12cb1527dd1b4d3d078b7
-  Commit (short) : 40c7cab
-  Commit date    : 2026-10-21 15:57:11 -0400
-  Commit message : add blank lines
+  Commit (full)  : ee6302929768d5d54d305e80e5e19ad95f7a7fe4
+  Commit (short) : ee63029
+  Commit date    : 2026-10-21 16:03:32 -0400
+  Commit message : update packages
   Remote origin  : git@github.com:multiplicationdrill/multiplicationdrill.github.io.git
   Files included : 39
   Excluded path  : docs/llm/
@@ -28,7 +28,7 @@ REPOSITORY METADATA
 
 GIT WORKING TREE STATUS (first 20 lines)
 ═════════════════════════════════════════════════════════════════════════════════
-  (clean — no uncommitted changes)
+ M yarn.lock
 
 ################################################################################
 # FILE: export.sh  [THIS SCRIPT — included for full context]
@@ -785,17 +785,17 @@ behaviour above straightforward to unit-test in
   Relative path:         Dockerfile.e2e
   Absolute path:         /home/kushal/src/ts/multiplicationdrill/Dockerfile.e2e
   Size:                  152 B (152 bytes)
-  Last modified:         2026-07-14 20:02:22.792509975 -0400
+  Last modified:         2026-10-21 16:00:44.538491806 -0400
   Permissions:           -rw-r--r--
   Owner:                 kushal:kushal
   Inode:                 3412595
   Hard links:            1
   MIME type:             text/plain
-  SHA-256:               80e0d462812d8d81801cbf4ae5fb147f8e7dc5300957237afbd85d0011d6e917
-  Last git commit:       6caee4f 2026-07-14 20:03:12 -0400 update packages
+  SHA-256:               8034916df4cdda3b876b1a201264b916f200b5e3a1b352a5b7cc229c87f4953e
+  Last git commit:       ee63029 2026-10-21 16:03:32 -0400 update packages
 
 --- CONTENT ---
-FROM mcr.microsoft.com/playwright:v1.61.1-noble
+FROM mcr.microsoft.com/playwright:v1.64.1-noble
 
 WORKDIR /app
 COPY package.json yarn.lock ./
@@ -2974,15 +2974,15 @@ range. Existing saved difficulty values remain valid.
   File name:             package.json
   Relative path:         package.json
   Absolute path:         /home/kushal/src/ts/multiplicationdrill/package.json
-  Size:                  1.3 KiB (1353 bytes)
-  Last modified:         2026-07-16 04:06:29.053963349 -0400
+  Size:                  1.3 KiB (1352 bytes)
+  Last modified:         2026-10-21 16:03:15.674649475 -0400
   Permissions:           -rw-r--r--
   Owner:                 kushal:kushal
   Inode:                 3382217
   Hard links:            1
   MIME type:             application/json
-  SHA-256:               2373c53fb0925328bd839c1d0148efc69e354b9d3a495094d6c0b7789e11f397
-  Last git commit:       8c7e175 2026-07-16 04:07:04 -0400 update vite
+  SHA-256:               fdff2a340b85af275335944f0c9d2e5ab08e679fe157e270138ca98e18a16793
+  Last git commit:       ee63029 2026-10-21 16:03:32 -0400 update packages
 
 --- CONTENT ---
 {
@@ -3006,17 +3006,17 @@ range. Existing saved difficulty values remain valid.
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@playwright/test": "^1.61.1",
-    "@types/node": "^26.1.1",
-    "@vitest/coverage-v8": "^4.1.10",
-    "@vitest/ui": "^4.1.10",
-    "eslint": "^10.7.0",
-    "globals": "^17.7.0",
-    "jsdom": "^29.1.1",
+    "@playwright/test": "^1.64.1",
+    "@types/node": "^26.6.5",
+    "@vitest/coverage-v8": "^5.0.5",
+    "@vitest/ui": "^5.0.5",
+    "eslint": "^10.13.0",
+    "globals": "^17.13.0",
+    "jsdom": "^30.1.3",
     "typescript": "~6.0.3",
-    "typescript-eslint": "^8.64.0",
-    "vite": "^8.1.5",
-    "vitest": "^4.1.10"
+    "typescript-eslint": "^8.72.0",
+    "vite": "^8.3.5",
+    "vitest": "^5.0.5"
   }
 }
 
@@ -6640,9 +6640,9 @@ export default defineConfig({
 # DUMP SUMMARY
 ################################################################################
   Files dumped   : 39
-  Total size     : 178.4 KiB (182695 bytes)
+  Total size     : 178.4 KiB (182694 bytes)
   Output file    : /home/kushal/src/ts/multiplicationdrill/docs/llm/dump.txt
-  Completed at   : 2026-10-21T15:57:34-04:00
+  Completed at   : 2026-10-21T16:04:01-04:00
 ################################################################################
 # END OF DUMP
 ################################################################################
