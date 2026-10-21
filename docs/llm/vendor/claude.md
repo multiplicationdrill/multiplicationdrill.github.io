@@ -5124,3 +5124,6 @@ if there are a lot of files that need to change
     No bespoke sed/patch scripts — full files only for anything that changes
     Docs updated alongside code changes
     Low verbosity, no code comments
+also I recently updated dependencies and looks like when I updated playwright something didn't go quite right on github
+please review the logs and fix those too 
+and please update all dependencies and github actions to latest stable if not already there 
