@@ -1,42 +1,35 @@
 kushal@fedora:~/src/ts/multiplicationdrill$ cd ~/src/ts/multiplicationdrill/; time yarn outdated; time yarn install; time yarn lint; time bash export.sh; time yarn; time yarn build; time yarn test:all; time git add .; time git commit --message "add all files"; time git remote show origin; time git push origin --all;
 yarn outdated v1.22.22
-error Outdated lockfile. Please run `yarn install` and try again.
-info Visit https://yarnpkg.com/en/docs/cli/outdated for documentation about this command.
-(node:1864625) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(node:1877861) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
 (Use `node --trace-deprecation ...` to show where the warning was created)
+info Color legend : 
+ "<red>"    : Major Update backward-incompatible updates 
+ "<yellow>" : Minor Update backward-compatible features 
+ "<green>"  : Patch Update backward-compatible bug fixes
+Package    Current Wanted Latest Package Type    URL                            
+typescript 6.0.3   6.0.3  7.0.2  devDependencies https://www.typescriptlang.org/
+Done in 1.78s.
 
-real	0m0.656s
-user	0m0.274s
-sys	0m0.106s
+real	0m1.936s
+user	0m0.806s
+sys	0m0.252s
 yarn install v1.22.22
 [1/4] Resolving packages...
-⠁ (node:1864637) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(node:1877888) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
 (Use `node --trace-deprecation ...` to show where the warning was created)
-[2/4] Fetching packages...
-[3/4] Linking dependencies...
-warning Workspaces can only be enabled in private projects.
-warning Workspaces can only be enabled in private projects.
-warning Workspaces can only be enabled in private projects.
-warning Workspaces can only be enabled in private projects.
-warning Workspaces can only be enabled in private projects.
-warning Workspaces can only be enabled in private projects.
-warning Workspaces can only be enabled in private projects.
-warning Workspaces can only be enabled in private projects.
-[4/4] Building fresh packages...
+success Already up-to-date.
+Done in 0.07s.
 
-success Saved lockfile.
-Done in 9.58s.
-
-real	0m9.746s
-user	0m6.506s
-sys	0m2.436s
+real	0m0.194s
+user	0m0.159s
+sys	0m0.066s
 yarn run v1.22.22
 $ eslint src --max-warnings 0
-Done in 0.99s.
+Done in 1.23s.
 
-real	0m1.126s
-user	0m1.647s
-sys	0m0.300s
+real	0m1.344s
+user	0m1.582s
+sys	0m0.307s
 ################################################################################
 #                                                                              #
 #   REPOSITORY CONTEXT DUMP                                                    #
@@ -46,7 +39,7 @@ sys	0m0.300s
 
 DUMP METADATA
 ═════════════════════════════════════════════════════════════════════════════════
-  Generated at   : 2026-10-21T16:04:00-04:00
+  Generated at   : 2026-10-21T16:09:17-04:00
   Generator      : export.sh
   Host           : fedora
   User           : kushal
@@ -56,10 +49,10 @@ REPOSITORY METADATA
 ═════════════════════════════════════════════════════════════════════════════════
   Repository root: /home/kushal/src/ts/multiplicationdrill
   Branch         : master
-  Commit (full)  : ee6302929768d5d54d305e80e5e19ad95f7a7fe4
-  Commit (short) : ee63029
-  Commit date    : 2026-10-21 16:03:32 -0400
-  Commit message : update packages
+  Commit (full)  : ebaec6298fe266cb530a7b6323e292027ba3e3c4
+  Commit (short) : ebaec62
+  Commit date    : 2026-10-21 16:09:04 -0400
+  Commit message : run scripts
   Remote origin  : git@github.com:multiplicationdrill/multiplicationdrill.github.io.git
   Files included : 39
   Excluded path  : docs/llm/
@@ -67,7 +60,7 @@ REPOSITORY METADATA
 
 GIT WORKING TREE STATUS (first 20 lines)
 ═════════════════════════════════════════════════════════════════════════════════
- M yarn.lock
+  (clean — no uncommitted changes)
 
 ################################################################################
 # FILE: export.sh  [THIS SCRIPT — included for full context]
@@ -6681,24 +6674,24 @@ export default defineConfig({
   Files dumped   : 39
   Total size     : 178.4 KiB (182694 bytes)
   Output file    : /home/kushal/src/ts/multiplicationdrill/docs/llm/dump.txt
-  Completed at   : 2026-10-21T16:04:01-04:00
+  Completed at   : 2026-10-21T16:09:18-04:00
 ################################################################################
 # END OF DUMP
 ################################################################################
 
-real	0m1.190s
-user	0m0.545s
-sys	0m0.784s
+real	0m1.200s
+user	0m0.546s
+sys	0m0.782s
 yarn install v1.22.22
 [1/4] Resolving packages...
-(node:1865938) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(node:1879186) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
 (Use `node --trace-deprecation ...` to show where the warning was created)
 success Already up-to-date.
 Done in 0.06s.
 
 real	0m0.177s
-user	0m0.164s
-sys	0m0.056s
+user	0m0.167s
+sys	0m0.052s
 yarn run v1.22.22
 $ tsc && vite build
 vite v8.3.5 building client environment for production...
@@ -6708,12 +6701,12 @@ dist/index.html                 3.48 kB │ gzip: 0.93 kB
 dist/assets/main-BoX5X9DY.css   5.54 kB │ gzip: 1.66 kB
 dist/assets/main-B1t2Ia9Y.js   11.92 kB │ gzip: 4.08 kB │ map: 57.48 kB
 
-✓ built in 81ms
-Done in 1.31s.
+✓ built in 47ms
+Done in 1.24s.
 
-real	0m1.430s
-user	0m2.155s
-sys	0m0.395s
+real	0m1.362s
+user	0m2.129s
+sys	0m0.272s
 yarn run v1.22.22
 $ yarn lint && yarn type-check && yarn test:run && yarn e2e:container:build && yarn e2e:containernoci
 $ eslint src --max-warnings 0
@@ -6723,51 +6716,29 @@ $ vitest run
  RUN  v5.0.5 /home/kushal/src/ts/multiplicationdrill
 
  ✓ src/__tests__/signals.test.ts (9 tests) 4ms
- ✓ src/__tests__/state.test.ts (11 tests) 6ms
- ✓ src/__tests__/srs.test.ts (16 tests) 5ms
- ✓ src/__tests__/utils.test.ts (16 tests) 9ms
- ✓ src/__tests__/difficulty.test.ts (19 tests) 117ms
+ ✓ src/__tests__/state.test.ts (11 tests) 4ms
+ ✓ src/__tests__/srs.test.ts (16 tests) 6ms
+ ✓ src/__tests__/utils.test.ts (16 tests) 10ms
+ ✓ src/__tests__/difficulty.test.ts (19 tests) 105ms
 
  Test Files  5 passed (5)
       Tests  71 passed (71)
-   Start at  16:04:05
-   Duration  765ms (environment 81%, transform 11%, tests 5%, import 2%, worker 1%)
+   Start at  16:09:22
+   Duration  765ms (environment 92%, tests 4%, import 2%, transform 1%, worker 1%)
 
 $ podman build -f Dockerfile.e2e -t multiplicationdrill-e2e .
 STEP 1/6: FROM mcr.microsoft.com/playwright:v1.64.1-noble
-Trying to pull mcr.microsoft.com/playwright:v1.64.1-noble...
-Getting image source signatures
-Copying blob 8e76854735f1 done   | 
-Copying blob 78ee9142e334 done   | 
-Copying blob 2d370c712b39 done   | 
-Copying blob e20e5ef3d394 done   | 
-Copying blob a60ef8ec184e skipped: already exists  
-Copying blob c5480f689a28 done   | 
-Copying blob ee918a637493 done   | 
-Copying config 9cfdc77dc3 done   | 
-Writing manifest to image destination
 STEP 2/6: WORKDIR /app
+--> Using cache 2f6bcde2691d9539aab5554c78d7aefb087c5b38a0e12af52160e540e873887a
 --> 2f6bcde2691d
 STEP 3/6: COPY package.json yarn.lock ./
+--> Using cache db8295804c17de81a1848e92052dabee059658631c385675c86d03dc713f8d64
 --> db8295804c17
 STEP 4/6: RUN yarn install --frozen-lockfile
-yarn install v1.22.22
-[1/4] Resolving packages...
-[2/4] Fetching packages...
-[3/4] Linking dependencies...
-warning Workspaces can only be enabled in private projects.
-warning Workspaces can only be enabled in private projects.
-warning Workspaces can only be enabled in private projects.
-warning Workspaces can only be enabled in private projects.
-warning Workspaces can only be enabled in private projects.
-warning Workspaces can only be enabled in private projects.
-warning Workspaces can only be enabled in private projects.
-warning Workspaces can only be enabled in private projects.
-[4/4] Building fresh packages...
-Done in 7.09s.
+--> Using cache ca1bd9c3257838f4690aadc847a00d2e2276715a9f0f5d5724c2e3cb03a8d73e
 --> ca1bd9c32578
 STEP 5/6: COPY . .
---> c572340c3623
+--> 22bbbdd06bf4
 STEP 6/6: RUN yarn build
 yarn run v1.22.22
 $ tsc && vite build
@@ -6780,359 +6751,39 @@ dist/index.html                 3.48 kB │ gzip: 0.93 kB
 dist/assets/main-BoX5X9DY.css   5.54 kB │ gzip: 1.66 kB
 dist/assets/main-B1t2Ia9Y.js   11.92 kB │ gzip: 4.08 kB │ map: 57.48 kB
 
-✓ built in 114ms
-Done in 1.48s.
+✓ built in 41ms
+Done in 1.32s.
 COMMIT multiplicationdrill-e2e
---> b53473caec2a
+--> 5cad2814f245
 Successfully tagged localhost/multiplicationdrill-e2e:latest
-b53473caec2ab2cc2b19f0bb1023cbb2da1c8e7223dfc0015ae930fd58a33d0a
+5cad2814f245ad36451dda199a31ef080bd9534e15d53e9a4c1e7a13b5990808
 $ podman run --rm -it --cpus=8 --memory=8g -v $(pwd)/playwright-report:/app/playwright-report:Z -v $(pwd)/test-results:/app/test-results:Z multiplicationdrill-e2e yarn test:e2e
 yarn run v1.22.22
 $ playwright test
 
 Running 78 tests using 8 workers
-[webkit] › e2e/quiz.spec.ts:124:5 › Multiplication Drill Application › Self-Grading › should enable grade buttons during the answer phase
-(node:3743) TimeoutNegativeWarning: -9541.947 is a negative number.
-Timeout duration was set to 1.
-(Use `node --trace-warnings ...` to show where the warning was created)
-[webkit] › e2e/quiz.spec.ts:134:5 › Multiplication Drill Application › Self-Grading › should count a correct grade and advance immediately
-(node:3848) TimeoutNegativeWarning: -11176.596999999994 is a negative number.
-Timeout duration was set to 1.
-(Use `node --trace-warnings ...` to show where the warning was created)
-[webkit] › e2e/quiz.spec.ts:93:5 › Multiplication Drill Application › Quiz Mode › should generate new problems
-(node:3746) TimeoutNegativeWarning: -11177.146 is a negative number.
-Timeout duration was set to 1.
-(Use `node --trace-warnings ...` to show where the warning was created)
-  1) [webkit] › e2e/quiz.spec.ts:67:5 › Multiplication Drill Application › Quiz Mode › should disable settings sliders during quiz 
-
-    Test timeout of 30000ms exceeded while running "beforeEach" hook.
-
-      19 |
-      20 | test.describe('Multiplication Drill Application', () => {
-    > 21 |   test.beforeEach(async ({ page }) => {
-         |        ^
-      22 |     quizPage = new QuizPage(page);
-      23 |     await quizPage.goto();
-      24 |   });
-        at /app/e2e/quiz.spec.ts:21:8
-
-    TimeoutError: page.goto: Timeout 30000ms exceeded.
-    Call log:
-      - navigating to "http://localhost:5173/", waiting until "load"
-
-
-       at pages/quiz-page.ts:94
-
-      92 |   // Navigation
-      93 |   async goto(): Promise<void> {
-    > 94 |     await this.page.goto('/');
-         |                     ^
-      95 |     await expect(this.display).toBeVisible();
-      96 |   }
-      97 |
-        at QuizPage.goto (/app/e2e/pages/quiz-page.ts:94:21)
-        at /app/e2e/quiz.spec.ts:23:20
-
-    Test timeout of 30000ms exceeded.
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    test-results/quiz-Multiplication-Drill--27a65-ettings-sliders-during-quiz-webkit/test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    Error Context: test-results/quiz-Multiplication-Drill--27a65-ettings-sliders-during-quiz-webkit/error-context.md
-
-  2) [webkit] › e2e/quiz.spec.ts:93:5 › Multiplication Drill Application › Quiz Mode › should generate new problems 
-
-    TimeoutError: locator.click: Timeout 10000ms exceeded.
-    Call log:
-      - waiting for getByRole('button', { name: 'Start Quiz' })
-        - locator resolved to <button id="quizButton" onclick="toggleQuiz()">Start Quiz</button>
-      - attempting click action
-        - waiting for element to be visible, enabled and stable
-
-
-       at pages/quiz-page.ts:100
-
-       98 |   // Quiz control methods
-       99 |   async startQuiz(): Promise<void> {
-    > 100 |     await this.startQuizButton.click();
-          |                                ^
-      101 |     await expect(this.stopQuizButton).toBeVisible();
-      102 |   }
-      103 |
-        at QuizPage.startQuiz (/app/e2e/pages/quiz-page.ts:100:32)
-        at /app/e2e/quiz.spec.ts:95:22
-
-    Tearing down "context" exceeded the test timeout of 30000ms.
-
-    Fixture "trace recording" timeout of 30000ms exceeded during teardown.
-
-    Error Context: test-results/quiz-Multiplication-Drill--0eb8a-hould-generate-new-problems-webkit/error-context.md
-
-  3) [webkit] › e2e/quiz.spec.ts:82:5 › Multiplication Drill Application › Quiz Mode › should show a bare question, then reveal the answer 
-
-    TimeoutError: locator.click: Timeout 10000ms exceeded.
-    Call log:
-      - waiting for getByRole('button', { name: 'Start Quiz' })
-        - locator resolved to <button id="quizButton" onclick="toggleQuiz()">Start Quiz</button>
-      - attempting click action
-        - waiting for element to be visible, enabled and stable
-
-
-       at pages/quiz-page.ts:100
-
-       98 |   // Quiz control methods
-       99 |   async startQuiz(): Promise<void> {
-    > 100 |     await this.startQuizButton.click();
-          |                                ^
-      101 |     await expect(this.stopQuizButton).toBeVisible();
-      102 |   }
-      103 |
-        at QuizPage.startQuiz (/app/e2e/pages/quiz-page.ts:100:32)
-        at /app/e2e/quiz.spec.ts:84:22
-
-    Tearing down "context" exceeded the test timeout of 30000ms.
-
-    Fixture "trace recording" timeout of 30000ms exceeded during teardown.
-
-    Error: browserContext.close: Test ended.
-    Browser logs:
-
-    <launching> /ms-playwright/webkit-2370/pw_run.sh --inspector-pipe --headless --no-startup-window
-    <launched> pid=3882
-    [pid=3882][err] 
-    [pid=3882][err] ** (MiniBrowser:3888): CRITICAL **: 20:05:43.317: WebKitWebView is-controlled-by-automation set but automation is not allowed in the context, falling back to default session.
-    [pid=3882][err] 
-    [pid=3882][err] ** (MiniBrowser:3888): CRITICAL **: 20:05:44.895: WebKitWebView is-controlled-by-automation set but automation is not allowed in the context, falling back to default session.
-    [pid=3882] <gracefully close start>
-
-    Error Context: test-results/quiz-Multiplication-Drill--a653f-tion-then-reveal-the-answer-webkit/error-context.md
-
-  4) [webkit] › e2e/quiz.spec.ts:74:5 › Multiplication Drill Application › Quiz Mode › should update status panel during quiz 
-
-    TimeoutError: locator.click: Timeout 10000ms exceeded.
-    Call log:
-      - waiting for getByRole('button', { name: 'Start Quiz' })
-        - locator resolved to <button id="quizButton" onclick="toggleQuiz()">Start Quiz</button>
-      - attempting click action
-        - waiting for element to be visible, enabled and stable
-
-
-       at pages/quiz-page.ts:100
-
-       98 |   // Quiz control methods
-       99 |   async startQuiz(): Promise<void> {
-    > 100 |     await this.startQuizButton.click();
-          |                                ^
-      101 |     await expect(this.stopQuizButton).toBeVisible();
-      102 |   }
-      103 |
-        at QuizPage.startQuiz (/app/e2e/pages/quiz-page.ts:100:32)
-        at /app/e2e/quiz.spec.ts:76:22
-
-    Tearing down "context" exceeded the test timeout of 30000ms.
-
-    Fixture "trace recording" timeout of 30000ms exceeded during teardown.
-
-    Error: browserContext.close: Test ended.
-    Browser logs:
-
-    <launching> /ms-playwright/webkit-2370/pw_run.sh --inspector-pipe --headless --no-startup-window
-    <launched> pid=3849
-    [pid=3849][err] 
-    [pid=3849][err] ** (MiniBrowser:3860): CRITICAL **: 20:05:43.318: WebKitWebView is-controlled-by-automation set but automation is not allowed in the context, falling back to default session.
-    [pid=3849][err] 
-    [pid=3849][err] ** (MiniBrowser:3860): CRITICAL **: 20:05:44.776: WebKitWebView is-controlled-by-automation set but automation is not allowed in the context, falling back to default session.
-    [pid=3849] <gracefully close start>
-    [pid=3849] <process did exit: exitCode=0, signal=null>
-    [pid=3849] starting temporary directories cleanup
-
-    Error Context: test-results/quiz-Multiplication-Drill--488a4-te-status-panel-during-quiz-webkit/error-context.md
-
-  5) [webkit] › e2e/quiz.spec.ts:62:5 › Multiplication Drill Application › Quiz Mode › should start quiz when clicking Start Quiz button 
-
-    TimeoutError: locator.click: Timeout 10000ms exceeded.
-    Call log:
-      - waiting for getByRole('button', { name: 'Start Quiz' })
-        - locator resolved to <button id="quizButton" onclick="toggleQuiz()">Start Quiz</button>
-      - attempting click action
-        - waiting for element to be visible, enabled and stable
-
-
-       at pages/quiz-page.ts:100
-
-       98 |   // Quiz control methods
-       99 |   async startQuiz(): Promise<void> {
-    > 100 |     await this.startQuizButton.click();
-          |                                ^
-      101 |     await expect(this.stopQuizButton).toBeVisible();
-      102 |   }
-      103 |
-        at QuizPage.startQuiz (/app/e2e/pages/quiz-page.ts:100:32)
-        at /app/e2e/quiz.spec.ts:63:22
-
-    Tearing down "context" exceeded the test timeout of 30000ms.
-
-    Fixture "trace recording" timeout of 30000ms exceeded during teardown.
-
-    Error: browserContext.close: Test ended.
-    Browser logs:
-
-    <launching> /ms-playwright/webkit-2370/pw_run.sh --inspector-pipe --headless --no-startup-window
-    <launched> pid=3920
-    [pid=3920][err] 
-    [pid=3920][err] ** (MiniBrowser:3926): CRITICAL **: 20:05:43.319: WebKitWebView is-controlled-by-automation set but automation is not allowed in the context, falling back to default session.
-    [pid=3920] <gracefully close start>
-    [pid=3920] <process did exit: exitCode=0, signal=null>
-    [pid=3920] starting temporary directories cleanup
-
-    Error Context: test-results/quiz-Multiplication-Drill--eb092--clicking-Start-Quiz-button-webkit/error-context.md
-
-  6) [webkit] › e2e/quiz.spec.ts:113:5 › Multiplication Drill Application › Self-Grading › should keep grade buttons disabled during the question phase 
-
-    TimeoutError: locator.click: Timeout 10000ms exceeded.
-    Call log:
-      - waiting for getByRole('button', { name: 'Start Quiz' })
-        - locator resolved to <button id="quizButton" onclick="toggleQuiz()">Start Quiz</button>
-      - attempting click action
-        - waiting for element to be visible, enabled and stable
-
-
-       at pages/quiz-page.ts:100
-
-       98 |   // Quiz control methods
-       99 |   async startQuiz(): Promise<void> {
-    > 100 |     await this.startQuizButton.click();
-          |                                ^
-      101 |     await expect(this.stopQuizButton).toBeVisible();
-      102 |   }
-      103 |
-        at QuizPage.startQuiz (/app/e2e/pages/quiz-page.ts:100:32)
-        at /app/e2e/quiz.spec.ts:116:22
-
-    Tearing down "context" exceeded the test timeout of 30000ms.
-
-    Fixture "trace recording" timeout of 30000ms exceeded during teardown.
-
-    Error: browserContext.close: Test ended.
-    Browser logs:
-
-    <launching> /ms-playwright/webkit-2370/pw_run.sh --inspector-pipe --headless --no-startup-window
-    <launched> pid=3817
-    [pid=3817][err] 
-    [pid=3817][err] ** (MiniBrowser:3831): CRITICAL **: 20:05:43.319: WebKitWebView is-controlled-by-automation set but automation is not allowed in the context, falling back to default session.
-    [pid=3817][err] 
-    [pid=3817][err] ** (MiniBrowser:3831): CRITICAL **: 20:05:44.878: WebKitWebView is-controlled-by-automation set but automation is not allowed in the context, falling back to default session.
-    [pid=3817][err] 
-    [pid=3817][err] ** (WPEWebProcess:4027): ERROR **: 20:05:55.855: WebProcess didn't exit as expected after the UI process connection was closed
-    [pid=3817] <gracefully close start>
-
-    Error Context: test-results/quiz-Multiplication-Drill--ed198-d-during-the-question-phase-webkit/error-context.md
-
-  7) [webkit] › e2e/quiz.spec.ts:124:5 › Multiplication Drill Application › Self-Grading › should enable grade buttons during the answer phase 
-
-    TimeoutError: locator.click: Timeout 10000ms exceeded.
-    Call log:
-      - waiting for getByRole('button', { name: 'Start Quiz' })
-        - locator resolved to <button id="quizButton" onclick="toggleQuiz()">Start Quiz</button>
-      - attempting click action
-        - waiting for element to be visible, enabled and stable
-
-
-       at pages/quiz-page.ts:100
-
-       98 |   // Quiz control methods
-       99 |   async startQuiz(): Promise<void> {
-    > 100 |     await this.startQuizButton.click();
-          |                                ^
-      101 |     await expect(this.stopQuizButton).toBeVisible();
-      102 |   }
-      103 |
-        at QuizPage.startQuiz (/app/e2e/pages/quiz-page.ts:100:32)
-        at /app/e2e/quiz.spec.ts:126:22
-
-    Tearing down "context" exceeded the test timeout of 30000ms.
-
-    Fixture "trace recording" timeout of 30000ms exceeded during teardown.
-
-    Error: browserContext.close: Test ended.
-    Browser logs:
-
-    <launching> /ms-playwright/webkit-2370/pw_run.sh --inspector-pipe --headless --no-startup-window
-    <launched> pid=3822
-    [pid=3822][err] 
-    [pid=3822][err] ** (MiniBrowser:3841): CRITICAL **: 20:05:43.328: WebKitWebView is-controlled-by-automation set but automation is not allowed in the context, falling back to default session.
-    [pid=3822][err] 
-    [pid=3822][err] ** (MiniBrowser:3841): CRITICAL **: 20:05:44.899: WebKitWebView is-controlled-by-automation set but automation is not allowed in the context, falling back to default session.
-    [pid=3822][err] 
-    [pid=3822][err] ** (WPEWebProcess:4029): ERROR **: 20:05:55.855: WebProcess didn't exit as expected after the UI process connection was closed
-    [pid=3822] <gracefully close start>
-
-    Error Context: test-results/quiz-Multiplication-Drill--8bcd5-ons-during-the-answer-phase-webkit/error-context.md
-
-  8) [webkit] › e2e/quiz.spec.ts:134:5 › Multiplication Drill Application › Self-Grading › should count a correct grade and advance immediately 
-
-    TimeoutError: locator.click: Timeout 10000ms exceeded.
-    Call log:
-      - waiting for getByRole('button', { name: 'Start Quiz' })
-        - locator resolved to <button id="quizButton" onclick="toggleQuiz()">Start Quiz</button>
-      - attempting click action
-        - waiting for element to be visible, enabled and stable
-
-
-       at pages/quiz-page.ts:100
-
-       98 |   // Quiz control methods
-       99 |   async startQuiz(): Promise<void> {
-    > 100 |     await this.startQuizButton.click();
-          |                                ^
-      101 |     await expect(this.stopQuizButton).toBeVisible();
-      102 |   }
-      103 |
-        at QuizPage.startQuiz (/app/e2e/pages/quiz-page.ts:100:32)
-        at /app/e2e/quiz.spec.ts:137:22
-
-    Tearing down "context" exceeded the test timeout of 30000ms.
-
-    Fixture "trace recording" timeout of 30000ms exceeded during teardown.
-
-    Error Context: test-results/quiz-Multiplication-Drill--43dc8-ade-and-advance-immediately-webkit/error-context.md
-
-  8 failed
-    [webkit] › e2e/quiz.spec.ts:62:5 › Multiplication Drill Application › Quiz Mode › should start quiz when clicking Start Quiz button 
-    [webkit] › e2e/quiz.spec.ts:67:5 › Multiplication Drill Application › Quiz Mode › should disable settings sliders during quiz 
-    [webkit] › e2e/quiz.spec.ts:74:5 › Multiplication Drill Application › Quiz Mode › should update status panel during quiz 
-    [webkit] › e2e/quiz.spec.ts:82:5 › Multiplication Drill Application › Quiz Mode › should show a bare question, then reveal the answer 
-    [webkit] › e2e/quiz.spec.ts:93:5 › Multiplication Drill Application › Quiz Mode › should generate new problems 
-    [webkit] › e2e/quiz.spec.ts:113:5 › Multiplication Drill Application › Self-Grading › should keep grade buttons disabled during the question phase 
-    [webkit] › e2e/quiz.spec.ts:124:5 › Multiplication Drill Application › Self-Grading › should enable grade buttons during the answer phase 
-    [webkit] › e2e/quiz.spec.ts:134:5 › Multiplication Drill Application › Self-Grading › should count a correct grade and advance immediately 
-  70 passed (2.6m)
+  78 passed (32.6s)
 
 To open last HTML report run:
 
   yarn playwright show-report
 
-error Command failed with exit code 1.
-info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
-error Command failed with exit code 1.
-info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
-error Command failed with exit code 1.
-info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+Done in 38.58s.
+Done in 48.67s.
 
-real	3m54.057s
-user	0m52.448s
-sys	0m29.987s
+real	0m48.807s
+user	0m13.817s
+sys	0m5.790s
 
-real	0m0.022s
+real	0m0.007s
+user	0m0.002s
+sys	0m0.004s
+[master 9f68d94] add all files
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+real	0m0.007s
 user	0m0.003s
-sys	0m0.009s
-[master 7d7449e] add all files
- 2 files changed, 674 insertions(+), 730 deletions(-)
-
-real	0m0.014s
-user	0m0.004s
-sys	0m0.006s
+sys	0m0.004s
 * remote origin
   Fetch URL: git@github.com:multiplicationdrill/multiplicationdrill.github.io.git
   Push  URL: git@github.com:multiplicationdrill/multiplicationdrill.github.io.git
@@ -7144,24 +6795,24 @@ sys	0m0.006s
   Local ref configured for 'git push':
     master pushes to master (fast-forwardable)
 
-real	0m1.008s
-user	0m0.009s
-sys	0m0.010s
-Enumerating objects: 23, done.
-Counting objects: 100% (23/23), done.
+real	0m0.556s
+user	0m0.008s
+sys	0m0.006s
+Enumerating objects: 15, done.
+Counting objects: 100% (15/15), done.
 Delta compression using up to 16 threads
-Compressing objects: 100% (13/13), done.
-Writing objects: 100% (15/15), 19.20 KiB | 6.40 MiB/s, done.
-Total 15 (delta 8), reused 0 (delta 0), pack-reused 0 (from 0)
-remote: Resolving deltas: 100% (8/8), completed with 6 local objects.
+Compressing objects: 100% (8/8), done.
+Writing objects: 100% (10/10), 4.54 KiB | 2.27 MiB/s, done.
+Total 10 (delta 4), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (4/4), completed with 3 local objects.
 remote: 
 remote: GitHub found 39 vulnerabilities on multiplicationdrill/multiplicationdrill.github.io's default branch (4 critical, 17 high, 14 moderate, 4 low). To find out more, visit:
 remote:      https://github.com/multiplicationdrill/multiplicationdrill.github.io/security/dependabot
 remote: 
 To github.com:multiplicationdrill/multiplicationdrill.github.io.git
-   85afd42..7d7449e  master -> master
+   7d7449e..9f68d94  master -> master
 
-real	0m1.704s
-user	0m0.018s
-sys	0m0.014s
+real	0m1.480s
+user	0m0.014s
+sys	0m0.012s
 kushal@fedora:~/src/ts/multiplicationdrill$ 
