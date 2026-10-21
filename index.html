@@ -1,76 +1,67 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Timed multiplication drill with cognitive difficulty tiers and spaced repetition.">
+    <meta name="color-scheme" content="dark light">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✖</text></svg>">
     <title>Reactive Math Quiz</title>
-</head>
-<body>
-    <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
-    <div class="container">
-        <h1>Reactive Math Quiz</h1>
-
-        <div class="section">
-            <div class="quiz-display" id="display">Press Start Quiz</div>
-            <div class="progress-container">
-                <div class="progress-bar" id="progressBar"></div>
-            </div>
-            <div class="timer-display" id="timerDisplay">Ready</div>
-            <div class="grade-buttons" id="gradeButtons" hidden>
-                <button id="gradeIncorrect" class="grade-btn incorrect"
-                        aria-label="I answered incorrectly"
-                        title="Incorrect (Left Arrow or X)">✗</button>
-                <button id="gradeCorrect" class="grade-btn correct"
-                        aria-label="I answered correctly"
-                        title="Correct (Right Arrow or C)">✓</button>
-            </div>
-        </div>
-
-        <div class="section">
-            <h3 style="margin-bottom: 15px;">Quiz Settings</h3>
-            <div class="controls">
-                <div class="slider-group">
-                    <label for="questionTime">Question Time:</label>
-                    <input type="range" id="questionTime" min="1" max="30" value="5" 
-                           aria-label="Question time in seconds"
-                           aria-valuemin="1" aria-valuemax="30" aria-valuenow="5">
-                    <span class="slider-value" id="questionTimeValue">5s</span>
-                </div>
-                <div class="slider-group">
-                    <label for="answerTime">Answer Time:</label>
-                    <input type="range" id="answerTime" min="1" max="30" value="3"
-                           aria-label="Answer time in seconds"
-                           aria-valuemin="1" aria-valuemax="30" aria-valuenow="3">
-                    <span class="slider-value" id="answerTimeValue">3s</span>
-                </div>
-                <div class="slider-group">
-                    <label for="difficulty">Difficulty:</label>
-                    <input type="range" id="difficulty" min="1" max="4" step="1" value="3"
-                           aria-label="Difficulty level"
-                           aria-valuemin="1" aria-valuemax="4" aria-valuenow="3"
-                           aria-valuetext="Hard">
-                    <span class="slider-value" id="difficultyValue">Hard</span>
-                </div>
-                <button id="quizButton" onclick="toggleQuiz()">Start Quiz</button>
-            </div>
-        </div>
-
-        <div class="status">
-            <div class="status-item">
-                <span>Quiz State:</span>
-                <span class="status-value" id="quizStatus">Stopped</span>
-            </div>
-            <div class="status-item">
-                <span>Correct:</span>
-                <span class="status-value" id="correctCount">0</span>
-            </div>
-            <div class="status-item">
-                <span>Incorrect:</span>
-                <span class="status-value" id="incorrectCount">0</span>
-            </div>
-        </div>
-    </div>
-
     <script type="module" src="/src/main.ts"></script>
-</body>
+  </head>
+  <body>
+    <button type="button" id="themeToggle" class="theme-toggle" aria-label="Light mode" aria-pressed="false">🌓</button>
+    <main class="container">
+      <h1>Reactive Math Quiz</h1>
+
+      <section class="section" aria-label="Quiz">
+        <output id="display" class="quiz-display" data-testid="display">Press Start Quiz</output>
+        <div class="progress" aria-hidden="true">
+          <div id="progressBar" class="progress-bar" data-phase="idle"></div>
+        </div>
+        <p id="timerDisplay" class="timer-display" data-testid="timer">Ready</p>
+        <div id="gradeButtons" class="grade-buttons" data-testid="grade-buttons" hidden>
+          <button type="button" id="gradeIncorrect" class="grade-btn incorrect" aria-label="I answered incorrectly" title="Incorrect (Left Arrow or X)">✗</button>
+          <button type="button" id="gradeCorrect" class="grade-btn correct" aria-label="I answered correctly" title="Correct (Right Arrow or C)">✓</button>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="settingsHeading">
+        <h2 id="settingsHeading">Quiz Settings</h2>
+        <div class="controls">
+          <div class="slider-group">
+            <label for="questionTime">Question Time</label>
+            <input type="range" id="questionTime" min="1" max="30" value="5" aria-valuetext="5 seconds">
+            <span class="slider-value" id="questionTimeValue" data-testid="question-time-value" aria-hidden="true">5s</span>
+          </div>
+          <div class="slider-group">
+            <label for="answerTime">Answer Time</label>
+            <input type="range" id="answerTime" min="1" max="30" value="3" aria-valuetext="3 seconds">
+            <span class="slider-value" id="answerTimeValue" data-testid="answer-time-value" aria-hidden="true">3s</span>
+          </div>
+          <div class="slider-group">
+            <label for="difficulty">Difficulty</label>
+            <input type="range" id="difficulty" min="1" max="4" value="3" aria-valuetext="Hard">
+            <span class="slider-value" id="difficultyValue" data-testid="difficulty-value" aria-hidden="true">Hard</span>
+          </div>
+          <button type="button" id="quizButton">Start Quiz</button>
+        </div>
+      </section>
+
+      <dl class="status">
+        <div class="status-item">
+          <dt>Quiz State</dt>
+          <dd id="quizStatus" data-testid="quiz-status">Stopped</dd>
+        </div>
+        <div class="status-item">
+          <dt>Correct</dt>
+          <dd id="correctCount" data-testid="correct-count">0</dd>
+        </div>
+        <div class="status-item">
+          <dt>Incorrect</dt>
+          <dd id="incorrectCount" data-testid="incorrect-count">0</dd>
+        </div>
+      </dl>
+    </main>
+  </body>
 </html>

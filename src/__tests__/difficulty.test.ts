@@ -67,7 +67,6 @@ describe('scoreProblem', () => {
 
   it('treats appending zeros as nearly free', () => {
     expect(scoreProblem(64, 10)).toBeLessThan(scoreProblem(6, 7));
-    // 40 × 8 is just (4 × 8) with a zero, so barely harder than 4 × 8
     expect(scoreProblem(40, 8) - scoreProblem(4, 8)).toBeLessThan(0.5);
   });
 });
@@ -85,23 +84,22 @@ describe('classifyProblem — anchors', () => {
   it('25 × 4 is NOT Hard — it is Easy via doubling (the regression case)', () => {
     const level = classifyProblem(25, 4);
     expect(level).not.toBeNull();
-    expect(level).toBeLessThanOrEqual(2); // Easy or Medium, never Hard/Expert
+    expect(level).toBeLessThanOrEqual(2);
     expect(classifyProblem(25, 4)).toBe(1);
-    // and strictly easier than a genuine two-digit × two-digit grid problem
     expect(scoreProblem(25, 4)).toBeLessThan(scoreProblem(47, 63));
   });
 
   it('places representative problems in sensible tiers', () => {
-    expect(classifyProblem(2, 3)).toBe(1); // Easy
-    expect(classifyProblem(7, 9)).toBe(1); // Easy — the ×9 trick
-    expect(classifyProblem(11, 11)).toBe(1); // Easy — the ×11 trick
-    expect(classifyProblem(20, 20)).toBe(1); // Easy — 2×2 with two zeros
-    expect(classifyProblem(6, 7)).toBe(2); // Medium — a hard, shortcut-free fact
-    expect(classifyProblem(13, 7)).toBe(2); // Medium — small two-digit × one-digit
-    expect(classifyProblem(12, 12)).toBe(3); // Hard
-    expect(classifyProblem(47, 63)).toBe(3); // Hard
-    expect(classifyProblem(78, 89)).toBe(4); // Expert
-    expect(classifyProblem(99, 99)).toBe(4); // Expert
+    expect(classifyProblem(2, 3)).toBe(1);
+    expect(classifyProblem(7, 9)).toBe(1);
+    expect(classifyProblem(11, 11)).toBe(1);
+    expect(classifyProblem(20, 20)).toBe(1);
+    expect(classifyProblem(6, 7)).toBe(2);
+    expect(classifyProblem(13, 7)).toBe(2);
+    expect(classifyProblem(12, 12)).toBe(3);
+    expect(classifyProblem(47, 63)).toBe(3);
+    expect(classifyProblem(78, 89)).toBe(4);
+    expect(classifyProblem(99, 99)).toBe(4);
   });
 
   it('returns null for trivial problems', () => {
@@ -125,7 +123,7 @@ describe('tier pools', () => {
     for (const level of ALL_LEVELS) {
       for (const problem of getTierPool(level)) {
         const key = problemKey(problem.a, problem.b);
-        expect(seen.has(key)).toBe(false); // disjoint
+        expect(seen.has(key)).toBe(false);
         seen.add(key);
         classified += 1;
       }

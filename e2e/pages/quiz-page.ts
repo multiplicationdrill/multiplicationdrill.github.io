@@ -1,101 +1,64 @@
-/**
- * QuizPage - Page Object Model for the Multiplication Drill application
- *
- * NOTES:
- * - Sliders use ID locators: getByLabel is unreliable when a <label> and an
- *   aria-label carry different text.
- * - Range inputs cannot be driven with fill(); we set value + dispatch 'input'.
- * - Grade buttons expose aria-labels, so getByRole is the resilient locator.
- * - The theme toggle has no id and emoji matching via getByRole is flaky, so a
- *   class selector is used.
- */
+import { expect, type Locator, type Page } from '@playwright/test';
 
-import { type Page, type Locator, expect } from '@playwright/test';
+export type DifficultyLevel = 1 | 2 | 3 | 4;
 
-type DifficultyLevel = 1 | 2 | 3 | 4;
-
-const DIFFICULTY_NAMES: Record<DifficultyLevel, string> = {
+const DIFFICULTY_NAMES: Readonly<Record<DifficultyLevel, string>> = {
   1: 'Easy',
   2: 'Medium',
   3: 'Hard',
   4: 'Expert',
 };
 
+const TIMES = '\u00d7';
+
 export class QuizPage {
   readonly page: Page;
-
-  // Display elements
+  readonly root: Locator;
   readonly display: Locator;
-  readonly progressBar: Locator;
   readonly timerDisplay: Locator;
-
-  // Quiz control buttons
   readonly startQuizButton: Locator;
   readonly stopQuizButton: Locator;
-
-  // Self-grading
   readonly gradeButtons: Locator;
   readonly gradeCorrectButton: Locator;
   readonly gradeIncorrectButton: Locator;
-
-  // Settings sliders - USE ID LOCATORS instead of getByLabel
   readonly questionTimeSlider: Locator;
   readonly answerTimeSlider: Locator;
   readonly difficultySlider: Locator;
-
-  // Settings value displays
   readonly questionTimeValue: Locator;
   readonly answerTimeValue: Locator;
   readonly difficultyValue: Locator;
-
-  // Theme toggle
   readonly themeToggle: Locator;
-
-  // Status indicators
   readonly quizStatus: Locator;
   readonly correctCount: Locator;
   readonly incorrectCount: Locator;
 
   constructor(page: Page) {
     this.page = page;
-
-    this.display = page.locator('#display');
-    this.progressBar = page.locator('#progressBar');
-    this.timerDisplay = page.locator('#timerDisplay');
-
-    // getByRole with name is most resilient for buttons
-    this.startQuizButton = page.getByRole('button', { name: 'Start Quiz' });
-    this.stopQuizButton = page.getByRole('button', { name: 'Stop Quiz' });
-
-    // Grade buttons: the container drives visibility; the buttons expose
-    // aria-labels for role-based interaction.
-    this.gradeButtons = page.locator('#gradeButtons');
-    this.gradeCorrectButton = page.getByRole('button', { name: 'I answered correctly' });
-    this.gradeIncorrectButton = page.getByRole('button', { name: 'I answered incorrectly' });
-
-    // ID locators for sliders (see notes above)
-    this.questionTimeSlider = page.locator('#questionTime');
-    this.answerTimeSlider = page.locator('#answerTime');
-    this.difficultySlider = page.locator('#difficulty');
-
-    this.questionTimeValue = page.locator('#questionTimeValue');
-    this.answerTimeValue = page.locator('#answerTimeValue');
-    this.difficultyValue = page.locator('#difficultyValue');
-
-    this.themeToggle = page.locator('.theme-toggle');
-
-    this.quizStatus = page.locator('#quizStatus');
-    this.correctCount = page.locator('#correctCount');
-    this.incorrectCount = page.locator('#incorrectCount');
+    this.root = page.locator('html');
+    this.display = page.getByTestId('display');
+    this.timerDisplay = page.getByTestId('timer');
+    this.startQuizButton = page.getByRole('button', { name: 'Start Quiz', exact: true });
+    this.stopQuizButton = page.getByRole('button', { name: 'Stop Quiz', exact: true });
+    this.gradeButtons = page.getByTestId('grade-buttons');
+    this.gradeCorrectButton = page.getByRole('button', { name: 'I answered correctly', exact: true });
+    this.gradeIncorrectButton = page.getByRole('button', { name: 'I answered incorrectly', exact: true });
+    this.questionTimeSlider = page.getByRole('slider', { name: 'Question Time', exact: true });
+    this.answerTimeSlider = page.getByRole('slider', { name: 'Answer Time', exact: true });
+    this.difficultySlider = page.getByRole('slider', { name: 'Difficulty', exact: true });
+    this.questionTimeValue = page.getByTestId('question-time-value');
+    this.answerTimeValue = page.getByTestId('answer-time-value');
+    this.difficultyValue = page.getByTestId('difficulty-value');
+    this.themeToggle = page.getByRole('button', { name: 'Light mode', exact: true });
+    this.quizStatus = page.getByTestId('quiz-status');
+    this.correctCount = page.getByTestId('correct-count');
+    this.incorrectCount = page.getByTestId('incorrect-count');
   }
 
-  // Navigation
   async goto(): Promise<void> {
     await this.page.goto('/');
     await expect(this.display).toBeVisible();
   }
 
-  // Quiz control methods
   async startQuiz(): Promise<void> {
     await this.startQuizButton.click();
     await expect(this.stopQuizButton).toBeVisible();
@@ -106,14 +69,8 @@ export class QuizPage {
     await expect(this.startQuizButton).toBeVisible();
   }
 
-  async isQuizRunning(): Promise<boolean> {
-    return this.stopQuizButton.isVisible();
-  }
-
-  // Self-grading methods. Playwright auto-waits for the button to be
-  // actionable (visible + enabled), i.e. the answer phase.
   async waitForAnswerPhase(): Promise<void> {
-    await expect(this.gradeCorrectButton).toBeEnabled({ timeout: 10000 });
+    await expect(this.gradeCorrectButton).toBeEnabled({ timeout: 10_000 });
   }
 
   async gradeCorrect(): Promise<void> {
@@ -124,68 +81,58 @@ export class QuizPage {
     await this.gradeIncorrectButton.click();
   }
 
-  // Range-input interaction: set value directly and dispatch an input event
   async setQuestionTime(seconds: number): Promise<void> {
-    await this.questionTimeSlider.evaluate((el: HTMLInputElement, val: number) => {
-      el.value = val.toString();
-      el.dispatchEvent(new Event('input', { bubbles: true }));
-    }, seconds);
-    await expect(this.questionTimeValue).toHaveText(`${seconds}s`);
+    await setRange(this.questionTimeSlider, seconds);
+    await expect(this.questionTimeValue).toHaveText(`${seconds.toString()}s`);
   }
 
   async setAnswerTime(seconds: number): Promise<void> {
-    await this.answerTimeSlider.evaluate((el: HTMLInputElement, val: number) => {
-      el.value = val.toString();
-      el.dispatchEvent(new Event('input', { bubbles: true }));
-    }, seconds);
-    await expect(this.answerTimeValue).toHaveText(`${seconds}s`);
+    await setRange(this.answerTimeSlider, seconds);
+    await expect(this.answerTimeValue).toHaveText(`${seconds.toString()}s`);
   }
 
   async setDifficulty(level: DifficultyLevel): Promise<void> {
-    await this.difficultySlider.evaluate((el: HTMLInputElement, val: number) => {
-      el.value = val.toString();
-      el.dispatchEvent(new Event('input', { bubbles: true }));
-    }, level);
+    await setRange(this.difficultySlider, level);
     await expect(this.difficultyValue).toHaveText(DIFFICULTY_NAMES[level]);
   }
 
-  // Toggle theme
   async toggleTheme(): Promise<void> {
     await this.themeToggle.click();
   }
 
-  // Assertion helpers
-  async expectQuizQuestion(): Promise<void> {
-    await expect(this.display).toHaveText(/^\d+\s*×\s*\d+$/);
+  async expectTheme(theme: 'light' | 'dark'): Promise<void> {
+    await expect(this.root).toHaveAttribute('data-theme', theme);
+    await expect(this.themeToggle).toHaveAttribute('aria-pressed', String(theme === 'light'));
   }
 
-  async expectQuizAnswer(): Promise<void> {
-    await expect(this.display).toHaveText(/^\d+\s*×\s*\d+\s*=\s*\d+$/);
+  async expectQuizQuestion(): Promise<void> {
+    await expect(this.display).toHaveText(new RegExp(`^\\d+ ${TIMES} \\d+$`));
+  }
+
+  async expectQuizAnswer(options?: { readonly timeout: number }): Promise<void> {
+    await expect(this.display).toHaveText(new RegExp(`^\\d+ ${TIMES} \\d+ = \\d+$`), options);
   }
 
   async expectControlsDisabled(disabled: boolean): Promise<void> {
-    if (disabled) {
-      await expect(this.questionTimeSlider).toBeDisabled();
-      await expect(this.answerTimeSlider).toBeDisabled();
-      await expect(this.difficultySlider).toBeDisabled();
-    } else {
-      await expect(this.questionTimeSlider).toBeEnabled();
-      await expect(this.answerTimeSlider).toBeEnabled();
-      await expect(this.difficultySlider).toBeEnabled();
+    for (const slider of [this.questionTimeSlider, this.answerTimeSlider, this.difficultySlider]) {
+      await expect(slider).toBeEnabled({ enabled: !disabled });
     }
   }
 
   async expectGradeButtonsEnabled(enabled: boolean): Promise<void> {
-    if (enabled) {
-      await expect(this.gradeCorrectButton).toBeEnabled();
-      await expect(this.gradeIncorrectButton).toBeEnabled();
-    } else {
-      await expect(this.gradeCorrectButton).toBeDisabled();
-      await expect(this.gradeIncorrectButton).toBeDisabled();
+    for (const button of [this.gradeCorrectButton, this.gradeIncorrectButton]) {
+      await expect(button).toBeEnabled({ enabled });
     }
   }
 
   async expectQuizStatus(quizState: 'Stopped' | 'Running'): Promise<void> {
     await expect(this.quizStatus).toHaveText(quizState);
   }
+}
+
+async function setRange(slider: Locator, value: number): Promise<void> {
+  await slider.evaluate((element: HTMLInputElement, next: number) => {
+    element.valueAsNumber = next;
+    element.dispatchEvent(new Event('input', { bubbles: true }));
+  }, value);
 }

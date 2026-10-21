@@ -1,57 +1,49 @@
-import { Signal, ComputedSignal } from './signals';
-import { Problem, QuizPhase, DifficultyLevel } from './types';
+import { ComputedSignal, Signal } from './signals';
+import type { DifficultyLevel, Problem, QuizPhase } from './types';
 
-// Application State
+export const DEFAULT_QUESTION_TIME = 5;
+export const DEFAULT_ANSWER_TIME = 3;
+export const DEFAULT_DIFFICULTY: DifficultyLevel = 3;
+
 export const state = {
-  questionTime: new Signal(5),
-  answerTime: new Signal(3),
-  difficulty: new Signal<DifficultyLevel>(3),
+  questionTime: new Signal(DEFAULT_QUESTION_TIME),
+  answerTime: new Signal(DEFAULT_ANSWER_TIME),
+  difficulty: new Signal<DifficultyLevel>(DEFAULT_DIFFICULTY),
   isQuizActive: new Signal(false),
   currentPhase: new Signal<QuizPhase>('idle'),
   timeRemaining: new Signal(0),
   currentProblem: new Signal<Problem>({ a: 0, b: 0 }),
-  // Per-session self-assessment tally, reset each time a quiz starts.
   sessionCorrect: new Signal(0),
   sessionIncorrect: new Signal(0),
 } as const;
 
-// Computed Values (Derived State)
-export const displayText = new ComputedSignal(() => {
-  if (!state.isQuizActive.get()) {
-    return 'Press Start Quiz';
-  }
+const PHASE_LABELS: Readonly<Record<QuizPhase, string>> = {
+  idle: 'Idle',
+  question: 'Question',
+  answer: 'Answer',
+};
 
-  const p = state.currentProblem.get();
-  if (state.currentPhase.get() === 'answer') {
-    return `${p.a} \u00D7 ${p.b} = ${p.a * p.b}`;
-  }
-  return `${p.a} \u00D7 ${p.b}`;
+export const displayText = new ComputedSignal(() => {
+  if (!state.isQuizActive.get()) return 'Press Start Quiz';
+
+  const { a, b } = state.currentProblem.get();
+  const question = `${a.toString()} \u00D7 ${b.toString()}`;
+  return state.currentPhase.get() === 'answer' ? `${question} = ${(a * b).toString()}` : question;
 });
 
 export const progressPercent = new ComputedSignal(() => {
   if (!state.isQuizActive.get()) return 0;
 
-  const phase = state.currentPhase.get();
-  const totalTime = phase === 'question'
-    ? state.questionTime.get()
-    : state.answerTime.get();
-  const remaining = state.timeRemaining.get();
-
-  if (totalTime === 0) return 0;
-  return ((totalTime - remaining) / totalTime) * 100;
+  const total = state.currentPhase.get() === 'question' ? state.questionTime.get() : state.answerTime.get();
+  if (total === 0) return 0;
+  return ((total - state.timeRemaining.get()) / total) * 100;
 });
 
 export const timerDisplayText = new ComputedSignal(() => {
   if (!state.isQuizActive.get()) return 'Ready';
-
-  const phase = state.currentPhase.get();
-  const remaining = state.timeRemaining.get();
-  const phaseText = phase.charAt(0).toUpperCase() + phase.slice(1);
-  return `${phaseText}: ${remaining.toFixed(1)}s`;
+  return `${PHASE_LABELS[state.currentPhase.get()]}: ${state.timeRemaining.get().toFixed(1)}s`;
 });
 
-// True only while the answer is on screen — the window in which the learner may
-// grade themselves. Drives enabling/disabling of the grade buttons.
 export const isGradingPhase = new ComputedSignal(
   () => state.isQuizActive.get() && state.currentPhase.get() === 'answer',
 );

@@ -1,7 +1,6 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import {
   getDifficultyName,
-  randomInRange,
   loadSettings,
   saveSettings,
   loadProgress,
@@ -12,15 +11,20 @@ import {
 } from '../utils';
 import { applyGrade, createStore, SRS_VERSION } from '../srs';
 
-// Mock localStorage
 const localStorageMock = (() => {
-  let store: Record<string, string> = {};
+  const store = new Map<string, string>();
 
   return {
-    getItem: (key: string) => store[key] || null,
-    setItem: (key: string, value: string) => { store[key] = value; },
-    removeItem: (key: string) => { delete store[key]; },
-    clear: () => { store = {}; },
+    getItem: (key: string) => store.get(key) ?? null,
+    setItem: (key: string, value: string) => {
+      store.set(key, value);
+    },
+    removeItem: (key: string) => {
+      store.delete(key);
+    },
+    clear: () => {
+      store.clear();
+    },
   };
 })();
 
@@ -34,21 +38,6 @@ describe('getDifficultyName', () => {
     expect(getDifficultyName(2)).toBe('Medium');
     expect(getDifficultyName(3)).toBe('Hard');
     expect(getDifficultyName(4)).toBe('Expert');
-  });
-});
-
-describe('randomInRange', () => {
-  it('should generate numbers within specified range', () => {
-    for (let i = 0; i < 100; i++) {
-      const num = randomInRange(5, 10);
-      expect(num).toBeGreaterThanOrEqual(5);
-      expect(num).toBeLessThanOrEqual(10);
-    }
-  });
-
-  it('should handle single value range', () => {
-    const num = randomInRange(5, 5);
-    expect(num).toBe(5);
   });
 });
 
@@ -75,7 +64,7 @@ describe('Settings persistence', () => {
 
   it('should handle corrupted localStorage data', () => {
     localStorageMock.setItem('mathQuizSettings', 'invalid json');
-    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
 
     expect(loadSettings()).toBeNull();
     expect(consoleSpy).toHaveBeenCalled();
@@ -101,7 +90,7 @@ describe('Progress (spaced-repetition) persistence', () => {
 
   it('should discard corrupted data and clear it', () => {
     localStorageMock.setItem('mathQuizProgress', '{not valid json');
-    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
 
     expect(loadProgress()).toBeNull();
     expect(consoleSpy).toHaveBeenCalled();
@@ -115,7 +104,6 @@ describe('Progress (spaced-repetition) persistence', () => {
     localStorageMock.setItem('mathQuizProgress', stale);
 
     expect(loadProgress()).toBeNull();
-    // stale entry should be cleared so a fresh store can take over
     expect(localStorageMock.getItem('mathQuizProgress')).toBeNull();
   });
 
@@ -156,18 +144,14 @@ describe('debounce', () => {
     const fn = vi.fn();
     const debounced = debounce(fn, 100);
 
-    // Call multiple times rapidly
     debounced();
     debounced();
     debounced();
 
-    // Function shouldn't be called yet
     expect(fn).not.toHaveBeenCalled();
 
-    // Fast forward time
     vi.advanceTimersByTime(100);
 
-    // Function should be called once
     expect(fn).toHaveBeenCalledTimes(1);
   });
 
@@ -187,15 +171,13 @@ describe('debounce', () => {
 
     debounced();
     vi.advanceTimersByTime(50);
-    debounced(); // This should cancel the first timeout
+    debounced();
     vi.advanceTimersByTime(50);
 
-    // Function still shouldn't be called
     expect(fn).not.toHaveBeenCalled();
 
     vi.advanceTimersByTime(50);
 
-    // Now it should be called once
     expect(fn).toHaveBeenCalledTimes(1);
   });
 });

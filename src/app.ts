@@ -1,346 +1,281 @@
-import { effect } from './signals';
-import {
-  state,
-  displayText,
-  progressPercent,
-  timerDisplayText,
-  isGradingPhase,
-} from './state';
-import { DifficultyLevel, Grade, Settings, SrsStore } from './types';
-import {
-  getDifficultyName,
-  loadSettings,
-  saveSettings,
-  loadTheme,
-  saveTheme,
-  loadProgress,
-  saveProgress,
-  debounce,
-} from './utils';
 import { getTierPool, problemKey, randomProblemForLevel } from './difficulty';
+import { effect, type Signal } from './signals';
 import { applyGrade, applySeen, createStore, RECENCY_WINDOW, selectNext } from './srs';
+import { displayText, isGradingPhase, progressPercent, state, timerDisplayText } from './state';
+import type { Grade, SrsStore, Theme } from './types';
+import {
+  debounce,
+  getDifficultyName,
+  isDifficultyLevel,
+  isSeconds,
+  loadProgress,
+  loadSettings,
+  loadTheme,
+  saveProgress,
+  saveSettings,
+  saveTheme,
+} from './utils';
 
-// DOM Elements
-interface DOMElements {
-  readonly display: HTMLElement;
-  readonly progressBar: HTMLElement;
-  readonly timerDisplay: HTMLElement;
-  readonly questionTimeValue: HTMLElement;
-  readonly answerTimeValue: HTMLElement;
-  readonly difficultyValue: HTMLElement;
-  readonly quizButton: HTMLButtonElement;
-  readonly quizStatus: HTMLElement;
-  readonly correctCount: HTMLElement;
-  readonly incorrectCount: HTMLElement;
-  readonly questionTimeSlider: HTMLInputElement;
-  readonly answerTimeSlider: HTMLInputElement;
-  readonly difficultySlider: HTMLInputElement;
-  readonly gradeButtons: HTMLElement;
-  readonly gradeCorrectButton: HTMLButtonElement;
-  readonly gradeIncorrectButton: HTMLButtonElement;
+const GRADE_KEYS: ReadonlyMap<string, Grade> = new Map([
+  ['ArrowRight', 'correct'],
+  ['c', 'correct'],
+  ['C', 'correct'],
+  ['ArrowLeft', 'incorrect'],
+  ['x', 'incorrect'],
+  ['X', 'incorrect'],
+]);
+
+function byId<T extends HTMLElement>(id: string, type: abstract new () => T): T {
+  const element = document.getElementById(id);
+  if (!(element instanceof type)) throw new Error(`Missing element #${id}`);
+  return element;
 }
 
-let elements: DOMElements;
-let animationFrameId: number | null = null;
-let lastTimestamp = 0;
-
-// Spaced-repetition state lives at module scope. The store is immutable and
-// swapped wholesale on each update. `recentKeys` is a short ring of the most
-// recently shown problems (so we don't immediately repeat one), and
-// `currentGraded` tracks whether the on-screen problem was already graded.
-let progress: SrsStore = createStore();
-let recentKeys: string[] = [];
-let currentGraded = false;
-
-function getElements(): DOMElements {
+function queryElements() {
   return {
-    display: document.getElementById('display')!,
-    progressBar: document.getElementById('progressBar')!,
-    timerDisplay: document.getElementById('timerDisplay')!,
-    questionTimeValue: document.getElementById('questionTimeValue')!,
-    answerTimeValue: document.getElementById('answerTimeValue')!,
-    difficultyValue: document.getElementById('difficultyValue')!,
-    quizButton: document.getElementById('quizButton')! as HTMLButtonElement,
-    quizStatus: document.getElementById('quizStatus')!,
-    correctCount: document.getElementById('correctCount')!,
-    incorrectCount: document.getElementById('incorrectCount')!,
-    questionTimeSlider: document.getElementById('questionTime')! as HTMLInputElement,
-    answerTimeSlider: document.getElementById('answerTime')! as HTMLInputElement,
-    difficultySlider: document.getElementById('difficulty')! as HTMLInputElement,
-    gradeButtons: document.getElementById('gradeButtons')!,
-    gradeCorrectButton: document.getElementById('gradeCorrect')! as HTMLButtonElement,
-    gradeIncorrectButton: document.getElementById('gradeIncorrect')! as HTMLButtonElement,
-  };
+    themeToggle: byId('themeToggle', HTMLButtonElement),
+    display: byId('display', HTMLOutputElement),
+    progressBar: byId('progressBar', HTMLDivElement),
+    timerDisplay: byId('timerDisplay', HTMLParagraphElement),
+    gradeButtons: byId('gradeButtons', HTMLDivElement),
+    gradeCorrectButton: byId('gradeCorrect', HTMLButtonElement),
+    gradeIncorrectButton: byId('gradeIncorrect', HTMLButtonElement),
+    questionTimeSlider: byId('questionTime', HTMLInputElement),
+    questionTimeValue: byId('questionTimeValue', HTMLSpanElement),
+    answerTimeSlider: byId('answerTime', HTMLInputElement),
+    answerTimeValue: byId('answerTimeValue', HTMLSpanElement),
+    difficultySlider: byId('difficulty', HTMLInputElement),
+    difficultyValue: byId('difficultyValue', HTMLSpanElement),
+    quizButton: byId('quizButton', HTMLButtonElement),
+    quizStatus: byId('quizStatus', HTMLElement),
+    correctCount: byId('correctCount', HTMLElement),
+    incorrectCount: byId('incorrectCount', HTMLElement),
+  } as const;
 }
 
-function rememberRecent(key: string): void {
-  recentKeys = [...recentKeys, key].slice(-RECENCY_WINDOW);
+type Elements = ReturnType<typeof queryElements>;
+
+let progress: SrsStore = createStore();
+let recentKeys: readonly string[] = [];
+let currentGraded = false;
+let frameId: number | undefined;
+let lastTimestamp: number | undefined;
+
+const persistProgress = debounce(() => {
+  saveProgress(progress);
+}, 400);
+
+const persistSettings = debounce(() => {
+  saveSettings({
+    questionTime: state.questionTime.get(),
+    answerTime: state.answerTime.get(),
+    difficulty: state.difficulty.get(),
+  });
+}, 300);
+
+function currentKey(): string {
+  const { a, b } = state.currentProblem.get();
+  return problemKey(a, b);
 }
 
-const debouncedSaveProgress = debounce(() => saveProgress(progress), 400);
+function startNextProblem(): void {
+  const level = state.difficulty.get();
+  const next = selectNext(getTierPool(level), progress, recentKeys, Date.now()) ?? randomProblemForLevel(level);
 
-function gameLoop(timestamp: number): void {
+  state.currentProblem.set(next);
+  recentKeys = [...recentKeys, problemKey(next.a, next.b)].slice(-RECENCY_WINDOW);
+  currentGraded = false;
+  lastTimestamp = undefined;
+  state.currentPhase.set('question');
+  state.timeRemaining.set(state.questionTime.get());
+}
+
+function tick(timestamp: number): void {
   if (!state.isQuizActive.get()) {
-    animationFrameId = null;
+    frameId = undefined;
     return;
   }
 
-  if (!lastTimestamp) {
-    lastTimestamp = timestamp;
-  }
-
-  const deltaTime = (timestamp - lastTimestamp) / 1000; // Time elapsed in seconds
+  const elapsed = (timestamp - (lastTimestamp ?? timestamp)) / 1000;
   lastTimestamp = timestamp;
 
-  const newTime = Math.max(0, state.timeRemaining.get() - deltaTime);
-  state.timeRemaining.set(newTime);
+  const remaining = Math.max(0, state.timeRemaining.get() - elapsed);
+  state.timeRemaining.set(remaining);
 
-  if (newTime === 0) {
-    const currentPhase = state.currentPhase.get();
-    if (currentPhase === 'question') {
+  if (remaining === 0) {
+    if (state.currentPhase.get() === 'question') {
       state.currentPhase.set('answer');
       state.timeRemaining.set(state.answerTime.get());
-    } else if (currentPhase === 'answer') {
-      // The answer window elapsed without a self-grade. Record an ungraded
-      // showing so spaced repetition still schedules it, then move on.
+    } else {
       if (!currentGraded) {
-        const { a, b } = state.currentProblem.get();
-        progress = applySeen(progress, problemKey(a, b), Date.now());
-        debouncedSaveProgress();
+        progress = applySeen(progress, currentKey(), Date.now());
+        persistProgress();
       }
       startNextProblem();
     }
   }
 
-  animationFrameId = requestAnimationFrame(gameLoop);
+  frameId = requestAnimationFrame(tick);
 }
 
-function startNextProblem(): void {
-  const level = state.difficulty.get();
-  const pool = getTierPool(level);
-  // Spaced repetition chooses the next problem; the pool fallback is a safety
-  // net that should never be needed (every tier is non-empty).
-  const next =
-    selectNext(pool, progress, recentKeys, Date.now(), Math.random) ??
-    randomProblemForLevel(level);
-
-  state.currentProblem.set(next);
-  rememberRecent(problemKey(next.a, next.b));
-  currentGraded = false;
-  lastTimestamp = 0; // Re-baseline the clock so the new question gets full time.
-  state.currentPhase.set('question');
-  state.timeRemaining.set(state.questionTime.get());
-}
-
-/**
- * Record the learner's self-assessment for the current problem and advance
- * immediately. No-op unless an answer is showing and hasn't been graded yet.
- */
-export function gradeAnswer(grade: Grade): void {
-  if (!state.isQuizActive.get() || state.currentPhase.get() !== 'answer' || currentGraded) {
-    return;
-  }
+function gradeAnswer(grade: Grade): void {
+  if (!isGradingPhase.get() || currentGraded) return;
 
   currentGraded = true;
-  const { a, b } = state.currentProblem.get();
-  progress = applyGrade(progress, problemKey(a, b), grade, Date.now());
-  debouncedSaveProgress();
+  progress = applyGrade(progress, currentKey(), grade, Date.now());
+  persistProgress();
 
-  if (grade === 'correct') {
-    state.sessionCorrect.set(state.sessionCorrect.get() + 1);
-  } else {
-    state.sessionIncorrect.set(state.sessionIncorrect.get() + 1);
-  }
+  const counter = grade === 'correct' ? state.sessionCorrect : state.sessionIncorrect;
+  counter.set(counter.get() + 1);
 
   startNextProblem();
 }
 
-export function toggleQuiz(): void {
-  const willBeActive = !state.isQuizActive.get();
-  state.isQuizActive.set(willBeActive);
+function startQuiz(): void {
+  state.sessionCorrect.set(0);
+  state.sessionIncorrect.set(0);
+  recentKeys = [];
+  state.isQuizActive.set(true);
+  startNextProblem();
+  frameId ??= requestAnimationFrame(tick);
+}
 
-  if (willBeActive) {
-    // Fresh session: zero the tally and recency ring.
-    state.sessionCorrect.set(0);
-    state.sessionIncorrect.set(0);
-    recentKeys = [];
-    lastTimestamp = 0;
-    startNextProblem();
-    if (!animationFrameId) {
-      animationFrameId = requestAnimationFrame(gameLoop);
-    }
+function stopQuiz(): void {
+  if (frameId !== undefined) cancelAnimationFrame(frameId);
+  frameId = undefined;
+  state.isQuizActive.set(false);
+  state.currentPhase.set('idle');
+  state.timeRemaining.set(0);
+}
+
+function toggleQuiz(): void {
+  if (state.isQuizActive.get()) {
+    stopQuiz();
   } else {
-    if (animationFrameId) {
-      cancelAnimationFrame(animationFrameId);
-      animationFrameId = null;
-    }
-    state.currentPhase.set('idle');
-    state.timeRemaining.set(0);
+    startQuiz();
   }
 }
 
-export function toggleTheme(): void {
-  document.body.classList.toggle('light-mode');
-  saveTheme(document.body.classList.contains('light-mode') ? 'light' : 'dark');
+function applyTheme(elements: Elements, theme: Theme): void {
+  document.documentElement.dataset.theme = theme;
+  elements.themeToggle.ariaPressed = String(theme === 'light');
 }
 
-function initializeSettings(): void {
+function toggleTheme(elements: Elements): void {
+  const theme: Theme = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+  applyTheme(elements, theme);
+  saveTheme(theme);
+}
+
+function restoreSettings(elements: Elements): void {
   const saved = loadSettings();
   if (saved) {
-    // Load and apply settings with proper fallbacks to defaults
-    const questionTime = saved.questionTime ?? 5;
-    const answerTime = saved.answerTime ?? 3;
-    const difficulty = saved.difficulty ?? 3;
-
-    state.questionTime.set(questionTime);
-    state.answerTime.set(answerTime);
-    state.difficulty.set(difficulty);
-
-    // Sync the DOM elements with loaded values
-    elements.questionTimeSlider.value = questionTime.toString();
-    elements.answerTimeSlider.value = answerTime.toString();
-    elements.difficultySlider.value = difficulty.toString();
-  } else {
-    // No saved settings, ensure DOM matches default state values
-    elements.questionTimeSlider.value = state.questionTime.get().toString();
-    elements.answerTimeSlider.value = state.answerTime.get().toString();
-    elements.difficultySlider.value = state.difficulty.get().toString();
+    state.questionTime.set(saved.questionTime);
+    state.answerTime.set(saved.answerTime);
+    state.difficulty.set(saved.difficulty);
   }
 
-  // Load theme preference
-  if (loadTheme() === 'light') {
-    document.body.classList.add('light-mode');
-  }
+  elements.questionTimeSlider.valueAsNumber = state.questionTime.get();
+  elements.answerTimeSlider.valueAsNumber = state.answerTime.get();
+  elements.difficultySlider.valueAsNumber = state.difficulty.get();
+  applyTheme(elements, loadTheme());
 }
 
-function setupEffects(): void {
-  // DOM updates
-  effect(() => { elements.display.textContent = displayText.get(); });
-  effect(() => { elements.timerDisplay.textContent = timerDisplayText.get(); });
-
+function bindSeconds(slider: HTMLInputElement, label: HTMLElement, signal: Signal<number>): void {
   effect(() => {
-    const percent = progressPercent.get();
-    elements.progressBar.style.width = `${percent}%`;
+    const seconds = signal.get().toString();
+    label.textContent = `${seconds}s`;
+    slider.ariaValueText = `${seconds} seconds`;
+  });
 
-    const phase = state.currentPhase.get();
-    const color = phase === 'question'
-      ? 'linear-gradient(90deg, var(--success), #34d399)'
-      : 'linear-gradient(90deg, var(--warning), #fbbf24)';
-    elements.progressBar.style.background = color;
+  slider.addEventListener('input', () => {
+    if (!isSeconds(slider.valueAsNumber)) return;
+    signal.set(slider.valueAsNumber);
+    persistSettings();
+  });
+}
+
+function setupEffects(elements: Elements): void {
+  effect(() => {
+    elements.display.value = displayText.get();
   });
 
   effect(() => {
-    const isActive = state.isQuizActive.get();
-    elements.quizButton.textContent = isActive ? 'Stop Quiz' : 'Start Quiz';
-    elements.quizStatus.textContent = isActive ? 'Running' : 'Stopped';
-
-    const disabled = isActive;
-    elements.questionTimeSlider.disabled = disabled;
-    elements.answerTimeSlider.disabled = disabled;
-    elements.difficultySlider.disabled = disabled;
+    elements.timerDisplay.textContent = timerDisplayText.get();
   });
 
-  // Grade buttons: hidden entirely when idle, visible during a quiz, and only
-  // enabled while the answer is on screen (the grading window).
+  effect(() => {
+    elements.progressBar.style.inlineSize = `${progressPercent.get().toString()}%`;
+    elements.progressBar.dataset.phase = state.currentPhase.get();
+  });
+
   effect(() => {
     const active = state.isQuizActive.get();
-    const grading = isGradingPhase.get();
+    elements.quizButton.textContent = active ? 'Stop Quiz' : 'Start Quiz';
+    elements.quizStatus.textContent = active ? 'Running' : 'Stopped';
+    elements.questionTimeSlider.disabled = active;
+    elements.answerTimeSlider.disabled = active;
+    elements.difficultySlider.disabled = active;
     elements.gradeButtons.hidden = !active;
+  });
+
+  effect(() => {
+    const grading = isGradingPhase.get();
     elements.gradeCorrectButton.disabled = !grading;
     elements.gradeIncorrectButton.disabled = !grading;
   });
 
-  // Session tally
   effect(() => {
     elements.correctCount.textContent = state.sessionCorrect.get().toString();
   });
+
   effect(() => {
     elements.incorrectCount.textContent = state.sessionIncorrect.get().toString();
   });
 
-  // Create a debounced save function
-  const debouncedSave = debounce(saveSettingsToStorage, 300);
-
-  // Settings persistence with debounce
   effect(() => {
-    const time = state.questionTime.get();
-    elements.questionTimeValue.textContent = `${time}s`;
-    elements.questionTimeSlider.setAttribute('aria-valuenow', time.toString());
-    elements.questionTimeSlider.setAttribute('aria-valuetext', `${time} seconds`);
-    debouncedSave();
-  });
-
-  effect(() => {
-    const time = state.answerTime.get();
-    elements.answerTimeValue.textContent = `${time}s`;
-    elements.answerTimeSlider.setAttribute('aria-valuenow', time.toString());
-    elements.answerTimeSlider.setAttribute('aria-valuetext', `${time} seconds`);
-    debouncedSave();
-  });
-
-  effect(() => {
-    const difficulty = state.difficulty.get();
-    const name = getDifficultyName(difficulty);
+    const name = getDifficultyName(state.difficulty.get());
     elements.difficultyValue.textContent = name;
-    elements.difficultySlider.setAttribute('aria-valuenow', difficulty.toString());
-    elements.difficultySlider.setAttribute('aria-valuetext', name);
-    debouncedSave();
+    elements.difficultySlider.ariaValueText = name;
   });
-}
-
-function saveSettingsToStorage(): void {
-  const settings = {
-    questionTime: state.questionTime.get(),
-    answerTime: state.answerTime.get(),
-    difficulty: state.difficulty.get(),
-  } satisfies Settings;
-  saveSettings(settings);
-}
-
-function setupEventListeners(): void {
-  elements.questionTimeSlider.addEventListener('input', (e) => {
-    const value = parseInt((e.target as HTMLInputElement).value);
-    state.questionTime.set(Math.max(1, value));
-  });
-
-  elements.answerTimeSlider.addEventListener('input', (e) => {
-    const value = parseInt((e.target as HTMLInputElement).value);
-    state.answerTime.set(Math.max(1, value));
-  });
-
-  elements.difficultySlider.addEventListener('input', (e) => {
-    const value = parseInt((e.target as HTMLInputElement).value) as DifficultyLevel;
-    state.difficulty.set(value);
-  });
-
-  // Self-grading. Tap/click is the primary interaction and works on touch;
-  // arrow and letter keys are an additive convenience for desktop keyboards.
-  elements.gradeCorrectButton.addEventListener('click', () => gradeAnswer('correct'));
-  elements.gradeIncorrectButton.addEventListener('click', () => gradeAnswer('incorrect'));
-  document.addEventListener('keydown', handleGradingKey);
 }
 
 function handleGradingKey(event: KeyboardEvent): void {
-  if (!isGradingPhase.get()) return;
+  if (event.repeat || event.altKey || event.ctrlKey || event.metaKey) return;
+  const grade = GRADE_KEYS.get(event.key);
+  if (grade === undefined || !isGradingPhase.get()) return;
+  event.preventDefault();
+  gradeAnswer(grade);
+}
 
-  // Right / C => correct (right-hand ✓ button); Left / X => incorrect
-  // (left-hand ✗ button). Arrows mirror the on-screen button positions.
-  if (event.key === 'ArrowRight' || event.key === 'c' || event.key === 'C') {
-    event.preventDefault();
+function setupEventListeners(elements: Elements): void {
+  bindSeconds(elements.questionTimeSlider, elements.questionTimeValue, state.questionTime);
+  bindSeconds(elements.answerTimeSlider, elements.answerTimeValue, state.answerTime);
+
+  elements.difficultySlider.addEventListener('input', () => {
+    const level = elements.difficultySlider.valueAsNumber;
+    if (!isDifficultyLevel(level)) return;
+    state.difficulty.set(level);
+    persistSettings();
+  });
+
+  elements.themeToggle.addEventListener('click', () => {
+    toggleTheme(elements);
+  });
+  elements.quizButton.addEventListener('click', toggleQuiz);
+  elements.gradeCorrectButton.addEventListener('click', () => {
     gradeAnswer('correct');
-  } else if (event.key === 'ArrowLeft' || event.key === 'x' || event.key === 'X') {
-    event.preventDefault();
+  });
+  elements.gradeIncorrectButton.addEventListener('click', () => {
     gradeAnswer('incorrect');
-  }
+  });
+  document.addEventListener('keydown', handleGradingKey);
 }
 
 export function initialize(): void {
-  elements = getElements();
+  const elements = queryElements();
   progress = loadProgress() ?? createStore();
-  initializeSettings();
-  setupEffects();
-  setupEventListeners();
+  restoreSettings(elements);
+  setupEffects(elements);
+  setupEventListeners(elements);
 }
-
-// Export for testing
-export { state, elements };

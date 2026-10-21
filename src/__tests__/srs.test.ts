@@ -15,10 +15,11 @@ import {
   BOX_INTERVALS_MS,
   SEEN_COOLDOWN_MS,
 } from '../srs';
+import { problemKey } from '../difficulty';
 import type { Problem, SrsRecord } from '../types';
 
 const NOW = 1_000_000;
-const pick = (): number => 0; // deterministic: always take the top-priority candidate
+const pick = (): number => 0;
 
 describe('createStore / isSrsStore', () => {
   it('creates an empty, correctly-versioned store', () => {
@@ -31,9 +32,9 @@ describe('createStore / isSrsStore', () => {
     expect(isSrsStore(createStore())).toBe(true);
     expect(isSrsStore(null)).toBe(false);
     expect(isSrsStore(42)).toBe(false);
-    expect(isSrsStore({ version: SRS_VERSION })).toBe(false); // no records
-    expect(isSrsStore({ version: SRS_VERSION + 1, records: {} })).toBe(false); // stale version
-    expect(isSrsStore({ records: {} })).toBe(false); // no version
+    expect(isSrsStore({ version: SRS_VERSION })).toBe(false);
+    expect(isSrsStore({ version: SRS_VERSION + 1, records: {} })).toBe(false);
+    expect(isSrsStore({ records: {} })).toBe(false);
   });
 });
 
@@ -60,8 +61,8 @@ describe('gradeRecord', () => {
     expect(graded.box).toBe(0);
     expect(graded.incorrect).toBe(1);
     expect(graded.dueAt).toBe(NOW + BOX_INTERVALS_MS[0]);
-    expect(graded.dueAt).toBeGreaterThan(NOW); // not immediate
-    expect(BOX_INTERVALS_MS[0]).toBeLessThan(BOX_INTERVALS_MS[MAX_BOX]); // "soon" << "long"
+    expect(graded.dueAt).toBeGreaterThan(NOW);
+    expect(BOX_INTERVALS_MS[0]).toBeLessThan(BOX_INTERVALS_MS[MAX_BOX]);
   });
 
   it('never promotes beyond MAX_BOX', () => {
@@ -92,7 +93,7 @@ describe('applyGrade / applySeen', () => {
   it('creates a record on first grade and does not mutate the input store', () => {
     const store = createStore();
     const next = applyGrade(store, '7x8', 'correct', NOW);
-    expect(getRecord(store, '7x8')).toBeUndefined(); // original untouched
+    expect(getRecord(store, '7x8')).toBeUndefined();
     expect(getRecord(next, '7x8')?.box).toBe(1);
   });
 
@@ -121,44 +122,39 @@ describe('selectNext', () => {
   it('never returns a problem in the recency window (unless that empties the pool)', () => {
     const recent = ['2x3', '6x7', '7x8'];
     const chosen = selectNext(pool, createStore(), recent, NOW, pick);
-    expect(chosen).toEqual({ a: 8, b: 9 }); // the only one not recently seen
+    expect(chosen).toEqual({ a: 8, b: 9 });
 
-    // If everything is recent, recency is relaxed rather than returning null.
     const allRecent = ['2x3', '6x7', '7x8', '8x9'];
     expect(selectNext(pool, createStore(), allRecent, NOW, pick)).not.toBeNull();
   });
 
   it('prefers a due problem over one parked in a high box', () => {
-    // 2x3 parked far away (box 5); 7x8 is due (box 0, dueAt in the past).
     let store = createStore();
     store = { version: store.version, records: {
       '2x3': { box: 5, dueAt: NOW + 1_000_000, lastSeen: NOW, seen: 5, correct: 5, incorrect: 0 },
       '7x8': { box: 0, dueAt: NOW - 10, lastSeen: NOW - 100, seen: 2, correct: 0, incorrect: 2 },
     } };
-    // Exclude the two unseen problems so the choice is between 2x3 and 7x8.
     const chosen = selectNext(pool, store, ['6x7', '8x9'], NOW, pick);
     expect(chosen).toEqual({ a: 7, b: 8 });
   });
 
   it('resurfaces a freshly-missed problem ahead of freshly-correct ones', () => {
-    let store = applyGrade(createStore(), '7x8', 'incorrect', NOW); // box 0, due at NOW+45s
-    store = applyGrade(store, '6x7', 'correct', NOW); // box 1, parked further out
-    // Advance time to just past the "soon" interval so 7x8 is due again.
+    let store = applyGrade(createStore(), '7x8', 'incorrect', NOW);
+    store = applyGrade(store, '6x7', 'correct', NOW);
     const later = NOW + BOX_INTERVALS_MS[0] + 1;
     const chosen = selectNext(pool, store, ['2x3', '8x9'], later, pick);
     expect(chosen).toEqual({ a: 7, b: 8 });
   });
 
   it('introduces an unseen problem ahead of a seen, not-yet-due one', () => {
-    // 2x3 was just answered correctly (parked); the rest are unseen and due now.
     const store = applyGrade(createStore(), '2x3', 'correct', NOW);
     const chosen = selectNext(pool, store, [], NOW, pick);
     expect(chosen).not.toEqual({ a: 2, b: 3 });
-    expect(getRecord(store, problemKeyOf(chosen))).toBeUndefined();
+    expect(chosen).not.toBeNull();
+    expect(getRecord(store, problemKey(chosen?.a ?? 0, chosen?.b ?? 0))).toBeUndefined();
   });
 
   it('falls back to the soonest-due problem when nothing is due yet', () => {
-    // Two seen problems, both parked in the future; nothing else in the pool.
     const smallPool: Problem[] = [
       { a: 6, b: 7 },
       { a: 7, b: 8 },
@@ -168,14 +164,7 @@ describe('selectNext', () => {
       '6x7': { box: 1, dueAt: NOW + 500, lastSeen: NOW, seen: 1, correct: 1, incorrect: 0 },
       '7x8': { box: 1, dueAt: NOW + 100, lastSeen: NOW, seen: 1, correct: 1, incorrect: 0 },
     } };
-    // Nothing is due at NOW; the soonest-due (7x8, dueAt NOW+100) should win.
     const chosen = selectNext(smallPool, store, [], NOW, pick);
     expect(chosen).toEqual({ a: 7, b: 8 });
   });
 });
-
-// Small local helper mirroring difficulty.problemKey for assertions above.
-function problemKeyOf(problem: Problem | null): string {
-  if (!problem) return '';
-  return `${Math.min(problem.a, problem.b)}x${Math.max(problem.a, problem.b)}`;
-}

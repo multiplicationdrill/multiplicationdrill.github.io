@@ -3,7 +3,6 @@ import { state, displayText, progressPercent, timerDisplayText, isGradingPhase }
 
 describe('State', () => {
   beforeEach(() => {
-    // Reset state to defaults
     state.isQuizActive.set(false);
     state.currentPhase.set('idle');
     state.timeRemaining.set(0);
@@ -45,16 +44,16 @@ describe('State', () => {
       state.isQuizActive.set(true);
       state.currentPhase.set('question');
       state.questionTime.set(10);
-      state.timeRemaining.set(7); // 3 seconds elapsed
-      expect(progressPercent.get()).toBe(30); // (10-7)/10 * 100
+      state.timeRemaining.set(7);
+      expect(progressPercent.get()).toBe(30);
     });
 
     it('should calculate progress for answer phase', () => {
       state.isQuizActive.set(true);
       state.currentPhase.set('answer');
       state.answerTime.set(5);
-      state.timeRemaining.set(2); // 3 seconds elapsed
-      expect(progressPercent.get()).toBe(60); // (5-2)/5 * 100
+      state.timeRemaining.set(2);
+      expect(progressPercent.get()).toBe(60);
     });
 
     it('should handle zero total time', () => {

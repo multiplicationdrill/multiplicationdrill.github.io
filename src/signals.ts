@@ -1,95 +1,70 @@
-// Robust Signal System with TypeScript
 export type EffectFn = () => void;
 
 let currentEffect: EffectFn | null = null;
 
+function track(observers: Set<EffectFn>): void {
+  if (currentEffect) observers.add(currentEffect);
+}
+
+function notify(observers: ReadonlySet<EffectFn>): void {
+  for (const observer of [...observers]) observer();
+}
+
+function runTracked<T>(effectFn: EffectFn, fn: () => T): T {
+  const previous = currentEffect;
+  currentEffect = effectFn;
+  try {
+    return fn();
+  } finally {
+    currentEffect = previous;
+  }
+}
+
 export class Signal<T> {
-  private _value: T;
-  private readonly observers = new Set<EffectFn>();
+  #value: T;
+  readonly #observers = new Set<EffectFn>();
 
   constructor(initialValue: T) {
-    this._value = initialValue;
+    this.#value = initialValue;
   }
 
   get(): T {
-    if (currentEffect) {
-      this.observers.add(currentEffect);
-    }
-    return this._value;
+    track(this.#observers);
+    return this.#value;
   }
 
-  set(newValue: T): void {
-    if (this._value === newValue) return;
-    this._value = newValue;
-    // Create a copy to prevent issues if observers modify the set during iteration
-    for (const observer of [...this.observers]) {
-      observer();
-    }
-  }
-
-  // For testing purposes
-  getObserverCount(): number {
-    return this.observers.size;
+  set(value: T): void {
+    if (Object.is(this.#value, value)) return;
+    this.#value = value;
+    notify(this.#observers);
   }
 }
 
 export class ComputedSignal<T> {
-  private readonly computeFn: () => T;
-  private readonly observers = new Set<EffectFn>();
-  private _value: T | undefined = undefined;
-  private isStale = true;
-  private readonly markStaleEffect: EffectFn;
+  readonly #compute: () => T;
+  readonly #observers = new Set<EffectFn>();
+  #cache: { readonly value: T } | undefined;
 
-  constructor(computeFn: () => T) {
-    this.computeFn = computeFn;
-
-    // This effect runs when a dependency changes, marking this computed signal as stale
-    this.markStaleEffect = () => {
-      if (!this.isStale) {
-        this.isStale = true;
-        for (const observer of [...this.observers]) {
-          observer();
-        }
-      }
-    };
+  constructor(compute: () => T) {
+    this.#compute = compute;
   }
 
-  private _compute(): void {
-    // Set this computed signal's effect as the current one to register dependencies
-    const prevEffect = currentEffect;
-    currentEffect = this.markStaleEffect;
-    try {
-      this._value = this.computeFn();
-      this.isStale = false;
-    } finally {
-      // Restore the previous effect
-      currentEffect = prevEffect;
-    }
-  }
+  readonly #markStale: EffectFn = () => {
+    if (this.#cache === undefined) return;
+    this.#cache = undefined;
+    notify(this.#observers);
+  };
 
   get(): T {
-    // Register the outer effect as an observer of this computed signal
-    if (currentEffect) {
-      this.observers.add(currentEffect);
-    }
-    // Re-compute the value only if it's stale
-    if (this.isStale) {
-      this._compute();
-    }
-    return this._value as T;
+    track(this.#observers);
+    this.#cache ??= { value: runTracked(this.#markStale, this.#compute) };
+    return this.#cache.value;
   }
 }
 
 export function effect(effectFn: EffectFn): void {
-  const execute = () => {
-    // Manage a stack of effects to allow for nesting
-    const prevEffect = currentEffect;
-    currentEffect = execute;
-    try {
-      effectFn();
-    } finally {
-      currentEffect = prevEffect;
-    }
+  const execute = (): void => {
+    runTracked(execute, effectFn);
   };
   execute();
 }

@@ -1,89 +1,86 @@
-import { DifficultyLevel, Settings, SrsStore } from './types';
 import { isSrsStore } from './srs';
+import type { DifficultyLevel, DifficultyName, Settings, SrsStore, Theme } from './types';
 
-// ES2025: Use Map for O(1) lookup instead of switch statements
-const DIFFICULTY_NAMES = new Map<DifficultyLevel, string>([
-  [1, 'Easy'],
-  [2, 'Medium'],
-  [3, 'Hard'],
-  [4, 'Expert'],
-]);
+const DIFFICULTY_NAMES: Readonly<Record<DifficultyLevel, DifficultyName>> = {
+  1: 'Easy',
+  2: 'Medium',
+  3: 'Hard',
+  4: 'Expert',
+};
 
-export function getDifficultyName(level: DifficultyLevel): string {
-  return DIFFICULTY_NAMES.get(level) ?? 'Hard';
-}
-
-export function randomInRange(min: number, max: number): number {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+export const MIN_SECONDS = 1;
+export const MAX_SECONDS = 30;
 
 const SETTINGS_KEY = 'mathQuizSettings';
 const THEME_KEY = 'theme';
 const PROGRESS_KEY = 'mathQuizProgress';
 
-export function loadSettings(): Settings | null {
+export function getDifficultyName(level: DifficultyLevel): DifficultyName {
+  return DIFFICULTY_NAMES[level];
+}
+
+export function isDifficultyLevel(value: unknown): value is DifficultyLevel {
+  return typeof value === 'number' && Object.hasOwn(DIFFICULTY_NAMES, value);
+}
+
+export function isSeconds(value: unknown): value is number {
+  return typeof value === 'number' && Number.isInteger(value) && value >= MIN_SECONDS && value <= MAX_SECONDS;
+}
+
+function parseSettings(value: unknown): Settings | null {
+  if (typeof value !== 'object' || value === null) return null;
+  const { questionTime, answerTime, difficulty } = value as Record<string, unknown>;
+  if (!isSeconds(questionTime) || !isSeconds(answerTime) || !isDifficultyLevel(difficulty)) return null;
+  return { questionTime, answerTime, difficulty };
+}
+
+function removeItem(key: string): void {
   try {
-    const saved = localStorage.getItem(SETTINGS_KEY);
-    if (saved) {
-      return JSON.parse(saved) as Settings;
-    }
-  } catch (e) {
-    console.error('Failed to load settings - resetting to defaults', e);
-    try {
-      localStorage.removeItem(SETTINGS_KEY);
-    } catch {
-      // Ignore if we can't remove
-    }
+    localStorage.removeItem(key);
+  } catch {
+    return;
   }
-  return null;
+}
+
+function writeItem(key: string, value: string): void {
+  try {
+    localStorage.setItem(key, value);
+  } catch (error) {
+    console.warn(`Failed to save ${key}:`, error);
+  }
+}
+
+function readJson<T>(key: string, parse: (value: unknown) => T | null): T | null {
+  try {
+    const saved = localStorage.getItem(key);
+    if (saved === null) return null;
+    const parsed = parse(JSON.parse(saved));
+    if (parsed === null) removeItem(key);
+    return parsed;
+  } catch (error) {
+    console.error(`Failed to load ${key} - resetting`, error);
+    removeItem(key);
+    return null;
+  }
+}
+
+export function loadSettings(): Settings | null {
+  return readJson(SETTINGS_KEY, parseSettings);
 }
 
 export function saveSettings(settings: Settings): void {
-  try {
-    localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
-  } catch (e) {
-    // Silently fail if localStorage is disabled (e.g., private mode)
-    console.warn('Failed to save settings:', e);
-  }
+  writeItem(SETTINGS_KEY, JSON.stringify(settings));
 }
 
-/**
- * Load the spaced-repetition store. Returns null when there is nothing saved,
- * the data is corrupt, or it was written by an incompatible version — in the
- * last two cases the stale entry is cleared so a fresh store can take over.
- */
 export function loadProgress(): SrsStore | null {
-  try {
-    const saved = localStorage.getItem(PROGRESS_KEY);
-    if (!saved) return null;
-
-    const parsed: unknown = JSON.parse(saved);
-    if (isSrsStore(parsed)) return parsed;
-
-    // Unrecognised or outdated shape — discard it.
-    localStorage.removeItem(PROGRESS_KEY);
-    return null;
-  } catch (e) {
-    console.error('Failed to load progress - resetting', e);
-    try {
-      localStorage.removeItem(PROGRESS_KEY);
-    } catch {
-      // Ignore if we can't remove
-    }
-    return null;
-  }
+  return readJson(PROGRESS_KEY, (value) => (isSrsStore(value) ? value : null));
 }
 
 export function saveProgress(store: SrsStore): void {
-  try {
-    localStorage.setItem(PROGRESS_KEY, JSON.stringify(store));
-  } catch (e) {
-    // Silently fail if localStorage is disabled (e.g., private mode)
-    console.warn('Failed to save progress:', e);
-  }
+  writeItem(PROGRESS_KEY, JSON.stringify(store));
 }
 
-export function loadTheme(): 'light' | 'dark' {
+export function loadTheme(): Theme {
   try {
     return localStorage.getItem(THEME_KEY) === 'light' ? 'light' : 'dark';
   } catch {
@@ -91,23 +88,16 @@ export function loadTheme(): 'light' | 'dark' {
   }
 }
 
-export function saveTheme(theme: 'light' | 'dark'): void {
-  try {
-    localStorage.setItem(THEME_KEY, theme);
-  } catch {
-    // Silently fail if localStorage is disabled
-  }
+export function saveTheme(theme: Theme): void {
+  writeItem(THEME_KEY, theme);
 }
 
-// Debounce utility
-export function debounce<T extends (...args: unknown[]) => void>(
-  func: T,
-  wait: number,
-): (...args: Parameters<T>) => void {
-  let timeout: ReturnType<typeof setTimeout> | null = null;
-
-  return (...args: Parameters<T>) => {
-    if (timeout) clearTimeout(timeout);
-    timeout = setTimeout(() => func(...args), wait);
+export function debounce<A extends unknown[]>(fn: (...args: A) => void, wait: number): (...args: A) => void {
+  let timeout: ReturnType<typeof setTimeout> | undefined;
+  return (...args: A) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      fn(...args);
+    }, wait);
   };
 }
