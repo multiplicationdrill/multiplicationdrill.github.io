@@ -141,7 +141,7 @@ dump() {
 }
 
 mkdir -p "$OUTPUT_DIR"
-TMP_FILE="$(mktemp "${OUTPUT_DIR}/.dump.XXXXXX")"
+TMP_FILE="$(mktemp)"
 trap 'rm -f "$TMP_FILE"' EXIT
 
 dump > "$TMP_FILE"
