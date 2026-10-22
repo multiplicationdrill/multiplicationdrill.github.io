@@ -17,9 +17,9 @@ Supports current evergreen browsers only.
 
 ## Stack
 
-TypeScript 7 (`tsc`), Vite 8, custom signals, Vitest, Playwright, ESLint with typescript-eslint, Yarn 1, GitHub Actions, GitHub Pages.
+TypeScript 7 (`tsc`), Vite 8, custom signals, Vitest, Playwright, ESLint with typescript-eslint, Yarn 4 (`node-modules` linker, release pinned in `.yarn/releases`), GitHub Actions, GitHub Pages.
 
-typescript-eslint still needs the TypeScript 6 compiler API, so `typescript` is aliased to `@typescript/typescript6` and TypeScript 7 is installed as `@typescript/native`. `tsc` runs TypeScript 7; `tsc6` runs TypeScript 6.
+typescript-eslint still needs the TypeScript 6 compiler API, so `typescript` is aliased to `@typescript/typescript6` and TypeScript 7 is installed as `@typescript/native`. `tsc` runs TypeScript 7; `tsc6` runs TypeScript 6. On a cold cache Yarn prints `YN0066` because its built-in TypeScript patch does not fit the alias; it is harmless and unpatched TypeScript is used.
 
 ## Scripts
 
@@ -36,6 +36,7 @@ typescript-eslint still needs the TypeScript 6 compiler API, so `typescript` is 
 | `yarn e2e:container:build` | Build the Podman E2E image for the installed Playwright version |
 | `yarn e2e:container` / `yarn e2e:containernoci` | Run E2E in the container (CI mode / local) |
 | `yarn test:all` | Lint, type-check, unit, container E2E |
+| `yarn outdated` | `npm outdated` (Yarn 4 has no `outdated` command) |
 
 ## Layout
 

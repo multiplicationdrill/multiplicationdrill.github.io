@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: 24.x
           cache: yarn
-      - run: yarn install --frozen-lockfile
+      - run: yarn install --immutable
       - run: yarn test:coverage:ci
       - uses: irongut/CodeCoverageSummary@v1.3.0
         with:

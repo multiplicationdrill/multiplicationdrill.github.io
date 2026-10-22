@@ -4,11 +4,10 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default defineConfig(
-  globalIgnores(['dist', 'coverage', 'playwright-report', 'test-results', 'docs']),
-  js.configs.recommended,
-  tseslint.configs.strictTypeChecked,
-  tseslint.configs.stylisticTypeChecked,
+  globalIgnores(['.yarn', 'dist', 'coverage', 'playwright-report', 'test-results', 'docs']),
   {
+    files: ['**/*.ts'],
+    extends: [js.configs.recommended, tseslint.configs.strictTypeChecked, tseslint.configs.stylisticTypeChecked],
     languageOptions: {
       parserOptions: {
         projectService: true,

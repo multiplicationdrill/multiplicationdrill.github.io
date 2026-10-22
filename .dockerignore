@@ -1,4 +1,6 @@
 .git
+.yarn/*
+!.yarn/releases
 node_modules
 dist
 coverage

@@ -20,7 +20,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: yarn
-      - run: yarn install --frozen-lockfile
+      - run: yarn install --immutable
       - run: yarn lint
       - run: yarn type-check
       - run: yarn test:coverage:ci
@@ -41,7 +41,7 @@ jobs:
         with:
           node-version: 24.x
           cache: yarn
-      - run: yarn install --frozen-lockfile
+      - run: yarn install --immutable
       - run: yarn playwright install --with-deps
       - run: yarn test:e2e
       - uses: actions/upload-artifact@v7
@@ -67,7 +67,7 @@ jobs:
         with:
           node-version: 24.x
           cache: yarn
-      - run: yarn install --frozen-lockfile
+      - run: yarn install --immutable
       - run: yarn build
       - uses: actions/upload-pages-artifact@v5
         with:

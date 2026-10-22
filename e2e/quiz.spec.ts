@@ -262,11 +262,14 @@ test.describe('Mobile Viewport', () => {
     await expect(quizPage.display).toBeVisible();
     await expect(quizPage.startQuizButton).toBeVisible();
 
-    const { scrollWidth, clientWidth } = await page.evaluate(() => ({
-      scrollWidth: document.documentElement.scrollWidth,
-      clientWidth: document.documentElement.clientWidth,
-    }));
-    expect(scrollWidth).toBeLessThanOrEqual(clientWidth);
+    for (const width of [375, 320]) {
+      await page.setViewportSize({ width, height: 667 });
+      const { scrollWidth, clientWidth } = await page.evaluate(() => ({
+        scrollWidth: document.documentElement.scrollWidth,
+        clientWidth: document.documentElement.clientWidth,
+      }));
+      expect(scrollWidth).toBeLessThanOrEqual(clientWidth);
+    }
   });
 
   test('should offer tappable grade buttons in the answer phase', async ({ page }) => {

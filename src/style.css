@@ -36,7 +36,8 @@
 body {
   min-block-size: 100dvh;
   display: grid;
-  place-items: center;
+  grid-template-columns: minmax(0, 600px);
+  place-content: center;
   padding: 20px;
   background: var(--bg-primary);
   color: var(--text-primary);
@@ -55,8 +56,6 @@ body {
 }
 
 .container {
-  inline-size: 100%;
-  max-inline-size: 600px;
   padding: 40px;
   border: 1px solid var(--border);
   border-radius: 20px;
@@ -362,6 +361,15 @@ button {
 
   .quiz-display {
     font-size: 2.2em;
+  }
+
+  .slider-group {
+    flex-wrap: wrap;
+    row-gap: 5px;
+
+    label {
+      flex-basis: 100%;
+    }
   }
 
   .grade-btn {
