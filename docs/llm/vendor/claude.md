@@ -6502,3 +6502,7 @@ Claude finished the response
 25
 
 Looks like one test is failing 
+also please review the warnings and deprecation notices in the output and fix if possible 
+remember, there is NO legacy to preserve so if it is possible to fix 
+using the latest stable version of anything
+go for it
