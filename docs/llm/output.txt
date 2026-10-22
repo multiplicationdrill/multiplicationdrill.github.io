@@ -128,4 +128,14 @@ To github.com:multiplicationdrill/multiplicationdrill.github.io.git
 real	0m1.311s
 user	0m0.015s
 sys	0m0.011s
+kushal@fedora:~/src/ts/multiplicationdrill$ git rm scripts/coverage-report.js
+rm 'scripts/coverage-report.js'
+kushal@fedora:~/src/ts/multiplicationdrill$ git ls-files MIGRATION.md public/vite.svg src/typescript.svg
+MIGRATION.md
+public/vite.svg
+src/typescript.svg
+kushal@fedora:~/src/ts/multiplicationdrill$ git rm MIGRATION.md public/vite.svg src/typescript.svg
+rm 'MIGRATION.md'
+rm 'public/vite.svg'
+rm 'src/typescript.svg'
 kushal@fedora:~/src/ts/multiplicationdrill$ 
